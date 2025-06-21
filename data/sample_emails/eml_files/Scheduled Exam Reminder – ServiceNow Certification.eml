@@ -1,0 +1,226 @@
+Received: from PH0PR08MB7622.namprd08.prod.outlook.com (2603:10b6:510:dc::9)
+ by BN5PR08MB10586.namprd08.prod.outlook.com with HTTPS; Wed, 25 Dec 2024
+ 07:05:59 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=aUKsD8WsGVdWQYftNWq6J03Ak1uIQrJYYAeDJcN19dGiIpi2pAX1BrtbsISz7i+4bc/6uaMXY6nTu2Ftzl9KCcWpnBTO9sHV1gNoSVcswDPXlHvpt1KKmsQrp6bXMvhnCs8WADJ7cC/fbBVICRDbJFbiuRHZvo+ioQaVhm5/zUiQWTqhQ8xfo8aS4Ee3NZI1IvW00oRPng3BIblxnvl+Zo3lxNfJMxLYrhWnIJPfYNrAMk+ZUT2b+ZnxUt8wvxivllfvFU7JcJW6jtAASIlA5vACBaKFxFHHG0j0JA3WCOKgpp1NlS9TkevPtpHdobq3Q4UFyiVdPs4S5inRki81fw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bH6JozgSc/RsKeucx+CAhhESIyj0yIwt82OhC1njJfo=;
+ b=HtfOi969Kq4zEh+rBvwjYQeVaMSoOL67i3jyJ9o1/jingM2cM+x5H0OUBEeZQvAWrg6O/ggHK3KQzMlYVbhxtDxdWZ3KJXc9dQwn61C8O6cHZ5nFhqjm8C0vlsLCz3repb4lvoagXopeSQ0Fpn6Qt925iFHkgH2rMplzS63dhbS2A6fHEnlgyFMRPzTxYumSBTNBopZyOuiWm86h/mddfkN5OBG84EaNkJ0jeFqyWTbdiyzO3cX6NYdAaz3cnDKHMVLqaaM8Vsg8cZlLz6hq/Hrkjhuxxr7PpeSvUv6Sx94vek3WSGAsMwJOps7+M39Xe9BxkQyMviLjTyA9BXUVHg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 170.10.128.131) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=servicenow.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=servicenow.com; dkim=fail (body hash did not verify)
+ header.d=servicenow.com; dkim=fail (body hash did not verify)
+ header.d=servicenow.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from BN9PR03CA0766.namprd03.prod.outlook.com (2603:10b6:408:13a::21)
+ by PH0PR08MB7622.namprd08.prod.outlook.com (2603:10b6:510:dc::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8293.14; Wed, 25 Dec
+ 2024 07:05:55 +0000
+Received: from BN1PEPF0000468E.namprd05.prod.outlook.com
+ (2603:10b6:408:13a:cafe::e1) by BN9PR03CA0766.outlook.office365.com
+ (2603:10b6:408:13a::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8293.14 via Frontend Transport; Wed,
+ 25 Dec 2024 07:05:55 +0000
+Authentication-Results: spf=pass (sender IP is 170.10.128.131)
+ smtp.mailfrom=servicenow.com; dkim=fail (body hash did not verify)
+ header.d=servicenow.com;dkim=fail (body hash did not verify)
+ header.d=servicenow.com;dmarc=pass action=none
+ header.from=servicenow.com;compauth=pass reason=100
+Received-SPF: Pass (protection.outlook.com: domain of servicenow.com
+ designates 170.10.128.131 as permitted sender)
+ receiver=protection.outlook.com; client-ip=170.10.128.131;
+ helo=us-smtp-inbound-delivery-1.mimecast.com; pr=C
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ BN1PEPF0000468E.mail.protection.outlook.com (10.167.243.139) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8293.12
+ via Frontend Transport; Wed, 25 Dec 2024 07:05:54 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1735110354;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=bH6JozgSc/RsKeucx+CAhhESIyj0yIwt82OhC1njJfo=;
+	b=AwVCZwY2C49Pph1xwGH2TSGc4XaAq5crxr7Eb0tNkPyCvAc5GgIrI6xAs1S1WBWDGf+hfE
+	d2x771+FbNoaFSCfM/Hx5ccWHILDqfstDrLvbc4s4iQeYoM0MKp/h4AgtWQTacw1a21c4d
+	1InLAaMqm/Q0GXc0JydZaPmWPDAAa5Ny5MtCGfjk3d55pgpCe1aIPIhWv2i6AdshrU6ccQ
+	RW0rQIzjPODq5PsKXissKvMWVRkFIbcu5BkyqM0Ahl7tlMCCwhnTjZ9bD83LzMw5hvJRxj
+	6a+fCzSr6zVnJz9aehZKcL5ejZk1aTi8Ho/rCp7fj9YdgTjlKOmXXKNGxDasag==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1735110354; a=rsa-sha256;
+	cv=none;
+	b=jZWQ0Y4KfOHXOOWXB/hRvIAB4dguOjDOh2kQX8Y4U2uAkSqjbqrA5BW+Ut9n7GthrqrfAe
+	TqA2NDj/r5IsZYliDlgbj5z4YSBmaFLLqIt5rBuLOe1I9d8JtIqkZxSgnqdlRfAPDWs2Yp
+	g3RsKleibGtdlwnJ/UYIYgOkzjWY6bIXpIHF2QWVnV6CWUp59Ic0yYj6hQKWQIY+eh9Hdx
+	deZ7+uHcDCkBZb122ffe9FkDIAY+27fG9b0JuKqMpzqA9NCaPFpe7qOV/p1dQ3FR4WpEIA
+	+a/ay64llllZs/VduHqRhUQy8I11zTag5qePvZ7wF8YwRCXhV1MoooxF73Sqig==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=servicenow.com header.s=krywa2018dk1 header.b=qsJnQ1od;
+	dkim=pass header.d=servicenow.com header.s=krywa2018dk1 header.b="m/4Uk65T";
+	dmarc=pass (policy=reject) header.from=servicenow.com;
+	spf=pass (relay.mimecast.com: domain of certification@servicenow.com designates 44.233.10.28 as permitted sender) smtp.mailfrom=certification@servicenow.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=servicenow.com header.s=krywa2018dk1 header.b=qsJnQ1od;	dkim=pass
+ header.d=servicenow.com header.s=krywa2018dk1 header.b="m/4Uk65T";	dmarc=pass
+ (policy=reject) header.from=servicenow.com;	spf=pass (relay.mimecast.com:
+ domain of certification@servicenow.com designates 44.233.10.28 as permitted
+ sender) smtp.mailfrom=certification@servicenow.com
+Received: from smtp2.webassessor.com (smtp2.webassessor.com [44.233.10.28])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-137-d7_UtiN-Ofapc_YyyJ966A-1; Wed, 25 Dec 2024 02:05:50 -0500
+X-MC-Unique: d7_UtiN-Ofapc_YyyJ966A-1
+X-Mimecast-MFC-AGG-ID: d7_UtiN-Ofapc_YyyJ966A
+Received: from smtp.webassessor.com (ip-172-25-1-41.us-west-2.compute.internal [172.25.1.41])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp2.webassessor.com (Postfix) with ESMTPS id DB652C6150F
+	for <rob.spence@servicenow.com>; Wed, 25 Dec 2024 07:05:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=servicenow.com;
+	s=krywa2018dk1; t=1735110342;
+	bh=aD/HOCfJUK/tWiJfLzSM/zlvR1E5yf2GWKlUCUDdqe0=;
+	h=Date:From:To:Subject;
+	b=qsJnQ1odG2CxcAEHjMYUfefezjaAi6mumwztP7fFNgW1UMmaYJVEuiduW8p6zct5H
+	 SEDPL2dBrarVd0GLR4BJst81H7ExyLSdp8sXDGqtqxEauCNvoHSBSlH0W4IcKjJLBP
+	 FSvduAotX5x2qZUzNnFe4aUslJruG3/+/jjHrKAo=
+Received: from ip-172-29-20-140.us-west-2.compute.internal (unknown [172.29.20.140])
+	by smtp.webassessor.com (Postfix) with ESMTP id D68BC1C09CEA
+	for <rob.spence@servicenow.com>; Wed, 25 Dec 2024 07:05:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=servicenow.com;
+	s=krywa2018dk1; t=1735110313;
+	bh=aD/HOCfJUK/tWiJfLzSM/zlvR1E5yf2GWKlUCUDdqe0=;
+	h=Date:From:To:Subject;
+	b=m/4Uk65T4l1PigwB99uMP9g5yPYgufUG0K6zq1CxecUYmRzC69Or/JwvcSpdun/+m
+	 LlGn4zC+QxlotmyXVXkhYjsFWdmkgCLHbe00BgKX5lQUyRbN927B+zOBJG0vuW4kSg
+	 E0Su0GR5uy4cpbizZ6TnPDTqI/qg4jXSHVhoHLts=
+Date: Wed, 25 Dec 2024 00:05:13 -0700 (MST)
+From: certification@servicenow.com
+To: rob.spence@servicenow.com
+Message-ID: <21251651.209530.1735110313872.JavaMail.root@PRD1-SUBC01>
+Subject: =?UTF-8?Q?Scheduled_Exam_Reminder_=E2=80=93_ServiceNow_Certification?=
+X-SendMail: 2024-REL17-0.1
+X-SES-MESSAGE-TAGS: wa-emailhdr=wa-emailhdr
+X-SES-CONFIGURATION-SET: Webassessor
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: McbsrUVmYBLLa0FSBGXOqp-4qKOmKSY8ZS_q-eeSQT4_1735110349
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Return-Path: certification@servicenow.com
+X-MS-Exchange-Organization-ExpirationStartTime: 25 Dec 2024 07:05:55.0316
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 3ddddf2c-9a7b-48f2-5f97-08dd24b29349
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000468E:EE_|PH0PR08MB7622:EE_|BN5PR08MB10586:EE_
+X-MS-Exchange-Organization-AuthSource: BN1PEPF0000468E.namprd05.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 3ddddf2c-9a7b-48f2-5f97-08dd24b29349
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-BypassClutter: true
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|31092699021|82310400026|8096899003|7053199007;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-inbound-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(31092699021)(82310400026)(8096899003)(7053199007);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Dec 2024 07:05:54.9691
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ddddf2c-9a7b-48f2-5f97-08dd24b29349
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF0000468E.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR08MB7622
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:04.6592613
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8293.000
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eVUvTVlMT0duQk93NmZwVTAyckJiYmdBL3l6NFNuYlpIUnFBLzUwN0pIZUQr?=
+ =?utf-8?B?Vi9TSzIrdzArRFNZUTdlUDk0Z3pjUXhoR0cydThSN1N2TVRFelEvaGd5eFVa?=
+ =?utf-8?B?QjZKTERaMXh1YkhJeGpRbWdNQnZrMjRCOEJRZHV5MkdzQ1E2RUtFZUprQjRM?=
+ =?utf-8?B?V0FBM0NIdDRJQVlhWXFIRXM3YmgyZ0hKeHRuRWhFTmdoWnlvVFcvazFBUTBD?=
+ =?utf-8?B?UVdQN1U5QU5zR3hWQ1YwM0xzQmN6Q1hMbUIxWFdncHVWN1M0bGorcmowd2s2?=
+ =?utf-8?B?UFRzUkx1QVJMREJYOGNpWS96bHdObjZ6VkJpNXBQZ0s2NjhaVllOSmlCeGJC?=
+ =?utf-8?B?V2ZvQ3Z5RndadXFKM1JhKzBiby9Db1VidUlaT0R5ZDNldjd6VlhKRitDTzU5?=
+ =?utf-8?B?K3Rma3o3NlEzS3JwNjlpaFFieVVrRGJyV3czd1R2blY0ZGNCcDJKbDdjV3Nz?=
+ =?utf-8?B?ZkwvY29DQjNmdnRnRmxWVmlqd1ZJUkdmTmR3andFTXlJODVPa3FvemJ0Nkow?=
+ =?utf-8?B?L1lDSllpZktTczJWZXdpcHg4WCtON2xPaVFIeXoxSUoxaTAzQlVlS2R5Z2NW?=
+ =?utf-8?B?Zm82SHVLZzJzZnhJQkpiWjhGZ0ROMWNnQS9sd3VQZjR0a3J1SjU0TGhBM3FP?=
+ =?utf-8?B?TEhzZ3VlU2llRERvK0U2aUZrRDFMNG4zOGltK2tsdk5UdTF6MERUNjdCemp0?=
+ =?utf-8?B?ZXRRNFUvK0hFMEF5akJFNkNocWdlRHhVUlFIeTRCYVhhWG53QTlvdlpQMHRM?=
+ =?utf-8?B?ZDM3TVpFKzFwUEVHdXBiSXJxT0cwTEc5Wk5iMGs1NWVzcTRLV3pJelRRRVNp?=
+ =?utf-8?B?dmNkQll0bVB1SnF0ZUdiOUxsYVdZaEdGckRLY0w2cnpVTm5pdUdpRDMrMTNO?=
+ =?utf-8?B?c1hsYW1Ea3JXZzYzYXBTdFl3bnVKVW1ReEFuTG5ySlNVRlpkS3pDOEdxZnR0?=
+ =?utf-8?B?Lys0cG9ORTlUU2phUjNtWkkvTGo2TGNSNWtoZDVrRHM1ZTJxN1FmTFkvY2tx?=
+ =?utf-8?B?b2U0djdQU2FheHR5Y05QdngzSWxjN3ZIbUlkMmFmK25JOVJOeXd0WHNrRzBG?=
+ =?utf-8?B?cVpDaFg5YnFGdm0wVzRGOXBialFTSlVncVJMM1psQlJZWFFCWHZxVnBlYW9R?=
+ =?utf-8?B?RXliQU9mclNJb1B0dWVnRmJubW1BMjF3amJ0L3NPMkVqZDRsbXAwbVNpQW1P?=
+ =?utf-8?B?WjRpZmxKbzRiRU45Z2o2WjI1VWpZSzNKc1Fpci9sZEJjV3hyN0hTN0RsREti?=
+ =?utf-8?B?a0QveEtsbkgyRC9YcWh5Rm01WDlrODRkU043RVB1UkVORFBOSStJeFJuUkdT?=
+ =?utf-8?B?NWNlSllCVlRHK1VvVVBKdWpoUE1nZ2Z1OTA0RTgwcUloQkJjZHRwUzVMOVB1?=
+ =?utf-8?B?eDFCWXdBTUFFSmNzUktVY2xDNTd3c2tpTmw2SmlOWld6UHpoZG9YUWtxUm92?=
+ =?utf-8?B?NEIrTkxnVlBTajZLdmxkZjZCdkk5VTFNaVU1VVlLd3crTUd0cmludFBqZ1F3?=
+ =?utf-8?B?dThiL0pGL2h6ckVReFRrQ1pqcVlmbFQ1WU1wK2w0RVN1VnBPamNaUHZud0tu?=
+ =?utf-8?B?dzZ3VXZHNlJWYUNuWGVwaStLWjlnYlQ3ZXY5WVFXZm1zRmJVS1Y2U2pTTUNQ?=
+ =?utf-8?B?UFZZWUJhSTFiQ1psS3MwRk5oS3h4blRNNTEyMnNmb0lKTXc0TWhXajNUMkt1?=
+ =?utf-8?B?WGNCRThSVEY4a2t4UDI1SDRDU2RWUkJpdEdBWWgwTUFjK3NjY29ZNTdweTVm?=
+ =?utf-8?B?c0tjNFBmOHMvTVl5YStHZjNIYkJmRnZhVEdyV2kwbklQOWcxaThyS2FCdTd5?=
+ =?utf-8?B?Q0I4UnpHdk45VWJHcTQwN01oU25PME5wc1JqQnh6Zit2eG9jWXFPQTJQbHlS?=
+ =?utf-8?B?aW9INVdoZ1FTSG9EV0c3OVRidTljYUJQakJUR0w4YWt5WlE9PQ==?=
+MIME-Version: 1.0
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"></=
+head>
+</html><head>
+<style>
+body {
+font-family:Calibri,sans-serif;
+}
+</style>
+</head>
+<body>
+Login: rob.spence@servicenow.com<br>
+
+Alert: This email was sent to verify that you have an exam scheduled. See t=
+he information below.<br><br>
+
+Authorization Code: 2kzjxu2c <font color=3D"red"><b>BRING THIS CODE WITH YO=
+U TO THE TEST</b></font><br>
+Exam: Certified Implementation Specialist - Service Provider<br>
+Date: 30 December 2024<br>
+Time: 14:45<br>
+Exam Duration: 60 minutes<br><br>
+
+Location:      Bridgewater State University<br>
+Address:       10 Shaw Road<br>
+               Bridgewater, Massachusetts 02325<br>
+               United States<br><br>
+
+Additional Information:<br>
+<br>
+You will be required to provide the Exam Proctor two (2) forms of identific=
+ation (one must be a photo ID) along with your Test Taker Authorization Cod=
+e. These items are necessary in order for the proctor to launch your exam.<=
+br>
+To access the Webassessor testing system, use the following link: www.webas=
+sessor.com/servicenow
+<br><br>
+
+Thank you,
+<br><br>
+ServiceNow Training &amp; Certification<br>
+ServiceNow, Inc.
+<br><br>
+Please do not reply to this e-mail as it is automatically generated from ou=
+r testing system. If you have questions, please visit our <a href=3D"https:=
+//nowlearning.servicenow.com/lxp/en/pages/now-learning-help-center?id=3Dnl_=
+kb_home">Help Center</a>.
+<br><br>
+

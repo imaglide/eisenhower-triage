@@ -1,0 +1,859 @@
+Received: from SA2PR08MB6539.namprd08.prod.outlook.com (2603:10b6:806:116::24)
+ by DS7PR08MB10577.namprd08.prod.outlook.com with HTTPS; Sat, 11 Jan 2025
+ 03:03:18 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=SPxQtmGCq2rpnOKfaEDvLI4qp+jlRDNPJiYPS9zqmtXzQjtzeAVreZdre1dbBKHw4qywCKfSCRKTRMpbw6bUQcHkkdYZKtGR+WJWt3+Oz47PGkuG2emfmdok+JReIentTZG28jcrIFa1w1btgnmzot3dzfI7/nnTHHHOTzCfCOYihdDuxSx+gLX0HBHEfzcuY4AZ4lZkKdTIFixi54RM0OtmeRzBlMUAdKEB08PnwOzgdMO10UW8jSqXN6jWcc6cKYAO2/xN52RqBG7dtunDDzIaEJmaxcAgwF01YVpzlPyYgG7QVEqhhgXrUH8xSlRdN5WfSWAuXIqNtAPizg13Nw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=94ki4j+yk1b0TpQ8idVNqFyaQuiXjZlKBkMD56u+cdo=;
+ b=s66lN1+Lestt2mbKxNVuPO55YrGCEYx6qJaCICR3BG/AIQpkwON4teoMlPeNef9bnavPbv6z/8aqpm+qP03LO4zfOA3FRnx9B7uM0CL28JGjwMcmaxQVn6MJ8xW2C4XdcHdDmtg/yY0AOFgnN6EfZKj2vrht7NyfQp34QQ7RVEIlFloWfYlgtpBe3KCjBtk7Iztm6fshA7Vil6VGNJ7KNz2eNEvRJpzVTYHd8ihM/CYif3zUAeXPI8jIN++k+qzXYwGuEpZLK0fTtjP2mr8Yt5gGilW6GpcqnrBhg7s9L2FvHLdn8eNMz8BRKe5Hu9X/wq5fz0C0y/G+u1E8Co2csw==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=fail (sender ip is
+ 170.10.128.131) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=em1968.seismic.com; dmarc=fail (p=quarantine sp=quarantine
+ pct=100) action=quarantine header.from=seismic.com; dkim=fail (body hash did
+ not verify) header.d=seismic.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from SA0PR11CA0134.namprd11.prod.outlook.com (2603:10b6:806:131::19)
+ by SA2PR08MB6539.namprd08.prod.outlook.com (2603:10b6:806:116::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.12; Sat, 11 Jan
+ 2025 03:03:16 +0000
+Received: from SA2PEPF000015CC.namprd03.prod.outlook.com
+ (2603:10b6:806:131:cafe::6) by SA0PR11CA0134.outlook.office365.com
+ (2603:10b6:806:131::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.12 via Frontend Transport; Sat,
+ 11 Jan 2025 03:03:16 +0000
+Authentication-Results: spf=fail (sender IP is 170.10.128.131)
+ smtp.mailfrom=em1968.seismic.com; dkim=fail (body hash did not verify)
+ header.d=seismic.com;dmarc=fail action=quarantine
+ header.from=seismic.com;compauth=none reason=451
+Received-SPF: Fail (protection.outlook.com: domain of em1968.seismic.com does
+ not designate 170.10.128.131 as permitted sender)
+ receiver=protection.outlook.com; client-ip=170.10.128.131;
+ helo=us-smtp-inbound-delivery-1.mimecast.com;
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ SA2PEPF000015CC.mail.protection.outlook.com (10.167.241.202) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.7
+ via Frontend Transport; Sat, 11 Jan 2025 03:03:15 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1736564595;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 dkim-signature; bh=94ki4j+yk1b0TpQ8idVNqFyaQuiXjZlKBkMD56u+cdo=;
+	b=nhw0iGmmuEUjryd781vGvwH4ZGZTeyY8gTp+mPWEY/zn0DxHMPVEfT9f7LNld01istFVc1
+	64DV+Rug4et/SM3/PkHIAGcUS2mSfpQYN4Ejz1LuN0vAA5U0QvroV077TkPhp+fKilz4Ot
+	hUayybQxpKPErMAbMolSe1xjQUp/ZSy2VWHk/9GM9uoDL6HEZpxAeiAJB7U7+l7gXakHcE
+	3359Rp9SJAtcNXgVrqPgmSbh3Ox+wtWiwSmzRBwlEnumN3SLXVsqGFkaqCWiFTakeXWEnD
+	Ai+ZisaqBSiz8fHKafKXLYqHJDJRiLSKKmnKIDcAxMqkC8t+87qcFsPV1cUDXA==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1736564595; a=rsa-sha256;
+	cv=none;
+	b=Xp+u/GFYwJpmbe2FxUCr/ByI8lp465uvRfkdWQEKEtXnDz3vR0kFlaHC3T8YWdD854MuC4
+	vPecL2dXhbhFOOOVOAoWq5Aqe2CHX3Jg+kaTwW/K09toOCINFm0qmNqPa7kgJ88ELs5hE/
+	IiqDVFmMHv/GaZnwGB5AM5atVgfFcMmm4yECE5WKmpRhXxCiyHTVzNnRW2b9raDlWWMkPS
+	q+8y+IaXqV+qkU8fIevRfABsNHaliJQMD5ddf/qF9Kf7klTj9Zg3+escIoldqMT1fBPAg3
+	hBvvfwr0PxfgWjgZNrXy+EOyym7lYkzUBs18nfbfa6Xs4G/rSrV70R+6tNHLvQ==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=seismic.com header.s=sm6 header.b=GNhpvLhj;
+	dmarc=pass (policy=quarantine) header.from=seismic.com;
+	spf=pass (relay.mimecast.com: domain of "bounces+36669613-23d6-rob.spence=servicenow.com@em1968.seismic.com" designates 167.89.88.100 as permitted sender) smtp.mailfrom="bounces+36669613-23d6-rob.spence=servicenow.com@em1968.seismic.com"
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=seismic.com header.s=sm6 header.b=GNhpvLhj;	dmarc=pass
+ (policy=quarantine) header.from=seismic.com;	spf=pass (relay.mimecast.com:
+ domain of
+ "bounces+36669613-23d6-rob.spence=servicenow.com@em1968.seismic.com"
+ designates 167.89.88.100 as permitted sender)
+ smtp.mailfrom="bounces+36669613-23d6-rob.spence=servicenow.com@em1968.seismic.com"
+Received: from o25.ptr6205.seismic.com (o25.ptr6205.seismic.com
+ [167.89.88.100]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-393-jyEWCy0WNQmE0cHPsxTMsA-1; Fri, 10 Jan 2025 22:03:10 -0500
+X-MC-Unique: jyEWCy0WNQmE0cHPsxTMsA-1
+X-Mimecast-MFC-AGG-ID: jyEWCy0WNQmE0cHPsxTMsA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seismic.com;
+	h=content-type:from:mime-version:subject:to:cc:content-type:from:
+	subject:to;
+	s=sm6; bh=sMvAfBmt7huncb02Q/ASLvMNf8Z58xGEFl2dNa8FOPE=;
+	b=GNhpvLhjkpvhoNO1zl2WfSWmoL8F35vwrLsyj0S6cdGLDCQJcp3auE+lFngPSAPOfXoO
+	dlh2wgZTVHxYKcKVX44AGxNA4yEKQZi7+Ssyisd5s5HqWXeCQXQs1CS4gQ98etbhSdWAsP
+	Bgv12DM7pteuNSMaQGE2CSh3Tw550toFzTYbNVrGFxBHTW19NHINkxULkVuZe0Rfp5dWUL
+	+PKSlrKnfVXC2FsWWchpcSqiUAnWLNEK9te3c0hiuKKvfCC6gXGEnaswG9bFlp5Ogfs8d0
+	M5gzGBnKPsCk9jXI/y1MjwQYpamjwoBJf9CqaQLxBILQX94XuZMhns0PhGdxVbPA==
+Received: by recvd-b7795444b-5t24g with SMTP id recvd-b7795444b-5t24g-1-6781DF6D-16
+	2025-01-11 03:03:09.537652508 +0000 UTC m=+4945223.986662266
+Received: from MzY2Njk2MTM (unknown)
+	by geopod-ismtpd-2 (SG) with HTTP
+	id ENt0UKa8Tu2zLNTU6C5t3A
+	Sat, 11 Jan 2025 03:03:09.481 +0000 (UTC)
+Date: Sat, 11 Jan 2025 03:03:09 +0000
+From: Seismic LiveSend Status Update <noreply@seismic.com>
+Message-ID: <ENt0UKa8Tu2zLNTU6C5t3A@geopod-ismtpd-2>
+Subject: LiveSend Session Summary
+X-Message-Origin: SeismicSoftware
+x-TraceId: 36308dfe-3c9d-4db5-ab9f-09f8d191ec07
+X-SG-EID: =?us-ascii?Q?u001=2E6moksOK2A=2FjBOAnRYD5epjfk3PcqC49Je5mgVkpGTv98byirFCofFNsT4?=
+ =?us-ascii?Q?vY1WisuJ=2F0pxtuuXmlYytu00nk=2FhM5vbhlz=2F2uC?=
+ =?us-ascii?Q?eNauPvGl9=2Fh+exT+h7ReI5T7uL0vSQlJ5w1E2dz?=
+ =?us-ascii?Q?+Ib61GCyXy+=2Fm77bxwAPPRjauRucO8jVj3uijQI?=
+ =?us-ascii?Q?iHFn5+8CCOpcRQtp4fwkK5GQQGzsZX5tGsClL0k?=
+ =?us-ascii?Q?3Ra3AqJ1hWWEOb6ODGcYK7ZvX6wETTNBIbm+wDD?=
+ =?us-ascii?Q?6r18Qf1bqM2uzk3olu91aFewyA=3D=3D?=
+X-SG-ID: =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BpTL9BgbK5wfSJMJGMsmprBprriKjRfVyTqBn?=
+ =?us-ascii?Q?1H2jnfOBhgLmBDh+C0hW5gAwAYfFn42kw8rm2vi?=
+ =?us-ascii?Q?n4rEEMxqM+MLfAVpnWUf2Iavw=2FJE=2Fmwh9AY2uho?=
+ =?us-ascii?Q?zxnC6rKA7rsV3kZGf265SO+5C7wHkQ=2FKNmXmGhH?=
+ =?us-ascii?Q?16YD=2FGMR8HFfgd=2FZK1knLLMuteGML=2Fywy+RfD0u?=
+ =?us-ascii?Q?VOWllZDXA81g6=2FeTufkPYb9Y4+SHOFXDKqft07o?=
+ =?us-ascii?Q?5d7t55zsnQvmQTat3JjfrsawLzQc8aUrliwbGW0?=
+ =?us-ascii?Q?Uyqux24M8zPEMnvHF1S9CWiFod29eTXZi5jHAnd?=
+ =?us-ascii?Q?RvGkAzok5H6X869pcP=2FgYElCyW5FBJG2COT8w=2F8?=
+ =?us-ascii?Q?abRr78=2F3bF877eraF5kUF+CSdEwL7tfckwR61kp?=
+ =?us-ascii?Q?40vbEKXOON7t52xRDaD+UzleaSVLwAk3hQOl1HE?=
+ =?us-ascii?Q?HQu73MpLn2D0=2F2LcXDK5t+A=3D=3D?=
+To: "rob.spence@servicenow.com" <rob.spence@servicenow.com>
+X-Entity-ID: u001.CNEJk5Kgnhy2PtAsg/V8hg==
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: wCiEsmIyFQ14-aRD2o-v-Ny65zlxjIpmQvmm5gy6vuw_1736564589
+X-Mimecast-Impersonation-Protect: Policy=Tag external email;Similar Internal Domain=false;Similar Monitored External Domain=false;Custom External Domain=false;Mimecast External Domain=false;Newly Observed Domain=false;Internal User Name=false;Custom Display Name List=false;Reply-to Address Mismatch=false;Targeted Threat Dictionary=false;Mimecast Threat Dictionary=false;Custom Threat Dictionary=false;External=true
+Content-Type: multipart/related; boundary=49f2d1377709166fa95441ac3e06a657cd43e4e4759724fc98a55abfdce2
+Return-Path: bounces+36669613-23d6-rob.spence=servicenow.com@em1968.seismic.com
+X-MS-Exchange-Organization-ExpirationStartTime: 11 Jan 2025 03:03:16.0953
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 69f1e6a9-ace9-4f1f-bdfd-08dd31ec7e81
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015CC:EE_|SA2PR08MB6539:EE_|DS7PR08MB10577:EE_
+X-MS-Exchange-Organization-AuthSource: SA2PEPF000015CC.namprd03.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 69f1e6a9-ace9-4f1f-bdfd-08dd31ec7e81
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:3;ARA:13230040|13012899012|3072899012|2092899012|12012899012|29132699027|31092699021|13102899012|82310400026|5062899012|3092899012|8096899003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(13012899012)(3072899012)(2092899012)(12012899012)(29132699027)(31092699021)(13102899012)(82310400026)(5062899012)(3092899012)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2025 03:03:15.8922
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69f1e6a9-ace9-4f1f-bdfd-08dd31ec7e81
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF000015CC.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR08MB6539
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:02.3768799
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8335.010
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ODhRVE5DWUhsYU1SSEhJTnRvQjdZYmZOaDZjN3AweFdLK2FUc1I5N2dGbzVY?=
+ =?utf-8?B?SEFMdjJ4RlVKbng1UmNFWlhLUmp3c1UzTkxIRzRFYVgrUnZFd1lPOVlCODAr?=
+ =?utf-8?B?K2RMMllPQWVVaW00dmQ0Y3RKUG1TZ252TDViUjlYeHBwTUxLNmFlSTVRQnFY?=
+ =?utf-8?B?aHJKNS9kSXkvN0MxMXMrNGRaR2IwTTZJV00zUE9NSHhDaTlKdWFDR2xNbTNH?=
+ =?utf-8?B?K1cwVkVYazlaaHJWT3UzcWl4VDU3Ykt6VC9RMmZ5cXB1bW5PK3k3OWRyOHVZ?=
+ =?utf-8?B?ZW93YitZSndqMllpdm9HclpoeFhwdlJJT3FmT2RiekQyUmMzaUZscFM5UGgv?=
+ =?utf-8?B?R0lTNWRPTGpqbXpERlJqd3daZGFwei9WRnV3VktTK29Xby9oZndxY0dMTTJX?=
+ =?utf-8?B?R2ExeEV5OFJTSk9uWW5qaFhzYVlMYmUwbmF0V0w1MnNUWlJ5U3lFVGJTanR3?=
+ =?utf-8?B?ZStuK25LL0RMaWVySzJtenEvb3pqRDBKVDl0WU81YVlZbjNBTldLc3B5ZnBR?=
+ =?utf-8?B?ajl3d3MxSjlRKzV1S0F0bVpXL1QwRmhZWkRnZmlRNWJqOSsvV2RzclFOSnc3?=
+ =?utf-8?B?VGo0MkxqMHo5M3ZGaDZJWUw5dzlPRVFQQVNoT2diZHpxUHk4cC9oRlBNdDhB?=
+ =?utf-8?B?WWhSanM5ZXNON2hVaVROWmNIUjgrbHM0QU95VWEwTWhTY0FWSlZpMTZzQ01F?=
+ =?utf-8?B?Wnl6dW1vV3R3bTgrV0RlTkVqNldsTVp2VW5BNUVsSHpKdE1Uc3BxaXVRZDlV?=
+ =?utf-8?B?bmxIeE9KaS9WL1Rtdlc1Uk0zdG5JNXNzN0t1R0NHZHZyUXgxbHBhZGFoNE52?=
+ =?utf-8?B?a3h2TlNFVnlHdGRZUGFTb1Z1bkRnZkVrdFJTK2dBU1VMbGFVd0NnVU5pOEJ1?=
+ =?utf-8?B?YmNBOHhDRTZFMms0UC9HNmNmVDUzczFJSFMxMWhNczRaWDU2N1N5Y2tSQkl2?=
+ =?utf-8?B?d29pQ3FZc0ZETkJNaU1CZ3c5L0xuK09sbTVzYjJGQU5DdU50azVPSnQrTHdE?=
+ =?utf-8?B?cjdVUHdoSDNOMElMR2xtVk5qMWtKQWkvTEJlMWx1NG1FZHJsWDZGRFVQSHR6?=
+ =?utf-8?B?LzZlMlVlWlhMSnE1SDlSc1hLcDYwVFc3TWtkNkN0MFJEL1FGcVdESE9HREhU?=
+ =?utf-8?B?TFg5cGk1SlBKQlVZcGpscUZVMG5xamszdC9uMU0xZ0RTZHpDZkhMMmMvSDJ6?=
+ =?utf-8?B?Q3lURDY2ZWRYN0xqWmFmOWpiWjJBMEZQZngyOGFQek5wWnBKTlA0TmZiUkxQ?=
+ =?utf-8?B?dGxrdUh6NlRja29LQUFUNVIxMUlNSW1GNHdiOHRDZGY5UzZlQUd3Mm1TZkh5?=
+ =?utf-8?B?QXNSYVBKa3YzOWR6c1orRFRIOEVuQUFNVkVOYncrdXVHYjdVYTZaM0RYOE00?=
+ =?utf-8?B?dlFHNXQrcERkSnVJbzM4VWJjbHBRdW1KN2RIdkxlRzNtdlc0SlFQcjJGVElj?=
+ =?utf-8?B?ZURBRGh1a09qMGRJSDh6WFQxaGlPSzVvUXlFZklmdGZSVER2cU8yRkg2T3dV?=
+ =?utf-8?B?bFFpUXVWR205S01XSFlVUmd4VVg5RW56QWxmY0k0RmRWSWMzcjZxS0tkTzg2?=
+ =?utf-8?B?VHFkUHdsMVY4Uis2SjNzV0w3NmNJMWl6MWhMT0NtM2gvUFJMWDZYR0plYU54?=
+ =?utf-8?B?anVMcnZlU3RtblF2M3VtQjB4YnZ2d1JMM015K3c1VnhHNXYyaVlSUThuNUFP?=
+ =?utf-8?B?UHNmanFZb282bGRZckVqNjduQ0NGNFN4MG9zR0I3dmJpV1pCY2ZlcDFTQnA5?=
+ =?utf-8?B?Q0V4VVROZWtDWXlNOTRUK0pzMk5XTzl6SHVhbXRCdm11Ly9DUUxRTmxRTDB0?=
+ =?utf-8?B?VnRtRnpLUTFYNzJFNVBXMXBYR0dPak5hQlFLVHcrTkVBeUI2Uk92V3hPWkFQ?=
+ =?utf-8?B?WWlPU0FjZDRHY2hhS3BVbEdEODAzNHE2Ry9kLzE1ZWNIdXhpZCttNnVCWEJJ?=
+ =?utf-8?B?ZEZJcHBUVEk3bEZSbXprRlJmR0tLWnVlYTlLTllNZUNhQTBjQ1hSdWg1ZVR2?=
+ =?utf-8?B?RThvb3BNUCt1c2dyUVdqU3hxaVlwNVZXUUE3QUJmd3lUM2xHNityQ1g5UG1o?=
+ =?utf-8?B?cko2b1ZMYk1GeFh6aXl2RVRiUjhjR3pZYUQ0bzVscCtMWVZGUVE0allUODBu?=
+ =?utf-8?B?ektBMDNQQkF3OC85QUlHN0hOWHlQZzJpYXZ4bWIvUFpIZkpzb0RIMXR3MWk2?=
+ =?utf-8?B?bzVpSGxmWEJGYVJ3aWZBN044VTk0eDZLL2o5WGF1SDlNQWg2blE5ZFYxVlF6?=
+ =?utf-8?B?ZVVYU2RtSjFFOE84UzNYeUFZOWNWZEZCdit2UVg2M2R1dmVUeGgzd3hyV0ti?=
+ =?utf-8?B?YzJSZEpZNUNRRFhkdjNKTVBWdnRvSG9YUWZhYUU4Tm9hNGx0SFpkREJhL1RS?=
+ =?utf-8?B?R0lhUTlZRDVqT00zaHgvRjN0dndYNHVHWnRPRWJkN1Z5WDhEMHIrKzV0alBG?=
+ =?utf-8?B?S3VJT3BTcUw2Wk1UMTQ5bHBPelRVUWkrcWJyZUxIRURYaXF1dlB3VDNrdFE5?=
+ =?utf-8?B?bVhCbmJNdzJqTytqNnFad0VONlZIbGJVWUJ2dEFPNjVPZVJmVHcxMkxUaDQz?=
+ =?utf-8?B?ZXVHMGxramgvUWZRZE1PdVJ5SC94QXZ4MWZ5TE14ZnpYb1o5eTh5RzBLWXB0?=
+ =?utf-8?B?L1RRZm5OYTd5TlRzWmg2U1NCYTFiSEVKckVvVVVuNnNIZE45eHlMK0ZjYjJx?=
+ =?utf-8?B?VldyZFN1NjVOVWY3V2lIb1ozSlNTVVExWlBqU0lnV0hObkhrOVZQMHZrYy95?=
+ =?utf-8?B?NXZySSt5NlBGbitNM0U4OUI0T01TdWEyUmxFbFVsYVgyaFoxRktGRmtkdklM?=
+ =?utf-8?B?OWFwWWwzN1N2aU1nZGZGZUVoZGVpT1lpVk1TTldXS1NYRkVDd1E0MkxKRjQ1?=
+ =?utf-8?B?MEl6ajJiMllBcms5YkFkWDFPSS9BbFByYVFzZm5ZSi9ISWZOU3JJdTN6NXVN?=
+ =?utf-8?B?eHlVdVovZTVJa3ZhUGlFeFFkTE0rNUJTMXBreDY4MXMzTktDMU5YaW05ajRh?=
+ =?utf-8?B?U2RnSmxuMmdib3dWbWlEQXMyMkkvSHh6WVNSbEJVSGliMmdyOVkrbFJvYzVI?=
+ =?utf-8?B?c0V0eU1hL1lWdHRXZEJGQTJMVWR3aEdLQVRIdjlBUGxQZnVXV0gzeXdQd2g3?=
+ =?utf-8?B?MnI2OEkzQXlQM3BGc1M0V29VbTBUSzlFQTFDS2t4a3Eyd01RL1RCU1hXVEZJ?=
+ =?utf-8?Q?MMv+WKYO5q9iC44euHaIa01RbqSy?=
+MIME-Version: 1.0
+
+--49f2d1377709166fa95441ac3e06a657cd43e4e4759724fc98a55abfdce2
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
+/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns=3D"http://www.w3.org/1999/xht=
+ml"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+    <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=
+=3D1.0">
+    <style type=3D"text/css">
+        /*INLINE: Yes.
+               ***********/
+        /* Client-specific Styles */
+        #outlook a {
+            padding: 0;
+        }
+        /* Force Outlook to provide a "view in browser"
+        menu link. */
+        body {
+            width: 100% !important;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "Helvetica","Segoe UI",Frutiger,Calibri,Arial;
+            background: #F9F9FB;
+            min-width: 600px;
+        }
+
+        /* Prevent Webkit and Windows Mobile platforms from changing defaul=
+t font
+        sizes, while not breaking desktop design. */
+        .ExternalClass {
+            width: 100%;
+        }
+            /* Force Hotmail to display emails at full
+        width */
+            .ExternalClass, .ExternalClass p, .ExternalClass span, .Externa=
+lClass font, .ExternalClass td, .ExternalClass div {
+                line-height: 100%;
+            }
+        /* Force
+        Hotmail to display normal line spacing.  More on that:
+        http://www.emailonacid.com/forum/viewthread/43/ */
+        /* End reset */
+        #left-nav {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+            #left-nav li {
+                display: block;
+                list-style: none;
+                border-bottom: 1px solid #666666;
+                margin-right: 10px;
+            }
+
+                #left-nav li a {
+                    display: block;
+                    text-decoration: none;
+                    padding: 10px 0 10px 10px;
+                }
+
+        .image img {
+            width: 100%;
+        }
+
+        #Content {
+            border: 10px solid #ccc;
+        }
+
+        h1 {
+            font-size: 22px;
+        }
+
+        /* Some sensible defaults for images
+               1. "-ms-interpolation-mode: bicubic" works to help ie proper=
+ly resize
+        images in IE. (if you are resizing them using the width and height =
+attributes)
+               2. "border:none" removes border when linking images.
+               3. Updated the common Gmail/Hotmail image display fix: Gmail=
+ and Hotmail
+        unwantedly adds in an extra space below images when using non IE br=
+owsers.
+        You may not always want all of your images to be block elements. Ap=
+ply the
+        "image_fix" class to any image you need to fix.
+
+               Bring inline: Yes.
+               */
+        img {
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        a img {
+            border: none;
+        }
+
+        .image_fix {
+            display: block;
+        }
+
+        /** Yahoo paragraph fix: removes the proper spacing or the paragrap=
+h (p)
+        tag. To correct we set the top/bottom margin to 1em in the head of =
+the
+        document. Simple fix with little effect on other styling. NOTE: It =
+is also common
+        to use two breaks instead of the paragraph tag but I think this way=
+ is
+        cleaner and more semantic. NOTE: This example recommends 1em. More =
+info on
+        setting web defaults: http://www.w3.org/TR/CSS21/sample.html or
+        http://meiert.com/en/blog/20070922/user-agent-style-sheets/
+
+               Bring inline: Yes.
+               **/
+        p {
+            margin: 1em 0;
+        }
+
+        /** Hotmail header color reset: Hotmail replaces your header color =
+styles
+        with a green color on H2, H3, H4, H5, and H6 tags. In this example,=
+ the
+        color is reset to black for a non-linked header, blue for a linked =
+header, red
+        for an active header (limited support), and purple for a visited he=
+ader
+        (limited support).  Replace with your choice of color. The !importa=
+nt is really
+        what is overriding Hotmail's styling. Hotmail also sets the H1 and =
+H2 tags to
+        the same size.
+
+               Bring inline: Yes.
+               **/
+
+        h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+            color: #0099ff !important;
+        }
+
+            h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active=
+, h6 a:active {
+                color: #0099ff !important;
+            }
+
+            h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:vi=
+sited, h6 a:visited {
+                color: #0099ff !important;
+            }
+
+        table {
+            border-collapse: collapse;
+            mso-table-rspace: 0pt;
+            border-spacing: 0;
+            mso-line-height-rule: exactly;
+            mso-margin-bottom-alt: 0;
+            mso-margin-top-alt: 0;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+            table tr td {
+                padding: 0;
+            }
+    </style>
+
+    <!-- Targeting Windows Mobile -->
+    <!--[if IEMobile 7]>
+    <style type=3D"text/css">
+    </style>
+    <![endif]-->
+    <!-- ***********************************************
+    ****************************************************
+    END MOBILE TARGETING
+    ****************************************************
+    ************************************************ -->
+    <!--[if gte mso 9]>
+    <style>
+        /* Target Outlook 2007 and 2010 */
+    </style>
+    <![endif]-->
+</head>
+<body style=3D"background-color: #F9F9FB;"><div class=3D"mc-ip-hide" style=
+=3D"display:block !important; height:auto !important; background:#FFFFFF !i=
+mportant; opacity: 1 !important; visibility:visible !important; color: #000=
+000 !important; font-size: 12px !important; font-family:Helvetica, Arial, s=
+ans-serif !important; text-align: left !important"><strong style=3D"display=
+:block !important; height:auto !important; background:#FFFFFF !important; o=
+pacity: 1 !important; visibility:visible !important; color: #000000 !import=
+ant; font-size: 12px !important; font-family:Helvetica, Arial, sans-serif !=
+important; text-align: left !important"><h3><strong><span style=3D"backgrou=
+nd-color:yellow;">[External Email]</span></strong></h3></strong><br><hr></d=
+iv>
+    <table style=3D"background-color:#F9F9FB;width: 100%" cellpadding=3D"10=
+" cellspacing=3D"0" border=3D"0">
+        <tr>
+            <td style=3D"width:100%; text-align:center;">
+                <!-- header -->
+                <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" sty=
+le=3D"margin:0 auto; width: 600px; text-align: center; background-color: #2=
+93F4D; color: #ffffff;">
+                    <tr>
+                        <td style=3D"font-size: 12px; line-height: 14px;pad=
+ding-top: 24px">
+                            January 10, 2025 9:50  pm=20
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style=3D"padding: 16px 34px;font-weight: bold;f=
+ont-size: 22px; line-height: 25px;">
+                            <span>
+                                    <a style=3D"color: #ffffff; text-decora=
+tion: none; padding: 0;" href=3D"mailto:sundarapandian.p@infosys.com">sunda=
+rapandian.p@infosys.com</a> just viewed your content                       =
+     </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style=3D"padding-bottom: 22px;font-size: 16px; =
+line-height: 16px; color: #ffffff;">
+                            Montreal, Canada
+                            <span>  =C2=B7  </span>
+                            Windows 11, Chrome
+                        </td>
+                    </tr>
+                </table>
+                <!-- Duration -->
+                <table style=3D"margin: auto; width: 600px; text-align: cen=
+ter; border-collapse: collapse; background-color: #ffffff;">
+                    <tr>
+                        <td style=3D"padding-top: 24px;" valign=3D"middle">
+                            <table style=3D"margin: auto; text-align: cente=
+r; border-collapse: collapse;">
+                                <tr>
+                                    <td style=3D"text-align: center;">
+                                        <img style=3D"max-width: 16px; max-=
+height: 16px;" src=3D"cid:ls-email-timer.png">
+                                    </td>
+                                    <td style=3D"font-weight: bold; color: =
+#1B2A34; font-size: 32px; padding-left: 6px;line-height: 32px;">
+                                        00:12:49
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan=3D"2" style=3D"font-size: 1=
+2px; line-height: 18px; padding-bottom: 19px; color: #536872;">
+                                        Session duration
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr width=3D"600">
+                        <td>
+                            <table width=3D"600" border-collapse=3D"collaps=
+e" border=3D"0" border-spacing=3D"0">
+                                <tr border-collapse=3D"collapse">
+                                    <td width=3D"24"></td>
+                                    <td width=3D"552" style=3D"font-size: 1=
+4px; border-bottom: 1px solid #E2E2EB;"></td>
+                                    <td width=3D"24"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!-- Total -->
+                <table style=3D"margin: auto;width: 600px; min-width:600px;=
+ text-align: center; border-collapse: collapse; background-color: #ffffff;b=
+order-spacing:0;" cellpadding=3D"0" cellspacing=3D"0">
+                    <tr>
+                        <td style=3D" padding-top: 20px; padding-bottom: 22=
+px;">
+                                <table style=3D"table-layout: fixed;margin:=
+ 0 auto; width: 540px; max-width: 540px;height: 45px; text-align: center; f=
+ont-size: 12px; border-collapse: collapse; border-spacing: 0" cellpadding=
+=3D"0" cellspacing=3D"0">
+                                    <tr style=3D"line-height: 38px;margin: =
+0;vertical-align: bottom;font-size: 24px;color: #1B2A34;">
+                                        <td style=3D"width: 33.3%;">
+                                            <span>1</span>/<span>1</span>
+                                        </td>
+                                        <td style=3D"width: 33.3%; border-l=
+eft: 1px solid #E2E2EB;">
+                                            <span>1</span>/<span>1</span>
+                                        </td>
+                                        <td style=3D"width: 33.3%; border-l=
+eft: 1px solid #E2E2EB;">
+                                            <span>0</span>
+                                        </td>
+                                    </tr>
+                                    <tr style=3D"margin: 0;font-size: 12px;=
+ line-height: 19px;color: #536872;">
+                                        <td valign=3D"bottom">
+                                            <span>Contents viewed</span>
+                                        </td>
+                                        <td style=3D"border-left: 1px solid=
+ #E2E2EB;" valign=3D"bottom">
+                                            <span>Total pages viewed</span>
+                                        </td>
+                                        <td style=3D"border-left: 1px solid=
+ #E2E2EB;" valign=3D"bottom">
+                                            <span>Downloads</span>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                        </td>
+                    </tr>
+                </table>
+                <!-- Session details-->
+                <table style=3D"margin: auto; width: 600px; min-width:600px=
+; text-align: left; border-collapse: collapse; margin-top: 24px;background-=
+color: #F9F9FB">
+                    <tr>
+                        <td style=3D"font-size: 14px;color: #293F4D;padding=
+-top: 8px;padding-bottom: 16px;font-weight: bold; width: 18%;">Session anal=
+ytics</td>
+                    </tr>
+                </table>
+                <!--Landing content view details start-->
+                <table style=3D"margin: auto; width: 600px; min-width:600px=
+;border-collapse: collapse;text-align: center;background-color: #ffffff;" b=
+order=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+                    <tr>
+                        <td style=3D"padding-left: 16px;padding-top: 16px;t=
+ext-align: left;font-weight: bold;font-size: 12px;line-height: 20px;">Conte=
+nt</td>
+                        <td style=3D"padding-right: 32px;padding-top: 16px;=
+text-align: right;font-weight: bold;font-size: 12px;line-height: 20px;">Vie=
+w time</td>
+                    </tr>
+                    <tr>
+                        <td style=3D"padding-top: 2px;padding-bottom: 12px;=
+" colspan=3D"2">
+                            <table style=3D"margin: auto; width: 600px; min=
+-width:600px; text-align: center; border-collapse: collapse; background-col=
+or: #ffffff; color: #92A2AB;" border=3D"0" cellspacing=3D"0" cellpadding=3D=
+"0">
+                                <!--Content List-->
+                                    <tr style=3D"border:none;">
+                                        <td style=3D"width: 40px; padding-t=
+op: 10px; padding-left: 16px; padding-right: 16px; padding-bottom: 4px;">
+                                                <img width=3D"40" height=3D=
+"40" src=3D"cid:27ae143a-e37e-46dc-a74d-b2f8ea46f852" alt=3D"">   =20
+                                        </td>
+                                        <td style=3D"padding-top: 6px; padd=
+ing-bottom: 10px;">
+                                            <table style=3D"width: 100%;  b=
+order-collapse: collapse; text-align: center; color: #536872;" border=3D"0"=
+ cellspacing=3D"0" cellpadding=3D"0">
+                                                <tr>
+                                                    <td colspan=3D"2" style=
+=3D"text-align: left;font-size: 12px;line-height: 16px;padding-top: 8px;pad=
+ding-bottom: 2px;">
+                                                        AI-Powered Service =
+Operations Part 1 Demo
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style=3D"width: 455=
+px; padding: 0px;" width=3D"455">
+                                                        <table style=3D"wid=
+th: 100%;  border-collapse: collapse; text-align: center; color: #536872;" =
+border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+                                                            <tr>
+                                                                    <td sty=
+le=3D"height: 8px; width: 0%; border-top-left-radius: 4px; border-bottom-le=
+ft-radius: 4px;background-color: #E2E2EB"></td>
+                                                                    <td sty=
+le=3D"height: 8px; width: 6.7620285206498245%;border-radius: 4px; backgroun=
+d-color: #1ca1dc"></td>
+                                                                    <td sty=
+le=3D"height: 8px; border-top-right-radius: 4px; border-bottom-right-radius=
+: 4px;background-color: #E2E2EB"></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style=3D"width: 28p=
+x;height: 20px;padding-left: 13px;padding-right: 32px;text-align: right;col=
+or: #1B2A34;font-size: 14px; line-height: 10px;vertical-align: middle;">
+                                                        00:00:52
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--Landing content view details end-->
+                    <!--Content view session header start-->
+                    <table style=3D"margin: auto;border-top: 2px solid #f9f=
+9f9; width: 600px; min-width:600px;border-collapse: collapse; background-co=
+lor: #ffffff; ">
+                        <tr>
+                            <td width=3D"56" style=3D"width: 56px;padding-t=
+op: 15px;padding-bottom: 15px;padding-left:16px;">
+                                    <img width=3D"56" height=3D"56" src=3D"=
+cid:27ae143a-e37e-46dc-a74d-b2f8ea46f852" alt=3D"">
+                            </td>
+                            <td style=3D"padding-right: 16px;">
+                                <table style=3D"margin: auto; width: 510px;=
+ min-width:510px;border-collapse: collapse; background-color: #ffffff;">
+                                    <tr>
+                                        <td>
+                                            <table style=3D"margin: auto; w=
+idth: 510px; min-width:510px;border-collapse: collapse; background-color: #=
+ffffff;text-align: left;">
+                                                <td width=3D"18" style=3D"w=
+idth: 18px; max-width: 18px;padding-top: 0px; padding-left: 14px;font-size:=
+ 14px;color: #1B2A34;text-align: left;">
+                                                    <img width=3D"18" style=
+=3D"width: 18px; max-width: 18px;" src=3D"cid:MP4">
+                                                </td>
+                                                <td style=3D"padding-left: =
+6px;padding-top: 0px;font-size: 14px;color: #1B2A34;text-align:left;">AI-Po=
+wered Service Operations Part 1 Demo</td>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                            <td style=3D"margin: auto;paddi=
+ng-top: 5px; padding-left: 14px;font-size: 12px;text-align: left;">
+                                                <table style=3D"border-coll=
+apse: collapse; text-align: center; background-color: #ffffff;" cellspacing=
+=3D"0" cellpadding=3D"0">
+                                                    <tr>
+                                                        <td style=3D"font-w=
+eight: bold;color: #1B2A34;font-size: 12px;">
+                                                            1/1
+                                                        </td>
+                                                        <td style=3D"color:=
+ #536872; padding-left:5px;font-weight: normal;font-size: 12px;">Pages view=
+ed</td>
+                                                        <td style=3D"paddin=
+g: 2px 10px; color: #536872;font-size: 12px;">=E2=80=A2</td>
+                                                        <td style=3D"font-w=
+eight: bold;color: #1B2A34;font-size: 12px;">
+                                                            00:00:52
+                                                        </td>
+                                                        <td style=3D"color:=
+ #536872; padding-left: 8px;font-weight: normal;font-size: 12px;">View time=
+</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--Content view session header end-->
+                        <!--Content view session details start-->
+                        <table style=3D"margin: auto; width: 600px; min-wid=
+th:600px;border-collapse: collapse;text-align: center;background-color: #ff=
+ffff" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+                            <tr>
+                                <td style=3D"padding-top: 16px;padding-left=
+: 16px; text-align: left; font-weight: bold; font-size: 12px; line-height: =
+20px;">Content</td>
+                                <td style=3D"padding-top: 16px;padding-righ=
+t: 32px; text-align: right; font-weight: bold; font-size: 12px; line-height=
+: 20px;">View time</td>
+                            </tr>
+                                <tr>
+                                    <td style=3D"padding-top: 4px;" colspan=
+=3D"2">
+                                        <table style=3D"margin: auto; width=
+: 600px; min-width:600px; text-align: center; border-collapse: collapse; ba=
+ckground-color: #ffffff; color: #92A2AB;" border=3D"0" cellspacing=3D"0" ce=
+llpadding=3D"0">
+                                            <tr style=3D"border:none;">
+                                                <td style=3D"width: 37px; f=
+ont-size: 14px; line-height: 20px;color: #1B2A34;">1.</td>
+                                                <td style=3D"width: 40px;pa=
+dding-right: 16px;padding-top: 8px; padding-bottom:4px;">
+                                                        <img width=3D"40" h=
+eight=3D"40" src=3D"cid:27ae143a-e37e-46dc-a74d-b2f8ea46f852" alt=3D"">
+                                                </td>
+                                                <td>
+                                                    <table style=3D"width: =
+100%;  border-collapse: collapse; text-align: center; color: #536872;" bord=
+er=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+                                                        <tr>
+                                                            <td style=3D"wi=
+dth: 434px;" width=3D"434">
+                                                                <table styl=
+e=3D"width: 100%;  border-collapse: collapse; text-align: center; color: #5=
+36872;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+                                                                    <tr>
+                                                                        <td=
+ style=3D"height: 8px; width: 0.01%; border-top-left-radius: 4px; border-bo=
+ttom-left-radius: 4px;background-color: #E2E2EB"></td>
+                                                                           =
+ <td style=3D"height: 8px; width: 100%; border-radius: 4px;background-color=
+: #1ca1dc"></td>
+                                                                        <td=
+ style=3D"height: 8px; border-top-right-radius: 4px; border-bottom-right-ra=
+dius: 4px;background-color: #E2E2EB"></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td style=3D"pa=
+dding-top: 0px;padding-left: 13px;padding-right: 32px; text-align: right; c=
+olor: #1B2A34; font-size: 14px;line-height: 20px;">
+                                                                00:00:52
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                        </table>
+                        <!--Content view session details end-->
+                <!-- footer-->
+                <table width=3D"600" style=3D"min-width: 600px;margin:auto;=
+ text-align: center; border-collapse: collapse;" cellpadding=3D"0" cellspac=
+ing=3D"0">
+                    <tr>
+                        <td height=3D"35"></td>
+                    </tr>
+                    <tr>
+                        <td align=3D"right" height=3D"32" width=3D"50%" val=
+ign=3D"middle">
+                            <img height=3D"28" style=3D"margin-right:8px" s=
+rc=3D"cid:ls-email-seismic-logo.png" alt=3D"seismic logo">
+                        </td>
+                        <td align=3D"left" height=3D"32" width=3D"50%" vali=
+gn=3D"middle">
+                            <a href=3D"https://url.us.m.mimecastprotect.com=
+/s/K7AbCpYjZVs9EP8yMcPfvSG5caB?domain=3Dseismic.com" style=3D"height: 10px;=
+color: #536872;line-height: 10px;font-weight: normal;text-decoration: none;=
+ font-size: 10px;" title=3D"Styling Links">
+                                Powered by Seismic LiveSend
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height=3D"30" style=3D"color: #F9F9FB; text-ali=
+gn: left; font-size: 5px;">SessionId=3D36308dfe-3c9d-4db5-ab9f-09f8d191ec07=
+</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
+--49f2d1377709166fa95441ac3e06a657cd43e4e4759724fc98a55abfdce2
+Content-Disposition: inline; filename="69da049b-45d9-4663-b9f1-b66a7c99cf17"
+Content-ID: <27ae143a-e37e-46dc-a74d-b2f8ea46f852>
+Content-Transfer-Encoding: base64
+Content-Type: image/png; name="69da049b-45d9-4663-b9f1-b66a7c99cf17"
+
+/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkW
+GRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSwBBQUFBwYHDggIDh4UERQeHh4eHh4eHh4e
+Hh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHv/AABEIADUAYAMBIgACEQED
+EQH/xAGiAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgsQAAIBAwMCBAMFBQQEAAABfQECAwAE
+EQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZH
+SElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1
+tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+gEAAwEBAQEBAQEBAQAA
+AAAAAAECAwQFBgcICQoLEQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGh
+scEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlq
+c3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV
+1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/APF7VLRt/wBqmmixjZ5cYfPrnJGK
+mni0xY2MF1dO4Hyh4FUE56E7j2qlRXrWPAuFFFFMQUUUUAFFFFABRRRQAUUUUAFFXtMl06J5TqME
+s6lQIxGcbTnJJ554GPxNWIrjQjAiTWNyGUHLpIMuS3fPAwMY/H61lKo07crYm7dDJorbE3hncv8A
+oeo43HOZVzjtSJceHvNw9ndeT5aDhhv3BiWOc46YHTt2qfbP+V/18xc3kYtFa5n0Dy5FFpeKx+6x
+kBxxx6f5xToZ/D4upVe1uhbOy7Cx3Oox83IIxzz0OenFHtn/ACv+vmHN5GNRW153hrK4tdQxzuJk
+X36D8v8A69OlufDUkm5bG9QH+FZBgfrR7Z/yP8P8w5vIw6K2bS58PQ5M9jdztubgyALtz8vA5zjG
+eaIrzQ0MoawkIaQsjMS2xdowMbhnnP4d6HWevuv8P8w5vIxqK09UuNHmt4l02znt5QxLtI+4MMdB
+zWZWkJcyu1Yadye2njgLeZbRzhscPkY+mKkivIY3ZnsYZM9ASwA5z2NRW9pNdbvJVW29cuF/mfap
+ZtLu7eMyPGu0HHyyK36A1WhauK15bNKG/s6FVHO0M2Dx9c0Pe27KAunQJg5OGbn261W8mXH+qf8A
+75NNZHX7ysv1GKLBdlv7bb7gf7Ogx6bm/wAaguJUnmLpCkAI+6mcfrUVFFhXCiiimIKKKKACiiig
+BVd0+6zL9Din+fN/z2k/76NMV3T7rMv0OKf583/PaT/vo0hh9onAx50mP980jyySAB5HcDoGYnFL
+9onAx50mP980jyySAB5HcDoGYnFADKKKKYgooooAKKKKACiiigD/2Q==
+
+--49f2d1377709166fa95441ac3e06a657cd43e4e4759724fc98a55abfdce2
+Content-Disposition: inline; filename="a7ee4942-f9a1-475f-a2db-ecec99ec87af"
+Content-ID: <MP4>
+Content-Transfer-Encoding: base64
+Content-Type: image/png; name="a7ee4942-f9a1-475f-a2db-ecec99ec87af"
+
+iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAAXNSR0IArs4c6QAAAEJQTFRFiA5P
+iQ1NiA5PiA1OiA5Phw5P////+PD0+O/04sPT4cLT2rTI2rPH06W90qS8vHecvHabtWiRrVmGnjtw
+lyxljx1aJTEmUQAAAAZ0Uk5T/1DP0N/gt3yTXgAAAF9JREFUeNq9z8ESgCAIRdGnJqBmlsn//2rT
+/q092wvDgBBBHAEZVMROfl4OpqvYBFHKKlIXC8BQu2nAv+QsAI92HobRsKoUZ8dNBzn+VmmLPGii
+E4S37tgtg0oIiY6HD9o+A0thzP5aAAAAAElFTkSuQmCC
+
+--49f2d1377709166fa95441ac3e06a657cd43e4e4759724fc98a55abfdce2
+Content-Disposition: inline; filename="ls-email-download.png"
+Content-ID: <ls-email-download.png>
+Content-Transfer-Encoding: base64
+Content-Type: image/png; name="ls-email-download.png"
+
+iVBORw0KGgoAAAANSUhEUgAAAAwAAAANCAYAAACdKY9CAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAB8SURBVHjaY8AGpLUMDKRVTQ0YiAVSWiYNIDyqASMotU32AxXVo2sAiUlrmuzH0CCh
+YaAgpWl8H6ixH6YBxAYqPg+Sw2qLgoGBgIyWyXppLZP30tpArGm8QEDBQICgH4CaGmRw+QFkgoSG
+hQIxGGybJNBaKS3j+0RhTZP1AL3zOWPXIW4cAAAAAElFTkSuQmCC
+
+--49f2d1377709166fa95441ac3e06a657cd43e4e4759724fc98a55abfdce2
+Content-Disposition: inline; filename="ls-email-frame.png"
+Content-ID: <ls-email-frame.png>
+Content-Transfer-Encoding: base64
+Content-Type: image/png; name="ls-email-frame.png"
+
+iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAMAAACfWMssAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAABXUExURcjQ1ZShrJGhrJKfrY+fqsHKz8DJz77Izb3Izb7Gzf///9bd4Nbc4Nbc37S9
+wam0uam0uKmzuamzuKCutZ+utaCttZ+ttZmosJmnsJKiq2h7hGh7g1NocnTCFP4AAAAKdFJOU/9f
+X2Bg39/v7+8ONyUeAAAAmElEQVR42u3UyxKDIAyF4fSitkjv1Yjw/s+pw1ZjJLrQMf/+m4FFDpzu
+ICg/Q2ZE3QCMRZfYzxro4d8lhxE6QQoVLoCY7qoIH3Wqa8oIJW0BfgPRm4GBjIEfyr3EfzwmtDgc
+ai5iyXEedMNMXxuo2mnoSehpKH7q2n98zoKehTiyRVzjY9WUeh16HXod+7qOQgZzuGYgqLh06MrH
+ddf+grMAAAAASUVORK5CYII=
+
+--49f2d1377709166fa95441ac3e06a657cd43e4e4759724fc98a55abfdce2
+Content-Disposition: inline; filename="ls-email-timer.png"
+Content-ID: <ls-email-timer.png>
+Content-Transfer-Encoding: base64
+Content-Type: image/png; name="ls-email-timer.png"
+
+iVBORw0KGgoAAAANSUhEUgAAABEAAAATCAMAAABBexbDAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAABvUExURQAAACg/TCk/TSk/TShATCo/TSBAQCk/TSk9TSk/TSg9TSo+Tio+Tio/TSk+
+TDBAUCk+TSk/TCVASipAUCk/Tic/TSpASipATis+TSk+Tig+TChATCg+TChATSg+Tio/TCg+TCk/
+TSg/TShASChAUCGYr8kAAAAldFJOUwC//99A7xDvcK9gf4CfkBCPzzAwz68wgI9voICAYF/Pf7+f
+ICC2c0vqAAAAn0lEQVR42gXBhWHEMBAAMN05DjyV6Tmx95+xEqB9lhEAeM8caEsDjPOS07JrH7U0
+8FezRpQscy9TxzNj8N0Mkb/9imf+IFZcckbLDWKFmEZO2SFW6HngbQWxgnhQNxAPcJ7IDVyz7HBO
+ygrcSh6beHCaRsCllpYbQx4A+vDMAUveAe65wUvJPRj3WTroX1mO8/xaMzrALTKzxgAAegf4BwuS
+CJizpR36AAAAAElFTkSuQmCC
+
+--49f2d1377709166fa95441ac3e06a657cd43e4e4759724fc98a55abfdce2
+Content-Disposition: inline; filename="ls-email-seismic-logo.png"
+Content-ID: <ls-email-seismic-logo.png>
+Content-Transfer-Encoding: base64
+Content-Type: image/png; name="ls-email-seismic-logo.png"
+
+iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAC/SURBVHja7dbRCcIwEAZgR3AER+kIbmJHcAO7SUfIBOFHL6HJ9SEjdAQlWAmIIBKT
+Qns/3Ov938uF7CSS1QYIB9z8URvX1isj18H6HsQTDN/nCRXL0hQBwLD6VCIAAVQDaOIOxNNCgBRg
+mE/Rn2FYRVQRAGhsYlkGKhNgOcQl8zIVl8eSn1A0NNmA98lA/QfwBXVZBpBGCWDjAOv7egDrA2js
+QXx6niL25c6QeIplmlyXygpHX137emTkmy1ZbR59oGHBTHC0dQAAAABJRU5ErkJggg==
+
+--49f2d1377709166fa95441ac3e06a657cd43e4e4759724fc98a55abfdce2--

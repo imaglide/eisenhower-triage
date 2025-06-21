@@ -1,0 +1,1368 @@
+Received: from DM8PR08MB7367.namprd08.prod.outlook.com (2603:10b6:8:14::16) by
+ IA1PR08MB10590.namprd08.prod.outlook.com with HTTPS; Thu, 12 Jun 2025
+ 14:12:52 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=FdK3bOb4HNKtAmmIZlk2I3eHENeCjfbjbI6o/D7MDS9Spz/O18fvBTTfFHUEbffqVLCRKrjsy2s9dB1VaqVKLevDmVu5H6ef80HqJx1HxB6LQDmZZxbCVN0FWt4EZJRs/qPRsCiNoTfxxQRhg5EZhyYpgDa/0CVUsIadaq5MEob6Aebyffiu/Wy/FgNHU3IUXlzyYKShdzLlAIBhgXrhDPkGTJ1bPmg1jqW8P5zqSrVf4RnmifkNygTo7s+QSV74yqVHsTVNvblIkoieQzYd9t0tE8mTBzNGcb4yESexmnnqmo7xOqF0mQocxOeAYD+gGDJy8PZQ7Bs8gkR9Z+E6RQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tDjg/xY4txABLqw0uqsU7cV7js3s9rzKkr7xEuv6duo=;
+ b=xNEoBFNWqYq5lCN2jdlouytKH1RAja4H6oiFLQwYD+FyInSH+WxEQmmzLPDAx14qhjMZY2r806iqfO9OKYjkrnV+rvlen8EX5Mljn/7M4bcZp8HyJB9fVa/a7CKRIPH+003cZrjKVWAaoKjv2L+TdNK2RKfqTsy7jN7SL7HThLDLIhglUAozxcEs0bHB/x8enV4j37mkZkAgdjJQLzIpO1ywip3FTKNVI3ny+8sCKyUeGImCS+IekilttZDsP6XgwPfyn3C5jrk+gWsRW46xx0kny4mIjO3ypgoB2pziZ3/Dq2xZeu1DCM9A7gQfiGE6xlXxJwJ+cLuSC2a2BUPuvg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=softfail (sender ip
+ is 170.10.128.131) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=workshop.servicenow.com; dmarc=fail (p=reject sp=reject
+ pct=100) action=oreject header.from=servicenow.com; dkim=fail (body hash did
+ not verify) header.d=servicenow.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from BN0PR04CA0132.namprd04.prod.outlook.com (2603:10b6:408:ed::17)
+ by DM8PR08MB7367.namprd08.prod.outlook.com (2603:10b6:8:14::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.20; Thu, 12 Jun
+ 2025 14:12:47 +0000
+Received: from BN2PEPF000044A3.namprd02.prod.outlook.com
+ (2603:10b6:408:ed:cafe::a7) by BN0PR04CA0132.outlook.office365.com
+ (2603:10b6:408:ed::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.34 via Frontend Transport; Thu,
+ 12 Jun 2025 14:12:47 +0000
+Authentication-Results: spf=softfail (sender IP is 170.10.128.131)
+ smtp.mailfrom=workshop.servicenow.com; dkim=fail (body hash did not verify)
+ header.d=servicenow.com;dmarc=fail action=oreject
+ header.from=servicenow.com;compauth=none reason=451
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ workshop.servicenow.com discourages use of 170.10.128.131 as permitted
+ sender)
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ BN2PEPF000044A3.mail.protection.outlook.com (10.167.243.154) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.15
+ via Frontend Transport; Thu, 12 Jun 2025 14:12:47 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1749737566;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=tDjg/xY4txABLqw0uqsU7cV7js3s9rzKkr7xEuv6duo=;
+	b=S4U7yNqxwGZ7soRGqHMrbagXocazeB5j5gTNIzTQkH2uv5b4bzt0e+HsC6mqLsQiP9wJq+
+	PtDx1S/AqRrfqCa+qb/ySjcdd4mSzpJhBoPjHCLdwU70FbZLhw8SCDDyr3MCyj3yBP+DXR
+	erJhdfD0a76roS40IxUftP1Qf+MQTJiVP9wTAZEo2VZMKv/rCr25IRCJgu2P5+XBnvFpQL
+	BeQN90QVLju36bvWUVtvbZT5JswIob3iDZZ+sCj16ECCDpJ5aasaLqmfpoOoOOdAL7OUmz
+	sUXXe3CoCpphEOrZ+OrPpzJrK79daehlDL8Rgis/eQQKDBCbhpZl7aUihH5J4w==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1749737566; a=rsa-sha256;
+	cv=none;
+	b=b/Sy0AFCzWmn4zgDwDn+uWcPqy4W4bR+viE9YtQt/w+D+xpzy39A1ydhlUyF1IbnW0XA8J
+	n5BnEKrgSsTw9A/ZRBdrmQOua3hU3mlp6AOg99mn+yDy+zR9NZnvYYO0NANnEF5rNJbmfn
+	U0Fp9bOLkia0oJ86TxhP95xjVfPwetegabBnKcoVTvjPS2g6EWQe+C4P0QN1f0R7IceNU5
+	YbaA4ixZvqA6yriGeIuGxUNtQ+dj5P0o4ArblYRLBrkLRnnzzeUTdDTczHFhvrUksJp1k4
+	+N8VMCNPZRernQ5wfRuBON6PsWBCf+KDPEZwyhaqE79lI+OB3VUTTw+I417d+A==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=servicenow.com header.s=wrk header.b=mVXZv9PC;
+	dmarc=pass (policy=reject) header.from=servicenow.com;
+	spf=pass (relay.mimecast.com: domain of "bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com" designates 149.72.61.106 as permitted sender) smtp.mailfrom="bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=servicenow.com header.s=wrk header.b=mVXZv9PC;	dmarc=pass
+ (policy=reject) header.from=servicenow.com;	spf=pass (relay.mimecast.com:
+ domain of
+ "bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+ designates 149.72.61.106 as permitted sender)
+ smtp.mailfrom="bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+Received: from o1.ptr5628.useworkshop.com (o1.ptr5628.useworkshop.com
+ [149.72.61.106]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-651-s6GjrIxROd-cDXuZSUllrQ-1; Thu, 12 Jun 2025 10:12:36 -0400
+X-MC-Unique: s6GjrIxROd-cDXuZSUllrQ-1
+X-Mimecast-MFC-AGG-ID: s6GjrIxROd-cDXuZSUllrQ_1749737554
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=servicenow.com;
+	h=from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:from:subject:to;
+	s=wrk; bh=/N6QF8a3Dxs08M15CDkvSEti1/OzJRsAbmi2H7cSGYU=;
+	b=mVXZv9PC7rVNuVFQnMT8jUMttBmBic8L4VohinqTarwdO2hoArj8TBOxYo76GkM4geWS
+	UA4RF7HvSL69dfFNxUYhK9JlwP9Xn/bBhQ5ZKUa6ise9SV8poVoh8H7weZgcQ2txSlu4uJ
+	Ay72i83+GVkdnwFrUPqdw4Npt9pCAUOPl1+jYeJjYDk26iM10+6m9avmDfQK92XW8WyYTm
+	SakTiTN0df4/EQHMJoRi7W3ei/nrpUuRlUm5QgEOvmJv5iP2UEbNbtq9pb1a+seDXJVqsg
+	21vwgx+ohJrHvelJAdKW0ZlLRBc6GTkTwTmT6KE3haoXNO16qzH+QVms+wd8BBfw==
+Received: by recvd-586cc6856c-kqqvx with SMTP id recvd-586cc6856c-kqqvx-1-684ADEEB-C0
+	2025-06-12 14:06:35.743395395 +0000 UTC m=+681750.706235555
+Received: from useworkshop.com (unknown)
+	by geopod-ismtpd-30 (SG) with ESMTP
+	id fBM0H6vnTtu2CsRg-tpaXg
+	for <rob.spence@servicenow.com>;
+	Thu, 12 Jun 2025 14:06:35.630 +0000 (UTC)
+Date: Thu, 12 Jun 2025 14:06:35 +0000
+From: ServiceNow News <servicenownews@servicenow.com>
+Message-ID: <822130a2-d1b6-497f-b827-415786f67461@app-mail.useworkshop.com>
+Subject: Proud to love =?UTF-8?B?4p2k77iP8J+nofCfkpvwn5Ka8J+SmfCfkpw=?=
+ ServiceNow Insider: June 12, 2025
+X-Workshop-Company-Id: 8ec66bbd-5dc8-410b-90fe-cfc9c4d8605f
+X-Workshop-Email-Id: 1856c258-be15-42f4-9023-9330df3dd7f9
+X-Workshop-Recipient-Id: 8382e1f0-3330-45f1-8f55-4a53a9abf155
+X-Workshop-Safelist-Key: wrk.2022-05-06.041ce2a9f5f4cec1a289ca9829d0c630
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+Precedence: Bulk
+Reply-To: globalemployeecomms@servicenow.com
+X-SG-EID: =?us-ascii?Q?u001=2Eu1G0E8Q2LSLm+cVHEkEyPfMspQlpvfhFNhiosZCtrY+gofAxkKhIJoH5s?=
+ =?us-ascii?Q?ogbk+x4MZ4LxjzOYR64Rms2r+dHBCcVj+8bgUjc?=
+ =?us-ascii?Q?vzeO6YoRqKlSU=2FcVcnNDHzdyariURkg5S3WlIiu?=
+ =?us-ascii?Q?uvoT=2FOTBnRsQB7fU0LpYnyufgEq+fJ=2FgHX3Mrx7?=
+ =?us-ascii?Q?EJX0j52Optqfy+Rm6p2JCIhv2uY9Ko7FtRuKaUO?=
+ =?us-ascii?Q?JDSgL4L47AMjNrGl0cdl5w8X8iemfORHaYKthGu?=
+ =?us-ascii?Q?JZLpqfi=2F3IQg2o1jopXJ1CuvpA=3D=3D?=
+X-SG-ID: =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BpTL9BgbK5wfSJMJGMsmprBt3b5KHeIiEBxDC?=
+ =?us-ascii?Q?UcL19nBQb8aBOtJKLxkR0wglZXAirTyjOnu0U+r?=
+ =?us-ascii?Q?Vj1AONMnRemRSQ=2Fn1exG6NhOr6UWOXwdrAcdxJT?=
+ =?us-ascii?Q?PRy4s0yUKtmHAtc4Y7xIsZAs2Dt5EH5ywopVEqu?=
+ =?us-ascii?Q?HOzQay4MKb4JKZWitJCycPhJIupgapE+n8tTZnw?=
+ =?us-ascii?Q?1wjHfG5xOAtvScF+788d7CyW4tRu9rqf5fzlevj?=
+ =?us-ascii?Q?qsUoP6M+PlfHcWPhu9hJcnd2=2F0TSZWQCl0Vqoia?=
+ =?us-ascii?Q?mm6Ubd6Wj8wtfPgPN4bfsIyzWnsOgkyhpJfhKRk?=
+ =?us-ascii?Q?vvng7zcQ51iKS+Lcn6a1j=2FPPkV5hE=2FLYOvyNpFN?=
+ =?us-ascii?Q?S9eOoba3phD5QADz92p54TVeMPgei8Ab7Z9Pcj1?=
+ =?us-ascii?Q?2goZGlnhSKdSh6QltUCDuZSnoIOQsgwQxZY+Yyt?=
+ =?us-ascii?Q?9dlKXaggdZjuf3wFSbPv6SoOZZGl0J26BUoRIN8?=
+ =?us-ascii?Q?Plvkk6LRs8lVc81VOaAVPaTmNYRaYuKaJTADWs7?=
+ =?us-ascii?Q?jy=2Fbth3ycO4F2MVCsqAuCbCJVfGybwbeTUMcboy?=
+ =?us-ascii?Q?KpKMgfwKaZumWkbzOeN4eDKpsCbRL3t+tA=3D=3D?=
+To: rob.spence@servicenow.com
+X-Entity-ID: u001.5upK2BKYwpCg/JZYYuooNw==
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: HoJQ-nqsiLtgYUdT0PiK4gnqHdK-iv9tHefnBr-fy0Y_1749737554
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Return-Path: bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com
+X-MS-Exchange-Organization-ExpirationStartTime: 12 Jun 2025 14:12:47.3531
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 9bf9926a-327a-4865-3b55-08dda9bb353b
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A3:EE_|DM8PR08MB7367:EE_|IA1PR08MB10590:EE_
+X-MS-Exchange-Organization-AuthSource: BN2PEPF000044A3.namprd02.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 9bf9926a-327a-4865-3b55-08dda9bb353b
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-BypassFocusedInbox: true
+X-MS-Exchange-Organization-BypassClutter: true
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1032899013|12012899012|3072899012|2092899012|5062899012|69100299015|29132699027|82310400026|2066899003|8096899003|13003099007;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:SKN;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-inbound-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(1032899013)(12012899012)(3072899012)(2092899012)(5062899012)(69100299015)(29132699027)(82310400026)(2066899003)(8096899003)(13003099007);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 14:12:47.2591
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bf9926a-327a-4865-3b55-08dda9bb353b
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A3.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR08MB7367
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:04.8406227
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8813.020
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RUEyb1VxUUIyZ3UzWFkrdWlnK0FjZkJ2Z0ZacDV6bDdjaEk1MFQ3TWM5Mk5m?=
+ =?utf-8?B?UVJra0tuemtqRjRLTnp0dmtRWnpiUVFNTmFCcGdTdmEzeVdjYngzYUt6bXJ6?=
+ =?utf-8?B?d01nY0FOa0FGVGVBYTFLbytEV3RHQzFXOHltVitGY1JteWhiSW8rc2lUMGwx?=
+ =?utf-8?B?bjlidTljRDRWTkxVOVNYYTNBTkFMNVVvZFhVSmQ4a1h3aFlyNGhXbDNFb0U2?=
+ =?utf-8?B?TmZGK0tmVWhoQVRNd1lzNGU0YUl5NEZMMXZOR252cUFWdlNTZFZ4VDZ4OWxk?=
+ =?utf-8?B?Vmo2Y1YvaDhLL1Jia3BGVlJqZ3NNbzh2WnZwdU83d2VaL3VwYmkxZVpnK3A3?=
+ =?utf-8?B?VW1PTW1GR25uV0pUbUNlcDBnTFZXVHc3Z1kzVlcrcU9VdXVnZ0doaG0ydFBS?=
+ =?utf-8?B?QVZ0ZlQrc1ZQN2NpKzhOSXFmK3hWRnhFempoZjBtQVkxVFgwNlFXenlvZFFO?=
+ =?utf-8?B?bDdLMGtPVG5YRHhoRjhzcy9vQ2lmMEVsV0xWd1Fhak1nQno5YjBqdHhIbDJV?=
+ =?utf-8?B?elhXUXF2OERidGM1Wmp1ZmRhWFJUSjRORGNQOCtkdUFGaUhHelZ0YWJxQXdv?=
+ =?utf-8?B?RVFWMGRpVXoyOUkrQloxeitETmtUNFgxV2VQY2s3bXVYTGU4TXJHcXJyajJ0?=
+ =?utf-8?B?R25YVnBkNVlxeU9UKy95Y2FiNzhDSk0rd3JaVDEzdWVyNzBRRStQT21SQXJu?=
+ =?utf-8?B?cEM5Rzc4NUJqSXpUR2pIMDVrYUZXYXFxcWFMU3kxRzA0SmlDcVFITWsyT05P?=
+ =?utf-8?B?bGVEOTZFNmJDRU1qYjZ5dkozZm1oUnZIM00vUWpkdWVNTXdZVlhOQVh0bzdL?=
+ =?utf-8?B?UXYra09WQXA1bjViSWR1UE53bjhESExsMnhJRWZ5V3kyTDBHVStwLzU3ZFFF?=
+ =?utf-8?B?ZXVndWpTMVEvaktZNW9JUEFwb1c3bERIelJRVkpmbmVpenpvVmU0V1BucGpZ?=
+ =?utf-8?B?VEVOczdPRDM2cytpbk1zR2RsNGdnTC9vMGh0T1FkcXpNZ1ozM2d2TUNoUkll?=
+ =?utf-8?B?ckhabkZBVGY5TFQzeXFzUFc5WW9iYkVmQkVJSmhYVllXTzZpWUduaUdjbnQ2?=
+ =?utf-8?B?TXZzRVl5YVhpNk01cXNGSkFpVDdkSjJ4d05YV25kZnlONlpPcy9uQnBTb3pm?=
+ =?utf-8?B?SlBWYU9tS2h4N3NvMEpNUTZGRnFVMWtiNWZlaEtXc2tpc0EwNW9XYXp1RlFx?=
+ =?utf-8?B?M2N1eFpPN2p5RlhmeE1ucmtuYk5OTlhkTnNLWFd4MFQwNmEzTU1YT3NhNjBI?=
+ =?utf-8?B?VWZ1bHlkSWc0dWFuNWpHTmhMVnFNMWJnYmt4blNwMmFpNEF6ajhEUE9zUVZ1?=
+ =?utf-8?B?d3QwcnF1YkZ1Z3pMZVlRRXVkTXROYUdQc0U1N1MzZGh3QjVUR3JPNWRJQVdt?=
+ =?utf-8?B?Vk5WdmlLREhjTUtkRDNpNXc0TW54K042SDFKbmY5VHhPWGQzUXpwUDUrMitR?=
+ =?utf-8?B?TUlzZENCZWJVU1QwVG1USVZrYnNnU2JqY2hEeHJ4M0NWaFdzUzhhbjBYbjFK?=
+ =?utf-8?B?K0RTYUhIOHZCSjBwdGFKQkxQU3diT2x5cCtUTitFd080T2drTUx0QS9BUCtH?=
+ =?utf-8?B?YU9hbDF5aW5jeHNpRkVpV3hHYXFUSEZNNjg3cWltZEZ6Y1h6ZUtwZzc5RGl3?=
+ =?utf-8?B?cDlzNUVIdmhmOG5CT2VuZHRsYVdKR2hKdTBlSXFrTXNrVW1kOFNDZ3FJR3N1?=
+ =?utf-8?B?TDRuVjI4RkxFN0lrc2ZVZGtIVEJiK1FPZko4dTNQajFzVHBPVVJUZXo0UDFR?=
+ =?utf-8?B?TUFsWXIzLy9MZnhBa0p5SDVEOEs5ZTJ6SjNXZ1dTSS9McnNLdGdWOHdCWWxD?=
+ =?utf-8?B?aTJzUjIxa0xDRGVXdDdZSEx1dGI5dEdYOHdoS2xmbmt4eDM4a2dldjgzUGxw?=
+ =?utf-8?B?Q2toWkxIUUFSSWRJS2huWktrTjlOYWp0TW9udjZ5MzlCTnBWY3NTYTU3NHlp?=
+ =?utf-8?B?d0RGSHF5aFpYTGY3L254Z2l5cyt1RzkxUGU3THc5d0UrcnFTZXhyMnp2UEJm?=
+ =?utf-8?B?UEdXdlorazdhMWNRQjRLWXBySTlPNHFkckNzTDZiWjczenZQKzcwelNON3Jq?=
+ =?utf-8?B?MmdzaUMyT0g1d1U1dXFLK25BUE8zZm9uYzdxUE5vYk9vcHNYRWJhVjJUc2ZT?=
+ =?utf-8?B?ZEw1d0ozYy9iSnY2K3c0cnhPeTZ4NmJkZ1VrNkp3K2FVTWVnUnBzOTRCNWoy?=
+ =?utf-8?B?L2Rjb2xTUTFsMHlKcllFb2RzU0lYbllUclVTazU3N1JPZTRaNS9Ic21FYkw2?=
+ =?utf-8?B?WUdMcnpJeTZDQXQ5bXhxVlhkRVNZRXl3R01LMHJNZTI3YlBEdnY1eEMzcVUw?=
+ =?utf-8?B?dEFLT1UvTVFCVFZkdDJsbnJJbzF0RmRzVE5CeXRLazE4UU9WdjRkbGdRK0o3?=
+ =?utf-8?B?Vk9Uai9ETHBlY2VmbXc1UkJVZnJTU2R1WmhXbkVTUGRYOFNFaTIzMUVxOGZL?=
+ =?utf-8?B?NDVmc1RvWHdQYUVnNzlnSStlcC9LbXgzanNMM2NjRXpCSEpSWG1JbzFxS3BM?=
+ =?utf-8?B?MnE0VWRJd2tvUnJMT3VGdzAvRXp5ZjNkb2dTaTNKY3BhNmFZd0ZsVEJtRlVx?=
+ =?utf-8?B?R2RncWZ3TExTVHJDRC9BeWFTNTRoaG4wbEJsMmtHUEd0aFYyVTcrVlVjcXVj?=
+ =?utf-8?B?SmV3dFdXRTRDbUljVzFQZjZkcGNHWnk4OThYcjAxNWR5VVlRbWppbjVzeEE2?=
+ =?utf-8?B?ejFCM1djM2l0RzFWYVF6MWc2TmZwdDFnMk96U3VpZWFpUVpPNGJWbjVqNWU2?=
+ =?utf-8?B?TmJXaHg5M3RXN1EvcmxoT25NZURhdFJKREdxMXU4SEJuaFhjSzFaSzRnTzJj?=
+ =?utf-8?B?Tjcyc2g1c3NvN1FhdGNTcUxaMXlHTHFaVHc4OWdVTklJdVNoVDFST09SRXYv?=
+ =?utf-8?B?aWpqbnJnbXArTHhRNG9yRStFanpvdTRCYmtmZ0tSUjJQdy9NL2NLYWN6dlJx?=
+ =?utf-8?B?b08xQ21nUktHcTdnYmFoYklrKzRQMHMyNlhKNHdzWE45eWRrR21lWFYzaFIx?=
+ =?utf-8?Q?EDSdAnmz5BCIWJTukQjiAy8v9SGPaKo7T9x?=
+MIME-Version: 1.0
+
+<!DOCTYPE html><html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"u=
+rn:schemas-microsoft-com:office:office" lang=3D"en"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><t=
+itle></title><meta name=3D"viewport" content=3D"width=3Ddevice-width,initia=
+l-scale=3D1"><!--[if mso]>=0D
+<xml><w:WordDocument xmlns:w=3D"urn:schemas-microsoft-com:office:word"><w:D=
+ontUseAdvancedTypographyReadingMail/></w:WordDocument>=0D
+<o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/=
+></o:OfficeDocumentSettings></xml>=0D
+<![endif]--><!--[if !mso]><!--><link href=3D"https://workshop-email-content=
+.com/custom_font_stylesheets/17dbb7a1-8d01-45a5-b94a-7ef783356e81.css" rel=
+=3D"stylesheet" type=3D"text/css"><link href=3D"https://workshop-email-cont=
+ent.com/custom_font_stylesheets/7c175ea3-69ce-49b4-9159-2525f14dfdb9.css" r=
+el=3D"stylesheet" type=3D"text/css"><link href=3D"https://workshop-email-co=
+ntent.com/custom_font_stylesheets/01b39d76-aaac-4fc2-919f-39679c98673a.css"=
+ rel=3D"stylesheet" type=3D"text/css"><link href=3D"https://workshop-email-=
+content.com/custom_font_stylesheets/7a81e98c-5bfe-49c1-8da9-9432205ce327.cs=
+s" rel=3D"stylesheet" type=3D"text/css"><link href=3D"https://workshop-emai=
+l-content.com/custom_font_stylesheets/961db048-3e57-4776-98e5-0df1da05d077.=
+css" rel=3D"stylesheet" type=3D"text/css"><!--<![endif]--><style>=0D
+*{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{c=
+olor:inherit!important;text-decoration:inherit!important}#MessageViewBody a=
+{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.de=
+sktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.im=
+age_block img+div{display:none}sub,sup{font-size:75%;line-height:0} @media =
+(max-width:705px){.image_block div.fullWidth{max-width:100%!important}.mobi=
+le_hide{display:none}.row-content{width:100%!important}.stack .column{width=
+:100%;display:block}.mobile_hide{min-height:0;max-height:0;max-width:0;over=
+flow:hidden;font-size:0}.desktop_hide,.desktop_hide table{display:table!imp=
+ortant;max-height:none!important}}=0D
+</style><!--[if mso ]><style>sup, sub { font-size: 100% !important; } sup {=
+ mso-text-raise:10% } sub { mso-text-raise:-10% }</style> <![endif]--></hea=
+d><body class=3D"body" style=3D"margin:0;padding:0;-webkit-text-size-adjust=
+:none;text-size-adjust:none;background-color:#fff"><!--[if !mso]><!-->=0D
+<div style=3D"display:none !important;overflow:hidden;position:absolute;lef=
+t:-9999px;top:-9999px;text-indent:-9999px;float:left;width:0px;max-width:0p=
+x;max-height:0px;line-height:0px;visibility:hidden;opacity:0;color:transpar=
+ent;font-size:1px;mso-hide:all">Get your company news and key updates in th=
+is latest edition of ServiceNow Insider.=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD &nbsp;</div>=0D
+<!--<![endif]-->=0D
+<table class=3D"nl-container" width=3D"100%" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-ta=
+ble-rspace:0;background-color:#fff;background-image:none;background-positio=
+n:top left;background-size:auto;background-repeat:no-repeat"><tbody><tr><td=
+><table class=3D"row row-1" align=3D"center" width=3D"100%" border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-=
+lspace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><td><table=
+ class=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0=
+" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-t=
+able-rspace:0;background-color:#fff;color:#000;width:685px;margin:0 auto" w=
+idth=3D"685"><tbody><tr><td class=3D"column column-1" width=3D"100%" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;p=
+adding-bottom:5px;padding-top:5px;vertical-align:top"><table class=3D"image=
+_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-left:10=
+px;padding-top:10px;width:100%;padding-right:0"><div class=3D"alignment" al=
+ign=3D"left"><div style=3D"max-width:164.4px"><img src=3D"https://workshop-=
+email-content.com/mail-images/8ec66bbd-5dc8-410b-90fe-cfc9c4d8605f/SN_Logo_=
+White_Transparent.png" style=3D"display:block;height:auto;border:0;width:10=
+0%" width=3D"164.4" alt=3D"" title=3D"" height=3D"auto"></div></div></td></=
+tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><tab=
+le class=3D"row row-2" align=3D"center" width=3D"100%" border=3D"0" cellpad=
+ding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><td><table clas=
+s=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-=
+rspace:0;background-color:#fff;border-radius:0;color:#000;width:685px;margi=
+n:0 auto" width=3D"685"><tbody><tr><td class=3D"column column-1" width=3D"1=
+00%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-al=
+ign:left;padding-bottom:5px;padding-top:5px;vertical-align:top"><table clas=
+s=3D"image_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-=
+rspace:0"><tbody><tr><td class=3D"pad" style=3D"padding-top:5px;width:100%"=
+><div class=3D"alignment" align=3D"right"><div style=3D"max-width:685px"><i=
+mg src=3D"https://workshop-email-content.com/v1/q3m49enaby.gC2k9A5aqhbdmK62=
+4As8uZc-LjYRgLrQWvwbsMF6TMtBKaSyM6Tv_IlXeDKANjZfyUzsSzGw63X1iV2yUbyS-_uahmG=
+ltO1dtLuWV4xlL3p1iCzOaxWmdw=3D=3D.jfi5zkS7qqr3mZWJ.33MClHbx12rQK_jVRdiZog=
+=3D=3D/SNInsiderBannerMidBlue.png" style=3D"display:block;height:auto;borde=
+r:0;width:100%" width=3D"685" alt=3D"" title=3D"" height=3D"auto"></div></d=
+iv></td></tr></tbody></table><table class=3D"heading_block block-2" width=
+=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presenta=
+tion" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=
+=3D"pad" style=3D"padding-bottom:15px;padding-right:20px;padding-top:15px;t=
+ext-align:center;width:100%"><h2 style=3D"margin:0;color:#000;direction:ltr=
+;font-family:'ServiceNow Sans',Arial,'Helvetica Neue',Helvetica,sans-serif;=
+font-size:14px;font-weight:400;letter-spacing:normal;line-height:1.2;text-a=
+lign:right;margin-top:0;margin-bottom:0;mso-line-height-alt:17px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;">June =
+12, 2025</span></h2></td></tr></tbody></table></td></tr></tbody></table></t=
+d></tr></tbody></table><table class=3D"row row-3" align=3D"center" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#d5d9df"=
+><tbody><tr><td><table class=3D"row-content stack" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0;background-color:#fff;color:#000;width=
+:685px;margin:0 auto" width=3D"685"><tbody><tr><td class=3D"column column-1=
+" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight=
+:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top"=
+><table class=3D"image_block block-1" width=3D"100%" border=3D"0" cellpaddi=
+ng=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace=
+:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad"><div class=3D"alignment=
+" align=3D"center"><div class=3D"fullWidth" style=3D"max-width:650.75px"><a=
+ href=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibW=
+Vzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SW1VMVpqUmpNekF5TFRJd05XWXRORFZqTVMwN=
+VpUWXhMVGsxTkRJNFpEUmxNak0xWXlJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6=
+TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjp=
+udWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--3e7ab2d8627a07fe3eaf99d79f074a=
+c33b1b12ba139e1c63a162c40b137faf8c" target=3D"_blank" style=3D"outline:none=
+" tabindex=3D"-1"><img src=3D"https://workshop-email-content.com/v1/q3m49en=
+aby.pULn_Nd1ozlB9BieSv9jaRQXEmHeJ2hVEkiMbtw_w7gt-sRK9yJzkcnBQJRTNrrL8Z2OFJQ=
+YGFA9J7X0ukm1lnsA4U49e1MSZLv6UM5PnohzZqUatLdFrQ=3D=3D.mLFKLaHUCWGyRYz7.vA80=
+2kZx6RZuls-sW_yyRA=3D=3D/pride-sn-insider.jpg" style=3D"display:block;heigh=
+t:auto;border:0;width:100%" width=3D"650.75" alt=3D"" title=3D"" height=3D"=
+auto"></a></div></div></td></tr></tbody></table><table class=3D"heading_blo=
+ck block-2" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbo=
+dy><tr><td class=3D"pad" style=3D"padding-top:5px;text-align:center;width:1=
+00%"><h1 style=3D"margin:0;color:#000;direction:ltr;font-family:'ServiceNow=
+ Sans',Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:24px;font-weig=
+ht:700;letter-spacing:normal;line-height:1.2;text-align:center;margin-top:0=
+;margin-bottom:0;mso-line-height-alt:29px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;"><a hr=
+ef=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc=
+2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpNd1pERXdNMkpsTFRNMVkyVXROR001TUMwNVpE=
+Wm1MVFZoTjJFelpUTmtOalJpTnlJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TUR=
+aaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudW=
+xsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--76e4cdca011e79bbc178d753568147c8c=
+dca29b8b7e1977bc66e9141d258c961" target=3D"_blank" style=3D"text-decoration=
+: none; color: #000000;" rel=3D"noopener">Leading with love and pride =F0=
+=9F=8F=B3=EF=B8=8F=E2=80=8D=F0=9F=8C=88</a></span></h1></td></tr></tbody></=
+table><table class=3D"text_block block-3" width=3D"100%" border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lsp=
+ace:0;mso-table-rspace:0;word-break:break-word"><tbody><tr><td class=3D"pad=
+" style=3D"padding-bottom:5px;padding-left:10px;padding-right:10px;padding-=
+top:5px"><div style=3D"font-family:Arial,sans-serif"><div class=3D"" style=
+=3D"font-size:15px;font-family:'ServiceNow Sans Light',Arial,'Helvetica Neu=
+e',Helvetica,sans-serif;mso-line-height-alt:18px;color:#000;line-height:1.2=
+"><p style=3D"margin:0;text-align:center;font-size:14px;mso-line-height-alt=
+:16.8px"><span style=3D"word-break: break-word; font-size: 14px;"><strong>b=
+y Russell Elmer</strong></span></p><p style=3D"margin:0;text-align:center;f=
+ont-size:14px;mso-line-height-alt:18px">&nbsp;</p><p style=3D"margin:0;text=
+-align:center;mso-line-height-alt:16.8px">=0D
+<span style=3D"word-break: break-word; font-size: 14px;">We have a lot to c=
+elebrate this Pride Month at ServiceNow! Tune in for a discussion with Jess=
+e Tyler Ferguson on June 12 at 9 a.m. PT, and join a volunteer opportunity =
+on June 13 to support LGBTQ+ youth. Also, huge thanks to Cesar, Mariel, and=
+ Neil (plus his amazing mom, Joan!) for sharing their inspiring Pride stori=
+es. Share their <a href=3D"https://workshop-email-tracking.com/anonymous/c/=
+eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpGbE1HUTBZakEwTFR=
+aa1pHRXROR0prTXkwNFpqZzVMVEUzWTJNME1XTTRPVEZoWmlJc0ltRnViMjU1Ylc5MWMwTnZibl=
+JoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qR=
+TRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--afd4ff006d39=
+679c8d8997274920cfc6155eb5327fd7ccbf5fa770286d966939" target=3D"_blank" sty=
+le=3D"text-decoration: underline; color: #000000;" rel=3D"noopener">video</=
+a> on <a href=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbH=
+MiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpjMVlXSTRNekZsTFdZMU1tVXROR=
+1ZpTlMxaVpEVmtMV0kzTkdJd01XWTNaV1EyTUNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpD=
+STZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5Iiw=
+iZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--d1a7418c26179b00856eac=
+7b9b43bdf7e0ab9babd95d01261cf7ce250b9527c0" target=3D"_blank" style=3D"text=
+-decoration: underline; color: #000000;" rel=3D"noopener">Social Ambassador=
+s</a> or submit your own story on <a href=3D"https://workshop-email-trackin=
+g.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2S=
+WpWaFpXWTVNbVJqTFdRNU9XVXROREk0TmkwNU1UQTJMV05qTnpNeE56TmxaV1JsWWlJc0ltRnVi=
+MjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUx=
+UTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX=
+0%3D--615e88041c6c32fb06520f62dc0f14ae32356ecc7b230404dfc68ebdd67505b3" tar=
+get=3D"_blank" style=3D"text-decoration: underline; color: #000000;" rel=3D=
+"noopener">My ServiceNow</a>. </span>=0D
+</p><p style=3D"margin:0;text-align:center;mso-line-height-alt:16.8px"><spa=
+n style=3D"word-break: break-word; font-size: 14px;">Happy Pride Month, eve=
+ryone! <span style=3D"word-break: break-word;">=F0=9F=92=9A</span></span></=
+p></div></div></td></tr></tbody></table><table class=3D"button_block block-=
+4" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"=
+presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><t=
+d class=3D"pad" style=3D"padding-bottom:25px;padding-left:10px;padding-righ=
+t:10px;padding-top:10px;text-align:center"><div class=3D"alignment" align=
+=3D"center"><a href=3D"https://workshop-email-tracking.com/anonymous/c/eyJf=
+cmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpZd05EaG1ZV0ppTFRsaE1=
+EVXRORFl5WVMwNVpqWmxMV016TURNMk9ESmhOREl6TmlJc0ltRnViMjU1Ylc5MWMwTnZiblJoWT=
+NSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ=
+0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--3be6a56fbc46f8f7=
+7db652204a54572355b3b1643445770ff1d535d21b6464b2" target=3D"_blank" style=
+=3D"color:#ffffff;text-decoration:none;"><!--[if mso]>=0D
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://workshop-email-tracking.com/=
+anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpZd05=
+EaG1ZV0ppTFRsaE1EVXRORFl5WVMwNVpqWmxMV016TURNMk9ESmhOREl6TmlJc0ltRnViMjU1Yl=
+c5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOV=
+FV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--=
+3be6a56fbc46f8f77db652204a54572355b3b1643445770ff1d535d21b6464b2"  style=3D=
+"height:38px;width:159px;v-text-anchor:middle;" arcsize=3D"0%" fillcolor=3D=
+"#62d84e">=0D
+<v:stroke dashstyle=3D"Solid" weight=3D"0px" color=3D"#62d84e"/>=0D
+<w:anchorlock/>=0D
+<v:textbox inset=3D"0px,0px,0px,0px">=0D
+<center dir=3D"false" style=3D"color:#ffffff;font-family:Arial, sans-serif;=
+font-size:14px">=0D
+<![endif]-->=0D
+<span class=3D"button" style=3D"background-color: #62d84e; border-bottom: 0=
+px solid transparent; border-left: 0px solid transparent; border-radius: 0p=
+x; border-right: 0px solid transparent; border-top: 0px solid transparent; =
+color: #ffffff; display: inline-block; font-family: 'ServiceNow Sans', Aria=
+l, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px; font-weight: 4=
+00; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-le=
+ft: 15px; padding-right: 15px; text-align: center; width: auto; word-break:=
+ keep-all; letter-spacing: normal;"><span style=3D"word-break: break-word; =
+line-height: 28px;">Join the celebration</span></span>=0D
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><t=
+able class=3D"row row-4" align=3D"center" width=3D"100%" border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lsp=
+ace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><td><table cl=
+ass=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" c=
+ellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-tabl=
+e-rspace:0;background-color:#fff;border-radius:0;color:#000;width:685px;mar=
+gin:0 auto" width=3D"685"><tbody><tr><td class=3D"column column-1" width=3D=
+"50%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-a=
+lign:left;padding-bottom:5px;padding-top:5px;vertical-align:top"><table cla=
+ss=3D"image_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table=
+-rspace:0"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:10px;paddin=
+g-left:10px;padding-right:10px;padding-top:20px;width:100%"><div class=3D"a=
+lignment" align=3D"center"><div style=3D"max-width:322.5px"><a href=3D"http=
+s://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV=
+5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpZM1pHWmtNalpsTFdRMVlXVXROR1EzTXkwNFpUazVMVEV3WV=
+dWaU9UYzFNMlE0TVNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMV=
+EExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIi=
+OiJlbWFpbF9hbmFseXRpY3MifX0%3D--1ebaa3a4004d745ff4be998bc847a80ecd507d96e29=
+9e17b3328998ff03adbdb" target=3D"_blank" style=3D"outline:none" tabindex=3D=
+"-1"><img src=3D"https://workshop-email-content.com/v1/q3m49enaby.I80aOlO05=
+nU1bv3JMg35WBmWn8RXFxm6r7EEj0KC1vIDJP1BNn4TIokxZ4Wg0-E22gZXZeOuGomfgjhThlOy=
+5R7g8Pxv118-PcDzMri_gT6dtCVOUSyE5A=3D=3D.O6ib4sPe_u4bh02Q.91Dzoyn4mCbk83LTM=
+OwIog=3D=3D/bill-redesign-sn-insider.jpg" style=3D"display:block;height:aut=
+o;border:0;width:100%" width=3D"322.5" alt=3D"" title=3D"" height=3D"auto">=
+</a></div></div></td></tr></tbody></table><table class=3D"heading_block blo=
+ck-2" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><t=
+r><td class=3D"pad" style=3D"padding-left:10px;text-align:center;width:100%=
+"><h1 style=3D"margin:0;color:#000;direction:ltr;font-family:'ServiceNow Sa=
+ns Display Medium',Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:24=
+px;font-weight:500;letter-spacing:normal;line-height:1.2;text-align:left;ma=
+rgin-top:0;margin-bottom:0;mso-line-height-alt:29px">=0D
+<a href=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsi=
+bWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpBek5XUXlNalkyTFRGaU9EY3ROR1kyWkM=
+wNE1EQTJMVGsxWVdNM056azBPR0V3TVNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJal=
+F6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwI=
+jpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--4a6dcb3e23663d2f29fa6fa2a238=
+4062a350008011f8640aeff93e52648ebf76" target=3D"_blank" style=3D"text-decor=
+ation: none; color: #000000;" rel=3D"noopener"><span class=3D"mce-content-b=
+ody mce-edit-focus" style=3D"word-break: break-word; position: relative;" i=
+d=3D"a6849b66-4baf-40a2-913b-bcc3862ed648" data-position=3D"40-0-1" data-qa=
+=3D"tinyeditor-root-element">One TEAM. One VOICE. =E2=9C=A8</span></a></h1>=
+</td></tr></tbody></table><table class=3D"text_block block-3" width=3D"100%=
+" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" st=
+yle=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tbody>=
+<tr><td class=3D"pad" style=3D"padding-bottom:5px;padding-left:10px;padding=
+-right:10px;padding-top:5px"><div style=3D"font-family:Arial,sans-serif"><d=
+iv class=3D"" style=3D"font-size:12px;font-family:'ServiceNow Sans Light',A=
+rial,'Helvetica Neue',Helvetica,sans-serif;mso-line-height-alt:14.399999999=
+999999px;color:#000;line-height:1.2"><p style=3D"margin:0;font-size:14px;ms=
+o-line-height-alt:16.8px">=0D
+<span style=3D"word-break: break-word; font-size: 14px;"><strong>by Bill Mc=
+Dermott&nbsp;</strong></span></p><p style=3D"margin:0;mso-line-height-alt:1=
+4.399999999999999px">&nbsp;</p><p style=3D"margin:0;mso-line-height-alt:16.=
+8px">=0D
+<span style=3D"word-break: break-word; font-size: 14px;">TEAM =E2=80=94 we=
+=E2=80=99re evolving. Our brand redesign reflects how far we=E2=80=99ve com=
+e and where we=E2=80=99re headed. It=E2=80=99s more than a new look, it=E2=
+=80=99s a bold expression of our identity as THE AI platform for business t=
+ransformation. This design mirrors our purpose, energy, ambition, and how w=
+e=E2=80=99re putting AI to work for people. YOU are the brand!</span></p></=
+div></div></td></tr></tbody></table><table class=3D"button_block block-4" w=
+idth=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pres=
+entation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td cl=
+ass=3D"pad" style=3D"padding-bottom:20px;padding-left:10px;padding-right:10=
+px;padding-top:10px;text-align:left"><div class=3D"alignment" align=3D"left=
+"><a href=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOn=
+sibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpJd1ltRXlORGxsTFRabVltRXRORFpqW=
+lMxaU1tTmpMVFF3WVRZNE5ERTNObUUxTUNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJ=
+alF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXh=
+wIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--9d1e3ed26e67e21c648ce3c46b=
+d8856bf646bc228d1c7515a9204fd7492a3db4" target=3D"_blank" style=3D"color:#f=
+fffff;text-decoration:none;"><!--[if mso]>=0D
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://workshop-email-tracking.com/=
+anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpJd1l=
+tRXlORGxsTFRabVltRXRORFpqWlMxaU1tTmpMVFF3WVRZNE5ERTNObUUxTUNJc0ltRnViMjU1Yl=
+c5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOV=
+FV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--=
+9d1e3ed26e67e21c648ce3c46bd8856bf646bc228d1c7515a9204fd7492a3db4"  style=3D=
+"height:38px;width:192px;v-text-anchor:middle;" arcsize=3D"0%" fillcolor=3D=
+"#62d84e">=0D
+<v:stroke dashstyle=3D"Solid" weight=3D"0px" color=3D"#62d84e"/>=0D
+<w:anchorlock/>=0D
+<v:textbox inset=3D"0px,0px,0px,0px">=0D
+<center dir=3D"false" style=3D"color:#ffffff;font-family:Arial, sans-serif;=
+font-size:14px">=0D
+<![endif]-->=0D
+<span class=3D"button" style=3D"background-color: #62d84e; border-bottom: 0=
+px solid transparent; border-left: 0px solid transparent; border-radius: 0p=
+x; border-right: 0px solid transparent; border-top: 0px solid transparent; =
+color: #ffffff; display: inline-block; font-family: 'ServiceNow Sans', Aria=
+l, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px; font-weight: 4=
+00; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-le=
+ft: 15px; padding-right: 15px; text-align: center; width: auto; word-break:=
+ keep-all; letter-spacing: normal;"><span style=3D"word-break: break-word; =
+line-height: 28px;">Experience the evolution</span></span>=0D
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></tbody></table></td><td class=3D"column column-2" width=3D"50%" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;p=
+adding-bottom:5px;padding-top:5px;vertical-align:top"><table class=3D"image=
+_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-left:10=
+px;padding-right:10px;padding-top:20px;width:100%"><div class=3D"alignment"=
+ align=3D"center"><div style=3D"max-width:322.5px"><a href=3D"https://works=
+hop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0Zw=
+YkV4cGJtdEpaQ0k2SWpJeU1EQTNOVFZtTFdReVpEY3ROR1UyT0MwNFpEbGxMVEJpTXpWa1pqTmt=
+ZVFJpTlNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE=
+5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpb=
+F9hbmFseXRpY3MifX0%3D--03c190d98ae85c0ee31ff4cbd440f9bec76db0dbb11a12ec399f=
+fb0efabbdee5" target=3D"_blank" style=3D"outline:none" tabindex=3D"-1"><img=
+ src=3D"https://workshop-email-content.com/v1/q3m49enaby.KRe8F-qK2Y1owHy54M=
+yGqYvfp6sEptm9cBnYcDLxMWWARYzdsvxQhMM5gqnmycoruHCvyLgQFfPmBj95r0CbdcoiyVWWK=
+rGjM39Hqa_UWwtEDrFCjLKexQ=3D=3D.9DN0ON1Jv_25IZnf.UbLwy1jiRpuDY4q_Vbd5hQ=3D=
+=3D/fortune-sn-insider.jpg" style=3D"display:block;height:auto;border:0;wid=
+th:100%" width=3D"322.5" alt=3D"" title=3D"" height=3D"auto"></a></div></di=
+v></td></tr></tbody></table><table class=3D"heading_block block-2" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"=
+pad" style=3D"padding-left:10px;text-align:center;width:100%"><h1 style=3D"=
+margin:0;color:#000;direction:ltr;font-family:'ServiceNow Sans Display Medi=
+um',Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:24px;font-weight:=
+500;letter-spacing:normal;line-height:1.2;text-align:left;margin-top:0;marg=
+in-bottom:0;mso-line-height-alt:29px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;"><a hr=
+ef=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc=
+2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpsa1lXWmtNekpsTFdReE1qY3RORFl5WVMxaE1t=
+TTBMV1ptWW1KbU5tVmlNVE15WVNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TUR=
+aaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudW=
+xsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--7305a96d7dc11373bc69d8bf407782753=
+5d45d34b8f5067b1b6e2d307cb2a2ad" target=3D"_blank" style=3D"text-decoration=
+: none; color: #000000;" rel=3D"noopener"><span class=3D"mce-content-body m=
+ce-edit-focus" style=3D"word-break: break-word; position: relative;" id=3D"=
+3c42f0d7-954c-429c-873e-9e7a79de0f02" data-position=3D"40-1-1" data-qa=3D"t=
+inyeditor-root-element"><span class=3D"tinyMce-placeholder" style=3D"word-b=
+reak: break-word;">Three years STRONG =F0=9F=92=AA</span></span></a></span>=
+=0D
+</h1></td></tr></tbody></table><table class=3D"text_block block-3" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><t=
+body><tr><td class=3D"pad" style=3D"padding-bottom:5px;padding-left:10px;pa=
+dding-right:10px;padding-top:5px"><div style=3D"font-family:Arial,sans-seri=
+f"><div class=3D"" style=3D"font-size:15px;font-family:'ServiceNow Sans Lig=
+ht',Arial,'Helvetica Neue',Helvetica,sans-serif;mso-line-height-alt:18px;co=
+lor:#000;line-height:1.2"><p style=3D"margin:0;font-size:14px;mso-line-heig=
+ht-alt:16.8px"><span style=3D"word-break: break-word; font-size: 14px;"><st=
+rong>by Gina Mastantuono</strong></span></p><p style=3D"margin:0;font-size:=
+14px;mso-line-height-alt:18px">&nbsp;</p><p style=3D"margin:0;font-size:14p=
+x;mso-line-height-alt:16.8px">=0D
+We did it! ServiceNow is on the Fortune 500 for the third year in a row! Th=
+is milestone reflects our innovation, execution, and customer focus. It=E2=
+=80=99s proof we=E2=80=99re not just keeping up =E2=80=94 we=E2=80=99re lea=
+ding. Powered by our global teams and an AI-first mindset, we=E2=80=99re bu=
+ilding trust and driving real impact. Thank YOU for making this possible!</=
+p></div></div></td></tr></tbody></table><table class=3D"button_block block-=
+4" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"=
+presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><t=
+d class=3D"pad" style=3D"padding-bottom:20px;padding-left:10px;padding-righ=
+t:10px;padding-top:10px;text-align:left"><div class=3D"alignment" align=3D"=
+left"><a href=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbH=
+MiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpOall6RmpPRGd5TFdOak1URXROR=
+Gd3TWkxaFpqUXdMVEUwWkdOa016a3dOVE0wTUNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpD=
+STZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5Iiw=
+iZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--e3d6e3049d6865f648e328=
+054388b2c2d2fc1a29cda783d8645db3a79465f350" target=3D"_blank" style=3D"colo=
+r:#ffffff;text-decoration:none;"><!--[if mso]>=0D
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://workshop-email-tracking.com/=
+anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpOall=
+6RmpPRGd5TFdOak1URXRORGd3TWkxaFpqUXdMVEUwWkdOa016a3dOVE0wTUNJc0ltRnViMjU1Yl=
+c5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOV=
+FV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--=
+e3d6e3049d6865f648e328054388b2c2d2fc1a29cda783d8645db3a79465f350"  style=3D=
+"height:38px;width:137px;v-text-anchor:middle;" arcsize=3D"0%" fillcolor=3D=
+"#62d84e">=0D
+<v:stroke dashstyle=3D"Solid" weight=3D"0px" color=3D"#62d84e"/>=0D
+<w:anchorlock/>=0D
+<v:textbox inset=3D"0px,0px,0px,0px">=0D
+<center dir=3D"false" style=3D"color:#ffffff;font-family:Arial, sans-serif;=
+font-size:14px">=0D
+<![endif]-->=0D
+<span class=3D"button" style=3D"background-color: #62d84e; border-bottom: 0=
+px solid transparent; border-left: 0px solid transparent; border-radius: 0p=
+x; border-right: 0px solid transparent; border-top: 0px solid transparent; =
+color: #ffffff; display: inline-block; font-family: 'ServiceNow Sans', Aria=
+l, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px; font-weight: 4=
+00; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-le=
+ft: 15px; padding-right: 15px; text-align: center; width: auto; word-break:=
+ keep-all; letter-spacing: normal;"><span style=3D"word-break: break-word; =
+line-height: 28px;">Spread the word</span></span>=0D
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><t=
+able class=3D"row row-5" align=3D"center" width=3D"100%" border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lsp=
+ace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><td><table cl=
+ass=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" c=
+ellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-tabl=
+e-rspace:0;background-color:#fff;border-radius:0;color:#000;width:685px;mar=
+gin:0 auto" width=3D"685"><tbody><tr><td class=3D"column column-1" width=3D=
+"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-=
+align:left;padding-bottom:15px;padding-left:10px;padding-right:10px;padding=
+-top:15px;vertical-align:top"><table class=3D"divider_block block-1" width=
+=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presenta=
+tion" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=
+=3D"pad" style=3D"padding-bottom:5px;padding-left:10px;padding-right:10px;p=
+adding-top:5px"><div class=3D"alignment" align=3D"center"><table border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" width=3D"100%"=
+ style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"di=
+vider_inner" style=3D"font-size:1px;line-height:1px;border-top:4px solid #6=
+2d84e"><span style=3D"word-break: break-word;">=E2=80=8A</span></td></tr></=
+tbody></table></div></td></tr>=0D
+</tbody></table></td></tr></tbody></table></td></tr></tbody></table><table =
+class=3D"row row-6" align=3D"center" width=3D"100%" border=3D"0" cellpaddin=
+g=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0=
+;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><td><table class=
+=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-r=
+space:0;background-color:#fff;border-radius:0;color:#000;width:685px;margin=
+:0 auto" width=3D"685"><tbody><tr><td class=3D"column column-1" width=3D"10=
+0%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-ali=
+gn:left;padding-bottom:5px;padding-top:5px;vertical-align:top"><table class=
+=3D"heading_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"10" c=
+ellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-tabl=
+e-rspace:0"><tbody><tr><td class=3D"pad"><h1 style=3D"margin:0;color:#032d4=
+2;direction:ltr;font-family:'ServiceNow Sans Display Bold',Arial,'Helvetica=
+ Neue',Helvetica,sans-serif;font-size:35px;font-weight:700;letter-spacing:n=
+ormal;line-height:1.2;text-align:center;margin-top:0;margin-bottom:0;mso-li=
+ne-height-alt:42px"><span class=3D"tinyMce-placeholder" style=3D"word-break=
+: break-word; color: #000000;">Don't miss this</span></h1></td></tr></tbody=
+></table></td></tr></tbody></table></td></tr></tbody></table><table class=
+=3D"row row-7" align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-=
+table-rspace:0;background-color:#d5d9df"><tbody><tr><td><table class=3D"row=
+-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+;background-color:#fff;border-radius:0;color:#000;width:685px;margin:0 auto=
+" width=3D"685"><tbody><tr><td class=3D"column column-1" width=3D"50%" styl=
+e=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;=
+padding-bottom:5px;padding-top:5px;vertical-align:top"><table class=3D"imag=
+e_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:5px;padding-left:10p=
+x;padding-right:10px;width:100%"><div class=3D"alignment" align=3D"center">=
+<div style=3D"max-width:322.5px">=0D
+<a href=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsi=
+bWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpWaFpqSTVOamhqTFRBNU9ESXROREE1TVM=
+xaE1EZGpMV00yTlRFeE16RTVZVGN3TVNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJal=
+F6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwI=
+jpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--9d4e340d41b087781ab23e3489f9=
+a964e4bc27a068cec19516e7ec8775aa7064" target=3D"_blank" style=3D"outline:no=
+ne" tabindex=3D"-1"><img src=3D"https://workshop-email-content.com/v1/q3m49=
+enaby.dewpEho9v1L360xQ_vWCjhag4UbKlQLlNPFM9X2JoQcHMIuVw08L2PQAr-xTouat_Uyqb=
+ts6Li9HFPXMzehhBuRZysUgus2ukBa7R1XuXFOk-5NEzAGMWg=3D=3D.sMTCUYPJXql1jG86.ZE=
+S0n4r7g1Y-Vd1IiRd3LA=3D=3D/use-ai-daysnu-sn-insider.jpg" style=3D"display:b=
+lock;height:auto;border:0;width:100%" width=3D"322.5" alt=3D"" title=3D"" h=
+eight=3D"auto"></a></div></div></td></tr></tbody></table></td><td class=3D"=
+column column-2" width=3D"50%" style=3D"mso-table-lspace:0;mso-table-rspace=
+:0;font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;verti=
+cal-align:top"><table class=3D"heading_block block-1" width=3D"100%" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad" style=3D=
+"padding-bottom:5px;padding-left:10px;padding-right:10px;text-align:center;=
+width:100%"><h1 style=3D"margin:0;color:#000;direction:ltr;font-family:'Ser=
+viceNow Sans Display Medium',Arial,'Helvetica Neue',Helvetica,sans-serif;fo=
+nt-size:24px;font-weight:500;letter-spacing:normal;line-height:1.2;text-ali=
+gn:left;margin-top:0;margin-bottom:0;mso-line-height-alt:29px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;"><a hr=
+ef=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc=
+2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpKbE5HWTVaVE0zTFRKaVl6a3ROR1ExWmkxaU9U=
+ZGhMVFF3WkdNMk5qYzFabU5tTlNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TUR=
+aaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudW=
+xsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--f20a9fbae3b750dd6e19c4a51be2cf153=
+f2602906d2925e998f6d98d1605128f" target=3D"_blank" style=3D"text-decoration=
+: none; color: #000000;" rel=3D"noopener"><span class=3D"mce-content-body m=
+ce-edit-focus" style=3D"word-break: break-word; position: relative;" id=3D"=
+3ff9e7df-d707-44be-b484-2954dade8f32" data-position=3D"70-1-0" data-qa=3D"t=
+inyeditor-root-element"><span class=3D"tinyMce-placeholder" style=3D"word-b=
+reak: break-word;">AI magic, unlocked! =F0=9F=AA=84</span></span></a></span=
+>=0D
+</h1></td></tr></tbody></table><table class=3D"text_block block-2" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><t=
+body><tr><td class=3D"pad" style=3D"padding-bottom:5px;padding-left:10px;pa=
+dding-right:10px"><div style=3D"font-family:Arial,sans-serif"><div class=3D=
+"" style=3D"font-size:15px;font-family:'ServiceNow Sans Light',Arial,'Helve=
+tica Neue',Helvetica,sans-serif;mso-line-height-alt:18px;color:#000;line-he=
+ight:1.2"><p style=3D"margin:0;font-size:14px;mso-line-height-alt:16.8px"><=
+span style=3D"word-break: break-word; font-size: 14px;"><strong>by Jayney H=
+owson</strong></span></p><p style=3D"margin:0;font-size:14px;mso-line-heigh=
+t-alt:18px">&nbsp;</p><p style=3D"margin:0;font-size:14px;mso-line-height-a=
+lt:16.8px">=0D
+<span style=3D"word-break: break-word; font-size: 14px;"><a href=3D"https:/=
+/workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5Sm=
+xiV0ZwYkV4cGJtdEpaQ0k2SWpoaE5URmlNVGsxTFdFNU5HSXROR1k1TnkwNFpETmlMVGcwTm1RM=
+09HTXlORGhqT0NJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEEx=
+Wm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJ=
+lbWFpbF9hbmFseXRpY3MifX0%3D--c5da08a2fd2cee9563871c3710a01b5df4c2ac72ad505f=
+41bf46e42a4064ad79" target=3D"_blank" style=3D"text-decoration: underline; =
+color: #000000;" rel=3D"noopener">Use AI Day</a> was all about building the=
+ confidence to transform how we work with AI. Employees were encouraged to =
+sharpen their prompts, explore new tools, and build their own AI agents. </=
+span><span style=3D"word-break: break-word; font-size: 14px;">If you haven=
+=E2=80=99t yet, be sure to complete the Use AI Day training on ServiceNow U=
+niversity. Let=E2=80=99s keep learning, sharing, and leading the way with A=
+I!</span>=0D
+</p></div></div></td></tr></tbody></table><table class=3D"button_block bloc=
+k-3" width=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><t=
+r><td class=3D"pad"><div class=3D"alignment" align=3D"left"><a href=3D"http=
+s://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV=
+5SmxiV0ZwYkV4cGJtdEpaQ0k2SW1ZM05ESTJNekUzTFRrNE5ERXROR1E1T0MwNE1qWmlMVE5qT0=
+Raak4yUmxPVFkwWWlJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMV=
+EExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIi=
+OiJlbWFpbF9hbmFseXRpY3MifX0%3D--7932afd60476393fa08ef8fe2dd612b7667db216f24=
+9131f6d1c0800d9319f7a" target=3D"_blank" style=3D"color:#ffffff;text-decora=
+tion:none;"><!--[if mso]>=0D
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://workshop-email-tracking.com/=
+anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SW1ZM05=
+ESTJNekUzTFRrNE5ERXROR1E1T0MwNE1qWmlMVE5qT0Raak4yUmxPVFkwWWlJc0ltRnViMjU1Yl=
+c5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOV=
+FV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--=
+7932afd60476393fa08ef8fe2dd612b7667db216f249131f6d1c0800d9319f7a"  style=3D=
+"height:38px;width:205px;v-text-anchor:middle;" arcsize=3D"0%" fillcolor=3D=
+"#62d84e">=0D
+<v:stroke dashstyle=3D"Solid" weight=3D"0px" color=3D"#62d84e"/>=0D
+<w:anchorlock/>=0D
+<v:textbox inset=3D"0px,0px,0px,0px">=0D
+<center dir=3D"false" style=3D"color:#ffffff;font-family:Arial, sans-serif;=
+font-size:14px">=0D
+<![endif]-->=0D
+<span class=3D"button" style=3D"background-color: #62d84e; border-bottom: 0=
+px solid transparent; border-left: 0px solid transparent; border-radius: 0p=
+x; border-right: 0px solid transparent; border-top: 0px solid transparent; =
+color: #ffffff; display: inline-block; font-family: 'ServiceNow Sans', Aria=
+l, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px; font-weight: 4=
+00; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-le=
+ft: 15px; padding-right: 15px; text-align: center; width: auto; word-break:=
+ keep-all; letter-spacing: normal;"><span style=3D"word-break: break-word; =
+line-height: 28px;">Keep the momentum going</span></span>=0D
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><t=
+able class=3D"row row-8" align=3D"center" width=3D"100%" border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lsp=
+ace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><td><table cl=
+ass=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" c=
+ellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-tabl=
+e-rspace:0;background-color:#fff;border-radius:0;color:#000;width:685px;mar=
+gin:0 auto" width=3D"685"><tbody><tr><td class=3D"column column-1" width=3D=
+"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-=
+align:left;padding-bottom:15px;padding-left:10px;padding-right:10px;padding=
+-top:15px;vertical-align:top"><table class=3D"divider_block block-1" width=
+=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=3D"present=
+ation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=
+=3D"pad"><div class=3D"alignment" align=3D"center"><table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" role=3D"presentation" width=3D"100%" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"divider_=
+inner" style=3D"font-size:1px;line-height:1px;border-top:1px solid #bbb"><s=
+pan style=3D"word-break: break-word;">=E2=80=8A</span></td></tr></tbody></t=
+able></div></td></tr></tbody></table></td></tr></tbody></table></td></tr></=
+tbody></table><table class=3D"row row-9" align=3D"center" width=3D"100%" bo=
+rder=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody>=
+<tr><td><table class=3D"row-content stack" align=3D"center" border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-=
+lspace:0;mso-table-rspace:0;background-color:#fff;border-radius:0;color:#00=
+0;width:685px;margin:0 auto" width=3D"685"><tbody><tr><td class=3D"column c=
+olumn-1" width=3D"50%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-=
+weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-alig=
+n:top"><table class=3D"image_block block-1" width=3D"100%" border=3D"0" cel=
+lpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-l=
+space:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad" style=3D"padding-b=
+ottom:5px;padding-left:10px;padding-right:10px;width:100%"><div class=3D"al=
+ignment" align=3D"center"><div style=3D"max-width:322.5px">=0D
+<a href=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsi=
+bWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpjek5qZ3dZelF6TFdOaE5UVXROR1JrT1M=
+wNE9EZGhMVEV4WkdVM1kyWmxNRGhpT0NJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJal=
+F6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwI=
+jpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--e622b3c503b3a909f3be9443599a=
+a1edc43bdd3c6bdbe7377f1d27d035029ce5" target=3D"_blank" style=3D"outline:no=
+ne" tabindex=3D"-1"><img src=3D"https://workshop-email-content.com/v1/q3m49=
+enaby.28bqOzKs1o-NZM4bXneO6WjYPpZKnRVFWzq-cG2JvIRIs4sB7mY4hWReNkL-iiRVTGbI9=
+Kg_oreSl5TrO2G6VVSAcj2qx1WBAChPE2bUDXjsNRz9k3w1FA=3D=3D.GZNQ7X_SHB8nsvPi.xU=
+MAcTpmKuYwtKJ21k6ABA=3D=3D/magic-employee-story-sn-insider.jpg" style=3D"di=
+splay:block;height:auto;border:0;width:100%" width=3D"322.5" alt=3D"" title=
+=3D"" height=3D"auto"></a></div></div></td></tr></tbody></table>=0D
+</td><td class=3D"column column-2" width=3D"50%" style=3D"mso-table-lspace:=
+0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:5px;pad=
+ding-top:5px;vertical-align:top"><table class=3D"heading_block block-1" wid=
+th=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td clas=
+s=3D"pad" style=3D"padding-bottom:5px;padding-left:10px;padding-right:10px;=
+text-align:center;width:100%"><h1 style=3D"margin:0;color:#000;direction:lt=
+r;font-family:'ServiceNow Sans Display Medium',Arial,'Helvetica Neue',Helve=
+tica,sans-serif;font-size:24px;font-weight:500;letter-spacing:normal;line-h=
+eight:1.2;text-align:left;margin-top:0;margin-bottom:0;mso-line-height-alt:=
+29px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;"><a hr=
+ef=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc=
+2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpBeU9EZGxNelkxTFRGaE4yTXRORFZqTnkwNVlt=
+WTJMV0l5WkRGbFlqRXhOV00xWkNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TUR=
+aaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudW=
+xsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--11220d70e06dac2b7222282a3f90ebfba=
+1aa9ff2fafa2cd84f5836b973c4c3a2" target=3D"_blank" style=3D"text-decoration=
+: none; color: #000000;" rel=3D"noopener">The future of work =E2=80=94 NOW =
+=F0=9F=9A=80</a></span></h1></td></tr></tbody></table><table class=3D"text_=
+block block-2" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D=
+"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;wo=
+rd-break:break-word"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:5=
+px;padding-left:10px;padding-right:10px"><div style=3D"font-family:Arial,sa=
+ns-serif"><div class=3D"" style=3D"font-size:15px;font-family:'ServiceNow S=
+ans Light',Arial,'Helvetica Neue',Helvetica,sans-serif;mso-line-height-alt:=
+18px;color:#000;line-height:1.2"><p style=3D"margin:0;font-size:14px;mso-li=
+ne-height-alt:16.8px"><strong><span style=3D"word-break: break-word; font-s=
+ize: 14px;">by ServiceNow News&nbsp;</span></strong></p><p style=3D"margin:=
+0;font-size:14px;mso-line-height-alt:18px">&nbsp;</p><p style=3D"margin:0;f=
+ont-size:14px;mso-line-height-alt:16.8px">=0D
+What happens when powerful workflows, untapped data, and AI combine? The Se=
+rviceNow AI Platform transforms how customers work. In this video, Girish, =
+Sarah, and Vijay discuss innovations like agentic AI, Workflow Data Fabric,=
+ and RaptorDB. Tell us how you're putting AI to work at <a href=3D"mailto:M=
+yStory@servicenow.com" target=3D"_blank" style=3D"text-decoration: underlin=
+e; color: #000000;" rel=3D"noopener">MyStory@servicenow.com</a>!</p></div><=
+/div></td></tr></tbody></table><table class=3D"button_block block-3" width=
+=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=3D"present=
+ation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=
+=3D"pad"><div class=3D"alignment" align=3D"left"><a href=3D"https://worksho=
+p-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYk=
+V4cGJtdEpaQ0k2SWpZME56QTRObUkwTFRsa05XUXROREUzTVMwNE1tUTFMV0ptTkdRd00yRXdPV=
+EZoWlNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5E=
+QTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9=
+hbmFseXRpY3MifX0%3D--14f5a0f625506a7d5088a86fe6cbbf354d126c40a0165a5a2218b0=
+bda16542f5" target=3D"_blank" style=3D"color:#ffffff;text-decoration:none;"=
+><!--[if mso]>=0D
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://workshop-email-tracking.com/=
+anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpZME5=
+6QTRObUkwTFRsa05XUXROREUzTVMwNE1tUTFMV0ptTkdRd00yRXdPVEZoWlNJc0ltRnViMjU1Yl=
+c5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOV=
+FV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--=
+14f5a0f625506a7d5088a86fe6cbbf354d126c40a0165a5a2218b0bda16542f5"  style=3D=
+"height:38px;width:152px;v-text-anchor:middle;" arcsize=3D"0%" fillcolor=3D=
+"#62d84e">=0D
+<v:stroke dashstyle=3D"Solid" weight=3D"0px" color=3D"#62d84e"/>=0D
+<w:anchorlock/>=0D
+<v:textbox inset=3D"0px,0px,0px,0px">=0D
+<center dir=3D"false" style=3D"color:#ffffff;font-family:Arial, sans-serif;=
+font-size:14px">=0D
+<![endif]-->=0D
+<span class=3D"button" style=3D"background-color: #62d84e; border-bottom: 0=
+px solid transparent; border-left: 0px solid transparent; border-radius: 0p=
+x; border-right: 0px solid transparent; border-top: 0px solid transparent; =
+color: #ffffff; display: inline-block; font-family: 'ServiceNow Sans', Aria=
+l, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px; font-weight: 4=
+00; mso-border-alt: none; padding-bottom: 5px; padding-top: 5px; padding-le=
+ft: 15px; padding-right: 15px; text-align: center; width: auto; word-break:=
+ keep-all; letter-spacing: normal;"><span style=3D"word-break: break-word; =
+line-height: 28px;">See the innovation</span></span>=0D
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><t=
+able class=3D"row row-10" align=3D"center" width=3D"100%" border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-ls=
+pace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><td><table c=
+lass=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-tab=
+le-rspace:0;background-color:#fff;border-radius:0;color:#000;width:685px;ma=
+rgin:0 auto" width=3D"685"><tbody><tr><td class=3D"column column-1" width=
+=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;te=
+xt-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top"><table=
+ class=3D"divider_block block-1" width=3D"100%" border=3D"0" cellpadding=3D=
+"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso=
+-table-rspace:0"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:10px;=
+padding-left:10px;padding-right:10px;padding-top:25px"><div class=3D"alignm=
+ent" align=3D"center"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"=
+0" role=3D"presentation" width=3D"100%" style=3D"mso-table-lspace:0;mso-tab=
+le-rspace:0"><tbody><tr><td class=3D"divider_inner" style=3D"font-size:1px;=
+line-height:1px;border-top:4px solid #62d84e"><span style=3D"word-break: br=
+eak-word;">=E2=80=8A</span></td></tr></tbody></table></div></td></tr></tbod=
+y></table><table class=3D"heading_block block-2" width=3D"100%" border=3D"0=
+" cellpadding=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad"><h1 style=3D=
+"margin:0;color:#000;direction:ltr;font-family:'ServiceNow Sans Display Bol=
+d',Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:35px;font-weight:7=
+00;letter-spacing:normal;line-height:1.2;text-align:center;margin-top:0;mar=
+gin-bottom:0;mso-line-height-alt:42px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word; color:=
+ #000000;">ServiceNow in the news</span></h1></td></tr></tbody></table></td=
+></tr></tbody></table></td></tr></tbody></table><table class=3D"row row-11"=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+;background-color:#d5d9df"><tbody><tr><td><table class=3D"row-content stack=
+" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D=
+"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;background-co=
+lor:#fff;border-radius:0;color:#000;width:685px;margin:0 auto" width=3D"685=
+"><tbody><tr><td class=3D"column column-1" width=3D"100%" style=3D"mso-tabl=
+e-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-botto=
+m:5px;padding-top:5px;vertical-align:top"><table class=3D"heading_block blo=
+ck-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><t=
+r><td class=3D"pad" style=3D"padding-left:10px;padding-right:10px;padding-t=
+op:10px;text-align:center;width:100%"><h1 style=3D"margin:0;color:#000;dire=
+ction:ltr;font-family:'ServiceNow Sans Book',Arial,'Helvetica Neue',Helveti=
+ca,sans-serif;font-size:24px;font-weight:500;letter-spacing:normal;line-hei=
+ght:1.2;text-align:left;margin-top:0;margin-bottom:0;mso-line-height-alt:29=
+px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;"><a hr=
+ef=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc=
+2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SW1Fd04yVTBNMkZoTFdVek16Y3RORFppWXkxaU9U=
+UTRMV0V5WkdNeU1EVm1OV0ppTnlJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TUR=
+aaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudW=
+xsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--a7d86f88ee08b3493afcb4013c65a7a56=
+04a7c49c5eb979d37a6d8aab7c5a4a4" target=3D"_blank" style=3D"text-decoration=
+: none; color: #000000;" rel=3D"noopener"><span class=3D"mce-content-body m=
+ce-edit-focus" style=3D"word-break: break-word; position: relative;" id=3D"=
+15a9c9c6-8af6-400b-ba41-0e715502320a" data-position=3D"130-0-0" data-qa=3D"=
+tinyeditor-root-element"><span class=3D"tinyMce-placeholder" style=3D"word-=
+break: break-word;">ServiceNow stock regenerates with swarm of AI <strong>=
+=E2=80=93 a</strong>nd Amazon deal</span></span></a></span>=0D
+</h1></td></tr></tbody></table><table class=3D"text_block block-2" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><t=
+body><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-left:10px;p=
+adding-right:10px"><div style=3D"font-family:Arial,sans-serif"><div class=
+=3D"" style=3D"font-size:15px;font-family:'ServiceNow Sans Book',Arial,'Hel=
+vetica Neue',Helvetica,sans-serif;mso-line-height-alt:18px;color:#000;line-=
+height:1.2"><p style=3D"margin:0;mso-line-height-alt:18px"><span style=3D"w=
+ord-break: break-word; font-size: 14px;"><strong>by Investor's Business Dai=
+ly&nbsp;</strong></span></p></div></div></td></tr></tbody></table><table cl=
+ass=3D"divider_block block-3" width=3D"100%" border=3D"0" cellpadding=3D"10=
+" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-t=
+able-rspace:0"><tbody><tr><td class=3D"pad"><div class=3D"alignment" align=
+=3D"center"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D=
+"presentation" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:=
+0"><tbody><tr><td class=3D"divider_inner" style=3D"font-size:1px;line-heigh=
+t:1px;border-top:1px solid #bbb"><span style=3D"word-break: break-word;">=
+=E2=80=8A</span></td></tr></tbody></table></div></td></tr></tbody></table><=
+/td></tr></tbody></table></td></tr></tbody></table><table class=3D"row row-=
+12" align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspac=
+ing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspac=
+e:0;background-color:#d5d9df"><tbody><tr><td><table class=3D"row-content st=
+ack" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;background=
+-color:#fff;border-radius:0;color:#000;width:685px;margin:0 auto" width=3D"=
+685"><tbody><tr><td class=3D"column column-1" width=3D"100%" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bo=
+ttom:5px;padding-top:5px;vertical-align:top"><table class=3D"heading_block =
+block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody>=
+<tr><td class=3D"pad" style=3D"padding-left:10px;padding-right:10px;padding=
+-top:10px;text-align:center;width:100%"><h1 style=3D"margin:0;color:#000;di=
+rection:ltr;font-family:'ServiceNow Sans Book',Arial,'Helvetica Neue',Helve=
+tica,sans-serif;font-size:24px;font-weight:500;letter-spacing:normal;line-h=
+eight:1.2;text-align:left;margin-top:0;margin-bottom:0;mso-line-height-alt:=
+29px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;"><a hr=
+ef=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc=
+2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpGaVpEVXpaV1ZoTFRZeFkyVXROREk0TXkxaFlX=
+SmtMVE5pTnpCaVpHWTVaVFJsTmlJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TUR=
+aaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudW=
+xsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--b0d4dba059efb53286ae4398098bcc4af=
+0a7c12ce26bb22c4fa6284c3a4ba8b2" target=3D"_blank" style=3D"text-decoration=
+: none; color: #000000;" rel=3D"noopener"><span class=3D"mce-content-body m=
+ce-edit-focus" style=3D"word-break: break-word; position: relative;" id=3D"=
+b710fbdc-c2a8-4e2e-a6a1-772c4b509bc6" data-position=3D"140-0-0" data-qa=3D"=
+tinyeditor-root-element"><span class=3D"tinyMce-placeholder" style=3D"word-=
+break: break-word;">Does AI make technology more accessible or widen digita=
+l inequalities? </span></span></a></span>=0D
+</h1></td></tr></tbody></table><table class=3D"text_block block-2" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><t=
+body><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-left:10px;p=
+adding-right:10px"><div style=3D"font-family:Arial,sans-serif"><div class=
+=3D"" style=3D"font-size:15px;font-family:'ServiceNow Sans Book',Arial,'Hel=
+vetica Neue',Helvetica,sans-serif;mso-line-height-alt:18px;color:#000;line-=
+height:1.2"><p style=3D"margin:0;mso-line-height-alt:18px"><span style=3D"w=
+ord-break: break-word; font-size: 14px;">by </span><strong><span style=3D"w=
+ord-break: break-word; font-size: 14px;">Forbes</span></strong></p></div></=
+div></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody><=
+/table><table class=3D"row row-13" align=3D"center" width=3D"100%" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><=
+td><table class=3D"row-content stack" align=3D"center" border=3D"0" cellpad=
+ding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;background-color:#fff;border-radius:0;color:#000;wid=
+th:685px;margin:0 auto" width=3D"685"><tbody><tr><td class=3D"column column=
+-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weig=
+ht:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:to=
+p"><table class=3D"divider_block block-1" width=3D"100%" border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lsp=
+ace:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad" style=3D"padding-bot=
+tom:10px;padding-left:10px;padding-right:10px"><div class=3D"alignment" ali=
+gn=3D"center"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspa=
+ce:0"><tbody><tr><td class=3D"divider_inner" style=3D"font-size:1px;line-he=
+ight:1px;border-top:1px solid #bbb"><span style=3D"word-break: break-word;"=
+>=E2=80=8A</span></td></tr></tbody></table>=0D
+</div></td></tr></tbody></table><table class=3D"heading_block block-2" widt=
+h=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"present=
+ation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=
+=3D"pad" style=3D"padding-left:10px;padding-right:10px;padding-top:10px;tex=
+t-align:center;width:100%"><h1 style=3D"margin:0;color:#000;direction:ltr;f=
+ont-family:'ServiceNow Sans Book',Arial,'Helvetica Neue',Helvetica,sans-ser=
+if;font-size:24px;font-weight:500;letter-spacing:normal;line-height:1.2;tex=
+t-align:left;margin-top:0;margin-bottom:0;mso-line-height-alt:29px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;"><a hr=
+ef=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc=
+2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpKall6RXlaVEpqTFRkbE1tTXROR1l5TkMxaE1U=
+TmtMV1V4WVdNd1lUaGpaak00TVNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TUR=
+aaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudW=
+xsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--1c8a4ad00405da458ccd65533ec13ee1b=
+4eb4ce89095e670f568c644f44d7556" target=3D"_blank" style=3D"text-decoration=
+: none; color: #000000;" rel=3D"noopener"><span class=3D"mce-content-body m=
+ce-edit-focus" style=3D"word-break: break-word; position: relative;" id=3D"=
+1c82627a-b8ee-4e84-9a20-d55f9d89f0e3" data-position=3D"150-0-1" data-qa=3D"=
+tinyeditor-root-element"><span class=3D"tinyMce-placeholder" style=3D"word-=
+break: break-word;">Unlocking the full potential of AI agents </span></span=
+></a></span>=0D
+</h1></td></tr></tbody></table><table class=3D"text_block block-3" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><t=
+body><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-left:10px;p=
+adding-right:10px"><div style=3D"font-family:Arial,sans-serif"><div class=
+=3D"" style=3D"font-size:15px;font-family:'ServiceNow Sans Book',Arial,'Hel=
+vetica Neue',Helvetica,sans-serif;mso-line-height-alt:18px;color:#000;line-=
+height:1.2"><p style=3D"margin:0;mso-line-height-alt:18px"><strong><span st=
+yle=3D"word-break: break-word; font-size: 14px;">by RTInsights.com</span></=
+strong></p></div></div></td></tr></tbody></table></td></tr></tbody></table>=
+</td></tr></tbody></table><table class=3D"row row-14" align=3D"center" widt=
+h=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"present=
+ation" style=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#d5d=
+9df"><tbody><tr><td><table class=3D"row-content stack" align=3D"center" bor=
+der=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#fff;border-radi=
+us:0;color:#000;width:685px;margin:0 auto" width=3D"685"><tbody><tr><td cla=
+ss=3D"column column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table=
+-rspace:0;font-weight:400;text-align:left;padding-bottom:5px;padding-top:5p=
+x;vertical-align:top"><table class=3D"divider_block block-1" width=3D"100%"=
+ border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" sty=
+le=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad" s=
+tyle=3D"padding-bottom:10px;padding-left:10px;padding-right:10px"><div clas=
+s=3D"alignment" align=3D"center"><table border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0" role=3D"presentation" width=3D"100%" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0"><tbody><tr><td class=3D"divider_inner" style=3D"fon=
+t-size:1px;line-height:1px;border-top:1px solid #bbb"><span style=3D"word-b=
+reak: break-word;">=E2=80=8A</span></td></tr></tbody></table></div></td></t=
+r></tbody></table><table class=3D"heading_block block-2" width=3D"100%" bor=
+der=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad" sty=
+le=3D"padding-left:10px;padding-right:10px;padding-top:10px;text-align:cent=
+er;width:100%"><h1 style=3D"margin:0;color:#000;direction:ltr;font-family:'=
+ServiceNow Sans Book',Arial,'Helvetica Neue',Helvetica,sans-serif;font-size=
+:24px;font-weight:500;letter-spacing:normal;line-height:1.2;text-align:left=
+;margin-top:0;margin-bottom:0;mso-line-height-alt:29px">=0D
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;"><a hr=
+ef=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc=
+2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWprMk5tUTFNakprTFdRNE1qa3ROR1ZrTVMxaFlU=
+Vm1MVGczWldNMVlUYzRNek0zTUNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TUR=
+aaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudW=
+xsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--80739ed93d9a900de6a61f0d84f38c83a=
+e07cfcb98ff0c1b72aa11ba8ac5e1f6" target=3D"_blank" style=3D"text-decoration=
+: none; color: #000000;" rel=3D"noopener"><span class=3D"mce-content-body m=
+ce-edit-focus" style=3D"word-break: break-word; position: relative;" id=3D"=
+9002ad0f-6302-4482-80c1-33837a33b42a" data-position=3D"160-0-1" data-qa=3D"=
+tinyeditor-root-element"><span class=3D"tinyMce-placeholder" style=3D"word-=
+break: break-word;">ServiceNow picks its AI leader Michael Park to lead glo=
+bal channels </span></span></a></span>=0D
+</h1></td></tr></tbody></table><table class=3D"text_block block-3" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><t=
+body><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-left:10px;p=
+adding-right:10px"><div style=3D"font-family:Arial,sans-serif"><div class=
+=3D"" style=3D"font-size:15px;font-family:'ServiceNow Sans Book',Arial,'Hel=
+vetica Neue',Helvetica,sans-serif;mso-line-height-alt:18px;color:#000;line-=
+height:1.2"><p style=3D"margin:0;mso-line-height-alt:18px"><span style=3D"w=
+ord-break: break-word; font-size: 14px;"><strong>by CRN</strong></span></p>=
+</div></div></td></tr></tbody></table></td></tr></tbody></table></td></tr><=
+/tbody></table><table class=3D"row row-15" align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" styl=
+e=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody=
+><tr><td><table class=3D"row-content stack" align=3D"center" border=3D"0" c=
+ellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table=
+-lspace:0;mso-table-rspace:0;background-color:#fff;border-radius:0;color:#0=
+00;width:685px;margin:0 auto" width=3D"685"><tbody><tr><td class=3D"column =
+column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;fon=
+t-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-al=
+ign:top"><table class=3D"divider_block block-1" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-tab=
+le-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad" style=3D"paddi=
+ng-bottom:15px;padding-left:10px;padding-right:10px;padding-top:15px"><div =
+class=3D"alignment" align=3D"center"><table border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" width=3D"100%" style=3D"mso-table-l=
+space:0;mso-table-rspace:0"><tbody><tr><td class=3D"divider_inner" style=3D=
+"font-size:1px;line-height:1px;border-top:4px solid #62d84e"><span style=3D=
+"word-break: break-word;">=E2=80=8A</span></td></tr></tbody></table></div><=
+/td></tr>=0D
+</tbody></table></td></tr></tbody></table></td></tr></tbody></table><table =
+class=3D"row row-16" align=3D"center" width=3D"100%" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:=
+0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><td><table class=
+=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-r=
+space:0;background-color:#fff;border-radius:0;color:#000;width:685px;margin=
+:0 auto" width=3D"685"><tbody><tr><td class=3D"column column-1" width=3D"10=
+0%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-ali=
+gn:left;padding-bottom:5px;padding-top:5px;vertical-align:top"><table class=
+=3D"heading_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table=
+-rspace:0"><tbody><tr><td class=3D"pad" style=3D"padding-left:10px;padding-=
+right:5px;text-align:center;width:100%"><h1 style=3D"margin:0;color:#000;di=
+rection:ltr;font-family:'ServiceNow Sans Display Bold',Arial,'Helvetica Neu=
+e',Helvetica,sans-serif;font-size:35px;font-weight:700;letter-spacing:norma=
+l;line-height:1.2;text-align:center;margin-top:0;margin-bottom:0;mso-line-h=
+eight-alt:42px"><span class=3D"tinyMce-placeholder" style=3D"word-break: br=
+eak-word; color: #000000;">Want more?</span></h1></td></tr></tbody></table>=
+</td></tr></tbody></table></td></tr></tbody></table><table class=3D"row row=
+-17" align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspa=
+cing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspa=
+ce:0;background-color:#d5d9df"><tbody><tr><td><table class=3D"row-content s=
+tack" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgroun=
+d-color:#fff;border-radius:0;color:#000;width:685px;margin:0 auto" width=3D=
+"685"><tbody><tr><td class=3D"column column-1" width=3D"100%" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-b=
+ottom:5px;padding-top:5px;vertical-align:top"><table class=3D"text_block bl=
+ock-1" width=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-brea=
+k:break-word"><tbody><tr><td class=3D"pad"><div style=3D"font-family:Arial,=
+sans-serif"><div class=3D"" style=3D"font-size:15px;font-family:'ServiceNow=
+ Sans',Arial,'Helvetica Neue',Helvetica,sans-serif;mso-line-height-alt:18px=
+;color:#000;line-height:1.2"><p style=3D"margin:0;text-align:center;mso-lin=
+e-height-alt:18px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">Tune in to <a href=
+=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc2F=
+nZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SW1aaE1XSmtPV1ZsTFRsa01UUXROR0ptTXkwNE1ESX=
+dMVFV3TXpnd04yWXpOV0V3TWlJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaa=
+VlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxs=
+LCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--c58f273af306b778607feb0bdc3111b80ae=
+328334d1d40d167161e88ae2899a6" target=3D"_blank" style=3D"text-decoration: =
+underline; color: #000000;" rel=3D"noopener">The Network</a>, our primary c=
+ommunications channel for all the latest company happenings! For the bigges=
+t, most important stories about our purpose, priorities, and culture, stay =
+up to date on our <a href=3D"https://workshop-email-tracking.com/anonymous/=
+c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SW1VMFlURm1NVGd4T=
+FRjM05UZ3RORE0xWkMwNFpqVmtMVE01TmpSa09HSTJNakV4TUNJc0ltRnViMjU1Ylc5MWMwTnZi=
+blJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1=
+qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--5879bb3072=
+99fc048c5b4b390e2e5b7393de53272c2e745f09589f2ade4dc9cd" target=3D"_blank" s=
+tyle=3D"text-decoration: underline; color: #000000;" rel=3D"noopener">Insid=
+e ServiceNow group</a>.</span>=0D
+</p><p style=3D"margin:0;text-align:center;mso-line-height-alt:18px">&nbsp;=
+</p><p style=3D"margin:0;font-size:15px;text-align:center;mso-line-height-a=
+lt:18px"><span style=3D"word-break: break-word; font-size: 16px;">Questions=
+ or comments? Email the&nbsp;<u><a href=3D"mailto:globalemployeecomms@servi=
+cenow.com" target=3D"_blank" title=3D"globalemployeecomms@servicenow.com" s=
+tyle=3D"text-decoration: none; color: #000000;" rel=3D"noopener">Global Emp=
+loyee Communications team</a></u>.</span></p></div>=0D
+</div></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody=
+></table><table class=3D"row row-18" align=3D"center" width=3D"100%" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><=
+td><table class=3D"row-content stack" align=3D"center" border=3D"0" cellpad=
+ding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;background-color:#fff;border-radius:0;color:#000;wid=
+th:685px;margin:0 auto" width=3D"685"><tbody><tr><td class=3D"column column=
+-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weig=
+ht:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:to=
+p"><table class=3D"divider_block block-1" width=3D"100%" border=3D"0" cellp=
+adding=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-ls=
+pace:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad">=0D
+<div class=3D"alignment" align=3D"center"><table border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" width=3D"100%" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"divider_inner" s=
+tyle=3D"font-size:1px;line-height:1px;border-top:1px solid #bbb"><span styl=
+e=3D"word-break: break-word;">=E2=80=8A</span></td></tr></tbody></table></d=
+iv></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></=
+table><table class=3D"row row-19" align=3D"center" width=3D"100%" border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0;background-color:#d5d9df"><tbody><tr><td>=
+<table class=3D"row-content stack" align=3D"center" border=3D"0" cellpaddin=
+g=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0=
+;mso-table-rspace:0;background-color:#fff;border-radius:0;color:#000;width:=
+685px;margin:0 auto" width=3D"685"><tbody><tr><td class=3D"column column-1"=
+ width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:=
+400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top">=
+<table class=3D"text_block block-1" width=3D"100%" border=3D"0" cellpadding=
+=3D"35" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0=
+;mso-table-rspace:0;word-break:break-word"><tbody><tr><td class=3D"pad"><di=
+v style=3D"font-family:Arial,sans-serif"><div class=3D"" style=3D"font-size=
+:15px;font-family:'ServiceNow Sans Display Medium',Arial,'Helvetica Neue',H=
+elvetica,sans-serif;mso-line-height-alt:18px;color:#000;line-height:1.2"><p=
+ style=3D"margin:0;font-size:15px;text-align:center;mso-line-height-alt:18p=
+x"><span style=3D"word-break: break-word; font-size: 20px; color: #000000;"=
+><strong>Useful Links</strong></span></p></div></div></td></tr></tbody></ta=
+ble></td></tr></tbody></table></td></tr></tbody></table><table class=3D"row=
+ row-20" align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-=
+rspace:0;background-color:#d5d9df"><tbody><tr><td><table class=3D"row-conte=
+nt stack" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backg=
+round-color:#fff;border-radius:0;color:#000;width:685px;margin:0 auto" widt=
+h=3D"685"><tbody><tr><td class=3D"column column-1" width=3D"100%" style=3D"=
+mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;paddi=
+ng-bottom:5px;padding-top:5px;vertical-align:top"><table class=3D"text_bloc=
+k block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-b=
+reak:break-word"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:15px;=
+padding-left:10px;padding-right:10px"><div style=3D"font-family:Arial,sans-=
+serif"><div class=3D"" style=3D"font-size:15px;font-family:'ServiceNow Sans=
+',Arial,'Helvetica Neue',Helvetica,sans-serif;mso-line-height-alt:18px;colo=
+r:#000;line-height:1.2"><p style=3D"margin:0;font-size:15px;text-align:cent=
+er;mso-line-height-alt:18px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;"><a href=3D"https:/=
+/workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5Sm=
+xiV0ZwYkV4cGJtdEpaQ0k2SWpFd1pETmtNelk0TFRaaU0yVXRORFkyWXkxaU5ESXhMV0psTTJSb=
+VpEVXlObU0yWXlJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6TURaaVlqUTFMVEEx=
+Wm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpudWxsLCJwdXIiOiJ=
+lbWFpbF9hbmFseXRpY3MifX0%3D--491ca210d09d1698aaa23f42beaf7af9f4aa76316910c6=
+bc77e3815a07451299" target=3D"_blank" style=3D"text-decoration: underline; =
+color: #000000;" rel=3D"noopener">My ServiceNow</a>&nbsp; &nbsp;|&nbsp; <a =
+href=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWV=
+zc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpsak9EazBOalEzTFdRNFpqQXROREpqWXkxaV=
+l6Wm1MVFExTlRsaFpqVXpaakEyTkNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJalF6T=
+URaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ0o5IiwiZXhwIjpu=
+dWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--f1661a724a735c8da5b9f20edc6f49a=
+7278f9f9ebf3a3a1df5615ae88944355b" target=3D"_blank" style=3D"text-decorati=
+on: underline; color: #000000;" rel=3D"noopener">Our Strategy</a>&nbsp; &nb=
+sp;| &nbsp; <a href=3D"https://workshop-email-tracking.com/anonymous/c/eyJf=
+cmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SW1ObE1HUmlPV0kxTFRGa1l=
+qVXRORGs1TkMwNU1ERTRMVE5pTldRd09XRXpOV1UzWlNJc0ltRnViMjU1Ylc5MWMwTnZiblJoWT=
+NSSlpDSTZJalF6TURaaVlqUTFMVEExWm1ZdE5EQTBZeTFoWTJNeUxUTmxOVFV4TXpjNE1qRTRNQ=
+0o5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--67e90a953319a433=
+a33a66474d4e519840de2ff07b5686923465b2777fb35507" target=3D"_blank" style=
+=3D"text-decoration: underline; color: #000000;" rel=3D"noopener">Global Wo=
+rkforce Innovation and Culture</a></span>=0D
+</p></div></div></td></tr></tbody></table></td></tr></tbody></table></td></=
+tr></tbody></table><table class=3D"row row-21" align=3D"center" width=3D"10=
+0%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+style=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#d5d9df"><t=
+body><tr><td><table class=3D"row-content stack" align=3D"center" border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0;background-color:#fff;border-radius:0;colo=
+r:#000;width:685px;margin:0 auto" width=3D"685"><tbody><tr><td class=3D"col=
+umn column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+;font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertica=
+l-align:top"><table class=3D"text_block block-1" width=3D"100%" border=3D"0=
+" cellpadding=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0;word-break:break-word"><tbody><tr>=0D
+<td class=3D"pad"><div style=3D"font-family:Arial,sans-serif"><div class=3D=
+"" style=3D"font-size:15px;font-family:'ServiceNow Sans Light',Arial,'Helve=
+tica Neue',Helvetica,sans-serif;mso-line-height-alt:18px;color:#000;line-he=
+ight:1.2"><p style=3D"margin:0;font-size:15px;text-align:center;mso-line-he=
+ight-alt:18px"><span style=3D"word-break: break-word; font-size: 12px;">=C2=
+=A9 2025. Internal use only</span></p></div></div></td></tr></tbody></table=
+></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody>=0D
+</table><!-- End --><img src=3D"https://workshop-email-tracking.com/anonymo=
+us/r/4306bb45-05ff-404c-acc2-3e5513782180.gif" width=3D"1" height=3D"1" bor=
+der=3D"0" alt=3D"" style=3D"width:1px !important;height:1px !important;bord=
+er-width:0 !important;margin-top:0 !important;margin-right:0 !important;mar=
+gin-bottom:0 !important;margin-left:0 !important;padding-top:0 !important;p=
+adding-right:0 !important;padding-bottom:0 !important;padding-left:0 !impor=
+tant;"></body></html>
+

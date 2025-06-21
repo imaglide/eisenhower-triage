@@ -1,0 +1,559 @@
+Received: from SA6PR08MB10038.namprd08.prod.outlook.com
+ (2603:10b6:806:424::20) by IA1PR08MB10590.namprd08.prod.outlook.com with
+ HTTPS; Fri, 13 Jun 2025 18:51:02 +0000
+ARC-Seal: i=4; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=fail;
+ b=jvOGPpv33tH0VyJ/NstVseUL6r+0+ZgTYWo2mBFlKB2YhEZ1lrbBCI7VyNvVEsQS4JSOuwfgiAEos8KsqHg7L/4dRybWV/CSO8AhrEcTnzeM+MxJk1gNA0359r5+UkW5ldmaE5FzhwLeFXrp2hPcHrgkocUVtUJ8q2BQGy/AQNeMefBTza8M6cPv7zajeNhJSzrKeuWlqAimrj/Mh1qJvGEXeRYGv+B33EXSNYaWvfH5Hl/6gl61U8ZZJV4cYE0X3qP5EIoHqTitfewoRx5VhtKI+TGlCX0ZTsGYiUH1sZWwIvki5YmUwnkqVTzg6btghgqgzja6B6Xc3DNJUWSDuQ==
+ARC-Message-Signature: i=4; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L4nntKzQEbvmShko7gdlpEpYsxgqBptgpP0a1xrGMP4=;
+ b=pJCl2+i0V2J3JiH+8MdmIj9c8IEn24IBH6KZxtjZFlKGJacVt6bxb+8OXHCldVRB3NP4v2wYrmGjmdXRhA/cA+MWQhHGiKcV6PXKnT1LM0PhwRPGa3XegK7FxvtZUASaPcIufmnHaMw/Yl6YsXZ/JGSdfIZH/GFwX8x6xlCKkIZkI2d6DTfrVi3qz9h4JibOEXqR0TJWWK+yt00/yqoA4i6gcIgNseghhZo4yuQr8DmdufXHWqY7SEIZYoHr2ANgom234oE+GDPqodC6MIYSapOI69h/zn+JalQK7eLTdWWIEeMEZ9DLfORhE9RS47Dtsp/YL1pM2MAbepNO7i4oVQ==
+ARC-Authentication-Results: i=4; mx.microsoft.com 1; spf=fail (sender ip is
+ 170.10.128.131) smtp.rcpttodomain=servicenow.com smtp.mailfrom=infosys.com;
+ dmarc=fail (p=reject sp=reject pct=100) action=oreject
+ header.from=infosys.com; dkim=fail (body hash did not verify)
+ header.d=infosys.com; arc=fail (49)
+Received: from BN9PR03CA0235.namprd03.prod.outlook.com (2603:10b6:408:f8::30)
+ by SA6PR08MB10038.namprd08.prod.outlook.com (2603:10b6:806:424::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Fri, 13 Jun
+ 2025 18:50:59 +0000
+Received: from BL02EPF00021F68.namprd02.prod.outlook.com
+ (2603:10b6:408:f8:cafe::b5) by BN9PR03CA0235.outlook.office365.com
+ (2603:10b6:408:f8::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.25 via Frontend Transport; Fri,
+ 13 Jun 2025 18:50:59 +0000
+Authentication-Results: spf=fail (sender IP is 170.10.128.131)
+ smtp.mailfrom=infosys.com; dkim=fail (body hash did not verify)
+ header.d=infosys.com;dmarc=fail action=oreject
+ header.from=infosys.com;compauth=none reason=451
+Received-SPF: Fail (protection.outlook.com: domain of infosys.com does not
+ designate 170.10.128.131 as permitted sender)
+ receiver=protection.outlook.com; client-ip=170.10.128.131;
+ helo=us-smtp-inbound-delivery-1.mimecast.com;
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ BL02EPF00021F68.mail.protection.outlook.com (10.167.249.4) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.15
+ via Frontend Transport; Fri, 13 Jun 2025 18:50:59 +0000
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1749840658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L4nntKzQEbvmShko7gdlpEpYsxgqBptgpP0a1xrGMP4=;
+	b=rbM9l5VCsL/jn2mt2FvLWVhIK23CvFODjUae+j2dSf4ubgLIqEMDHcxy67RPEDR397hF97
+	RvXHt5S1VusdxZ+z1SY30guDJxWUza+/deEuH4ImRBKOfTBjNeT82PkNOfPKTFzqXwf47y
+	zGYYBxahhFMUeiWgVZK1ylFyEdEt1WC0UowMudw+HlokwvVyEm4MyXfUdyJCC00swdmJfG
+	ZG5PVrgmDtv2QHnoabRTvdzEi2Oi94YGBVxZ+wC9hO+8NmeLNfbt+6wdoggVZFguz8WJF8
+	Zx296Xi/QZwbhHc4rZEgoxevBOA9KDgPnUNSLHaMrQKIR0tkv4sal7fkj5CNOQ==
+ARC-Seal: i=3; s=201903; d=dkim.mimecast.com; t=1749840658; a=rsa-sha256;
+	cv=pass;
+	b=H4Rs28Rhq/ge6VMxpvQYryrfOUvSKtPSqpV5BxQlNmZWlBELaaykcK75lJpttH/YhUK+qE
+	miT5nOkSof5+P4An3XusqxV2lWhvVk8j4V1hLvMpIMgEwxl4ONBgbSvNxHfZeM0bv7Tcgd
+	2CiuyQL0veHuOPHAjvf/TezLwhbcW7Kw7kEnkyi1Gbfp08p1JdYXT1sVS/MAS5KAc/DsQH
+	OlRuHDuiBpG0PC4BcBe2Fob39njukkeAzNEwZT0jFDfVk914qylLSY8JF45uR7J6V+xpu6
+	LwQxY39ScFx27JyQA4da4gcXFdJn1WW+DjQ3YxyljwuddT1mJcKMcqnCX57K2g==
+ARC-Authentication-Results: i=3;
+	relay.mimecast.com;
+	dkim=pass header.d=infosys.com header.s=TM-DKIM-20211201111149 header.b=UUGRtm2R;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	dmarc=pass (policy=reject) header.from=infosys.com;
+	spf=pass (relay.mimecast.com: domain of aswin.kumar01@infosys.com designates 18.185.115.8 as permitted sender) smtp.mailfrom=aswin.kumar01@infosys.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=infosys.com header.s=TM-DKIM-20211201111149 header.b=UUGRtm2R;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");	dmarc=pass (policy=reject)
+ header.from=infosys.com;	spf=pass (relay.mimecast.com: domain of
+ aswin.kumar01@infosys.com designates 18.185.115.8 as permitted sender)
+ smtp.mailfrom=aswin.kumar01@infosys.com
+Received: from repost01.tmes.trendmicro.eu (repost01.tmes.trendmicro.eu
+ [18.185.115.8]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-275-38jp4fSzMfaZSeDBbHcXmg-1; Fri, 13 Jun 2025 14:50:54 -0400
+X-MC-Unique: 38jp4fSzMfaZSeDBbHcXmg-1
+X-Mimecast-MFC-AGG-ID: 38jp4fSzMfaZSeDBbHcXmg_1749840653
+Received: from 52.101.127.68_.trendmicro.com (unknown [172.21.204.62])
+	by repost01.tmes.trendmicro.eu (Postfix) with SMTP id 4784E1000047E;
+	Fri, 13 Jun 2025 18:50:53 +0000 (UTC)
+X-TM-MAIL-RECEIVED-TIME: 1749840651.795000
+X-TM-MAIL-UUID: 83c45778-7732-4c5c-bebe-c072e3165fd3
+Received: from TYDPR03CU002.outbound.protection.outlook.com (unknown [52.101.127.68])
+	by repre01.tmes.trendmicro.eu (Trend Micro Email Security) with ESMTPS id C23AE1000006C;
+	Fri, 13 Jun 2025 18:50:51 +0000 (UTC)
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=U7YSqmNKf0HEWLVwHM6sBwMAGzJEzPw2TDWkhirWCNIrWoqvuJh+SlDtmWrjEfXs0EB6QPqxzh72NEv6WhgfpDQ1KgFiK6mvWCXMq1hcdDRfrhUnKUFE7vIORcdu6PNi767TejqiznsWJAJ4RmaWx369egoTLlkyItYxOm8ZDsScEVUaeySzepOCuMMKUtfPihceF5iUDZK9egovzQm6jwWrLATWEOz1sZuatwfEpWBW0hsMR0NGfb31MlU21eEoM0CbxORFeNucSQD45Odpfx/CabpTxL/1v0o3dPTrVBnpHj/s849vLxhGtkdpI4h+phBVoHRBOccTmIlGWOTGCg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9iLs/A4oFKxhOZdnRv9oi/IZnlscD/K/Rz1XhSG7C5s=;
+ b=fGGK6faWOI48s54hQgwz8e44cbZ0lb9mPGYlMBqOZcEB1uHmoBXpNSYEWhBaKzS0McduUs1ZSR1xEYK0aNUR1zAWwnIxPtejKLiAHZzmEiQn+K2wdLNWTQ1VqR1pc9fNMjVY3NnKKM+unh0CHFFVCo8C8nCIubh4gqlZfd10Zmug8YVc5YrF8vH3l1wEuHCHHUgk/3gF82VQshocOW/Qy+1VPTJS0oMGoX6uRS2noBqVXRWz+iNfagAPg/JWTjbhlVYeFrzDA2x66Fnmr9VsaQqDs0qSoufA8RMW2+Gj6qbUDrgdL+dbSRhXmFdTWbtl5eTevNU19N9UpHdhok+/rA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 144.49.245.129) smtp.rcpttodomain=servicenow.com smtp.mailfrom=infosys.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=infosys.com;
+ dkim=pass (signature was verified)
+ header.d=infosystechnologies.onmicrosoft.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=infosys.com] dkim=[1,1,header.d=infosys.com]
+ dmarc=[1,1,header.from=infosys.com])
+Received: from SG2PR02CA0048.apcprd02.prod.outlook.com (2603:1096:3:18::36) by
+ PUZPR02MB6097.apcprd02.prod.outlook.com (2603:1096:301:da::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8769.37; Fri, 13 Jun 2025 18:50:47 +0000
+Received: from SG1PEPF000082E4.apcprd02.prod.outlook.com
+ (2603:1096:3:18:cafe::27) by SG2PR02CA0048.outlook.office365.com
+ (2603:1096:3:18::36) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.25 via Frontend Transport; Fri,
+ 13 Jun 2025 18:50:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 144.49.245.129)
+ smtp.mailfrom=infosys.com; dkim=pass (signature was verified)
+ header.d=infosystechnologies.onmicrosoft.com;dmarc=pass action=none
+ header.from=infosys.com
+Received: from smtp-europe-west1-p11-i01-si01.dlp.protect.broadcom.com
+ (144.49.245.129) by SG1PEPF000082E4.mail.protection.outlook.com
+ (10.167.240.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.15 via Frontend
+ Transport; Fri, 13 Jun 2025 18:50:45 +0000
+X-CFilter-Loop: Reflected
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cvhJkZB1J3MTIZF7BPcog8fLqT719PFmSnOdc7lrTuIrKFaJ+M0wJs2XZnvDpdiywoMb/28daYcCkcYXBMC/Oq12My6WSDx5LyUH2+8H4bX9Tl7eR5mMtQJtaZQ6y4SUAQST5vUaSZe697EHDwU23RF96xqGCfpT0yHf2Rq06jv8ne6TGCTx97Q4mpLu0jOsLtFPuBRMpY/pDTQ9i+BE1k7E89GMUNOfiE4aPNqJ543u92kCsvC3TXfRoJ46EuNRiFbk34viK6MhRonujK2wInM4rI6Q2+TH0m12vN/uKVfxXij4VEhY8Hy0Hh76h2dFrMEbc+s0pgKIU6UNLBLfiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9iLs/A4oFKxhOZdnRv9oi/IZnlscD/K/Rz1XhSG7C5s=;
+ b=xGv5h+ZgDhaPJnua38tpeklfhUhSbXKzaivxhsqDBg6wXEGyNKcmhi4+2ttCBMUBuJVb80ANz5u9a6WPdm15wqnkSUhlXn46TAhaR4x3cyghQZuMubGET2g79blhY9jw/wfNCrnTNdNAEN/XxHO7sQ9Qc3v0YPngCbZOHwFRfAPPZM3G4eskHonjYvPkUrdvKcJhUttD0RgItBBQT9CW1RZtES/kFoeUWMnD/KgbCZgekHa0V5l7uOcBbwI78qKJsnLvcqSxtGu6Fl5Nvs+cCp+Zg3PZQ91q/7CPZv6E0y5+VG0mXdnKVvx/SwspC9eg9YT5G/YoeJaCUpN1KRRwOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=infosys.com; dmarc=pass action=none header.from=infosys.com;
+ dkim=pass header.d=infosys.com; arc=none
+Received: from SA3PR15MB6076.namprd15.prod.outlook.com (2603:10b6:806:2f8::17)
+ by DS0PR15MB5783.namprd15.prod.outlook.com (2603:10b6:8:df::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Fri, 13 Jun
+ 2025 18:50:41 +0000
+Received: from SA3PR15MB6076.namprd15.prod.outlook.com
+ ([fe80::a0:140a:cd49:9d0f]) by SA3PR15MB6076.namprd15.prod.outlook.com
+ ([fe80::a0:140a:cd49:9d0f%6]) with mapi id 15.20.8835.019; Fri, 13 Jun 2025
+ 18:50:41 +0000
+From: Aswin Kumar <aswin.kumar01@infosys.com>
+To: Mohan Shirole <mohan.shirole@servicenow.com>, Ankur rajeeva Mathur03
+	<Ankur_Mathur03@infosys.com>, Naveen Shetty <naveen.shetty01@infosys.com>,
+	Ravish Mahajan <ravish.mahajan@infosys.com>, Rahul Talreja
+	<rahul.talreja@infosys.com>, Neha Chaudhry <Neha.Chaudhry@infosys.com>,
+	Aniesh Myneni <aniesh.myneni@infosys.com>
+CC: Rob Spence <rob.spence@servicenow.com>, Basant Ramachandran
+	<basant.ramachandran@servicenow.com>, Ajit Ravisankar
+	<ajitkumar.ravisankar@servicenow.com>, Kapil Jacob
+	<kapil.jacob@servicenow.com>, Edoardo Selmi <edoardo.selmi@servicenow.com>,
+	SET_MC <SET.MC@infosys.com>
+Subject: RE: Ai Control Tower - Webinar
+Thread-Topic: Ai Control Tower - Webinar
+Thread-Index: AQHb3F1ugZ8RMMKUxEWzp3alBljKo7QBb0CA
+Date: Fri, 13 Jun 2025 18:50:41 +0000
+Message-ID: <SA3PR15MB60761DD2B0169657095DC65DEF77A@SA3PR15MB6076.namprd15.prod.outlook.com>
+References: <CYYPR08MB87967EBDAD48860FB16658289377A@CYYPR08MB8796.namprd08.prod.outlook.com>
+In-Reply-To: <CYYPR08MB87967EBDAD48860FB16658289377A@CYYPR08MB8796.namprd08.prod.outlook.com>
+Accept-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_ActionId=1b20e4a0-1980-467c-9f11-c1df81e5a4d9;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_ContentBits=0;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Enabled=true;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Method=Standard;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Name=a0819fa7-4367-4500-ba88-dd630d977609;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_SetDate=2025-06-13T18:50:10Z;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_SiteId=63ce7d59-2f3e-42cd-a8cc-be764cff5eb6;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Tag=10,
+ 3, 0, 1
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=infosys.com
+x-ms-traffictypediagnostic: SA3PR15MB6076:EE_|DS0PR15MB5783:EE_|SG1PEPF000082E4:EE_|PUZPR02MB6097:EE_|BL02EPF00021F68:EE_|SA6PR08MB10038:EE_|IA1PR08MB10590:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9017fe5-901e-49c5-772c-08ddaaab3cd0
+X-DetectorID-Processed: bd92f66d-d33a-456d-b98b-d2b354244dce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|376014|366016|1800799024|8096899003|7053199007|13003099007|38070700018
+X-Microsoft-Antispam-Message-Info-Original: =?us-ascii?Q?Btolg4YrzDFe0jKTAIh7ac6fTfLpnFzeQjDBm0nkd/bfq1LZUYNJAGJ6M83P?=
+ =?us-ascii?Q?bfm2GaoHK0RMmH/WQj5yu4qWBi4ha477oA3OmNc0csr+NXi49V0Jc460Ofmu?=
+ =?us-ascii?Q?Id5cWleCqkhmEPtp/0puRwXOG+UX866Ji418liOI8Rmfc91KQHptzltPEEIL?=
+ =?us-ascii?Q?/O6wHJOe+TgeFaPsGfjBQHpE4b8xiUzkRd2aMsf7/z1eJS7MfA5HRS38saqs?=
+ =?us-ascii?Q?hf5+X7zoQqR4f+IijOPg+e/0HP/PdxpCCIIR9fUCYJ3exIjojfkc/JAs26SX?=
+ =?us-ascii?Q?SwtAxbyWb3IbOTKSEaUx1NjR3yKsVKhZnV3qqUVozgMMmqdUP3T3UWA8c9sb?=
+ =?us-ascii?Q?q1PnjgmrhIxvRW60zs7XfVLFjGVMdgm883QamqWBb4InADpMqIvl0ZaA+jG2?=
+ =?us-ascii?Q?ahUn/4g+X5H9HGyppMzxrw3gMD8xLRpDtk4My3ZOzGR6plIn45ajyZ9nHB2r?=
+ =?us-ascii?Q?nfzdulgxK4R49UtuprLDGb7mGH4CrzUXzS+ZTlNEKJhn3Q9wHn+XHudrIslu?=
+ =?us-ascii?Q?F3yT560OWK1S9W7/Km0ASwvSiTCqcU7lI/fGSooOmCUs1GbuVWaUrj2r3qwM?=
+ =?us-ascii?Q?BKZRNfeUDAGHpY9UeM/jP+8M24wfJ1mPR1f+kmnLJH5m1nnaYCvugrRH7A7j?=
+ =?us-ascii?Q?95HHwxI4FwZu9kWKp9CnzwCX3kddvS0EFXtkjHOU2L5ONZDVHSUr2CvRBEd6?=
+ =?us-ascii?Q?3QhCfsacZ+iJ/u9EfHig8a0Y1yoP1vze8vyjJF86aqeF9cfk8E1WCb3+vG91?=
+ =?us-ascii?Q?sbriERfqO85ncP8xcPSgSUhQJwVYF0ZK/BFKDpEm/3wgk7ugMH4xivSLiaRO?=
+ =?us-ascii?Q?q12ZRiPMUFrCkhiOISwRkjLUC5vggB/ozlLxiuBa5WbnZciDZSvLggcwcR2J?=
+ =?us-ascii?Q?ixetxAl9Tt4/5+Ime9gRJBDCPyD5FoC3/5k8sZcNqri/1Tnfsr8PaIo8XKX6?=
+ =?us-ascii?Q?2Nf5ZRKnmlegPboR2vfbS2TuKMRm2WMczZhgfZk7gq8bmPrsg0VYg3pHcR3R?=
+ =?us-ascii?Q?QNu4QQWJ32HqUf2g4gBzobNlZYnsc2prBLnOm8Lk/LDMs62Cu46OXmUj3IKT?=
+ =?us-ascii?Q?CNwCeHpWulV1zs5SrstRrKP1lnLtl2hQfQLUQMv9iWqzE07E7SKaQIE0bn+3?=
+ =?us-ascii?Q?+7IsmC1u+yKMzTDD4VUkpt0j5LTb3EhGtVuHdR11qXK+DXcyK49KIkqwuDgm?=
+ =?us-ascii?Q?4KBFg0i6wRkaQ4Lo9otr6oCOICu+ALjy77NzDFXNLDFyOWlP4gbwCQDHJH1d?=
+ =?us-ascii?Q?C8eTi1A+2rc0+UmN0rtHDnaLGMVzB4AefeOZiLBI32g+GfSobIiBLeKDu9+N?=
+ =?us-ascii?Q?rbqmqkkE6zZIIgXM+Fqr0cXTR5M/HNW4rnevmls1HPOr3tDWZolXdqyY1oaT?=
+ =?us-ascii?Q?5oNcoFNc2exUz3oUxjJybCG8EaLTqlyMNfYglPVsVT+sSSmFuyv5IZksIClu?=
+ =?us-ascii?Q?c4xPVXnGm5Y=3D?=
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR15MB6076.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(8096899003)(7053199007)(13003099007)(38070700018);DIR:OUT;SFP:1101
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR15MB5783
+X-EOPAttributedMessage: 1
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: SG1PEPF000082E4.apcprd02.prod.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: bf2c22b1-b36a-4cba-6de0-08ddaaab321a
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|35042699022|36860700013|14060799003|376014|82310400026|1800799024|7053199007|13003099007|8096899003
+X-Microsoft-Antispam-Message-Info-Original: =?us-ascii?Q?oexwZcmgrAR+MbUJ2RninyEQdQQGMYsIKjj4nt+JYeuAhduo3zjB3jiY37lh?=
+ =?us-ascii?Q?Q10UegydcjHH2Z5plqTgZjiCGaxDis7KARb5UXUgI5yT/YdgJ0Ndvgabb5dc?=
+ =?us-ascii?Q?DzjQldanapL9olYeXP6pznfOUTJD1pT9poji/snnIBasvp302mfm0y0010t0?=
+ =?us-ascii?Q?vryHj9nKaIzS6ZvjXd0rrN/Fuad2kvU2m/t3mdj9HM2MjqtlrEzu7jesqh4n?=
+ =?us-ascii?Q?QCc9jegvAH1H4x1cciF5lqHEGmoLyXmbLFzzVY3ts2eZGc65Ckh9nEB8JCRB?=
+ =?us-ascii?Q?QNQJ/aAnAE+fJy8fYh+zhYo21pYyQJDNrZrnI7+q41921y7XDJmuFgbtLnts?=
+ =?us-ascii?Q?n5Y0Mok1lEWK5hCUjLCD28TvOkeefjjxbMQBdTCXtwtSBZY06vP1qgKY6Yae?=
+ =?us-ascii?Q?kqWL+rFXQGAwcX7T1voiumOCK1+MREhGnu8O7JdFjFLemezZc1ZRXvYk7mex?=
+ =?us-ascii?Q?kjmXbmpXVK46+62WMETM7aGjN7D9BNKEe45f838O2b3wKFHK/Fa5wiOVn2aF?=
+ =?us-ascii?Q?O8AIGehaJW28qJzv6CBcBGo7V9UxAtc7+TtOyiYhWZgJjr9dG99dmgNv+zht?=
+ =?us-ascii?Q?no80lidnu5FIQL1YRH9J7ywtMtT2d/jD5eyiDjPX6Q7BorKsvsq0dAy2M17t?=
+ =?us-ascii?Q?SQBQxsRe89TxMlVkyfuLgTrfI5+pDKJzfKZqUi3fwoTmjA4SpQnXerse5lJI?=
+ =?us-ascii?Q?Pc7YNpn9WKt2YQ51cA4hasU8EouoywumGTa9wEgerpb9CvBVVRmBXunOJiv+?=
+ =?us-ascii?Q?3I+VhGZqoMgxT2UEqrFcZbL2K6SdynRdE1hKXracKYvf2/zi7oM+/m9EWlzQ?=
+ =?us-ascii?Q?704QCINLrAisHvW2n1DHMLJn5Veoxq1LLoMvURS0lUOHBEZg7dPhx3N0SRef?=
+ =?us-ascii?Q?C1dJ/MsTEQxICdy/G+GjAY3R3M8PWdRt77W3KXsawZriA0D9YIKSX72TfzNq?=
+ =?us-ascii?Q?GhsPlkxLypy2eY2c1Wzvgrqr1QmM0N2jFpPoGe1lQUZ9NA9ZKrGkb2DI5pFv?=
+ =?us-ascii?Q?fRRoY/Okk+M0q1jfg1C+/4du3zTCGuoWgssMzT8ZPpVpMh3+lN8ziqMWGUZc?=
+ =?us-ascii?Q?izbXVAb5DLquYPQuCpIs5s5koeEOJGTtmS2HnNObJm/Z0KC2Yr/+gdssHkl9?=
+ =?us-ascii?Q?2FLFlCLK5r79U9Uhnygti3z7rwwef5q8GraYCrr9H/MxWTWpaYcr0vBJ3HKs?=
+ =?us-ascii?Q?P8XgO4I5xEtdY4xIoM7lDNZt+buXYilDGn3fCyvox55YZ27QRFgeCZBI+jSG?=
+ =?us-ascii?Q?AbsXA98dIvoEVTS8Ks7XroQODxfk3kwSgS0+Jrfov++iFWbr3kiVtPADW08Q?=
+ =?us-ascii?Q?hLLiVO/iBiIhK5JQWIML2NmSpuITiUxyfubi4hL1ZVj2+AcLe4yVGyX1wnU8?=
+ =?us-ascii?Q?t3mO7AIDv5rcX82EROALLH6jIwyTkzWeZ0ACksKB0cfGsVQFx27akHPqLYx1?=
+ =?us-ascii?Q?9ah5Xp0gumOhkFDZg6SbEsvDMq4ON49Yc9izJLgibyr/gE2wRd1luA=3D=3D?=
+X-Forefront-Antispam-Report-Untrusted: CIP:144.49.245.129;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtp-europe-west1-p11-i01-si01.dlp.protect.broadcom.com;PTR:address-144-49-245-129.dlp.protect.broadcom.com;CAT:NONE;SFS:(13230040)(35042699022)(36860700013)(14060799003)(376014)(82310400026)(1800799024)(7053199007)(13003099007)(8096899003);DIR:OUT;SFP:1101
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: fY8Vn8g9DVwFM4LcLdkm1mUXwKyZcbL4jdFbE5IhlEtL597aykL+gu4E0OFHlcY56+NSfWgYoeZjINcuOAoPs0usfX5/iQVkD0MKKSe6/FeyE9QrlB7ID0w3e+zTgYssirf8Et8GnWukTyGtxCXvThVKR1hui4nlPxutWF15oRHWrgPRGXAJ4jIPP/y+iBNT5000hyszUZV3xo62yjOoxSB/saj8cvjnmgLiBVPjxpJCGvuldwf06f9osFOzO5bH/SFa8h/UjX732QqTGAeEvrUHoWMmyuAwlWwwCmya7IIOQD6j5Bzvt8Umb7vg9wfsljrS0BpVGwa3TuXY6y21ApTNQbyK1CL0/F0c1iRPb+5GVsgCkWJxB8NF3JiuDw11drMDRmTYhn8BulAcvNgw4lJWGOxWnew+L1kbkQqpeTu75L3+OYsxDbqCCj7/9Z5JAu44t0lwkFns+MYBwO5+XWjbo2a7AsRfKAypltKt3sAwfEt7QVdSvy208KNeOo8xEk+0VDsh+iERPrZ8wQs4XQHKFYkUmgRLbA3uM9enTq2qhpJeXCCBsd3vMoAaNNLKDoT6WqMDEfm6Kiju0pQ6AALwRnHU/D2uOPW3jt4MhasSkK0p6MlHNA/3VGZ60O3BVWsjGmYhotKlHzxDSfPPAw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PUZPR02MB6097
+X-TM-AS-ERS: 52.101.127.68-0.0.0.0
+X-TMASE-Version: StarCloud-1.3-9.1.1032-29256.000
+X-TMASE-Result: 10--30.177200-4.000000
+X-TMASE-MatchedRID: 4Elh3HeC7NAIpDNGKwLUmCyIz3xZbkbD0ATewnXkll+AGzuGlujDezJa
+	oI+8yQvZqkYP3BdHrrUZhkQA4btdfyDr01O+ieCnrkK5hq5FgQ1WF2WiIcXa41jPdY+98Qb9R/3
+	I4S80LyH1sZlzV9+6VRpExXl7vCwS7ORyHr2iSOYQTXuS5sCES7tFXN7s7xI+MiRdduB7VHi3B6
+	PQfaMtcRBq/0lQI/pLFbysFUYi29kShLtqspoMd4tozUB7oVBXG6vAF77GsJbzx//jitXiZz+z0
+	S2PWR7I5MrTKS84v0JQG9dKj7MRDCcVuTYo+4BsmGQxD8bkpeQyvAjXhJbVUSelFzGWYpiN4exJ
+	hDMqBm47T7WJt8RmsGqb+SvQn1G8iQtMmf2it3hyUOIklt5qy5J625EymXIlhpUQaAvxbHdh2fU
+	+ECp9u2gcIfFJC5C/qql8+HKJV7yO3MZEKZpyL/nESJj8tWi7uUeJCuB9aL30fq3/ZkqIGOihCT
+	u0kel4rOgtKN46VjcBWl4ObycmgvCdAcVltQ/ek9VqlgLc+axKXRwFz5Cl9c1RWss8ZpwrjeD+F
+	5LMZVex2/CO9RcG1dVp4e4VoVOEF6t2fiHrAbwHvfG6dvIqulf0czs/wYTp
+X-TMASE-XGENCLOUD: 0e2ecd18-515e-4307-b467-143ad156ae1d-0-0-200-0
+X-TM-Deliver-Signature: 99233ED21F398BBC0F3C68F4C97E763A
+X-TM-Addin-Auth: JYTH+ENrcv7DyiOBgGnAm1gw9QX5M4YHe1UJfc7cgr0D6Ks8J/mLhLcBxIl
+	izc0MS0rj3NHmsYaw+wtj6R33xdkAuj20hBMt/+nx7XDb91QvvWiNJgm3BURYR90LCNYljPDUp6
+	+l5YajOBwp5nZjItVNe3LXme9y9PYNaQ0q7HR4dG43OV1XexER5KTcw7r9+vwz57oW28FDxYCkW
+	r3yXIJH3wvar1Zb9AoxNGbry+uiHlmfjXHYR2dvo1kL9pM8rFgYhUkKAJzX12bqenmGn/c0kKyP
+	oErB++keF5AUqItGeQjR+sdExz12cgB/eqz9vWYcwAPViYo9THhCTq3YiA==.X+hIs8kiUSLh5p
+	NKTr65/4T910sAbOW1xdrM/RViT1i0sINwKczYY8GpM9M+gl2V5t9VKcIoocZU9yuVzZ1UdtBkc
+	fnVkiBKhcFbV/4sK2cE9ndJf2jCbCj6mDW4jw5U8tfhfb2kuLgwFqwDf2LFb2Hel1fkw1OZygfq
+	Q5m642Vd85bq2zoSFpTRVJAQilwGrj0JPW5/v/QC/fkUSh/VsoIoHhXeS04o0b6bK7FZJMTOexy
+	+RJWmPOmUSwYRIsOQWbs0f+JYHDUPSP6fCFGrjmDzW3RNaKnVb922yiIq/wU8TsdcOzCW7y7BJg
+	uRi9rvGlfCHqsRXfIEGTlmeeKYDA==
+X-TM-Addin-ProductCode: EMS
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=infosys.com;
+	s=TM-DKIM-20211201111149; t=1749840653;
+	bh=iH9qq/Jj3qHkAmKoNttXC78DjXgVH2UOqt7dY7PgZrM=; l=8551;
+	h=From:To:Date;
+	b=UUGRtm2Rs+s2sdomIvdLjo1A4uzBD8LJPyY68i5KI6GiOWejYE3a5WprLSJuFc4H1
+	 XpYCr4VP+nINbxaIAh1wo8lvRX5HPbduVjVlx3htzIf2nkmfmc/Z3nzaUpxQC4PJrX
+	 +anmssLFDxeuFe7rNS0EWBdv++10X9m0/4QVTeVA6k1ON6QKHMDm5WGlnyfdd1jal0
+	 5AvJUiHgpw6U0wafbA2v9waRSUW/PCNituxyn+2IxPp00c+VtIy9GEU3PfWY1Nfkni
+	 P4FPN4IvTRko6OPOhksIUKAY8Ayy13asD8lYLeT0DyMUg0Yocbf3rPB/ODh1EkD+34
+	 +CTqzMrqVqTPA==
+X-Mimecast-Spam-Score: -4
+X-Mimecast-MFC-PROC-ID: mjkiF3l3fq6q8FWNDI65TnkujFD7_ePYugl3NBxSQtw_1749840653
+X-Mimecast-Impersonation-Protect: Policy=Tag external email;Similar Internal Domain=false;Similar Monitored External Domain=false;Custom External Domain=false;Mimecast External Domain=false;Newly Observed Domain=false;Internal User Name=false;Custom Display Name List=false;Reply-to Address Mismatch=false;Targeted Threat Dictionary=false;Mimecast Threat Dictionary=false;Custom Threat Dictionary=false;External=true
+Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_SA3PR15MB60761DD2B0169657095DC65DEF77ASA3PR15MB6076namp_"
+Return-Path: aswin.kumar01@infosys.com
+X-MS-Exchange-Organization-ExpirationStartTime: 13 Jun 2025 18:50:59.2902
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: c9017fe5-901e-49c5-772c-08ddaaab3cd0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: BL02EPF00021F68.namprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Exchange-Organization-AuthSource: BL02EPF00021F68.namprd02.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 70c7aec9-99d1-461c-ff0e-08ddaaab3571
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|31092699021|22103399003|82310400026|35042699022|13003099007|7053199007|8096899003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:SKN;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-inbound-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(31092699021)(22103399003)(82310400026)(35042699022)(13003099007)(7053199007)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 18:50:59.0271
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9017fe5-901e-49c5-772c-08ddaaab3cd0
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF00021F68.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR08MB10038
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.3334804
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8835.023
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?Windows-1252?Q?x0wPJrZThQLVXYbN/X77de04NI2C5sERJ9xZilTZV4b5y6PftWVU8eXE?=
+ =?Windows-1252?Q?3AZcqyBExRVfpUIv5zg5pM+A2v9XgmsP7Wk9Tr9nAAUEo1V+pO4LNsFY?=
+ =?Windows-1252?Q?EckeaQPtEbFGiSivz6Ny6hAAclB84s2XLjIN1XFdmYwwW5OIwEZqMWF+?=
+ =?Windows-1252?Q?Fyc4OueHORJl8CmzlqDFg+MqVl0I8op+e47F7DGkhLOqYad2wQyKoiXt?=
+ =?Windows-1252?Q?Aa48cl01SoaMr0NX3njxp/oBRj2UmCeTAatdW2cK/nhSLuhODphYKUEV?=
+ =?Windows-1252?Q?zgMFpZqypoIKOmLo1fEBfALiZjeyqbuupNf/fYgwh56IXTfW3PoI9Lqq?=
+ =?Windows-1252?Q?bkE8XQjBAUA2akMBcUDFQPVhms23BRsyuaJafAt4Ma6X+OCZFaBDevnM?=
+ =?Windows-1252?Q?y77lVTRKOpdT1SVeM2Dxb/5J6piloReTX9ey+Zn2N6JomoaBHXcGFGWD?=
+ =?Windows-1252?Q?UbbzysqQfRvfLcaL8TJE1RNCW9zIwiSqP42UTaZ7ZZlp5QY6gao+MRXI?=
+ =?Windows-1252?Q?+RwqRaZOWM73A4E/o2DPFUEBnVHzWwLBDIV9IMU/zeE1rIfLA8xDAXmb?=
+ =?Windows-1252?Q?AWer5d749FmNqRgVdRuGNxVLKzWVKQcJPvIHKvIor+2bbiQrinbgRn/T?=
+ =?Windows-1252?Q?mst10pr0pG+dlbPGlciMLTeEfGPzb1BfCzPosHA37634e2P7beLaof27?=
+ =?Windows-1252?Q?cTPalLVsuI7jRkZe3FvKPHNlFU7E5LN+/bGxYmiWfNiAE602swB2mHdk?=
+ =?Windows-1252?Q?1AgFG85fpIE9awF9XVY2pYSbdJDO4Y3Hg0lkfiwXLr4Dz+ldNJ6gjjxF?=
+ =?Windows-1252?Q?HK0w/VIZHUdcim9IJv2983LS6CYaADWQsV1MqhmKNs2aJ0ENXjtSTrJm?=
+ =?Windows-1252?Q?ktg0vYR6VMR+vw9Cd4YF9ft8soF2rjQ/ToYFm+CPIYiB4kkrQu1i3Vtu?=
+ =?Windows-1252?Q?VIVOQ3g2ur2nE55yYlOotx6htHAyMJs/XiWZXYAjNCsOZ54+M7RegEcx?=
+ =?Windows-1252?Q?cLIdgM3KAEreIcwSUlFrJ4NxebLjJC3GVlS+xNeo4M2IA7o19HZYfVBF?=
+ =?Windows-1252?Q?Q7+EQ1tzfXAF+FV7wDsZwgmGouZf9oaVNqewwwflLuYu64D9yuVrEQYk?=
+ =?Windows-1252?Q?GVzBByNJ0lTS35vKRt+rYSpSezCzSg4LLAo6TFNVyM6aVOgRzwLJcoTj?=
+ =?Windows-1252?Q?Xx0s7ui/zrcyw5FUH/pibyBPVut8gSxIjgzlbQBnUddW9AG4pSVV6m0M?=
+ =?Windows-1252?Q?TzWkf88DOCXxXKD8p7Ail9VFVOCMaxNIHWs+3GhCPGB/3DEY9X9RY8uT?=
+ =?Windows-1252?Q?lfWvkr0KwCA7DG7c4NxHGFWg6P+tQhWcC29zc3iwLLNXYrn9TQV6eon6?=
+ =?Windows-1252?Q?ohhY0KgZCTZLeEkz1pGoj+tUvjHMw23FJxSphA8QppXY32KKR3vrRI7g?=
+ =?Windows-1252?Q?lY7JhMqr41El2fPWBywyBK3/EfG+IomLr9JSyU13PaY2OiGSymH5o9m3?=
+ =?Windows-1252?Q?MQva6CTJGfLz2rWXW9FF/bL/NBIvkp3/bwUUGIYPq5wRtu0+Q04FOJ0F?=
+ =?Windows-1252?Q?VFlP5fCuFRltR1YFAp8Jt8PJaJD4xPa1Qz7YhCbmDNraLz4DWFddZ7cG?=
+ =?Windows-1252?Q?Inx4xZVgHwjA5MMuI/bRwvaIg4kO7j55mfjYrgp7FdQnqxzE7GFnMHKk?=
+ =?Windows-1252?Q?1HgUX/6ejdPlFy5HSi4TJ76sOFBGNuF7WX+DWYO4Ut7DWNCeDN6fGzcS?=
+ =?Windows-1252?Q?renEBBXVh+mp2zq7gb26KNHz4vd+5JKYGIMP2RqUnstnTFO82DHjIpgY?=
+ =?Windows-1252?Q?JpLo/RP/UlIkYGRc4DggUOSBX7cTX59BxAOsLii62WdcGxCLC7NHFsdI?=
+ =?Windows-1252?Q?reSS4xbvP8jav+tDgw71ju2jMEb0Mscblf63RBIQhJlORffbWt3Nl3n+?=
+ =?Windows-1252?Q?Jkt0z8vjxFkXWpo1bfupo0HaqSg40rI4fR4gP7S9jKRCAHA9yvSCYPj8?=
+ =?Windows-1252?Q?RGe7UIuluthmlhJ5nHjTP30y+Ljxol7wTDbEpsQ27OZrz7JnvpPn5bgu?=
+ =?Windows-1252?Q?QxFklMoiTr+bqeSu0pl5BS6jQXVtzUvIk39Gi2kCK9jZeUZ4rvnP6aZN?=
+ =?Windows-1252?Q?U0/lpGPuBrbxv2sAur4TObUY6BO9AyUtLtMkSLxNtr5fk3kFdvgoNh/P?=
+ =?Windows-1252?Q?ABeGLVoSfI0ERdS1px9iuITsKvhuS6TnExtx1uYzgl7M6LoDxZ5wwAts?=
+ =?Windows-1252?Q?lWswzEkiYWQKTn6JmPI=3D?=
+MIME-Version: 1.0
+
+--_000_SA3PR15MB60761DD2B0169657095DC65DEF77ASA3PR15MB6076namp_
+Content-Type: text/plain; charset="WINDOWS-1252"
+Content-Transfer-Encoding: quoted-printable
+
+[External Email]
+
+Thank you Mohan, these proactive emailers help !
+
+Regards,
+Aswin Kumar |Cell +1 9453454738
+
+From: Mohan Shirole <mohan.shirole@servicenow.com>
+Sent: Friday, June 13, 2025 7:58 AM
+To: Ankur rajeeva Mathur03 <Ankur_Mathur03@infosys.com>; Naveen Shetty <nav=
+een.shetty01@infosys.com>; Ravish Mahajan <ravish.mahajan@infosys.com>; Rah=
+ul Talreja <rahul.talreja@infosys.com>; Neha Chaudhry <Neha.Chaudhry@infosy=
+s.com>; Aniesh Myneni <aniesh.myneni@infosys.com>
+Cc: Rob Spence <rob.spence@servicenow.com>; Basant Ramachandran <basant.ram=
+achandran@servicenow.com>; Ajit Ravisankar <ajitkumar.ravisankar@servicenow=
+.com>; Kapil Jacob <kapil.jacob@servicenow.com>; Edoardo Selmi <edoardo.sel=
+mi@servicenow.com>; SET_MC <SET.MC@infosys.com>
+Subject: Ai Control Tower - Webinar
+
+
+[**EXTERNAL EMAIL**] Please verify sender address and exercise caution befo=
+re clicking on any link.
+Hello All,
+
+Most of us briefly discussed on the AI Control Tower capability of ServiceN=
+ow which is now available on the platform ( GA from Q2 2025).
+
+The latest PEAK webinar on the AI Control Tower dives deep into how organiz=
+ations can bring structure, compliance, and visibility to their AI initiati=
+ves.
+
+Link to Webinar: https://url.us.m.mimecastprotect.com/s/Sx_kCNk6O1iVjwGqYim=
+fAhy8sqy?domain=3Dgateway.on24.com
+Kindly cascade this with the wider team for them to get an idea on the subj=
+ect and we can subsequently have a deep dive into the same.
+
+Regards,
+Mohan
+
+
+--_000_SA3PR15MB60761DD2B0169657095DC65DEF77ASA3PR15MB6076namp_
+Content-Type: text/html; charset="WINDOWS-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Aptos;}
+@font-face
+	{font-family:"Calibri sans-serif";
+	panose-1:0 0 0 0 0 0 0 0 0 0;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+span.EmailStyle19
+	{mso-style-type:personal-reply;
+	font-family:"Aptos",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;
+	mso-ligatures:none;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-US" link=3D"blue" vlink=3D"purple" style=3D"word-wrap:brea=
+k-word"><div class=3D"mc-ip-hide" style=3D"display:block !important; height=
+:auto !important; background:#FFFFFF !important; opacity: 1 !important; vis=
+ibility:visible !important; color: #000000 !important; font-size: 12px !imp=
+ortant; font-family:Helvetica, Arial, sans-serif !important; text-align: le=
+ft !important"><strong style=3D"display:block !important; height:auto !impo=
+rtant; background:#FFFFFF !important; opacity: 1 !important; visibility:vis=
+ible !important; color: #000000 !important; font-size: 12px !important; fon=
+t-family:Helvetica, Arial, sans-serif !important; text-align: left !importa=
+nt"><h3><strong><span style=3D"background-color:yellow;">[External Email]</=
+span></strong></h3></strong><br><hr></div>
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Thank you Mohan, th=
+ese proactive emailers help !<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<div>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#1F497D;mso-ligatures:standardcontextual">Rega=
+rds,</span><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,=
+sans-serif;mso-ligatures:standardcontextual"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.5pt;font-family:&quot=
+;Calibri&quot;,sans-serif;color:#1F497D;mso-ligatures:standardcontextual">A=
+swin Kumar</span></b><span style=3D"font-size:9.0pt;font-family:&quot;Calib=
+ri&quot;,sans-serif;color:#7F7F7F;mso-ligatures:standardcontextual">&nbsp;|=
+</span><b><span style=3D"font-size:9.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif;color:black;mso-ligatures:standardcontextual">Cell</span></b><span=
+ style=3D"font-size:9.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:=
+#7F7F7F;mso-ligatures:standardcontextual">&nbsp;+1
+ 9453454738</span><span style=3D"font-size:11.0pt;font-family:&quot;Calibri=
+&quot;,sans-serif;mso-ligatures:standardcontextual"><o:p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif">From:</span></b><span style=3D"font-size:11.0pt;=
+font-family:&quot;Calibri&quot;,sans-serif"> Mohan Shirole &lt;mohan.shirol=
+e@servicenow.com&gt;
+<br>
+<b>Sent:</b> Friday, June 13, 2025 7:58 AM<br>
+<b>To:</b> Ankur rajeeva Mathur03 &lt;Ankur_Mathur03@infosys.com&gt;; Navee=
+n Shetty &lt;naveen.shetty01@infosys.com&gt;; Ravish Mahajan &lt;ravish.mah=
+ajan@infosys.com&gt;; Rahul Talreja &lt;rahul.talreja@infosys.com&gt;; Neha=
+ Chaudhry &lt;Neha.Chaudhry@infosys.com&gt;; Aniesh Myneni &lt;aniesh.mynen=
+i@infosys.com&gt;<br>
+<b>Cc:</b> Rob Spence &lt;rob.spence@servicenow.com&gt;; Basant Ramachandra=
+n &lt;basant.ramachandran@servicenow.com&gt;; Ajit Ravisankar &lt;ajitkumar=
+.ravisankar@servicenow.com&gt;; Kapil Jacob &lt;kapil.jacob@servicenow.com&=
+gt;; Edoardo Selmi &lt;edoardo.selmi@servicenow.com&gt;; SET_MC
+ &lt;SET.MC@infosys.com&gt;<br>
+<b>Subject:</b> Ai Control Tower - Webinar<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p><b><span style=3D"font-size:13.0pt;font-family:&quot;Calibri sans-serif&=
+quot;,serif;color:yellow;background:red">[**EXTERNAL EMAIL**] Please verify=
+ sender address and exercise caution before clicking on any link.</span></b=
+><o:p></o:p></p>
+<div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Hello All,<o:p></o:p></s=
+pan></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
+</p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Most of us briefly discu=
+ssed on the AI Control Tower capability of ServiceNow which is now availabl=
+e on the platform ( GA from Q2 2025).<o:p></o:p></span></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
+</p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">The latest&nbsp;PEAK web=
+inar on the AI Control Tower&nbsp;dives deep into how organizations can bri=
+ng structure, compliance, and visibility to their AI initiatives.<o:p></o:p=
+></span></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
+</p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Link to Webinar: </span>=
+<span style=3D"color:#0078D7"><a href=3D"https://url.us.m.mimecastprotect.c=
+om/s/Sx_kCNk6O1iVjwGqYimfAhy8sqy?domain=3Dgateway.on24.com" title=3D"https:=
+//gateway.on24.com/wcc/eh/3453834/lp/4918891/governing-ai-across-the-enterp=
+rise-using-the-servicenow-ai-control-tower"><span style=3D"color:#0078D7">h=
+ttps://gateway.on24.com/wcc/eh/3453834/lp/4918891/governing-ai-across-the-e=
+nterprise-using-the-servicenow-ai-control-tower</span></a></span><o:p></o:p=
+></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Kindly cascade this with=
+ the wider team for them to get an idea on the subject and we can subsequen=
+tly have a deep dive into the same.<o:p></o:p></span></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
+</p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Regards,<o:p></o:p></spa=
+n></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Mohan<o:p></o:p></span><=
+/p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+--_000_SA3PR15MB60761DD2B0169657095DC65DEF77ASA3PR15MB6076namp_--

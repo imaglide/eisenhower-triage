@@ -1,0 +1,605 @@
+Received: from IA3PR08MB10275.namprd08.prod.outlook.com
+ (2603:10b6:208:533::14) by IA1PR08MB10590.namprd08.prod.outlook.com with
+ HTTPS; Tue, 17 Jun 2025 12:44:41 +0000
+Received: from SJ2PR08MB8432.namprd08.prod.outlook.com (2603:10b6:a03:4f2::5)
+ by IA3PR08MB10275.namprd08.prod.outlook.com (2603:10b6:208:533::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Tue, 17 Jun
+ 2025 12:44:35 +0000
+Received: from SJ2PR08MB8432.namprd08.prod.outlook.com
+ ([fe80::8bd7:b9af:52cf:32a7]) by SJ2PR08MB8432.namprd08.prod.outlook.com
+ ([fe80::8bd7:b9af:52cf:32a7%5]) with mapi id 15.20.8835.027; Tue, 17 Jun 2025
+ 12:44:35 +0000
+From: Sandeep Singh <sandeep.singh@servicenow.com>
+To: Ravish Mahajan <ravish.mahajan@infosys.com>, Naveen Shetty
+	<naveen.shetty01@infosys.com>, Sriranganath Acharya U.
+	<sriranganath_a@infosys.com>
+CC: Mohan Potala <mohan.potala@servicenow.com>, Anant Dhingra
+	<anant_dhingra@infosys.com>, Mohan Shirole <mohan.shirole@servicenow.com>,
+	Rob Spence <rob.spence@servicenow.com>
+Subject: ServiceNow | Upgrade legacy replication sets to V2 in Instance Data
+ Replication | Infosys Limited 
+Thread-Topic: ServiceNow | Upgrade legacy replication sets to V2 in Instance
+ Data Replication | Infosys Limited 
+Thread-Index: AQHb31X12Y9KV1lMWEyuVIUoHQzTjg==
+Date: Tue, 17 Jun 2025 12:44:22 +0000
+Message-ID:
+	<SJ2PR08MB84324605C1B3E1517C898EBB8373A@SJ2PR08MB8432.namprd08.prod.outlook.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-IN
+X-MS-Exchange-Organization-AuthAs: Internal
+X-MS-Exchange-Organization-AuthMechanism: 04
+X-MS-Exchange-Organization-AuthSource: SJ2PR08MB8432.namprd08.prod.outlook.com
+X-MS-Exchange-Organization-ComplianceLabelId:
+	fe2e9d4c-31af-4dde-9269-a217334291d9
+X-MS-Has-Attach:
+X-MS-Exchange-Organization-Network-Message-Id:
+	21ac9624-e8f6-4b25-bba8-08ddad9cb6e1
+X-MS-Exchange-Organization-SCL: 1
+X-MS-TNEF-Correlator:
+X-MS-Exchange-Organization-RecordReviewCfmType: 0
+x-ms-publictraffictype: Email
+x-ms-exchange-crosstenant-id: 8bcff170-9979-491e-8683-d8ced0850bad
+x-ms-reactions: allow
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=servicenow.com;
+x-forefront-antispam-report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR08MB8432.namprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(8096899003)(41050700001);DIR:INT;
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|8096899003|41050700001;
+x-ms-traffictypediagnostic:
+	SJ2PR08MB8432:EE_|IA3PR08MB10275:EE_|IA1PR08MB10590:EE_
+x-ms-exchange-transport-endtoendlatency: 00:00:06.6216434
+x-ms-office365-filtering-correlation-id: 21ac9624-e8f6-4b25-bba8-08ddad9cb6e1
+x-ms-exchange-transport-crosstenantheadersstamped: IA3PR08MB10275
+x-ms-exchange-crosstenant-originalarrivaltime: 17 Jun 2025 12:44:35.0602 (UTC)
+x-ms-exchange-crosstenant-network-message-id:
+	21ac9624-e8f6-4b25-bba8-08ddad9cb6e1
+x-ms-exchange-crosstenant-fromentityheader: Hosted
+x-ms-exchange-crosstenant-mailboxtype: HOSTED
+x-ms-exchange-crosstenant-userprincipalname:
+	xldc6ZhFKc6dmWejxrBhcKwUfvF4+BCAO8yLC8acWoMCsc2SFgDgsmnJ59BqNOvk8XgDGzcC/J5MTs6mD5c/CNQIS2+zrdkqpjSgBjvIMHc=
+x-ms-exchange-processed-by-bccfoldering: 15.20.8835.025
+x-ms-exchange-crosstenant-authsource: SJ2PR08MB8432.namprd08.prod.outlook.com
+x-ms-exchange-crosstenant-authas: Internal
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(920097)(425001)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	3c6rd5tf3Xdj2Qnum8D1ybW+EVDmb8CU6T/3UHPhlLUlS2YiegqmH4Al/8dJuVfbYgXg59ImvbGDmp4Cks+EI6j2EWWaSYU1SMEg2lDaJ+infraBE0fydLpoS1DjJKyMIdBZEH6Q8UIcRQCtPhP8E3JghPdfMDrVDuYqAJ3SrcqKzfwcyX8vdScraf4pEA2Z95N6DbMLTr+Ks2s4ETIjN/6KB3actWo9nBCvUknW724teFHqtX1qY6km8S/J9BSLQpUosdvkpkMi90Ux1b3zwvV3chjkwDFZIbsJf57evKoF8sKK1RL8XeUCX7kc8UMgLDM+d3E7BGz+YWfBGhb+v0FXJ5FxUjK8FWkRxpcZMKWAGcJE3x9Ibz1qFcZxg9EvhJDGuyMg6xY/0yVYj/Q7MfNU+7uGfgnsaoHAPSonGoYymYnYeoxP9014uAnvPKcckwj5nc15MvzJv0laQSN4iU3k9kD0HMpkin9UfXePzmKy/AuHg9OBwcGcX6ka2KB8X+RSCkg8KTP7ZevRF9xO1kP2FOT4nRqvFzV2uwTASDWDp9710ydbElOmVZREDCVDJdtyGitM3HGDiLYmE28iWoEjQm1hTkzqvtrTQ7n0Qt00Jjm4NObRvLoz+D8nAqF/xonTCGFoTTgezErEaU8naYbksZP+Y7ia8oLmOUs9keZm3uVMrBTgu5aCKA37IkNpDRtcaefYTeZpaLvrtjWYf0brsqWGHMgnhuu2hqqD2EGz6CQvpY9XeeEXJRp5NpRLOfQsNje3O0J+3A/fBGa4GFxgncOL41wQxVDygDtvTB0=
+Content-Type: multipart/alternative;
+	boundary="_000_SJ2PR08MB84324605C1B3E1517C898EBB8373ASJ2PR08MB8432namp_"
+MIME-Version: 1.0
+
+--_000_SJ2PR08MB84324605C1B3E1517C898EBB8373ASJ2PR08MB8432namp_
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Ravish, Hi Naveen,
+I am reaching out to you because in our records indicate that your instance=
+s are currently using one or more legacy replication sets in Instance Data =
+Replication that we will no longer support as of an upcoming Now Platform=
+=AE release.
+Instances affected:
+
+  *   infosysesmcafesubdev
+  *   ven04500
+  *   infosys21q1intf
+  *   infosysdemosvs6
+Please take a moment to review the information below.
+
+Here=92s what you can expect:
+
+  *   By the Now Platform=AE Zurich release planned for September 2025, all=
+ support for legacy replication sets in Instance DataReplication will be fu=
+lly discontinued.
+
+     *   Starting as early as January 2025, legacy IDR replication sets wil=
+l gradually lose functionality, data center by datacenter, as we transition=
+ towards full deprecation with the Zurich release in September 2025.
+
+Here=92s what we need you to do:
+
+  *   Migrate to the replacement as soon as possible:
+
+     *   Upgrade legacy replication sets to V2 in Instance DataReplication.=
+ Review the product documentation<https://www.servicenow.com/docs/bundle/xa=
+nadu-servicenow-platform/page/administer/instance-data-replication/task/upg=
+rade-legacy-replication-sets.html> for migration guidance.
+
+        *   V2 replication sets in IDR use the Hermes Messaging Service for=
+ Kafka message transport and delivery, which replicates data faster, at sca=
+le, and with high reliability.
+
+     *   We will send data center-specific communications in advance of eac=
+h data center's deprecation to help you prepare for the transition.
+
+  *   We will keep this Communication record open for 4 weeks to allow for =
+any necessary documentation and planning.
+
+In case if you are not using these instances, please direct me to the corre=
+ct point of contact for same instances.
+
+
+Regards,
+________________________________________
+Sandeep Singh
+Support Account Manager
+M: +91 74166 65780
+servicenow
+servicenow.com
+
+--_000_SJ2PR08MB84324605C1B3E1517C898EBB8373ASJ2PR08MB8432namp_
+Content-Type: text/html; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:x=3D"urn:schemas-microsoft-com:office:excel" xmlns:dt=3D"uuid:C2F4101=
+0-65B3-11d1-A29F-00AA00C14882" xmlns:m=3D"http://schemas.microsoft.com/offi=
+ce/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Aptos;
+	panose-1:2 11 0 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"ServiceNow Sans";
+	panose-1:2 11 5 4 4 1 1 1 1 4;}
+@font-face
+	{font-family:"Times New Roman \(Body CS\)";
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"ServiceNow Sans Book";
+	panose-1:2 11 6 4 4 1 1 1 1 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ligatures:standardcontextual;
+	mso-fareast-language:EN-US;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#467886;
+	text-decoration:underline;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{mso-style-priority:34;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ligatures:standardcontextual;
+	mso-fareast-language:EN-US;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"ServiceNow Sans",sans-serif;
+	color:windowtext;
+	font-weight:normal;
+	font-style:normal;
+	text-decoration:none none;}
+span.p2
+	{mso-style-name:apple-converted-space;}
+span.p3
+	{mso-style-name:outlook-search-highlight;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-fareast-language:EN-US;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+/* List Definitions */
+@list l0
+	{mso-list-id:47917851;
+	mso-list-template-ids:-492638184;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7 ;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l0:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l0:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l0:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l0:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l0:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l0:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l0:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1
+	{mso-list-id:539896990;
+	mso-list-template-ids:-1280690828;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7 ;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l2
+	{mso-list-id:1934975386;
+	mso-list-type:hybrid;
+	mso-list-template-ids:541495992 134807553 134807555 134807557 134807553 13=
+4807555 134807557 134807553 134807555 134807557;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7 ;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l2:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l2:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l2:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7 ;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l2:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l2:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+@list l2:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7 ;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l2:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l2:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7 ;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:Wingdings;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-IN" link=3D"#467886" vlink=3D"#96607D" style=3D"word-wrap:=
+break-word">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal"><span style=3D"font-family:&quot;ServiceNow Sans&quo=
+t;,sans-serif">Hi Ravish, Hi Naveen, &nbsp;<o:p></o:p></span></p>
+<div>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:auto;mso-margin-bottom-a=
+lt:auto"><span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif"=
+>I am reaching out to you because in
+</span><span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif;co=
+lor:#293E40">our records indicate that your<span class=3D"p2">&nbsp;</span>=
+<span class=3D"p3">instance</span>s are currently using one or more legacy =
+replication sets in<span class=3D"p2">&nbsp;</span><span class=3D"p3">Insta=
+nce</span><span class=3D"p2">&nbsp;</span><span class=3D"p3">Data</span><sp=
+an class=3D"p2">&nbsp;</span>Replication
+ that we will no longer support as of an upcoming Now Platform<sup>=AE<span=
+ class=3D"p2">&nbsp;</span></sup>release.
+<o:p></o:p></span></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:auto;mso-margin-bottom-a=
+lt:auto"><span style=3D"font-family:&quot;ServiceNow Sans Book&quot;,sans-s=
+erif;color:#293E40">Instances affected:<o:p></o:p></span></p>
+<ul type=3D"disc">
+<li class=3D"MsoListParagraph" style=3D"color:#293E40;mso-margin-top-alt:au=
+to;mso-margin-bottom-alt:auto;margin-left:0cm;mso-list:l2 level1 lfo3">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">infosyse=
+smcafesubdev<o:p></o:p></span></li><li class=3D"MsoListParagraph" style=3D"=
+color:#293E40;mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;margin-lef=
+t:0cm;mso-list:l2 level1 lfo3">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">ven04500=
+<o:p></o:p></span></li><li class=3D"MsoListParagraph" style=3D"color:#293E4=
+0;mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;margin-left:0cm;mso-li=
+st:l2 level1 lfo3">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">infosys2=
+1q1intf <o:p></o:p></span></li><li class=3D"MsoListParagraph" style=3D"colo=
+r:#293E40;mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;margin-left:0c=
+m;mso-list:l2 level1 lfo3">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">infosysd=
+emosvs6<o:p></o:p></span></li></ul>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:auto;mso-margin-bottom-a=
+lt:auto"><span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif;=
+color:#293E40">Please take a moment to review the information below.<o:p></=
+o:p></span></p>
+<p style=3D"caret-color: rgb(41, 62, 64);font-variant-caps: normal;orphans:=
+ auto;text-align:-webkit-left;widows: auto;-webkit-text-stroke-width: 0px;w=
+ord-spacing:0px">
+<strong><span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif;c=
+olor:#293E40">Here=92s what you can expect:</span></strong><span style=3D"f=
+ont-family:&quot;ServiceNow Sans&quot;,sans-serif;color:#293E40"><o:p></o:p=
+></span></p>
+<ul type=3D"disc">
+<li class=3D"MsoNormal" style=3D"color:#293E40;mso-margin-top-alt:auto;mso-=
+margin-bottom-alt:auto;mso-list:l0 level1 lfo1">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">By the N=
+ow Platform<sup>=AE</sup><span class=3D"p2">&nbsp;</span>Zurich release pla=
+nned for September 2025, all support for legacy replication sets in<span cl=
+ass=3D"p2">&nbsp;</span><span class=3D"p3">Instance</span><span class=3D"p2=
+">&nbsp;</span><span class=3D"p3">Data</span>Replication
+ will be fully discontinued.<o:p></o:p></span></li></ul>
+<ul type=3D"disc">
+<ul type=3D"circle">
+<li class=3D"MsoNormal" style=3D"color:#293E40;mso-margin-top-alt:auto;mso-=
+margin-bottom-alt:auto;mso-list:l0 level2 lfo1">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">Starting=
+ as early as January 2025, legacy IDR replication sets will gradually lose =
+functionality,<span class=3D"p2">&nbsp;</span><span class=3D"p3">data</span=
+><span class=3D"p2">&nbsp;</span>center by<span class=3D"p2">&nbsp;</span><=
+span class=3D"p3">data</span>center,
+ as we transition towards full deprecation with the Zurich release in Septe=
+mber 2025.<o:p></o:p></span></li></ul>
+</ul>
+<p style=3D"caret-color: rgb(41, 62, 64);font-variant-caps: normal;orphans:=
+ auto;text-align:-webkit-left;widows: auto;-webkit-text-stroke-width: 0px;w=
+ord-spacing:0px">
+<strong><span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif;c=
+olor:#293E40">Here=92s what we need you to do:</span></strong><span style=
+=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif;color:#293E40"><o:p>=
+</o:p></span></p>
+<ul type=3D"disc">
+<li class=3D"MsoNormal" style=3D"color:#293E40;mso-margin-top-alt:auto;mso-=
+margin-bottom-alt:auto;mso-list:l1 level1 lfo2">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">Migrate =
+to the replacement as soon as possible:<o:p></o:p></span></li></ul>
+<ul type=3D"disc">
+<ul type=3D"circle">
+<li class=3D"MsoNormal" style=3D"color:#293E40;mso-margin-top-alt:auto;mso-=
+margin-bottom-alt:auto;mso-list:l1 level2 lfo2">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">Upgrade =
+legacy replication sets to V2 in<span class=3D"p2">&nbsp;</span><span class=
+=3D"p3">Instance</span><span class=3D"p2">&nbsp;</span><span class=3D"p3">D=
+ata</span>Replication. Review the<span class=3D"p2">&nbsp;</span><a href=3D=
+"https://www.servicenow.com/docs/bundle/xanadu-servicenow-platform/page/adm=
+inister/instance-data-replication/task/upgrade-legacy-replication-sets.html=
+" title=3D"https://www.servicenow.com/docs/bundle/xanadu-servicenow-platfor=
+m/page/administer/instance-data-replication/task/upgrade-legacy-replication=
+-sets.html"><span style=3D"color:#0078D7">product
+ documentation</span></a><span class=3D"p2">&nbsp;</span>for migration guid=
+ance. &nbsp;<o:p></o:p></span></li></ul>
+</ul>
+<ul type=3D"disc">
+<ul type=3D"circle">
+<ul type=3D"square">
+<li class=3D"MsoNormal" style=3D"color:#293E40;mso-margin-top-alt:auto;mso-=
+margin-bottom-alt:auto;mso-list:l1 level3 lfo2">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">V2 repli=
+cation sets in IDR use the Hermes Messaging Service for Kafka message trans=
+port and delivery, which replicates<span class=3D"p2">&nbsp;</span><span cl=
+ass=3D"p3">data</span><span class=3D"p2">&nbsp;</span>faster,
+ at scale, and with high reliability.<o:p></o:p></span></li></ul>
+</ul>
+</ul>
+<ul type=3D"disc">
+<ul type=3D"circle">
+<li class=3D"MsoNormal" style=3D"color:#293E40;mso-margin-top-alt:auto;mso-=
+margin-bottom-alt:auto;mso-list:l1 level2 lfo2">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">We will =
+send<span class=3D"p2">&nbsp;</span><span class=3D"p3">data</span><span cla=
+ss=3D"p2">&nbsp;</span>center-specific communications in advance of each<sp=
+an class=3D"p2">&nbsp;</span><span class=3D"p3">data</span><span class=3D"p=
+2">&nbsp;</span>center's
+ deprecation to help you prepare for the transition.<o:p></o:p></span></li>=
+</ul>
+</ul>
+<ul type=3D"disc">
+<li class=3D"MsoNormal" style=3D"color:#293E40;mso-margin-top-alt:auto;mso-=
+margin-bottom-alt:auto;mso-list:l1 level1 lfo2">
+<span style=3D"font-family:&quot;ServiceNow Sans&quot;,sans-serif">We will =
+keep this Communication record open for 4 weeks to allow for any necessary =
+documentation and planning.<o:p></o:p></span></li></ul>
+</div>
+<p class=3D"MsoNormal"><span style=3D"font-family:&quot;ServiceNow Sans&quo=
+t;,sans-serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-family:&quot;ServiceNow Sans&quo=
+t;,sans-serif">In case if you are not using these instances, please direct =
+me to the correct point of contact for same instances.<o:p></o:p></span></p=
+>
+<p class=3D"MsoNormal"><span style=3D"font-family:&quot;ServiceNow Sans&quo=
+t;,sans-serif"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-family:&quot;ServiceNow Sans&quo=
+t;,sans-serif"><o:p>&nbsp;</o:p></span></p>
+<div>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.0pt;color:black;mso-liga=
+tures:none;mso-fareast-language:EN-GB">Regards,</span><span style=3D"mso-li=
+gatures:none;mso-fareast-language:EN-GB"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;color:black;mso-liga=
+tures:none;mso-fareast-language:EN-GB">____________________________________=
+____</span><span style=3D"mso-ligatures:none;mso-fareast-language:EN-GB"><o=
+:p></o:p></span></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:10.5pt;color:#474747;mso=
+-ligatures:none;mso-fareast-language:EN-GB">Sandeep Singh</span></b><span s=
+tyle=3D"mso-ligatures:none;mso-fareast-language:EN-GB"><o:p></o:p></span></=
+p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;color:#7F7F7F;mso-lig=
+atures:none;mso-fareast-language:EN-GB">Support Account Manager</span><span=
+ style=3D"mso-ligatures:none;mso-fareast-language:EN-GB"><o:p></o:p></span>=
+</p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;color:#7F7F7F;mso-lig=
+atures:none;mso-fareast-language:EN-GB">M: +91 74166 65780</span><span styl=
+e=3D"mso-ligatures:none;mso-fareast-language:EN-GB"><o:p></o:p></span></p>
+<p class=3D"MsoNormal" style=3D"margin-bottom:4.5pt"><b><span style=3D"font=
+-size:9.0pt;color:#474747;mso-ligatures:none;mso-fareast-language:EN-GB">se=
+rvicenow</span></b><span style=3D"mso-ligatures:none;mso-fareast-language:E=
+N-GB"><o:p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none;mso-fareast-language:E=
+N-GB">servicenow.com</span><o:p></o:p></p>
+</div>
+</body>
+</html>
+
+--_000_SJ2PR08MB84324605C1B3E1517C898EBB8373ASJ2PR08MB8432namp_--

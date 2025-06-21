@@ -1,0 +1,742 @@
+Received: from SA6PR08MB9770.namprd08.prod.outlook.com (2603:10b6:806:420::7)
+ by BN5PR08MB10586.namprd08.prod.outlook.com with HTTPS; Thu, 16 Jan 2025
+ 18:01:44 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=eZrHOc6/Tq5CBmxfDcd0FM95o6W54EmnY28QKYrgDuR3S25kcWqy3tV9GhBe3mLi8GyACBzFE3FkHJBS11cFJtZw24xg50KY85qLsKyBZ19/ECdce1SFqnrfIBJj+apTdOxZZGuZ+n9HfVL5hUUepSCIT/Fnudu2lzA836LYo0+XKgoxY1Ge6UAFHF5v1q5LFb64yDs33bybOHbiZExJvY8Cpgtbhkqk+vd1lJ8Kb7L9Enpbta1/4Th6RF95qosdbb/vtTgcXza9i0QYGvNR3vU/aAw5fZC9eCTbyBZFesJ+IwUmR4FfTp/OMrpdCnOEs/plMFgMCXCnzDBubG81UA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yd2VYPOyqaAk5BJDPonrjiCtsNRg1h2el/a6X7/L2Xs=;
+ b=kyr4SUTlRW17WVqR6NFv/qcQHgMDfrAiC4t4k5m9IuMzVkmhDWuYb3PNhbJpMKQ0SVeC2Xb3b/G20jM2Y51Hmtq3dGZ10iGIBsY68A1xZTcW7UOazaaxye+FhFHaBi5hPVte4QGzw6BdTUeHkLSMBvkbYcrzI0M/peNi6xLO5X594EwJ9P3OVAko9Yb1YyXmm1/K3D+3vUGheeEzAMo/lIrJYB35yEAwAFs7tjEGlm0IW8vPjsudVTTMkqSglIiAAjwxElFSVsygkcXtjlP8eRfket+EoJ90v/L5o/AfhYg1GfddReY9VAsYUOpUPefRJsmucGe3nUkaSMm4wU1mMA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=softfail (sender ip
+ is 170.10.128.131) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=em3124.servicenow.com; dmarc=fail (p=reject sp=reject pct=100)
+ action=oreject header.from=servicenow.com; dkim=fail (body hash did not
+ verify) header.d=servicenow.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from CYXPR03CA0030.namprd03.prod.outlook.com (2603:10b6:930:d2::16)
+ by SA6PR08MB9770.namprd08.prod.outlook.com (2603:10b6:806:420::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Thu, 16 Jan
+ 2025 18:01:40 +0000
+Received: from CY4PEPF0000EDD3.namprd03.prod.outlook.com
+ (2603:10b6:930:d2:cafe::22) by CYXPR03CA0030.outlook.office365.com
+ (2603:10b6:930:d2::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.14 via Frontend Transport; Thu,
+ 16 Jan 2025 18:01:40 +0000
+Authentication-Results: spf=softfail (sender IP is 170.10.128.131)
+ smtp.mailfrom=em3124.servicenow.com; dkim=fail (body hash did not verify)
+ header.d=servicenow.com;dmarc=fail action=oreject
+ header.from=servicenow.com;compauth=none reason=451
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ em3124.servicenow.com discourages use of 170.10.128.131 as permitted sender)
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ CY4PEPF0000EDD3.mail.protection.outlook.com (10.167.241.199) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.11
+ via Frontend Transport; Thu, 16 Jan 2025 18:01:40 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1737050499;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=yd2VYPOyqaAk5BJDPonrjiCtsNRg1h2el/a6X7/L2Xs=;
+	b=k11n23u3qrNo2vX4K2R1xHsp/HFo1+TORO/FoOU/StyxEJ/qMzwNndZiUmY+PolKH1Igk5
+	xAkjSgP4qm7wk4vo5OZClNRan+D9Z8jLGZ11v+QUki3YwOG8MkrAIZlKnrdEJ6lyJWh6O0
+	y9/SgsuScycWgshtken4vm/eANvvyfXt2egxN97PjsBD8rV+8RyFWR2gBgFWUPBf636gZi
+	hd0n4VyzRe9gDbtwA7xzz+f+xoA3jDZfO8axp7dapouYE0ZeDqtF8bekMrIYfsSVfb1JQ0
+	xtTRCT7wshe2Eq60/OuxApnFnehpGSHUsMrsfei6y9nn3njt/tdYZrkTwSM9ww==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1737050499; a=rsa-sha256;
+	cv=none;
+	b=o5yEgMCw71YAKdOxX12+IAEW8fGz143DD6rEQG53TyjxTLBBOYT3e0OpMk5/Y3+BAfznU3
+	g10ttHe5V7g6Twpq/xL49OG5iJ2lyzLxKZl5hPSvPBtGAmBB3u6y7z5xJyeXYQZ22D9zfM
+	XaqwJJjkTpxHhxjPFHFo5nStEus81zZ3c9a4MPORGUVaCvgUvSpDafSy809yUPVT2hTmjA
+	A96Zs1F4wsDCv/hTgtZgqpsjAqJOJFND13LG4+7iLYQ1JHJzszMCTjBu0rVwcUEBnswpOk
+	/xj3/clqsvU7oWBC8M5uBuxdoKFJBeaYhC1S5k2XzEj1qW1umIGAQ6iCbwDipQ==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=servicenow.com header.s=rf1 header.b=I0Qxp7XJ;
+	dmarc=pass (policy=reject) header.from=servicenow.com;
+	spf=pass (relay.mimecast.com: domain of "bounces+10698705-9ede-rob.spence=servicenow.com@em3124.servicenow.com" designates 167.89.112.50 as permitted sender) smtp.mailfrom="bounces+10698705-9ede-rob.spence=servicenow.com@em3124.servicenow.com"
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=servicenow.com header.s=rf1 header.b=I0Qxp7XJ;	dmarc=pass
+ (policy=reject) header.from=servicenow.com;	spf=pass (relay.mimecast.com:
+ domain of
+ "bounces+10698705-9ede-rob.spence=servicenow.com@em3124.servicenow.com"
+ designates 167.89.112.50 as permitted sender)
+ smtp.mailfrom="bounces+10698705-9ede-rob.spence=servicenow.com@em3124.servicenow.com"
+Received: from o20.ptr9088.servicenow.com (o20.ptr9088.servicenow.com
+ [167.89.112.50]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-325-ihdt_KCqMRGsfgaRyoXiaw-1; Thu, 16 Jan 2025 13:01:32 -0500
+X-MC-Unique: ihdt_KCqMRGsfgaRyoXiaw-1
+X-Mimecast-MFC-AGG-ID: ihdt_KCqMRGsfgaRyoXiaw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=servicenow.com;
+	h=content-transfer-encoding:content-type:from:mime-version:subject:to:
+	cc:content-type:from:subject:to;
+	s=rf1; bh=BR0mdVwcnlcQRzml1UAxHCNpUzsvIJENP305/O2cYk4=;
+	b=I0Qxp7XJK1NEk58Gq8PvAgGNVC/4m48kAqd8BBXWtYXEhGCtJGVKXSFdYI6SnUKvS6Sz
+	buCfAV0kldHiVNLlnuRmmrZ5r9+pPRCEmq/pdQyxIzO/VlhDaE98w8rI+PhyjVvOTVJ7Ii
+	dWiEMwLDnP4TzXajPlu1pWqK5uwcFsM9e7UKKXQVhqCsPvnQ+F1El0VKxtgxi6B1uhYxhr
+	KAz9FJ8RTJw/L4tFJ8jiUC2AnWigoAJxJXS0bv2uZxPdXRbPDqprLN14myJq8ZIytVL6s2
+	0Oe17/S50j6UZFGZOM6wnGyrPL79S8WZ7CthwHg1KM+CimU3JKyKwQ0VmgXoaANQ==
+Received: by recvd-5c8ccdbd88-45z5b with SMTP id recvd-5c8ccdbd88-45z5b-1-67894979-6F
+	2025-01-16 18:01:29.933002711 +0000 UTC m=+5431140.018003174
+Received: from MTA2OTg3MDU (unknown)
+	by geopod-ismtpd-0 (SG) with HTTP
+	id NP1go3kmTXeFvyIkQsSmlw
+	Thu, 16 Jan 2025 18:01:29.877 +0000 (UTC)
+Date: Thu, 16 Jan 2025 18:01:44 +0000
+From: ServiceNow Sales Kickoff 2025 <SalesKickoff@servicenow.com>
+Message-ID: <NP1go3kmTXeFvyIkQsSmlw@geopod-ismtpd-0>
+Subject: Before You SKO: Professional Conduct Reminder
+X-SG-EID: =?us-ascii?Q?u001=2Eu1G0E8Q2LSLm+cVHEkEyPR8LJnIegNALmyIyX2iBwrA=2FORKJIpmvK+Kj0?=
+ =?us-ascii?Q?z62NXAeEftZNNX3pSWx2O89x=2F4B1GWLxbPCoQXS?=
+ =?us-ascii?Q?ittEvMQ+vGpnUDm685o4g1NvpgzIvtf=2FywxIDab?=
+ =?us-ascii?Q?G7G1cZfbZGkARhIYF1nBMNP4YVjiwn9t2kEh2NG?=
+ =?us-ascii?Q?pZTQL7okDnhnHIdyyZZ=2FXv9WM4UzvBfT07xNLjJ?=
+ =?us-ascii?Q?YRg6mZszQh8uU+nYBNiXVuKZGoQ9N3hrwKXaAcW?=
+ =?us-ascii?Q?I9KoTZHDjZ85fVhehT7M0MND+7vWJ=2FWKpqb7K8n?=
+ =?us-ascii?Q?qR4FtBDM=3D?=
+X-SG-ID: =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BiR2WdYtHIzYFexWIUp3TZZyQ9ZUWSxdYGXdg?=
+ =?us-ascii?Q?3FndiKNPvLSeSDWvbcA3TJ=2FV3RbAGQafTZhN+mn?=
+ =?us-ascii?Q?4dyuAhUsLYWVk6se0lMKmKo+LIlZGxI7SI6JhfI?=
+ =?us-ascii?Q?1n7gSqAJ7OVxWvyZU=2FG+pvwlKgcrfkXXV8I9vTG?=
+ =?us-ascii?Q?1oYF+TS0KdH7RCjC33REqoh3v6Qd624Tu0VCYTD?=
+ =?us-ascii?Q?dBqLxDO04GaD+MI7xUsXdrrd5Js6TI0ailkDFav?=
+ =?us-ascii?Q?2vUkjvYw=2FC2bdgtMalBQdNcPAw=3D=3D?=
+To: rob.spence@servicenow.com
+X-Entity-ID: u001.T+WGw1p12RZlGvZi2cJdEA==
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: HOytWtVUBHwNqg5UTBJIAh2NSuOtVTeqxLMGKVT-jz0_1737050490
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=us-ascii
+Return-Path: bounces+10698705-9ede-rob.spence=servicenow.com@em3124.servicenow.com
+X-MS-Exchange-Organization-ExpirationStartTime: 16 Jan 2025 18:01:40.3705
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: c51d5c43-b2af-4559-2300-08dd3657d406
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD3:EE_|SA6PR08MB9770:EE_|BN5PR08MB10586:EE_
+X-MS-Exchange-Organization-AuthSource: CY4PEPF0000EDD3.namprd03.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: c51d5c43-b2af-4559-2300-08dd3657d406
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-BypassClutter: true
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:4;ARA:13230040|4022899009|82310400026|29132699027|12012899012|3072899012|2092899012|69100299015|8096899003|4076899003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-inbound-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(4022899009)(82310400026)(29132699027)(12012899012)(3072899012)(2092899012)(69100299015)(8096899003)(4076899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2025 18:01:40.0423
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c51d5c43-b2af-4559-2300-08dd3657d406
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD3.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR08MB9770
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:04.1707932
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8356.008
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?Windows-1252?Q?O1Ax3m4VzLHkgPI0SuAfausa182docFjFjmD8Rk9z9aha57XWDAqfWEy?=
+ =?Windows-1252?Q?MWdtQkz08FvYTxqg0KLV1GOIYnboUagvdB9z0ItNHIr4THHraST5TXYG?=
+ =?Windows-1252?Q?gBPeISK+0lQcWOPQdP5/EvtiXyoMa9F+RKIG2RsQ20bP0CUsGvpV2ug0?=
+ =?Windows-1252?Q?Ni0VGGPD7Nk3yU0+9OuVugUzD3hCY7XuG+UXih4HgqFUDCjTM6x9oELZ?=
+ =?Windows-1252?Q?Km1PGMp0O86QYXQ5Tw2fySnI/wV92OZHerzS5L6Xa9zSUAuuauwiSWNc?=
+ =?Windows-1252?Q?GeH04Xxxr+fZLB6VwpB+oeCQkER94s7c0gNR1VncEWMw9eEBsphh+2yd?=
+ =?Windows-1252?Q?B5XLu2/kavK4zRhBgpXOBWINJ8+RgwiPC2dk74QxAPIF5cAqG72LVLOw?=
+ =?Windows-1252?Q?TQXlKBf370imeJ1FaImOO/DU5XELSHHIxd0zctoW2MvGeDkPUCDvxlEM?=
+ =?Windows-1252?Q?ZAwm5c2j4idED78RYj9sAF58CjWNG3kZvlgDzUBAhz4YGtmC90fxv6Q3?=
+ =?Windows-1252?Q?Q2i8GXZYsiiDpLj7F6t5xqOwxokiOQ9r0s3Wb+FqXAE3SUb4xrSFd3LI?=
+ =?Windows-1252?Q?7oTbu2d7u23GAikW/1pCJGkAi8eLtpebdZHdvAPjWPtkHeGA7258SwCh?=
+ =?Windows-1252?Q?VQsn73ciNpXR/NK+csEuvBrYNnFkTaW9Km6UyYeyGCECawG9aq/tr9Xy?=
+ =?Windows-1252?Q?kKe2JP7jmyQ7NhnKzcumNqM+KKhG7taxfCfXcO5q73T2MEU5CvuDS55r?=
+ =?Windows-1252?Q?Frf/yLw1+T1ppDWo4nePOWh+S1sLzsFu5/NVQVUbk2o0Q5tT5PI64TiW?=
+ =?Windows-1252?Q?0vfZdkr7L3EzEAfeFOPrSIPoIEHW+vwZ7PCjFnRpN3nV941SLbKIlFYo?=
+ =?Windows-1252?Q?F/o3rYRbhioZGYJQsO7+ev1xmDq520gTNWnhvtCiZiZQDH709j77tiGn?=
+ =?Windows-1252?Q?kVu028VIoUCVY3K83wHhr/2IOSh/PotcKZ5AtaGWDhYgDgDyho/XWPmP?=
+ =?Windows-1252?Q?WljBqCviFKgs/lhIMosf3C55RO8tQTix26YZPewrr7oXL5yrXYtwX9nz?=
+ =?Windows-1252?Q?NcQpZGvK6xV76R3cKIw++svwTuifO0oUht4/SOZ3Wq7dBbZz9mygzDks?=
+ =?Windows-1252?Q?VbcVV+bMVYl2gZofMwWSBoyuuKba3i4jFhppWrhyKZn7UPjEKDfnJmt2?=
+ =?Windows-1252?Q?4WUm5QtncW3WAXxhZBplLPgRTBF3hksbQ2EtW6fkqHv5ZCqYQTo9sqLp?=
+ =?Windows-1252?Q?1Wbq0OJ8dEaFmOC0gWqSm5uE9I7t+F6w/zXR3rdXjXj5/0n/9Fdx1+6M?=
+ =?Windows-1252?Q?e5cvo8iugCsq4sL2601CR46VS0mTZbY+QQmazqYKyQr9alr2al0FVizz?=
+ =?Windows-1252?Q?SlHVI0xyrPAWg370g2W3XrKxhVOvcN/EfLtOZnRMkvq63LO/IHGEeyra?=
+ =?Windows-1252?Q?TjbhXvv7oAy92QwoQh35A9RAk9ffyccm6fownBIpvk2V0DxcrI+ZroIH?=
+ =?Windows-1252?Q?nyPZkQnumAT7EXn2GAgmmicpoHWhfZ7sUj3gnJCsgafg9FSfwt1uWC2Z?=
+ =?Windows-1252?Q?9uQ/k4k5IDlYykbeQEafeU7waJHj8nd3dH4iPgdfNTskqSYveq9zbx6f?=
+ =?Windows-1252?Q?FrwhPpiysTD0hDC3WrsBRnRJQGJKSCa2A5fkvyeodgPqoSJr6wMl1ty+?=
+ =?Windows-1252?Q?cTmP5tzSquGLabM0pn/p2YnVOppnytQRK0lnmHCRHII6lpUIo1Y1Hcxa?=
+ =?Windows-1252?Q?fXtzxL6FvPMXx7vzGGHSzpt6ADqhPoynvNA33qEY0cnD4h3qUMp91UMU?=
+ =?Windows-1252?Q?4yDBrY88CYURCm7zlLqvxzS4bo+1ElOLBjUfjjSMYSc7Gu9nbn9IL8wc?=
+ =?Windows-1252?Q?8ZHkTRoDDLz0PqQw7uO/8sBYZGsmwfx2c7kfAFqMf/cLr9KvlcFWiics?=
+ =?Windows-1252?Q?1kL5CrhnGuD7KbRoSCMAR/gtQ0ssMfuB1eFB2Ieg5We309BrAWyunS4e?=
+ =?Windows-1252?Q?54MIj0Xu5lIaEEQ06aPCulYxQBNX7jFERwBOTr1aSval2kazVR0muCVK?=
+ =?Windows-1252?Q?lXA4ZmZ5v4GhMEie0JAKP3XK79jH0hG55f7FVn1b0hcuMkIL3q1oj2Hw?=
+ =?Windows-1252?Q?pEkPOIzpZR2YhHm7leuHo4EsJDTQgdyorKSyvjMxs7KNHql/zbvc79La?=
+ =?Windows-1252?Q?zhIqjQUKskTEZ+/VIkU52ES9/m3TR0Ay9xkuM4xzaThCiVqqHSex8Nua?=
+ =?Windows-1252?Q?PCGpESTfWnl6n+JHs78j/JmSVyGlPwnhdd7RdHtq2gRur2ZHt56Q6/59?=
+ =?Windows-1252?Q?TrIYyxJNzST103/kjilWrlFW2d9KvM9k0AhAo647A3opMmFraDUPCjy5?=
+ =?Windows-1252?Q?Fh8kXUo+2+egbPUjiZKLhp+QmvtYQQZRslE=3D?=
+MIME-Version: 1.0
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns=3D"http://www.w3.=
+org/1999/xhtml" xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:v=
+=3D"urn:schemas-microsoft-com:vml"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+><meta name=3D"color-scheme" content=3D"light dark"><meta name=3D"supported=
+-color-schemes" content=3D"light dark">
+	<title>You are in!</title>
+	<!--[if gte mso 9]><xml>
+  <o:OfficeDocumentSettings>
+    <o:AllowPNG/>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml><![endif]-->
+	<style type=3D"text/css">body, table, td, th, p, a, li, blockquote {
+		-ms-text-size-adjust: 100%;
+		-webkit-text-size-adjust: 100%;
+	}
+	html,
+	body {
+       margin: 0 auto !important;
+       padding: 0 !important;
+       height: 100% !important;
+       width: 100% !important;
+   }
+   table,
+   td, th {
+       mso-table-lspace: 0pt !important;
+       mso-table-rspace: 0pt !important;
+   }
+   img {
+       -ms-interpolation-mode:bicubic;
+   }
+    .ReadMsgBody {width: 100%;}
+    .ExternalClass {width: 100%;}
+    th, td {
+        font-weight: normal;
+        font-size: 14px;
+        font-family:'Century Gothic',CenturyGothic,Helvetica,Arial,sans-ser=
+if;
+        color: #000000;
+		margin: 0;
+		padding: 0;
+    }
+    p {
+        margin: 0 0 12px 0;
+        mso-line-height-rule:exactly;
+        line-height: 21px;
+    }
+    h1 {
+        margin: 0 0 24px 0;
+        font-weight: bold;
+        font-size: 24px;
+        mso-line-height-rule:exactly;
+        line-height: 28px;
+    }
+    h2 {
+        margin: 0 0 16px 0;
+        font-weight: bold;
+        font-size: 20px;
+        mso-line-height-rule:exactly;
+        line-height: 26px;
+    }
+    a {
+        text-decoration: underline;
+        color: #000000;
+        text-decoration-color: #009156;
+    }
+
+    /*[data-ogsc] a {text-decoration-color: #ffffff !important;}*/
+
+    [data-ogsc] .headLiner td {background-color: #002d42 !important;}
+
+    a.noline {
+        text-decoration: none;
+    }
+    sup {
+		font-size: 0.5rem;
+	}
+    .section-header {
+      width: 100%;
+    }
+    .section-body {
+      width: 100%;
+    }
+    .section-footer {
+      width: 100%;
+    }
+=09
+	.pre-header {
+		width: 100%;
+	}
+	.pre-header-text {
+		font-size: 11px;
+        font-family:Arial,sans-serif;
+        color: #000000;
+		padding: 0 20px 0 20px;
+        line-height: 12px;
+		text-align: center;
+	}
+	.header-logo {
+		padding-right: 20px;
+	}
+=09
+    .content {
+        width: 600px;
+    }
+	.content-hero {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    .module-light, .module-dark, .module-info {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    .module-div {
+        border-top: #c0c2c4 1px solid;
+        min-width:100%;
+    }
+    p.hero-category{
+        font-size: 18px;
+        mso-line-height-rule:exactly;
+        line-height: 22px;
+        margin-bottom: 30px;
+    }
+    p.footer-title {
+        font-weight: bold;
+        font-size: 30px;
+        mso-line-height-rule:exactly;
+        line-height: 32px;
+        margin-bottom: 20px;
+    }
+    p.footer-text {
+        font-size: 12px;
+        mso-line-height-rule:exactly;
+        line-height: 21px;
+        margin-bottom: 24px;
+    }
+
+    span.yshortcuts { color:#000000; background-color:none; border:none;}
+    span.yshortcuts:hover,
+    span.yshortcuts:active,
+    span.yshortcuts:focus {color:#000000; background-color:none; border:non=
+e;}
+   =20
+    @media only screen and (max-width: 600px) {
+        .mob-hide {
+            display: none !important;
+        }
+
+        h1 {
+            font-size: 20px !important;
+            line-height: 24px !important;
+			text-align: left;
+        }
+		h2 {
+            font-size: 20px !important;
+            line-height: 28px !important;
+			text-align: left;
+			width: 100% !important;
+        }
+        .mob-logo, .mob-logo-light, .mob-logo-dark {
+            height: 15px;
+            width: auto;
+			margin-left: 20px;
+			margin-right:20px;
+        }
+		.button {
+			margin: auto !important;
+          =09
+		}
+		.content-hero {
+			background-size: 800px !important;
+        }
+        .hero-content {
+            display: block !important;
+            float: none !important;
+			width: auto !important;
+			clear: both;
+			text-align: center;
+			padding: 30px 20px !important;
+        }
+        .hero-image {
+			display: block !important;
+            float: none !important;
+			width: auto !important;
+			clear: both;
+			text-align: center;
+			background-color: #ffffff;
+		}
+		.hero-image img {
+			margin-left: auto !important;
+			margin-right: auto !important;
+			margin-top: 0 !important;
+			margin-bottom: 0 !important;
+		}
+		.hero-image img.hero-image-full {
+			width: 100% !important;
+			height: auto !important;
+		}
+      	.pad-bottom {
+          	padding-bottom:25px !important;
+      	}
+		p {
+			text-align: left !important;
+		}
+		.mob-image {
+			width: 100% !important;
+			margin-bottom: 30px;
+		}
+		.mob-image-left {
+			width: 90% !important;
+		}
+        .content {
+            width: 600px !important;
+        }
+		.module-light, .module-dark, .module-info {
+			padding-left: 20px !important;
+			padding-right: 20px !important;
+		}
+		.module-content {
+			display: block !important;
+			float: none !important;
+			width: 100% !important;
+			clear: both;
+			text-align: center;
+		}
+        .footer-row {
+            padding-top: 20px !important;
+            padding-left: 20px !important;
+            padding-right: 14px !important;
+            padding-bottom: 0px !important;
+        }
+        .footer-content {
+            display: block !important;
+            float: none !important;
+            text-align: left !important;
+        }
+		.footer-link {
+			text-align: left !important;
+		}
+       =20
+       }
+	   @media (prefers-color-scheme: dark ) {
+			.dark-bg, .section-header, .section-hero, .section-body, .section-footer=
+ {background-color: #0b2d3f !important;}
+			.footer-text, .footer-link, .footer-link a {color: #ffffff !important;}
+			.dark-img { display:block !important; width: auto !important; overflow: =
+visible !important; float: none !important; max-height:inherit !important; =
+max-width:inherit !important; line-height: auto !important; margin-top:0px =
+!important; visibility:inherit !important; }
+			.light-img, .mob-logo-light { display:none !important; }
+			.module-light {background-color:#000000 !important;color:#ffffff !import=
+ant;}
+			.module-light h1, .module-light h2, .module-light p, .module-light li, .=
+module-light a {color: #ffffff !important;}
+		}
+		[data-ogsc] .dark-bg, [data-ogsc] .section-header, [data-ogsc] .section-h=
+ero, [data-ogsc] .section-body, [data-ogsc] .section-footer {background-col=
+or: #0b2d3f !important;}
+		[data-ogsc] .footer-text, [data-ogsc] .footer-link, [data-ogsc] .footer-l=
+ink a {color: #ffffff !important;}
+		[data-ogsc] .dark-img { display:block !important; width: auto !important;=
+ overflow: visible !important; float: none !important; max-height:inherit !=
+important; max-width:inherit !important; line-height: auto !important; marg=
+in-top:0px !important; visibility:inherit !important; }
+		[data-ogsc] .light-img, [data-ogsc] .mob-logo-light { display:none !impor=
+tant; }
+		[data-ogsc] .module-light {background-color:#000000 !important;color:#fff=
+fff !important;}
+		[data-ogsc] .module-light h1, [data-ogsc] .module-light h2, [data-ogsc] .=
+module-light p, [data-ogsc] .module-light li, [data-ogsc] .module-light a {=
+color: #ffffff !important;}
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+	<style type=3D"text/css">
+	</style>
+</head>
+<body class=3D"vsc-initialized" data-gr-ext-installed=3D"" data-new-gr-c-s-=
+check-loaded=3D"14.991.0" style=3D"margin: 0; padding: 0 !important; mso-li=
+ne-height-rule: exactly;background-color: #EDEDED;" width=3D"100%"><!-- BEG=
+IN: Header -->
+<table bgcolor=3D"#EDEDED" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"section-header" style=3D"width: 100%;">
+	<tbody>
+		<tr>
+			<td align=3D"center" style=3D"font-weight: normal; font-size: 14px; font=
+-family: 'Century Gothic',CenturyGothic,Helvetica,Arial,sans-serif; color: =
+#000000; margin: 0; padding: 0;">
+			<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"content=
+" style=3D"width: 600px; background-color: #032D42;" width=3D"600">
+				<tbody>
+					<tr>
+						<td align=3D"left" class=3D"header-logo" height=3D"57" style=3D"heigh=
+t: 57px; font-weight: normal; font-size: 14px; font-family: 'Century Gothic=
+',CenturyGothic,Helvetica,Arial,sans-serif; color: #000000; margin: 0; padd=
+ing: 0;" valign=3D"middle"><img alt=3D"ServiceNow" class=3D"mob-logo-light"=
+ src=3D"https://image-tracking-service.us-1.mimecastcybergraph.com/v1/image=
+?imageData=3DLJ3VNf3ZVrhdXWT1RQORazhAjo1uiUzlFHE326D1jvJQ3prwbcgMZcslsvNVUE=
+7IdMlzOFUKrHVnmrgaBvofd5dZVHFzQPvr4GZdbUQTfGFQmvjIdS1tKxI8hsZ0Kgzes9cS3MzRz=
+uACJh%2FXg7y44LFccW07kFXYBSzFDhY%2Fn2dnMCzGysO94%2BvkTGb4ZWYQOzbk4wxWT0EX4T=
+SDXfJV%2F85cLfFVSPWmJLca4%2FutipG2Qy%2FGsbBEVWU35STyGxhLdzg5rWTcgLp6QBXggmK=
+v1uNrSVwwDRigdfkGiJeDHEyeuWpUXK1TVp%2F0jd8LSBSGl3aVpoArl6%2BSCfAV9qYIxLwZQS=
+yfYD%2FclLDpPyDjEdgRC%2FJbdTDlT%2BeJo5jmgNj%2B" style=3D"border-style: soli=
+d; border-width: 0px; width: 150px; height: 29px; margin-left: 15px; margin=
+-right: 15px;"> <!--[if !mso]>
+						<div align=3D"left" class=3D"dark-img" style=3D"display:none; overflo=
+w:hidden; float:left; width:0px; max-height:0px; max-width:0px; line-height=
+:0px; visibility:hidden;"><img alt=3D"ServiceNow" border=3D"0" class=3D"mob=
+-logo-dark" height=3D"18" src=3D"https://static.rainfocus.com/servicenow/sk=
+o22/static/staticfile/staticfile/snLogo22white_email_events_logo_1641587910=
+5900018VgP.png" style=3D"border-style: none;" width=3D"119" /></div>
+						<!--<![endif]--></td>
+					</tr>
+					<tr>
+						<td bgcolor=3D"#86ED78" class=3D"headLiner" colspan=3D"2" style=3D"fo=
+nt-weight: normal; font-size: 14px; font-family: 'Century Gothic',CenturyGo=
+thic,Helvetica,Arial,sans-serif; color: #000000; margin: 0; padding: 0;">
+						<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"min-=
+width: 100%;" width=3D"100%">
+							<tbody>
+								<tr>
+									<td height=3D"4" style=3D"font-size: 4px; line-height: 4px; font-w=
+eight: normal; font-family: 'Century Gothic',CenturyGothic,Helvetica,Arial,=
+sans-serif; color: #000000; margin: 0; padding: 0;" width=3D"100%">&nbsp;</=
+td>
+								</tr>
+							</tbody>
+						</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- END: Header --><!-- BEGIN: Body -->
+
+<table bgcolor=3D"#EDEDED" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"section-body" style=3D"width: 100%;">
+	<tbody>
+		<tr>
+			<td align=3D"center" style=3D"font-weight: normal; font-size: 14px; font=
+-family: 'Century Gothic',CenturyGothic,Helvetica,Arial,sans-serif; color: =
+#000000; margin: 0; padding: 0;">
+			<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"content=
+" style=3D"width: 600px;" width=3D"600"><!-- BEGIN: Event Info -->
+				<tbody><!-- END: Event Info --><!-- BEGIN: Module 1 -->
+					<tr>
+						<td bgcolor=3D"#ffffff" style=3D"font-weight: normal; font-size: 14px=
+; font-family: 'Century Gothic',CenturyGothic,Helvetica,Arial,sans-serif; c=
+olor: #000000; margin: 0; padding: 0;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td bgcolor=3D"#ffffff" class=3D"module-light" style=3D"font-weight: =
+normal; font-size: 14px; font-family: 'Century Gothic',CenturyGothic,Helvet=
+ica,Arial,sans-serif; color: #000000; margin: 0; padding: 0; padding-left: =
+40px; padding-right: 40px;">
+						<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%=
+"><!-- BEGIN: Content Block -->
+							<tbody>
+								<tr>
+									<td align=3D"left" style=3D"font-weight: normal; font-size: 14px; =
+font-family: 'Century Gothic',CenturyGothic,Helvetica,Arial,sans-serif; col=
+or: #000000; margin: 0; padding-top: 24px;padding-bottom: 24px;mso-line-hei=
+ght-rule: exactly; line-height: 21px;"><!-- BEGIN: Text -->
+									<p>Team,&nbsp;</p>
+
+									<p>We&#8217;re excited to see you at ServiceNow&#8217;s Sales Kick=
+off 2025 (SKO25) in Las Vegas! As you prepare to attend, I&#8217;m in touch=
+ with a reminder that SKO25 is not only an opportunity to celebrate our 202=
+4 achievements and align and inspire our team for the year ahead &#8211; it=
+'s also our moment to demonstrate why we're the best in the business.</p>
+
+									<p>It&#8217;s essential that we maintain a high degree of professi=
+onalism throughout the event, and each one of us plays a key role in shapin=
+g the perception of our company and its values. &nbsp;</p>
+
+									<p>To ensure that we leave a positive and lasting impression, plea=
+se keep the following in mind:&nbsp;</p>
+
+									<ul>
+										<li><strong>Respectful interactions:</strong> Treat everyone with=
+ respect and courtesy, regardless of their position or affiliation. Remembe=
+r that our collective behavior reflects the entire ServiceNow family.&nbsp;=
+<br>
+										&nbsp;</li>
+										<li><strong>Responsible behavior:</strong> Exercise responsible b=
+ehavior at all times. Avoid engaging in any behavior that could be deemed i=
+nappropriate during the duration of the event.&nbsp;<br>
+										&nbsp;</li>
+										<li><strong>Professional attire:</strong> Dress in business casua=
+l attire that reflects the professionalism of ServiceNow. Remember that you=
+ are representing not just yourself, but our brand as well.&nbsp;<br>
+										&nbsp;</li>
+										<li><strong>Networking etiquette:</strong> Take advantage of netw=
+orking opportunities to build meaningful connections with colleagues. Appro=
+ach conversations with a genuine interest in learning and sharing knowledge=
+.&nbsp;<br>
+										&nbsp;</li>
+										<li><strong>Social media presence:</strong> Be mindful of your so=
+cial media activity during the event. Refrain from sharing sensitive inform=
+ation about the company and exercise discretion when posting photos or upda=
+tes. The use of video or photography is prohibited during the presentations=
+.&nbsp;</li>
+									</ul>
+
+									<p>Remember, what happens in Vegas does NOT stay in Vegas! By stay=
+ing true to these guidelines, we&#8217;ll all contribute to a successful, c=
+ollaborative event and positive representation of our company.&nbsp;</p>
+
+									<p>See you in Vegas!<br>
+									Robin</p>
+									<!-- END: Text --></td>
+								</tr>
+								<!-- END: Content Block -->
+							</tbody>
+						</table>
+						</td>
+					</tr>
+					<!-- END: Module 1 -->
+				</tbody>
+			</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- END: Body --><!-- BEGIN: Footer -->
+
+<table bgcolor=3D"#EDEDED" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"section-footer" style=3D"width: 100%;">
+	<tbody>
+		<tr>
+			<td align=3D"center" style=3D"font-weight: normal; font-size: 14px; font=
+-family: 'Century Gothic',CenturyGothic,Helvetica,Arial,sans-serif; color: =
+#000000; margin: 0; padding: 0;">
+			<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"content=
+" style=3D"width: 600px;" width=3D"600">
+				<tbody>
+					<tr>
+						<td align=3D"left" class=3D"footer-row" style=3D"font-weight: normal;=
+ font-size: 14px; font-family: 'Century Gothic',CenturyGothic,Helvetica,Ari=
+al,sans-serif; color: #000000; margin: 0; padding-top:15px;" valign=3D"top"=
+ width=3D"100%">
+						<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"min-=
+width: 100%;" width=3D"100%">
+							<tbody>
+								<tr>
+									<td align=3D"left" class=3D"footer-link" style=3D"font-weight: nor=
+mal; font-size: 12px; font-family: 'Century Gothic',CenturyGothic,Helvetica=
+,Arial,sans-serif; color: #000000; margin: 0; padding:0;line-height:27px;" =
+valign=3D"top" width=3D"100%"><a href=3D"https://www.servicenow.com/contact=
+-us.html?elqTrackId=3Da98de47deadd43fe866b7e3ea3b0e48d" style=3D"color: #00=
+0000; text-decoration-color: #000000 !important;">Contact Us</a>&nbsp;|&nbs=
+p; <a href=3D"https://www.servicenow.com/privacy-statement.html?elqTrackId=
+=3D58ea20b4a1be48e59ce7a56b0240b35a" style=3D"color: #000000; text-decorati=
+on-color: #000000 !important;">Privacy Policy</a>&nbsp;|&nbsp; <a href=3D"h=
+ttps://info.servicenow.com/Email-Preference-Center.html?optout=3Dtrue" styl=
+e=3D"color: #000000; text-decoration-color: #000000 !important;"> Unsubscri=
+be</a></td>
+								</tr>
+							</tbody>
+						</table>
+						</td>
+					</tr>
+					<tr>
+						<td align=3D"left" class=3D"footer-row" style=3D"font-size: 12px; lin=
+e-height: 21px; font-weight: normal; font-family: 'Century Gothic',CenturyG=
+othic,Helvetica,Arial,sans-serif; color: #000000; margin: 0; padding: 0;" v=
+align=3D"top" width=3D"100%">
+						<p class=3D"footer-text" style=3D"margin: 0 0 12px 0; mso-line-height=
+-rule: exactly; line-height: 21px; font-size: 12px; margin-bottom: 24px;">2=
+225 Lawson Lane, Santa Clara, CA 95054<br>
+						&copy; 2025&nbsp;ServiceNow. All rights reserved</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- END: Footer --><img src=3D"https://image-tracking-service.us-1.mimecas=
+tcybergraph.com/v1/image?imageData=3DxUwUg5xHWxYT8PqzNNh0bZZdhNOYsQONJKzz9I=
+KGGhNGek3%2BZ0bqlPvNYzD%2BixMscJBeJbkMd%2BikliBwZtMkMIn5rvsAl%2FWKtsZdoVqCi=
+A0gtQQFqU2sKGGJWOOEwy1pl3CxqPsfSb7U3XmCDmc4tGXEnvXesXurgHFhVLGPP4arsNapDQcA=
+SbfLA8Fa%2FHB6rhn81Gik4p88c%2B0cR92BEzO2581FxcnlzECN1LjmSAFATKkWapf2y3wdsPA=
+11Ssk1qsgiAc4blw306oa%2BjPIDUBZqX9sjweK%2FHHuyD%2Fgq7kNWaYgzmA%2BnMgK9LdjSf=
+0b8Id1s4Kb4lA8BVQNc4RWcOSrK6DTLytTOUDZGA5945R1pAmxRyy0aRHf6D0LGCrO0dJDJ%2FC=
+JzO2%2BuiLp1310Pu6tBj0bXFiM6KCRzcC8qDfg8KyLu3pBOZTPjBRwggDTBgqUtjEmPa1s0bbn=
+rFRxSFUcsztIP5ggftjD%2B7rtlRtZIq7dXfwTZRJS%2Fp%2FEUSjGpDBQy4mHYTXtzPibU%2B4=
+t2x6C06GZ3g9XSxWK8gqgU%2BF8XC4jH6TWVO172HQFV7kXd%2Bs%2BDMJ9sAndA2TTFXCbQpr%=
+2Bg%2Fkmb31xSLG3fVjEdl6Ir1xAYVSmO3D3%2FZB2x4O%2BamBniYoRsrhqGkLGhWu4JzF1ZPi=
+IopWs2inwVAkhqVaRsANk%2B9mm%2FnpfTFCYWT0FTo%2BA2YZWVdnVVx6Zm8i%2FyB5TtQwa7U=
+PjSjhQ%2FLXeDwBf6k9zvB8FRO9NDAk3vaGk%2FTxtqBlbQWLno9Hj2Iprpr9uNCLve8HaD4U00=
+SCuib%2FSXFG2jCfB2fBWl44KbGc%2BWldh7z8A37Ytgb7Mst13%2BIc1%2B3Tro8hl%2BPcuYe=
+NvmLCwHhhVAj1yGRssWSVbvZ5%2B%2FuGktX4lXuYEv8cQaTIFcngcc6x1yBlR1QwciXkAQ9T2D=
+Nwinou4P5UIkK84NA8%3D" alt=3D"" width=3D"1" height=3D"1" border=3D"0" style=
+=3D"height:1px !important;width:1px !important;border-width:0 !important;ma=
+rgin-top:0 !important;margin-bottom:0 !important;margin-right:0 !important;=
+margin-left:0 !important;padding-top:0 !important;padding-bottom:0 !importa=
+nt;padding-right:0 !important;padding-left:0 !important;"></body>
+</html>
+

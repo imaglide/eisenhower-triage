@@ -1,0 +1,485 @@
+Received: from SA1PR08MB7230.namprd08.prod.outlook.com (2603:10b6:806:1a0::19)
+ by DS7PR08MB10577.namprd08.prod.outlook.com with HTTPS; Fri, 17 Jan 2025
+ 23:05:45 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=oVmoBRnXXRJ6R9yIQ45I8/UKmJSFU8SZ486BwQkJmY7dFPkkIIrXNMtn6DwIjINDNBVj4DQb5zW45k2D9Vz+ybHAKYkFxT3c+8M22WwX2LCjCxLsjYiRIdKhtJrIxO/3o16VQ513HVERfYOy+XXmCzX1B+ZAvkvBEd9B7ZfY0JkLaESAyPxEezhEKhIeMD2wtly06F1vv+fQLJT2mx7zxopmvvSm0HqJAz8MAqK8YQNMrRKAF0EV6Mb33AT/sp+iEiW7L69jalc05uyN2f7xL6SgBzvmf304MU8btgDgRyXyJ5c+ewiT++oya2zlKJQydtVp53qSYkieHnL3rmnTQw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ckniqggMVf28vZQZn0MQrwAaRE6etQ9pDGZM0B8YrZw=;
+ b=lIGHvug/mdz04Vd2Pr/QZVk/UOjE2yZAznw6w5Lcd0PNLMMj9IwFAX5hbUsgbqYaY4bVpmK23BVytr8fvFLWz0pfJxkKzEIXa2OPMSuLEtDMaYW5h6nwPmKS5S2kPtr/j5osngdcwmZK6x9m/5DTydfmb5QDSuVgLtypncrLBZWXGR0AoHfIh3+S/TtCOmyUTTj61DLdEgjpBJD7T0X2ikcDPcXPUl2pWNuB9O78ybJabZtdOHDuLFwdnxZGOjm/u7h6pim+M9qKdvriMJ6OuV6HaTQm+oZXCgsGNgOmrnOlTBXEMworq5F8Bge0xhNEqszEEUvuaVbHA9b4MWf/iQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=softfail (sender ip
+ is 205.139.110.120) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=workshop.servicenow.com; dmarc=fail (p=reject sp=reject
+ pct=100) action=oreject header.from=servicenow.com; dkim=fail (body hash did
+ not verify) header.d=servicenow.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from CH0PR07CA0006.namprd07.prod.outlook.com (2603:10b6:610:32::11)
+ by SA1PR08MB7230.namprd08.prod.outlook.com (2603:10b6:806:1a0::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.17; Fri, 17 Jan
+ 2025 23:05:42 +0000
+Received: from CH3PEPF00000009.namprd04.prod.outlook.com
+ (2603:10b6:610:32:cafe::8e) by CH0PR07CA0006.outlook.office365.com
+ (2603:10b6:610:32::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.16 via Frontend Transport; Fri,
+ 17 Jan 2025 23:05:42 +0000
+Authentication-Results: spf=softfail (sender IP is 205.139.110.120)
+ smtp.mailfrom=workshop.servicenow.com; dkim=fail (body hash did not verify)
+ header.d=servicenow.com;dmarc=fail action=oreject
+ header.from=servicenow.com;compauth=none reason=451
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ workshop.servicenow.com discourages use of 205.139.110.120 as permitted
+ sender)
+Received: from us-smtp-inbound-delivery-1.mimecast.com (205.139.110.120) by
+ CH3PEPF00000009.mail.protection.outlook.com (10.167.244.36) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8377.8
+ via Frontend Transport; Fri, 17 Jan 2025 23:05:42 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1737155141;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=ckniqggMVf28vZQZn0MQrwAaRE6etQ9pDGZM0B8YrZw=;
+	b=BZAvC6HZjXTmeL7KhiZN5if4PqNGAKswa7KSZjQR2hvEQjufh5fJAHKnTxopiGuwLzCHpF
+	swCZYL3U7yX5n3vsHhNz54Akh98XiGu0Vvg9AqDJTmoNMepV9Ai/oncJRNYSb5ahHanxzW
+	SgT00n1kWuDp5OKIEMytN8RxgcKUIZ8DAVOBYh0OlxufTyC0IBMm3GzI+s8H2qHVT1AAaR
+	5LMOnqud/s0CMBUbSgx97e9IXiuJyj8hoNlr6ghHUlMyHLcrE+PlV7wm0GUEtYJP4scJU8
+	9wbNOH0vF8zqjY4ACO5Ka0u4TxvBoSpERor/fqjckJrI1gnkmmzXqeWvRwiw3w==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1737155141; a=rsa-sha256;
+	cv=none;
+	b=Bwutn7sZ5FE+eoLJtvxrN77LdZHzjHmNzumD7HUACkrsuYVcNwivEotHiyVk/b6AJjLB3Z
+	96liT0N2Fa4GlFVVKmX37snW/BpRyfBggAhqe5gOV0FmdDvQ/G/t+hhxaGGvnT1RS5cX2H
+	pEq4HO5qfs+KUSq0VjYxAVJihjeN+AvB+VppzzGwfPACM0yzo6SuW8H3MGff9kGeuTdPAd
+	gyVs1+vQ68zNpCn0Z+tuWnHHQUbsgkSvclTIc++CWPXiD7t4/suaY0ANaCyyHFj4UyfqSI
+	6M3+sHD0sk1IU/qzebR13jPjk8W4o9OsUGEJPiuZU0h+DaWQBHJv2PxrQFs69Q==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=servicenow.com header.s=wrk header.b=BJhDR5B1;
+	dmarc=pass (policy=reject) header.from=servicenow.com;
+	spf=pass (relay.mimecast.com: domain of "bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com" designates 149.72.61.106 as permitted sender) smtp.mailfrom="bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=servicenow.com header.s=wrk header.b=BJhDR5B1;	dmarc=pass
+ (policy=reject) header.from=servicenow.com;	spf=pass (relay.mimecast.com:
+ domain of
+ "bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+ designates 149.72.61.106 as permitted sender)
+ smtp.mailfrom="bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+Received: from o1.ptr5628.useworkshop.com (o1.ptr5628.useworkshop.com
+ [149.72.61.106]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-652-hwcopvl0PH2IFbzB5X0UNA-1; Fri, 17 Jan 2025 18:05:40 -0500
+X-MC-Unique: hwcopvl0PH2IFbzB5X0UNA-1
+X-Mimecast-MFC-AGG-ID: hwcopvl0PH2IFbzB5X0UNA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=servicenow.com;
+	h=from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:from:subject:to;
+	s=wrk; bh=+EuM+YsgD9iUkCWacvTjTaVzqsCm3lgvmbZr7INe5g0=;
+	b=BJhDR5B1XptKKaGCLkaiqohTxXkqr8lEIlBg7BHwJbBOpa+l1Ysw5iD00m5X8PhPNuiY
+	hS2gR8kinQWPdvgHbL8nkdRQg9cJbdLD3yT1LWfBFQp/TC+vrF69xJSLyXgc4yT3f4Utn9
+	CfDanJpIQexeSRu72nZvji0UG6ItdGZ5KEQ5IMduIt+kY+0ZRJXErQ5SCvW5FYrSiU1lz2
+	3gzv7DovjqQRfjhr1hkA98HNxiAWavcABb27Qt1FRTPLupjTFUFFMEodE4gC5Z6zSZC3Hy
+	5g+G4eOeuR8BmuDY3P/hb4/N2dOsNXd8+KiieHWxVVt4jEuBYdaXCV2A6sThoQxQ==
+Received: by recvd-7647f6c945-g75fh with SMTP id recvd-7647f6c945-g75fh-1-678AE244-1
+	2025-01-17 23:05:40.081071018 +0000 UTC m=+5535840.293996381
+Received: from useworkshop.com (unknown)
+	by geopod-ismtpd-35 (SG) with ESMTP
+	id feconRmFSE627ghWpDtMkg
+	for <rob.spence@servicenow.com>;
+	Fri, 17 Jan 2025 23:05:40.046 +0000 (UTC)
+Date: Fri, 17 Jan 2025 23:05:40 +0000
+From: Erica Volini <erica.volini@servicenow.com>
+Message-ID: <f1f48c6e-97af-435a-b9b7-761eb84c59c5@app-mail.useworkshop.com>
+Subject: We are winning the front office - =?UTF-8?B?TGV04oCZcw==?= let the
+ world know!
+X-Workshop-Company-Id: 8ec66bbd-5dc8-410b-90fe-cfc9c4d8605f
+X-Workshop-Recipient-Id: 8382e1f0-3330-45f1-8f55-4a53a9abf155
+X-Workshop-Safelist-Key: wrk.2022-05-06.041ce2a9f5f4cec1a289ca9829d0c630
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+Precedence: Bulk
+Reply-To: globalfieldteam@servicenow.com
+X-SG-EID: =?us-ascii?Q?u001=2ERlLDWoYowXaz=2FDZVYQuNmt2zFdzc8VY2nkNUA7GuK0VYHtqMm1KyoTX1K?=
+ =?us-ascii?Q?opQtDzRLEkrS5BLw90+zN3Yvc0RHhLB5h7KF782?=
+ =?us-ascii?Q?l+5ruWTWoNXtvxDZUAzjwGsrwmOayx5IGzHz9XQ?=
+ =?us-ascii?Q?LUkLsr689P5wZTXeBzKNrXfMU0fwQInI8wKjaAH?=
+ =?us-ascii?Q?k+6ljxq8vVup8NErPYP5AZjhRaBEY78E79igGth?=
+ =?us-ascii?Q?gecAKHWx9SIpxITFJQJ1chCvChHhU7hRCYzVoTv?= =?us-ascii?Q?AKQ8?=
+X-SG-ID: =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BpTL9BgbK5wfSJMJGMsmprAyrZkJiLLpG=2FT+U?=
+ =?us-ascii?Q?4oYHlVOhO6PJ3AcH1j9rMerdN1AgSVDvq9z53=2F5?=
+ =?us-ascii?Q?U=2Fyp9BtHS16ZrsY5LQip6ZQI=2FPPqtYtiDnBX8YD?=
+ =?us-ascii?Q?zbD5v7Ma9nH8m=2FJ6cgvwuOUfKZ5hsmhoNdb2j9A?=
+ =?us-ascii?Q?Xc9FEgq4dkrGomww4h+s3eNynNEDAikv=2Fkrfn5j?=
+ =?us-ascii?Q?TGPvr9Psf5vOMQe2BU47GhaUSn+MshkIwgvu5M2?=
+ =?us-ascii?Q?HJZ48zjd44T2ma=2FNjsesqUONSuh5Ump2GsDXK+Q?=
+ =?us-ascii?Q?Ep=2F0i5ScQaG9zjj26BXhh5CvAwaGDJ8v1dpUph6?=
+ =?us-ascii?Q?r8o3GvqIN+X+LFaR=2FIM5aZPLiY8fO6n+X61sIoM?=
+ =?us-ascii?Q?1cUrQiEFKcfp=2Fe5xKXOcTzBlkc7w5VpUTrfLvKI?=
+ =?us-ascii?Q?iGCLvSdgWskuu4k8zsyjrmg1o2grT9B5e=2Fq9YBT?=
+ =?us-ascii?Q?dusu8iMgLWubX8uddTb1zHsP3nWtd9K8mh=2FIArw?=
+ =?us-ascii?Q?6btnc=3D?=
+To: rob.spence@servicenow.com
+X-Entity-ID: u001.5upK2BKYwpCg/JZYYuooNw==
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: A2zsxXrtQxEQVBYwgB2BZkkb2xaycmvyGxcbwIwIHZ0_1737155140
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Return-Path: bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com
+X-MS-Exchange-Organization-ExpirationStartTime: 17 Jan 2025 23:05:42.2329
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 9316bb19-5cbc-495f-3461-08dd374b776f
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000009:EE_|SA1PR08MB7230:EE_|DS7PR08MB10577:EE_
+X-MS-Exchange-Organization-AuthSource: CH3PEPF00000009.namprd04.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 9316bb19-5cbc-495f-3461-08dd374b776f
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-BypassClutter: true
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|29132699027|82310400026|12012899012|69100299015|4076899003|8096899003;
+X-Forefront-Antispam-Report: CIP:205.139.110.120;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-inbound-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(29132699027)(82310400026)(12012899012)(69100299015)(4076899003)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 23:05:42.1079
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9316bb19-5cbc-495f-3461-08dd374b776f
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF00000009.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR08MB7230
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.4876047
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8356.008
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N09jNURwVVVNSXp3WG9aM294Um1DSGlVR1Qybk5rUTUxSTRuQWtMSjhLU1F5?=
+ =?utf-8?B?MXpENnFDYnVtVFNkai9qU1oya0s0VmNHamlWOE1xRTFZNExkbXNvaHA5OUln?=
+ =?utf-8?B?UmE4QlpXVytnczBSb09NY1Z5NlQ5QXFrWnpHbzZzRnRpaHRXdVNCQjJ4V2Vs?=
+ =?utf-8?B?QmhTWlY2b05ha1phbllybmZtSlZNZHc5WnZYQzRiczVtMm5WZUFPc0ZMaEZZ?=
+ =?utf-8?B?NFlWclByd3A0cDNFZ2o0blFRZVl2cDdaL1N6NGNYQkNvSU1yZXpHUWRJY1BQ?=
+ =?utf-8?B?WXdxRXVCMTFsbG1rTGxuUUt1dWhFZXFEclhDajJLc3JDSGVFdzBLVEFGQjN0?=
+ =?utf-8?B?L1NWZU9pYm11WnR1R1FWWk1WaVJ3UU1oK0ZhWksrUWZWeWdVdEFXY0dRYmJh?=
+ =?utf-8?B?ODFEd215RzhNZGd5Q251a2psTnVKcUZKZkZ3K1RLak1rWnlIamJhaWxjTjRM?=
+ =?utf-8?B?bEttSk1UVXN3MG9tUUdUMFVMcWo1c0ljRGNaWmg1UWJtUmNHZ1Z4cFlDNVFN?=
+ =?utf-8?B?Q3dSY1VqMFo4ZXV6TnQ3YXRqQUdHWnZQUGxrNDBsU0J6TGRid2I0QUUxN2w5?=
+ =?utf-8?B?ZVhWZ2FjUGh1RG9Ya0NmSmRDR2pMcTRuZVhhMmQvb05Ja1V1REdvMjZFcStM?=
+ =?utf-8?B?MFhiUTZMWGhYNGtVak5wcXl0L253eTRjSjlVSXA3RXFSa1ozTXlxWGJoY0pt?=
+ =?utf-8?B?NFZjVEhrR3l2MEVyTW1xV1pEN0JiMzBqalAvOVYxdzg5bkJQRTlvTHdsanhv?=
+ =?utf-8?B?ZXJGVlExRTlqN2tnYk43MU82TEp0bWlwZStZZHpFQmxVbFNuMVZ6QVFlVVlW?=
+ =?utf-8?B?OUN3a2o2bEV2aXZockNXR3I4bzlzaUM4bHljV2duZGl5ejRHTWpCSVE5bWMr?=
+ =?utf-8?B?SWNaOGpwUEt3ZmpHVEhkazZmNmxDNEpQakY2c2hBVUhwelY3SEdKQzBTaVdC?=
+ =?utf-8?B?Mm1kdGgyci81dkxtNCs5MW5zdUhIRkNNVHJBUURkT0RqNmFYdlVMRW5acHVO?=
+ =?utf-8?B?NFROY1BacXlmejlNV0NvWjk0VVVoL3VvWFkyL29LbHQyOTFBQTZhZERWNGN2?=
+ =?utf-8?B?Y1pMSjlMaE1tVWN2SzNETkJubThpODBWWVBRaWQwdUJoSzI1T1g0eldTaDl0?=
+ =?utf-8?B?Ry82K2NIVEo4Vis1QzdZZDNyOXFUMW9nWWMxb0NIaWluREdtTXFmWVYwTmdS?=
+ =?utf-8?B?NnBRZ1E5UTA4TXBSVmJ6ZlVDS2Rxd085RUtZSktycmpFdTJMUk9EeStNdm9M?=
+ =?utf-8?B?eFpLMUo5VGoyVVNVMldQZmEvQjZhWnlHSlhTUUJ2YmRPa3hEdWpqcmtOWUt0?=
+ =?utf-8?B?R1BUNStzZi8zaEdHZFRqakowMllVUC9MS09HNElyQ0VwZjN1ZjNLUlU0NGla?=
+ =?utf-8?B?MGFlVHIwTjNnOUlEcTh4Vnp5enBkZnIzSTU2d1N0OUlYUjFBTUROT0xwNW41?=
+ =?utf-8?B?SmZ2NmpTL3lCTnhDU0JDZ2lxWk5RalUwSUE0RWVlM2xmQzFoSmtoUC9SemtI?=
+ =?utf-8?B?OFJ4UXhnM3hQemsxTTVHMVh6b1V1NHRrTm50clhaYThhYjVZWGM5UDhoUnBW?=
+ =?utf-8?B?U203ZGhsM3h0aFFkMmRxdnV4a2tYTldHZ1hGdVpJZlBwVkVxdEhYNittald5?=
+ =?utf-8?B?ZnpsakZiWWJaRGpncjczZjBuZThwemlSTW9iMDZ3MnkrZHR4QXdpWVhTWmpJ?=
+ =?utf-8?B?SHdCK01QM1VlMmtXL0dydTJOdnBJOGgwSEw4T1pNcm9lRnBzMEF1c1hhTkVI?=
+ =?utf-8?B?T3R6MFRhbE5ZcUxLbWxKM3lyd3hPM1ZDOHo4ZHlURTRRR2ZONHJFOGdlOWtv?=
+ =?utf-8?B?Y2RobDVVNXZqdWRVbHRROVBBelIxU3dOUERxUStwUkxHdjllbk1YZy9XQXN6?=
+ =?utf-8?B?Q3FWNTJqbWxiT3JISDZXem1CejBsWlkyOWpkT1BYVUJ1QVpIaHVNVWhxOW9R?=
+ =?utf-8?B?YTJrN0EyTjZmTWdiSUljcll0UG8vOExGVHorTk1xVG4waUFCMFVZMVowN21H?=
+ =?utf-8?B?UjhMZUpJOHJPMngwcllwZG9xeXRsZDRlbDJoM3BzUURndllMU0YweFFqREcx?=
+ =?utf-8?B?Y29ydVhYV2lOUUxBbVN2YlpOR0JkUUU2ak80VGxOWkxxLzVpa2VZdlpQOSt4?=
+ =?utf-8?B?eFRiODhlMElIZVJxd2dua1BEMkVVdlZ2Y3Zkc3kxdlo5RllUbWdyclZ4dkc4?=
+ =?utf-8?B?c3ArWTZQbXZYWTJFV0Mxb2FLRk5pMS9weXlVQ3ZyL0FDMjkwVGI4WXJndGxn?=
+ =?utf-8?B?ZFVZUHAzVXNSK092L292SkZqR3hXYmlDYlJqbExiNHpWTjZpN2FnSTFaTjJ1?=
+ =?utf-8?B?ZlNMeG56RTg0WUVwVWY5V0cyRVFEUzVobU1kTDVwUlRPU3UwNmVobHBKWkta?=
+ =?utf-8?B?STFpaDJhWXFGeW5UQTBwSkdvTkFwbHFnbmM5VDhERzFTS0lKL09makR3R2N0?=
+ =?utf-8?B?SW42YnpOOUcwZlA1aUcwZHRJdVkyR09xdy9rQWxSUUNEcE1PRGt1T0tLVHZs?=
+ =?utf-8?B?TkJBT3pDZHpUcG5WdjJvOExWYWUyUVNpNng4aitpOWZ0eUt6bm5jd1hwVUt6?=
+ =?utf-8?B?elRuNXJkZFZDNmowcjMwSHR0TEhWM01FWGRiSndMU1Bpc28vd2twMmJDU2hz?=
+ =?utf-8?B?TUlOQ2ZLZ2VxaFlBK3dXRm5KRTFKMjFRWUZ0SWhOa25QK3c5cXZ1MjJpVDRL?=
+ =?utf-8?B?OGEzWE44MXROclA3WktZbFVuMm9la3ZZQmJnbU9rWnRHeGNnMTJMYmxXSTZY?=
+ =?utf-8?B?YmJVS2JWcTdIWGtBOG9UdDJtNUs4QUZaTTdvcmQybms3ZXoyY2I4VVRvd1hj?=
+ =?utf-8?B?dXdhT0VqZEtrUnhhVWJIWW0vUnVtdTFmL0tZVzdJckNTdzFGV2VYNSthS0pq?=
+ =?utf-8?B?KzNCK3dnWmJQa1RIa0owTlR4cGlNTHlYd0lraW9xMjNnMXdhRjZsbE5ScFZT?=
+ =?utf-8?B?ZHlCZzdsdm5ETUtVakFJd3B3YjdmV1pHUk5XbXJldWxpYlN3UjBBTDhFWW54?=
+ =?utf-8?B?SUtjUkR4cGtHcXNySzFXOXVOM3BDdFBqK1JoOEN3K3pMWm9RRU5XUlloR0JX?=
+ =?utf-8?B?ZllQOE56THp5cEI1YWI0WWNZNzUrSDBLNGJOcFVlY1V5RG54bmZmc0YzaEwx?=
+ =?utf-8?Q?neyM+iWWQ?=
+MIME-Version: 1.0
+
+<!DOCTYPE html><html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"u=
+rn:schemas-microsoft-com:office:office" lang=3D"en"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><t=
+itle></title><meta name=3D"viewport" content=3D"width=3Ddevice-width,initia=
+l-scale=3D1"><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>9=
+6</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-=
+-><!--[if !mso]><!--><link href=3D"https://workshop-email-content.com/custo=
+m_font_stylesheets/7a32621a-c76f-4ce4-a358-350a64d927d5.css" rel=3D"stylesh=
+eet" type=3D"text/css"><!--<![endif]--><style>=0D
+*{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{c=
+olor:inherit!important;text-decoration:inherit!important}#MessageViewBody a=
+{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.de=
+sktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.im=
+age_block img+div{display:none}sub,sup{font-size:75%;line-height:0} @media =
+(max-width:768px){.mobile_hide{display:none}.row-content{width:100%!importa=
+nt}.stack .column{width:100%;display:block}.mobile_hide{min-height:0;max-he=
+ight:0;max-width:0;overflow:hidden;font-size:0}.desktop_hide,.desktop_hide =
+table{display:table!important;max-height:none!important}}=0D
+</style><!--[if mso ]><style>sup, sub { font-size: 100% !important; } sup {=
+ mso-text-raise:10% } sub { mso-text-raise:-10% }</style> <![endif]--></hea=
+d><body class=3D"body" style=3D"background-color:#fff;margin:0;padding:0;-w=
+ebkit-text-size-adjust:none;text-size-adjust:none"><div style=3D"display: n=
+one">Team,=0D
+&nbsp;=0D
+This is a great day =E2=80=93 ServiceNow has been named a Leader in the Gar=
+tner=C2=AE Magic ... =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD &nbsp;</div><table class=3D"nl-container" w=
+idth=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pres=
+entation" style=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#=
+fff"><tbody><tr><td><table class=3D"row row-1" align=3D"center" width=3D"10=
+0%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=
+=3D"row-content stack" align=3D"left" border=3D"0" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rsp=
+ace:0;color:#000;width:800px" width=3D"800"><tbody><tr><td class=3D"column =
+column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;fon=
+t-weight:400;text-align:left;vertical-align:top;border-top:0;border-right:0=
+;border-bottom:0;border-left:0"><table class=3D"text_block block-1" width=
+=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presenta=
+tion" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"=
+><tbody><tr><td class=3D"pad" style=3D"padding-bottom:15px;padding-left:40p=
+x;padding-right:40px;padding-top:20px"><div style=3D"font-family:Arial,sans=
+-serif"><div class=3D"" style=3D"font-size:12px;font-family:'Century Gothic=
+','Helvetica Neue',Helvetica,Arial,sans-serif;mso-line-height-alt:18px;colo=
+r:#000;line-height:1.5"><p style=3D"margin:0;font-size:16px;mso-line-height=
+-alt:24px"><span style=3D"word-break: break-word; font-size: 16px;">Team,</=
+span></p><p style=3D"margin:0;font-size:16px;mso-line-height-alt:18px">&nbs=
+p;</p><p style=3D"margin:0;font-size:16px;mso-line-height-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">This is a great da=
+y =E2=80=93 ServiceNow has been named a Leader in the <strong>Gartner=C2=AE=
+ Magic Quadrant=E2=84=A2 for the CRM Customer Engagement Center 2024. </str=
+ong>The world now knows that we=E2=80=99re revolutionizing customer engagem=
+ent AND delivering real-world results.</span></p><p style=3D"margin:0;font-=
+size:16px;mso-line-height-alt:18px">&nbsp;</p><p style=3D"margin:0;font-siz=
+e:16px;mso-line-height-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">If you needed even=
+ more proof that ServiceNow is <em>THE AI Platform for Business Transformat=
+ion</em>, this is it. We stand out in the market for a reason, as the only =
+company providing holistic, intelligent solutions to every corner of the en=
+terprise. &nbsp;</span></p><p style=3D"margin:0;font-size:16px;mso-line-hei=
+ght-alt:18px">&nbsp;</p><p style=3D"margin:0;font-size:16px;mso-line-height=
+-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;"><em>This is news w=
+orth sharing. </em></span></p><p style=3D"margin:0;font-size:16px;mso-line-=
+height-alt:18px">&nbsp;</p><p style=3D"margin:0;font-size:16px;mso-line-hei=
+ght-alt:24px"><span style=3D"word-break: break-word; font-size: 16px;">My a=
+sk is simple: get the word out to your customers and prospects.</span></p><=
+p style=3D"margin:0;font-size:16px;mso-line-height-alt:18px">&nbsp;</p><p s=
+tyle=3D"margin:0;font-size:16px;mso-line-height-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">Here=E2=80=99s the=
+ quick pitch on why we=E2=80=99re winning:</span></p><ul style=3D"line-heig=
+ht:1.5;mso-line-height-alt:24px;font-size:16px"><li><span style=3D"word-bre=
+ak: break-word; font-size: 16px;"><strong>End-to-end</strong>: From front t=
+o middle to back office, we cover it all. No other platform does.</span></l=
+i><li>=0D
+<span style=3D"word-break: break-word; font-size: 16px;"><strong>Personaliz=
+ed, omnichannel service</strong>: From self-service to live agent support, =
+customers can get what they need, how they need it.</span></li><li><span st=
+yle=3D"word-break: break-word; font-size: 16px;"><strong>GenAI-powered effi=
+ciency</strong>: We deliver proven productivity gains and customer satisfac=
+tion results.</span></li><li>=0D
+<span style=3D"word-break: break-word; font-size: 16px;"><strong>Industry-f=
+ocus: </strong>Tailored, industry-specific workflows mean we=E2=80=99re des=
+igned for your customer=E2=80=99s business.</span></li><li><span style=3D"w=
+ord-break: break-word; font-size: 16px;"><strong>Momentum</strong>: Innovat=
+ion pace &amp; scale plus major wins in the market are proof that we have a=
+rrived and are only going up from here.</span></li></ul><p style=3D"margin:=
+0;font-size:16px;mso-line-height-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">To support your pi=
+tch, please review the <a href=3D"https://workshop-email-tracking.com/anony=
+mous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpaalkyVmxO=
+alUxTFRVek0yUXRORFUxT0MxaFlUZG1MVGMxT1dRMU5UQXhNV1UxTkNJc0ltRnViMjU1Ylc5MWM=
+wTnZiblJoWTNSSlpDSTZJbVpqT1dGbE1tTmxMVFJqTWpRdE5HUmhZUzA1TldOaExUTm1OekkwWm=
+pCbE5HRTBNeUo5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--4b381=
+47122a75b5bda6bf9cd17e15d1f7d9ce5047738197b2705a9e6801cfc34" style=3D"text-=
+decoration: underline; color: #0000ee;">Gartner Magic Quadrant report</a> a=
+nd the <a href=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpb=
+HMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpZeVlXSmxNV05pTFRKaFlURXRO=
+RE16T1MxaU1XVXlMVGhoWkdVNE16TTNObU0xT0NJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlp=
+DSTZJbVpqT1dGbE1tTmxMVFJqTWpRdE5HUmhZUzA1TldOaExUTm1OekkwWmpCbE5HRTBNeUo5Ii=
+wiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--76370aad59a33d9f5a5a9=
+b05e4929a574c2c61012ee539c5e37afeb9aa15caf6" style=3D"text-decoration: unde=
+rline; color: #0000ee;">Magic Quadrant Sales Alert</a>. Both assets will gi=
+ve you the data and insights you need to bring this powerful story to life =
+for your customers, then use the email template below to start the conversa=
+tion.</span>=0D
+</p><p style=3D"margin:0;font-size:16px;mso-line-height-alt:18px">&nbsp;</p=
+><p style=3D"margin:0;font-size:16px;mso-line-height-alt:24px"><span style=
+=3D"word-break: break-word; font-size: 16px;">Let=E2=80=99s share this news=
+ far and wide and show the world why ServiceNow is THE AI Platform for Busi=
+ness Transformation.</span></p><p style=3D"margin:0;font-size:16px;mso-line=
+-height-alt:18px">&nbsp;</p><p style=3D"margin:0;font-size:16px;mso-line-he=
+ight-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">See you next week!=
+</span></p><p style=3D"margin:0;font-size:16px;mso-line-height-alt:18px">&n=
+bsp;</p><p style=3D"margin:0;font-size:16px;mso-line-height-alt:24px"><span=
+ style=3D"word-break: break-word; font-size: 16px;">Erica</span></p></div><=
+/div></td></tr></tbody></table><table class=3D"divider_block block-2" width=
+=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presenta=
+tion" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=
+=3D"pad" style=3D"padding-bottom:25px;padding-left:10px;padding-right:10px;=
+padding-top:25px"><div class=3D"alignment" align=3D"center"><table border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" width=3D"1=
+00%" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=
+=3D"divider_inner" style=3D"font-size:1px;line-height:1px;border-top:1px so=
+lid #bbb"><span style=3D"word-break: break-word;">=E2=80=8A</span></td></tr=
+></tbody></table></div></td></tr></tbody></table><table class=3D"text_block=
+ block-3" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" r=
+ole=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-br=
+eak:break-word"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:15px;p=
+adding-left:40px;padding-right:40px;padding-top:20px"><div style=3D"font-fa=
+mily:Arial,sans-serif"><div class=3D"" style=3D"font-size:12px;font-family:=
+'Century Gothic','Helvetica Neue',Helvetica,Arial,sans-serif;mso-line-heigh=
+t-alt:18px;color:#000;line-height:1.5"><p style=3D"margin:0;font-size:16px;=
+mso-line-height-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;"><strong>Subject: S=
+erviceNow Is Leading the Way in Customer Engagement!</strong></span></p><p =
+style=3D"margin:0;font-size:16px;mso-line-height-alt:18px">&nbsp;</p><p sty=
+le=3D"margin:0;font-size:16px;mso-line-height-alt:24px"><span style=3D"word=
+-break: break-word; font-size: 16px;">Hi [Customer/Prospect],</span></p><p =
+style=3D"margin:0;font-size:16px;mso-line-height-alt:18px">&nbsp;</p><p sty=
+le=3D"margin:0;font-size:16px;mso-line-height-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">Great news! Servic=
+eNow has been named a <em>Leader</em> in the <strong>Gartner=C2=AE Magic Qu=
+adrant=E2=84=A2 for the CRM Customer Engagement Center 2024</strong>. This =
+is proof that we=E2=80=99re transforming customer engagement AND delivering=
+ real-world results.</span></p><p style=3D"margin:0;font-size:16px;mso-line=
+-height-alt:18px">&nbsp;</p><p style=3D"margin:0;font-size:16px;mso-line-he=
+ight-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">Here=E2=80=99s why=
+ this matters for you:</span></p><ul style=3D"line-height:1.5;mso-line-heig=
+ht-alt:24px;font-size:16px"><li><span style=3D"word-break: break-word; font=
+-size: 16px;"><strong>End-to-end</strong>: From front to middle to back off=
+ice, we cover it all. No other platform does.</span></li><li>=0D
+<span style=3D"word-break: break-word; font-size: 16px;"><strong>Personaliz=
+ed, omnichannel service</strong>: From self-service to live agent support, =
+customers can get what they need, how they need it.</span></li><li><span st=
+yle=3D"word-break: break-word; font-size: 16px;"><strong>GenAI-powered effi=
+ciency</strong>: We deliver proven productivity gains and customer satisfac=
+tion results.</span></li><li>=0D
+<span style=3D"word-break: break-word; font-size: 16px;"><strong>Industry-f=
+ocus: </strong>Tailored, industry-specific workflows mean we=E2=80=99re des=
+igned for your customer=E2=80=99s business.</span></li><li><span style=3D"w=
+ord-break: break-word; font-size: 16px;"><strong>Momentum</strong>: Innovat=
+ion pace &amp; scale plus major wins in the market are proof that we have a=
+rrived and are only going up from here.</span></li></ul><p style=3D"margin:=
+0;font-size:16px;mso-line-height-alt:18px">&nbsp;</p><p style=3D"margin:0;f=
+ont-size:16px;mso-line-height-alt:24px"><span style=3D"word-break: break-wo=
+rd; font-size: 16px;">Explore the <a href=3D"https://workshop-email-trackin=
+g.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2S=
+WpaaE56QXpZekJtTFRreE1XVXROREJrTmkxaFlXUTBMVEl5TkRkalpEbGtZVGhoWXlJc0ltRnVi=
+MjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJbVpqT1dGbE1tTmxMVFJqTWpRdE5HUmhZUzA1TldOaEx=
+UTm1OekkwWmpCbE5HRTBNeUo5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX=
+0%3D--cba76f0b65aa188c1937c312cc880c0cfe2b99b5d3191a6e3142c4aae851abb1" sty=
+le=3D"text-decoration: underline; color: #0000ee;">Gartner Magic Quadrant r=
+eport</a> for insights on how ServiceNow leads the way in customer engageme=
+nt.</span></p><p style=3D"margin:0;font-size:16px;mso-line-height-alt:18px"=
+>&nbsp;</p><p style=3D"margin:0;font-size:16px;mso-line-height-alt:24px">=
+=0D
+<span style=3D"word-break: break-word; font-size: 16px;">Ready to elevate y=
+our customer service? Let=E2=80=99s talk about how ServiceNow CRM can trans=
+form your business!</span></p><p style=3D"margin:0;font-size:16px;mso-line-=
+height-alt:18px">&nbsp;</p><p style=3D"margin:0;font-size:16px;mso-line-hei=
+ght-alt:24px"><span style=3D"word-break: break-word; font-size: 16px;">Best=
+ regards,</span></p><p style=3D"margin:0;font-size:16px;mso-line-height-alt=
+:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">[NAME]</span></p><=
+/div></div></td></tr></tbody></table></td></tr></tbody></table></td></tr></=
+tbody></table></td></tr></tbody></table><!-- End --><img src=3D"https://wor=
+kshop-email-tracking.com/anonymous/r/fc9ae2ce-4c24-4daa-95ca-3f724f0e4a43.g=
+if" width=3D"1" height=3D"1" border=3D"0" alt=3D"" style=3D"width:1px !impo=
+rtant;height:1px !important;border-width:0 !important;margin-top:0 !importa=
+nt;margin-right:0 !important;margin-bottom:0 !important;margin-left:0 !impo=
+rtant;padding-top:0 !important;padding-right:0 !important;padding-bottom:0 =
+!important;padding-left:0 !important;"></body></html>
+

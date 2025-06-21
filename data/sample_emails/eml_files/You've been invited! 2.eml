@@ -1,0 +1,260 @@
+Received: from PH0PR08MB7654.namprd08.prod.outlook.com (2603:10b6:510:10f::20)
+ by IA1PR08MB10590.namprd08.prod.outlook.com with HTTPS; Mon, 28 Apr 2025
+ 19:02:21 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=oe65aPbOcP2ANEWh1Rnu1wm9Qt/0ZMv7Zpgjcu7QRYDzsnveH29L64DuImphW92hglTKJBqGH20+UGYUhRK5qVPCR7JWj0+ehAHBBhPbc8VKHWJyncwYk+DxyoDp72mPSiOGeWq3yQ1XPhQWuQI7INXSn5zoHe+SvHO7rGejsxLSUUF58oQseWVpIFqYwXMcJIJWrywjTJKgH16Xx7SAX2dy6BcOWy3by0K/g7wPzcNl7/h6Q6iwsZCERvhnUjF56mwuBRxb/fypv4N0O5ko7r6wyNiYibg52BofPPh6sppkYhHhadSkw4abqqsrwFog/MMwC9lT4GXkin8LWmT0sQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pZsU3mqz9RGkl3Ces5+eLyKV+CGwcsM67apajI29mSE=;
+ b=ZyJHKMokHWbMmCKDTUAl18BBYru7JW30JHeHUrhS0vjAOKo8pspERv6jlSTF6zmrGiTsOlkgWlbVY0xZP5cMhbb13XAzFjQMGEJ6LoUnxiY56w0hkjo1CkS/smJ+INM6lSlpKD4h1u4BQwd6Xw+gNZwcYogZWXWhPvJOihd1r1zOVY0sUBunNOAinHTQYqC3BZAWkLfiUrXu/SRe61SUYlj0Gg3DitYlevHkUnGkKe5hQMJzb8/6zSURE3c7ndi0bjykMtULQgYUA0HWCjMHCd2+pu3Y7S4xalzlkuxmYwSgNzE0Uoj5Aju4Z21aJjHD2hccIlr8uJ77JYeclokznQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=fail (sender ip is
+ 170.10.132.61) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=us-west-2.amazonses.com; dmarc=fail (p=reject sp=reject
+ pct=100) action=oreject header.from=servicenow.com; dkim=fail (body hash did
+ not verify) header.d=servicenow.com; dkim=fail (body hash did not verify)
+ header.d=amazonses.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from BY3PR05CA0054.namprd05.prod.outlook.com (2603:10b6:a03:39b::29)
+ by PH0PR08MB7654.namprd08.prod.outlook.com (2603:10b6:510:10f::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Mon, 28 Apr
+ 2025 19:02:18 +0000
+Received: from MWH0EPF000989EA.namprd02.prod.outlook.com
+ (2603:10b6:a03:39b:cafe::5c) by BY3PR05CA0054.outlook.office365.com
+ (2603:10b6:a03:39b::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.18 via Frontend Transport; Mon,
+ 28 Apr 2025 19:02:18 +0000
+Authentication-Results: spf=fail (sender IP is 170.10.132.61)
+ smtp.mailfrom=us-west-2.amazonses.com; dkim=fail (body hash did not verify)
+ header.d=servicenow.com;dkim=fail (body hash did not verify)
+ header.d=amazonses.com;dmarc=fail action=oreject
+ header.from=servicenow.com;compauth=none reason=451
+Received-SPF: Fail (protection.outlook.com: domain of us-west-2.amazonses.com
+ does not designate 170.10.132.61 as permitted sender)
+ receiver=protection.outlook.com; client-ip=170.10.132.61;
+ helo=us-smtp-inbound-delivery-1.mimecast.com;
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.132.61) by
+ MWH0EPF000989EA.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8678.33
+ via Frontend Transport; Mon, 28 Apr 2025 19:02:17 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1745866936;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 list-unsubscribe:list-unsubscribe-post:dkim-signature;
+	bh=pZsU3mqz9RGkl3Ces5+eLyKV+CGwcsM67apajI29mSE=;
+	b=eSk/CBjZbzHklMHbKYdsFu5buYq8t6tYQzpyki+O8RWs2zUB0/CWEaILXrq2V2gJtUv/JE
+	xH4fQSzVwUZgvdmSLN3g7snbZDN77/eM8Pj4kytKi1MULqVhRrCGENp1PZvZ+S24qAJIlE
+	bKuVXDUKl5X0EgmYWHni4I/n2flbR2rBnfujz+GCVH5L9hyLfODgvHR6mGyC1RSqB9rXXV
+	jbEGQQ8DsyKvLZab1Qw/4WQoWrk/jJx8uMzgioE4tAvgv2w3a2rLuduu8NH5Nn9K6h3jUM
+	RH5uGDy36c5aWvIn11s1WDHGhFaJDDR+MpywPsw+TJx7986IDfzYR7e4P/InGw==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1745866936; a=rsa-sha256;
+	cv=none;
+	b=BLQOY2Sn+iGq58G2G9m8VHxJKcBTHcMrEoDzmmLwwn7hbpUQexlBJ4aLOJGOnyj66sRez+
+	OJDipLB7rVgzX9Sx/nJ+DEww8YDILJg7AQdH+PtgZ6cs87fZxg2w+RKslSj7lf5CyGt5yg
+	A6DiNellgbJheTty5v3oKoaW1f1LtmyAVxH8clk4+P8TPR4x9qZJNOhKsTMTjza+NoddsU
+	qGfhqT7zpDfc5ozm/zFDE7i1pRPta3QjWTeojI1tE4GuUkhvkxHr0qTcKia8HTnnUU/kpe
+	Ig4G837HLA2HqUbiKsdD1KB8tW6h25DCNjq4irMxoaNECeR+VddUhVXIIO5LqA==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=servicenow.com header.s=pq2jbi36jsgpa33jgx4ab5uvpkepu2k5 header.b=DvltHtKf;
+	dkim=pass header.d=amazonses.com header.s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx header.b=WhlICt9g;
+	dmarc=pass (policy=reject) header.from=servicenow.com;
+	spf=pass (relay.mimecast.com: domain of 010101967dc725ec-da61f661-c040-4856-8364-d47fb23f96b0-000000@us-west-2.amazonses.com designates 23.249.223.64 as permitted sender) smtp.mailfrom=010101967dc725ec-da61f661-c040-4856-8364-d47fb23f96b0-000000@us-west-2.amazonses.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=servicenow.com header.s=pq2jbi36jsgpa33jgx4ab5uvpkepu2k5
+ header.b=DvltHtKf;	dkim=pass header.d=amazonses.com
+ header.s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx header.b=WhlICt9g;	dmarc=pass
+ (policy=reject) header.from=servicenow.com;	spf=pass (relay.mimecast.com:
+ domain of
+ 010101967dc725ec-da61f661-c040-4856-8364-d47fb23f96b0-000000@us-west-2.amazonses.com
+ designates 23.249.223.64 as permitted sender)
+ smtp.mailfrom=010101967dc725ec-da61f661-c040-4856-8364-d47fb23f96b0-000000@us-west-2.amazonses.com
+Received: from d223-64.smtp-out.us-west-2.amazonses.com
+ (d223-64.smtp-out.us-west-2.amazonses.com [23.249.223.64]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-tiQ_a1_GOiajDykAsCoYmw-1; Mon,
+ 28 Apr 2025 15:02:06 -0400
+X-MC-Unique: tiQ_a1_GOiajDykAsCoYmw-1
+X-Mimecast-MFC-AGG-ID: tiQ_a1_GOiajDykAsCoYmw_1745866925
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=pq2jbi36jsgpa33jgx4ab5uvpkepu2k5; d=servicenow.com; t=1745866925;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:List-Unsubscribe-Post:List-Unsubscribe;
+	bh=WNVZR1p2VhSBvTexSBnUU6OKvhYhb3/7WcM+gU0RwBc=;
+	b=DvltHtKfse4+YbDlRMY9yaQZ2kal3Ugd9QCcisKPG05WrOZGbcoVp/s7iqKgzPf5
+	xNrHsPMxGERFbqBKo+EsERkd/IVBQnRC5MLMr/3DBkmqcGr+nubwUBFaBzuQ5Q+bKfu
+	RThvMXIW0t5t90PZg1QakNlI36MwmaM62GF2Ofig=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1745866925;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:List-Unsubscribe-Post:List-Unsubscribe:Feedback-ID;
+	bh=WNVZR1p2VhSBvTexSBnUU6OKvhYhb3/7WcM+gU0RwBc=;
+	b=WhlICt9gganSQFzJE6WCNfqd1m8bZoucADQnby4aYXDxTq1Edxl7MH4V+OAiTTH3
+	I1vl4gHwKNpZNrjAFq+D3OUjwdJMD64ohdW85p9KBjGRdhobBi1oIlEbXXFdUutAaY9
+	0oQc8Nz7QZCbqSMp6mt6t5hyic3rmvITPlp7oDYc=
+Date: Mon, 28 Apr 2025 19:02:05 +0000
+From: ServiceNow Community <community-no-reply@servicenow.com>
+To: rob.spence@servicenow.com
+Message-ID: <010101967dc725ec-da61f661-c040-4856-8364-d47fb23f96b0-000000@us-west-2.amazonses.com>
+Subject: You've been invited!
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-SMTPAPI: {"unique_args":{"Kh_tid":"CompressedJson:XCtTyRkZYSeqxtFAFnm0KDMUAv/UN+7Nj8tzYoCQjEBlkoO6AShmJ2Gg91eL7kQLJDDGm6b2QmOwKeFG7OOHThP6yJx5AvyE9L3tB/VeaPeq8K5e2lHif5Yb52lXl9+l66f7gTsGzPm0SquxEzmCwN6yAKnfAeC6WN3RkEnwCAU/wbLEO4Pjz1Xvomn3oxmPa7so+QSm92BwdFuS01+geNp1PDLWA8CZhOMrM+ZD8cPevTtXM2+7EmANis3ahLKCRs5qzSX5yXpBYGEHTsdUnv3FuJDgRs37zjeRqJ2J9MOPaS8HK8uhLZKg+8kLLDANw85LvoyOgcoWY7bt0qaMY462OG1FoY/UpGDJ+OSL08++fE95ZG3/r/2qKSmWLUfCh5IQEs+IX95qE45RM0+n2hmeFdiuGVbB7EP3zRJPcu0rUp+Rwm7cuHJ+Q8qpv30ZlC96Xoxyliix"}}
+List-Unsubscribe: <https://www.servicenow.com/community/user/removeuseremailpage/user-id/465661/mail-message-tracking/MA1G38DTUTWUAX>
+Feedback-ID: ::1.us-west-2.AuR6gwa8kBqh5GYcoa3dyBL0GK/2tBQjfbnt6zQa/MM=:AmazonSES
+X-SES-Outgoing: 2025.04.28-23.249.223.64
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: fsxzAq8YucWI5XqNbv1q3OtHUE1Jm4cGAH0TyF6oNL0_1745866925
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_300682_160528231.1745866925511"
+Return-Path: 010101967dc725ec-da61f661-c040-4856-8364-d47fb23f96b0-000000@us-west-2.amazonses.com
+X-MS-Exchange-Organization-ExpirationStartTime: 28 Apr 2025 19:02:17.9566
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: a9a8331c-f52c-44d4-3be2-08dd86873254
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989EA:EE_|PH0PR08MB7654:EE_|IA1PR08MB10590:EE_
+X-MS-Exchange-Organization-AuthSource: MWH0EPF000989EA.namprd02.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: a9a8331c-f52c-44d4-3be2-08dd86873254
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-BypassClutter: true
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:3;ARA:13230040|31092699021|4022899009|32142699015|2092899012|13012899012|12012899012|3092899012|3072899012|5062899012|82310400026|13102899012|69100299015|4076899003|8096899003;
+X-Forefront-Antispam-Report: CIP:170.10.132.61;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:SKN;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(31092699021)(4022899009)(32142699015)(2092899012)(13012899012)(12012899012)(3092899012)(3072899012)(5062899012)(82310400026)(13102899012)(69100299015)(4076899003)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 19:02:17.6586
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9a8331c-f52c-44d4-3be2-08dd86873254
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989EA.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR08MB7654
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.7656360
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8678.027
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bjhTY3owWXdSSnF1cFViSWc4c2xrbFl5cG5aQTd1a1IxUUJvZVZIR1J5ZDFu?=
+ =?utf-8?B?S2lEWWdXanFyNkRvZGVmeTg1SjFqT01Zb01BUk5mbU5nemZMT25veUl2amhD?=
+ =?utf-8?B?Z1o1UlArblpqaU9YbTNtK1NvZFM2TVVJdW5ZRnR6SUdHVHR1WmMvbkhLMmhS?=
+ =?utf-8?B?TjJUejd3U2lpeENsZnRqcUVUZ0xCem1oU1JQUlhhVHdBUUI0ZEg3YmErQkJO?=
+ =?utf-8?B?QktYU0tML3BYQVZlZEpGS0lWbWxpdklQRG1xbzFmRlZ6VWxTem5BUTM0d3lW?=
+ =?utf-8?B?NVN0c2RTVy9lK0k3WUhLNjZKeklSWnBIejgwZ1FTbkx4OG5LU0NOTU83QVlv?=
+ =?utf-8?B?ZG56M29UaXJwai9oZENzWHg4cWdSeTFnSmV1RkxVZndJK3NwcU9TWllGRlpM?=
+ =?utf-8?B?T0FyR1dOeVVJTE1wZ3QwU1NMN05qSGJqOXZrOUZSa1liTktHL1YzM2huS1FJ?=
+ =?utf-8?B?RkduUU9FdmpLd3dpakR1bFlUS2hLSCtCWVE0T3B2NmVWYVhVajNjUGpsWFE0?=
+ =?utf-8?B?L0VZL0k0K1pucGloMDAxb2pMdGFJZWV1amRva1NtMEYyd3BsRjRSQThQZUdx?=
+ =?utf-8?B?WlJmYzVRazgzZmtIaXdiNnkxd2VvVHFaR3grR2dDQS9UcEpvUzhEZUI4ZUpI?=
+ =?utf-8?B?RzRGUFN1Wk9LSmw3SHlYN1cza1JSUXFRaytPaWFKTkNPUFZrVmxhcm1leWg5?=
+ =?utf-8?B?RUtrak5SQlUvZ0tKdGgvSFc3Qk9WWFZIaVdlQzFPWCtScG9Jc3Q2TGtjRmJT?=
+ =?utf-8?B?MkpwRldGMFYvY0h2UUJhc0RucXVlUDZQWDdxNEIyMkVTZDdwODVVZlZHenND?=
+ =?utf-8?B?Nm1aMXlDSFQ1LzdUWCtQWDdkRjlyNXBheEY2TEdxMnU0TXB1cStMOS9MT3FE?=
+ =?utf-8?B?Rlk5RG1ya1FhbHBaVUFSTDlkWlRGMlpuR3BTZklLQ0gzSEE5N0NQTVl5VW1Y?=
+ =?utf-8?B?Y05KRnZybVZGeHM4WDNmTzExdlN4L3h2S3Ywd0NrdUVkaVZCRVB2V3VraXJ1?=
+ =?utf-8?B?d2s4TTY5UDZ1Qkc0NmJGUTF3L2VZYnZyWi9VNVVmN3Z6NXllZzV2ZjNWekM5?=
+ =?utf-8?B?bnMwSjBvMmZ3b0tHOTI5b2ZEZThrakJGZjkzOXBlM3ZrcnEzRlUyclJRZWVD?=
+ =?utf-8?B?MU5reWxBbnJ2NmFVYkFWZUszZmx5bm4vQzRhZmdJN1NMVE0rUGpNUHZmWU9j?=
+ =?utf-8?B?Q3o0V3htRUtYWThkNk5XaUtSMXdVYzVTSFBMOFZ4dDNxOVB4UzhMeGZuV1RD?=
+ =?utf-8?B?TC9ieHRoOGNBOXcwVnhQRDNGNDlSb0xEYzRiekEyZnZtUWlOekhSSldqSWxu?=
+ =?utf-8?B?Z1IvUVZmUzVId2xkVVFKUk1QaWZsWjRQd1hPMkpyeEd5aHJrY2EyeUFOK1dx?=
+ =?utf-8?B?WGQ3azAwUE9BYVEzak05aUIycUQ5TzB4bjRLOW9taW1QQTFRcGxBTEZ6Y1Ru?=
+ =?utf-8?B?bGhDWkpYZ0tqcUJnY1hIaXN5VS9OWCsyUHp3bVFrNFIyckJydEVUbmZrWlFL?=
+ =?utf-8?B?dWtMb0NTdGV5MzBRZEtvYy9KUnkydmxkMlZ5SWVZVXdhR2gyUEZocG54WURX?=
+ =?utf-8?B?MDJPQTJ2YVhWdnJhSHowdWNldmRiVUhQUGpCaDg5bWhzYlNMVEx0RzRxcGp1?=
+ =?utf-8?B?dXZNdnN2LzB4TFNvWUZ2RUpBOUlyQTN4RER1YUNFRXRNVGFURlVOUjBueFUy?=
+ =?utf-8?B?NEUvZThQUHBoVm1GOVFqczdLS01sTVZEN1JTR3pLOUV0S1l2dmY4Q0dmaWJJ?=
+ =?utf-8?B?a21wMy9HVnZYc1JMYXFuVnRPeGdIeWpRcklwL2VVejJ4N0krSEtuQmpwelRn?=
+ =?utf-8?B?WGdweW5TNVB2enN3TjIrcnNGTDJBVzBSRlR4SjF2clQraHZlMXYvOUQxZnlz?=
+ =?utf-8?B?eEkrSCszMVBsK04zbHVTUkN6TjlmbHpvNVlaR3NRczdJMFZMOEZoSlQvOXpM?=
+ =?utf-8?B?K2dpYTZ5QWRqVWtLekVtUnJlWGkzV3hmK3B2NDdTcnIyNmJYUzZ4SXlqcEMr?=
+ =?utf-8?B?NXYzOXU4M3FNUEhQVlY1ekZUc3lkMUVKK3BmeElFL2phUTdzS1Avam51N0ds?=
+ =?utf-8?B?SHdSVTJ5N2Q2SzBGZ21BdVI1ZDNyQysvbTg2c3ZRb21wanlQQjg1dmVHZWht?=
+ =?utf-8?B?RnlpRlBlMVNxaDhnaU1TZ0NuZ2w5VWsvanpRb3E5VUlNSU0zK1htUkRCNFNK?=
+ =?utf-8?B?NzNRaVNOVEVlMzhFUWQ3NURSTWdvclAxZHdwdWhiMC9rOWlxcjcxZlpBUStu?=
+ =?utf-8?B?V0pHRnNiMWVIR3FGemN4UGJ6V0JZWEJ0b3NWSzdjQ0NyV3RUWkRrOHBUR2My?=
+ =?utf-8?B?NjZOQnQreG5uWVNXRGxOV1FHZ1ZlaENEU05jNlBZU0VjeUNNNitRVlgzdkVB?=
+ =?utf-8?B?R0VjazVURkF1V1EyZ3FueGxROWtXdjRRYlAweS90VlZiNkRpWVBPejM0Y3Bx?=
+ =?utf-8?B?K2V3ZFp4cDVOSzdNMHVCTmQ3NjhEQ05xZ1hlaHVzZ2pucnZwRTNVeTkvUytV?=
+ =?utf-8?B?WE1CZ2NodkVlZFo1Z2FTSXFiN2NIZjFycEhGZ2o2OWY4eEI4NE01YlZwN1U0?=
+ =?utf-8?B?QkE0di95WmZ5SEdNV08wRU5oQkhROWE2WllhbzJSejFzRytWRDVOOVBWUWU2?=
+ =?utf-8?B?UzVLNkdNRlZ4LzdhTlkrUFduaHlGclcyNVlTL3FUdDRiQ0ZXYXFIeHN5Ly9x?=
+ =?utf-8?B?eHBNRzA3WGVES20vL0dXekZQUXRqWEpiQlJNV04yNlVHYXNoNmZjcGYxVy92?=
+ =?utf-8?B?MVVIOG9USytsSUpaS2o3bmN5d3IxelZONVY4S0tRMXBXalNXc0tseWllaVRz?=
+ =?utf-8?B?QkdKa3lteXNERGp6QXphSWtCWkk5T05tK3g4aWN0TlE3VlhpMHNVVmNkUlI3?=
+ =?utf-8?B?aGNMWkozTCtDMllaNDdwTnBWanRUV21QZGVPd1J1ZWJ4NCtzb0o4Z0tiUmx4?=
+ =?utf-8?B?SDBKbW4zeFVlMGxxVUk1VGkyeGp1WEt1dU5UdFRTWTAvYTdaendkclMzeEVW?=
+ =?utf-8?B?UWE5TTNwSCtCcEhZS05yZnNPZnZxVk9sYWZpaEJWQjhnR1lSSm0zczBjYmlX?=
+ =?utf-8?Q?JOiXGwv5j0CH6cbOOKNW+8DJvjQCdpp0U=3D?=
+MIME-Version: 1.0
+
+------=_Part_300682_160528231.1745866925511
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi
+robspence
+,
+
+
+=09=09=09Priscilla Muiua priscilla.muiuane@servicenow.com invited you to jo=
+in the grouphub IRM/GRC confidential Product Vision and Roadmap (PRIVATE) h=
+ttps://www.servicenow.com/community/irm-grc-confidential-product/gh-p/grc-i=
+rm-vision-roadmap?emcs_t=3DS2h8ZW1haWx8bWVtYmVyc2hpcF9pbnZpdGVfcmVxdWVzdHxN=
+QTFHMzhEVFVUV1VBWHwtMXxPVEhFUlN8aEs-
+=09
+
+Description:=20
+=09=09    Type: Closed
+=09
+Date Created: 09-02-2022
+
+Members: 1751
+
+https://www.servicenow.com/community/memberships/membershipinviteworkflowpa=
+ge/node-display-id/grouphub%3Agrc-irm-vision-roadmap?emcs_t=3DS2h8ZW1haWx8b=
+WVtYmVyc2hpcF9pbnZpdGVfcmVxdWVzdHxNQTFHMzhEVFVUV1VBWHwtMXxPVEhFUlN8aEs-
+Join this group
+
+Thanks,
+ServiceNow Community Team
+
+------=_Part_300682_160528231.1745866925511
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"></=
+head>
+ <body>
+  <p><img alt=3D"" src=3D"https://image-tracking-service.us-1.mimecastcyber=
+graph.com/v1/image?imageData=3D1HkI7JGyHQIN%2Bau8n624VYoadfv8pkpgq1d7%2BJxK=
+Nf3noN01f4jXr8mOIeo8z0iMGBfG5k9eL9yREy3GVoCqZwiKrmW6AqYTwZmHxrb8Ktt8NkNdi%2=
+B1fcVrf2XnH%2BsJ5Fx7aDyVoDJYO6OYFquDFKHyDrU2U9EW5wNK3DIPEX3RX4itkbZ%2FUTorQ=
+xYc3atz9LO%2BmB8pyvnom0NMKisFh9dnW42SnVQkd%2F6PB43TKm4vqKJqRRBxK2vP3ZPO4%2F=
+tolhLk%2B4vt9VIK65gcilepf5oMvM0LPYvORpeUyZp%2BF1qJPLh6hYdxVnw%3D%3D" style=
+=3D"height:54px; width:251px"></p>=20
+  <title>You've been invited!
+</title>   Hi robspence ,=20
+  <br>=20
+  <p>Priscilla Muiua (priscilla.muiuane@servicenow.com) invited you to join=
+ the group <b><a href=3D"https://www.servicenow.com/community/irm-grc-confi=
+dential-product/gh-p/grc-irm-vision-roadmap-?emcs_t=3DS2h8ZW1haWx8bWVtYmVyc=
+2hpcF9pbnZpdGVfcmVxdWVzdHxNQTFHMzhEVFVUV1VBWHwtMXxPVEhFUlN8aEs" title=3D"IR=
+M/GRC confidential Product Vision and Roadmap (PRIVATE)">IRM/GRC confidenti=
+al Product Vision and Roadmap (PRIVATE)</a></b></p>=20
+  <br>=20
+  <p> <b>Description:</b> <br> <b>Type:</b> Closed <br> <b>Date Created:</b=
+> 09-02-2022 <br> <b>Members:</b> 1751 <br> </p>=20
+  <a href=3D"https://www.servicenow.com/community/memberships/membershipinv=
+iteworkflowpage/node-display-id/grouphub%3Agrc-irm-vision-roadmap-?emcs_t=
+=3DS2h8ZW1haWx8bWVtYmVyc2hpcF9pbnZpdGVfcmVxdWVzdHxNQTFHMzhEVFVUV1VBWHwtMXxP=
+VEhFUlN8aEs" title=3D"join this group">Join this group</a>=20
+  <p> Thanks,<br> ServiceNow Community Team </p> =20
+ </body>
+</html>
+
+------=_Part_300682_160528231.1745866925511--

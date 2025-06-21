@@ -1,0 +1,426 @@
+Received: from BN5PR08MB10601.namprd08.prod.outlook.com (2603:10b6:408:2a8::8)
+ by DS7PR08MB10577.namprd08.prod.outlook.com with HTTPS; Tue, 14 Jan 2025
+ 13:32:00 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=qozqKfU+UNIeBiF7Zke+6MNb8iZO2ZdoCjUE32yKmxlJA8xNnmO1wTNC8Fvzzo34VobsVHE6j9WMIrzYQUBTxKps+4LCcEjQ4QX8Avc2hcS80gQaeSZm/CxFpFdvl0fMp4Yplx5w3J6zcsOb0bn0IvxdjFaoJJ2ExBBCe4e+0lVLswc/D34sTTNQ++yzCMpUZTOABfUtNFqx4fBB9fouB66/DWbchusSAddpl3JH81cBCONjWghHOkdNs8q03pkdPjk+7a/Co8K3gQIGDqphDM2SDTEDo6ewR+k/AA4/DZ1vRYCcewz0+pU/qTtVylqLu0TsuvRc4zMSQS2imbyZMw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wlDo5GOYaUTk+a9wQ11ZDdgnFph+fDEC5xIB9ozY9K4=;
+ b=oSOd3T15mVFy3Obk3jJARSyBooWF2cuiJUDXzbskKnBWkCPiyZH6wFoG5fVwqnD1h6AARi1AWQMtcBvz1JiHGjGrFqaPYCgi800+5YaUmJRHphPl9oqRAjx0HV+EqElnkEVu3Nm5d9KKPOM65Mn3cUDpbUAuoHcbFPB7wYRauFKh56vPFMrFBMLuZYEe//ZxYsKD3bNlVGq/8BhjTNb7hILONHae2vnkddK5gJWu12cH4yMk9d60LTJZg21iXKWVXqvPr+RRq8xojIawNcDcucUrufA906GEW2q/9ta3de6WZBRQniDsTJXx5bauJbtCXQTagnHQKjF2lETWcfumcg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=softfail (sender ip
+ is 170.10.128.131) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=workshop.servicenow.com; dmarc=pass (p=reject sp=reject
+ pct=100) action=none header.from=servicenow.com; dkim=pass (signature was
+ verified) header.d=servicenow.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from SA9P223CA0023.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::28)
+ by BN5PR08MB10601.namprd08.prod.outlook.com (2603:10b6:408:2a8::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Tue, 14 Jan
+ 2025 13:31:55 +0000
+Received: from SA2PEPF00003F65.namprd04.prod.outlook.com
+ (2603:10b6:806:26:cafe::9d) by SA9P223CA0023.outlook.office365.com
+ (2603:10b6:806:26::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.18 via Frontend Transport; Tue,
+ 14 Jan 2025 13:31:55 +0000
+Authentication-Results: spf=softfail (sender IP is 170.10.128.131)
+ smtp.mailfrom=workshop.servicenow.com; dkim=pass (signature was verified)
+ header.d=servicenow.com;dmarc=pass action=none
+ header.from=servicenow.com;compauth=pass reason=100
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ workshop.servicenow.com discourages use of 170.10.128.131 as permitted
+ sender)
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ SA2PEPF00003F65.mail.protection.outlook.com (10.167.248.40) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.11
+ via Frontend Transport; Tue, 14 Jan 2025 13:31:54 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1736861514;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=wlDo5GOYaUTk+a9wQ11ZDdgnFph+fDEC5xIB9ozY9K4=;
+	b=ABnd/DNktpiz/hUwOJnSiSFOpfmyL+GeiEp7X6Qs8OiRgWCVCQ8kehO65c9oStz4bh3unA
+	g3bmP5HSTIF1x1F2fK2ibJnsNkvfD9BgW7HD2SCfx3q68Mhh1dQnWuv7qkhsQWAOMugqjS
+	KIaE749NpdB3vtJI/RpTaE7ZXDM5oQVpDA9+HkfB2KZfKt97YfqqKu3+bqW7tu9LiRUlNZ
+	xNxheQWM7tspouCUbiP1jpL2zYtMIny7WjLc4omh+MtxEwqfCaVdBzdB6ZGQMquZKzcD7c
+	o4t6xHUyzoGKMOFfU7lG4YU5egoMITGZocgKqkH2LS38RF5kJvQHaIIo6WR9Tw==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1736861514; a=rsa-sha256;
+	cv=none;
+	b=X3xo+a37WNt4xaQY1eQ0zRkKtZkUtKSLZ47ixSZ4tP6hOhdaflpvPYelV1guPjPRKNl78Z
+	8jEQoIwvOAabL+u0wilvWJ/tWfZ3jTqone0Kt+ALd9ZyUryPInYL50i0BWg8T9Qsg/szXD
+	i4gaz1l8g2ZmIAmSfm5/BUdfzPSGZdK32swcJKhdwsOpXeI74+QBYaq8VkmrKkpxDXiwS8
+	AeqxBIGAKAXaASoXxfjONA3FwBqsv1azV5cX76U6EtEPKOmIHb5OKFZdusJQWQ3W3Rrf+1
+	tfEdPIfVg5fPWC9JWSa3znXWGINUu3htLQLKkQUuY86JfCDbOwZuUfzxfqRakA==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=servicenow.com header.s=wrk header.b=dvlraWgf;
+	dmarc=pass (policy=reject) header.from=servicenow.com;
+	spf=pass (relay.mimecast.com: domain of "bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com" designates 149.72.61.106 as permitted sender) smtp.mailfrom="bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=servicenow.com header.s=wrk header.b=dvlraWgf;	dmarc=pass
+ (policy=reject) header.from=servicenow.com;	spf=pass (relay.mimecast.com:
+ domain of
+ "bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+ designates 149.72.61.106 as permitted sender)
+ smtp.mailfrom="bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+Received: from o1.ptr5628.useworkshop.com (o1.ptr5628.useworkshop.com
+ [149.72.61.106]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-591-rxHbE0BBP9ipob-OPJLmKg-1; Tue, 14 Jan 2025 08:31:53 -0500
+X-MC-Unique: rxHbE0BBP9ipob-OPJLmKg-1
+X-Mimecast-MFC-AGG-ID: rxHbE0BBP9ipob-OPJLmKg
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=servicenow.com;
+	h=from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:from:subject:to;
+	s=wrk; bh=wlDo5GOYaUTk+a9wQ11ZDdgnFph+fDEC5xIB9ozY9K4=;
+	b=dvlraWgf1Q8j0/O8g96Hh+GWUPtdyHJwXa0ZramthHidA/AXi2/dO/35eJ3KFSfId2iz
+	KMADR9ZKlzviksvDqx8jgwEd8ZSU3UdUDa5xVIJzGS9tmjywndJJAachpDhWlgoaINKPqF
+	H+dVLBpDFCxZBxn7Q5QMPtymqCPtvy9F30ef2NF1KsY0asos0aAGbYffshqY5ZdqWz9wPD
+	3Xc8gVVWG4JCPIqmzhEinUD0AIvP0hP+YGnPckuxdAshm3n0KbGGXQside8Oh3MU3rD4co
+	OPjK+M4vlgH+HxuuIM6RxiwsbqcXOFtXVVpscTdzAPPb3gwh/DAiXoK3QbZrCR/g==
+Received: by recvd-bdd545687-6vh59 with SMTP id recvd-bdd545687-6vh59-1-678666F0-2
+	2025-01-14 13:30:24.013894548 +0000 UTC m=+5242004.089894286
+Received: from useworkshop.com (unknown)
+	by geopod-ismtpd-6 (SG) with ESMTP
+	id gYkEYEmjQzWyua2-9JRlyA
+	for <rob.spence@servicenow.com>;
+	Tue, 14 Jan 2025 13:30:23.955 +0000 (UTC)
+Date: Tue, 14 Jan 2025 13:30:24 +0000
+From: Paul Smith <paul.smith@servicenow.com>
+Message-ID: <a187e9ef-54ef-4ee5-88b4-f49c0ae7aa74@app-mail.useworkshop.com>
+Subject: Something big is here!
+X-Workshop-Company-Id: 8ec66bbd-5dc8-410b-90fe-cfc9c4d8605f
+X-Workshop-Recipient-Id: 8382e1f0-3330-45f1-8f55-4a53a9abf155
+X-Workshop-Safelist-Key: wrk.2022-05-06.041ce2a9f5f4cec1a289ca9829d0c630
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+Precedence: Bulk
+Reply-To: globalfieldteam@servicenow.com
+X-SG-EID: =?us-ascii?Q?u001=2E6ul7+ZWiH5HbHONueu9AYo7g=2F5RI3J0ipo6XQQQG=2FvonWhMoDgZEfcqSZ?=
+ =?us-ascii?Q?7Bk9eIr2QHPbHAYicduezjzT11C4m8WRimyOUsK?=
+ =?us-ascii?Q?cmXz8kObQIkfVLRj9gz8hVzqNKXErJIznn5J7Nx?=
+ =?us-ascii?Q?YUxoUb4TXNpQ0LiwAE5S41zQa3KVvWqCV39BbHv?=
+ =?us-ascii?Q?IJa1a1vnc5xrJRV3REe0CD02BJhPGwcW+N0G2op?=
+ =?us-ascii?Q?Te9DXXjKyoUDr9+dxI2yfoHUvUDV2BJ5BWQ2frh?= =?us-ascii?Q?toSt?=
+X-SG-ID: =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BpTL9BgbK5wfSJMJGMsmprBqkKB6kcgAhLHfR?=
+ =?us-ascii?Q?FI8Cjdpt=2F2qgUNWQAk33ajogQ02GpCY5bA9rpbr?=
+ =?us-ascii?Q?aibnRRFxBEQ0vZQZulv+G8dxC57+J0SLjt8mXJ3?=
+ =?us-ascii?Q?PyK6BVPrWt8p13FcB++Xw1LBFwwNpIuyDuIDWJE?=
+ =?us-ascii?Q?qUSaSV7PGIBAvtP9+qK6+47bOviE1woms7x1bBH?=
+ =?us-ascii?Q?oIpcUAhnvvGGJTv63oBGLNFA=2FdLwaE57oT1VJnG?=
+ =?us-ascii?Q?TPo+yTFND4UnbL2qldjie0qJplm9BiRS3ygbsnn?=
+ =?us-ascii?Q?QK+hmNwdM=2FoCXLf61riDCo5JUCq=2F+m0oZu2ZB81?=
+ =?us-ascii?Q?g=2FLE9wO=2Fsu=2FBAzGDO0DAvK2HtZL7iA1sUor1tDL?=
+ =?us-ascii?Q?IqACAUWwGl1a+jyFwOUUBq+02PdcTrGOYQ2Ef4X?=
+ =?us-ascii?Q?ZhB48nzLCDGgXQKdbiL5Sox48pQExYwO2efziK6?= =?us-ascii?Q?S?=
+To: rob.spence@servicenow.com
+X-Entity-ID: u001.5upK2BKYwpCg/JZYYuooNw==
+X-Mimecast-Spam-Score: 2
+X-Mimecast-MFC-PROC-ID: 9uClsG9aVX2Vm8IJ0naQbeIXc348uX9REJN0tH8a6Ys_1736861512
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Return-Path: bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com
+X-MS-Exchange-Organization-ExpirationStartTime: 14 Jan 2025 13:31:55.0244
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: ecce93b2-d57e-46f8-d11b-08dd349fcffa
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003F65:EE_|BN5PR08MB10601:EE_|DS7PR08MB10577:EE_
+X-MS-Exchange-Organization-AuthSource: SA2PEPF00003F65.namprd04.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: ecce93b2-d57e-46f8-d11b-08dd349fcffa
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-BypassClutter: true
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|69100299015|1032899013|4123199012|5063199012|5073199012|82310400026|29132699027|4076899003|2066899003|8096899003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(69100299015)(1032899013)(4123199012)(5063199012)(5073199012)(82310400026)(29132699027)(4076899003)(2066899003)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 13:31:54.8212
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ecce93b2-d57e-46f8-d11b-08dd349fcffa
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00003F65.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR08MB10601
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:05.5848775
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8335.015
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dExORklKSE5jcnBLdmxNS3I5eEcwVUZEUnRBbDNmYVZsWlZsdENDTXB1U1Jp?=
+ =?utf-8?B?bkVNMzlnQzN6ZHhyZGdkclB2S0FxUEdEOFNzdWIyMCtzV1hGclZKRXZ6VDg1?=
+ =?utf-8?B?Wng4b0J6SGhCZ2FRL2VGRFl4aCtxY3BEa0pLUnA1enNOalc4YnFUd0YxSDBa?=
+ =?utf-8?B?ZlpHWGJ0NHV6ZjZ2bHlRUng1ZEt5cVRRdHhZTVpZb01uNHJEM1krWVNMaDNi?=
+ =?utf-8?B?Z2VudlZaam5Pd1RKUnIzbVJia0dLRGxLbXc2eTcrNy8wa0V0R1U4eXhJV1R6?=
+ =?utf-8?B?RU9JMjE2NytzRy9uRGNHMXVDaVllMkFFY0JSb2JPNFlaZFc3dVdCUUhTVVJW?=
+ =?utf-8?B?cE9odjQ0dVBIMkQrZXdpeEEzcEUwaW14eU91ejlUSVhwTmVobHdwNzB4MW9l?=
+ =?utf-8?B?NlBxL25wN2V2YW9yVHV0YU9TS2FGL1JzOSszR1FXbm5Nay9UeS9McktqQjR6?=
+ =?utf-8?B?eGhVVWdtUU1kZjdPUWRKSTZKSmxNYnMrMWp3d05hU0U2QU5WQkJsYVJsemJH?=
+ =?utf-8?B?M2JVTVlkRkVtRytaeVhmU2pjZkxIemFsUWdhbXQyWHo4M3BkU2lXWWg3ZlNm?=
+ =?utf-8?B?T2J4T2NMTDRVS1Bqdk1WSEdPSW9vS1lQRG5BV3MwcTFXbTJEeHlOVk5nb0V0?=
+ =?utf-8?B?bXJrNStPMUk3d1dBNm9tVHFvT1JnSzJaMS9SVUY4dFA3REp3eVRHMTlScStZ?=
+ =?utf-8?B?UHp2M0NMdjh2WTdSaUhZYXJhMW1UK3FhQzRkSXYyZEZWK1BuZThJc1BHWU94?=
+ =?utf-8?B?QWxqdDBLaU5PbDc5NEoxMjR6YXJpOEZlS3M2eDROVGQ0VGpyNEljMktiNDho?=
+ =?utf-8?B?RmpoVFg1UXdVdFFtMXJ4L3gyVFJzbXFPUVBMNGNoSWU0bHl0ZUhwK2dFQzFp?=
+ =?utf-8?B?RUd5cEJ3cVlONVlLQUtkMlFJSmh6WlV5S3RET01OVUl4YmhQaVE2UktSZ2J0?=
+ =?utf-8?B?UHVxdndiVFBBWXZIeGRVRDZLMXdJNHlwY295OXVMc2ZpOVhzdTU5VE1WQ3R1?=
+ =?utf-8?B?QmlYRktweEtkbnI4UE5mZWNuOEZSam4yL25tRjA3M2dSUjZMR0pEYmhMbVZI?=
+ =?utf-8?B?VmNBdzVmb2UrM0dxQ3pxYi9BMVoyaStQWVBlTjhMMnJiZEY3TjM5NEVkdURS?=
+ =?utf-8?B?cHRUY004bGhzdDZQNFgzdTk1ejFEczFyYWNXMHMrbTh1OWFpZDFyWGx6R29o?=
+ =?utf-8?B?b2hyMzc3ZzlibE13dmc4a1VXY0ZuamhTKzZtUjVGL1V1QTJmRlhQNTJLWVJW?=
+ =?utf-8?B?bWQxWkdVVG1abkdKNGNwT2doUFROUWlYWXl3TXFoeTY0TUVqNUxMMk85TkJp?=
+ =?utf-8?B?VnlXMnlPL0QwRHpUM1JkQmt4R0lXTHp1OFRJWktmOUJ5UzU2YVN1Sy9WS3ov?=
+ =?utf-8?B?UjVzTEcyWWhIVVh1K2lObFVCVTgwTGdzRzhROTUyc08rTmRyakh4L3BTcHY4?=
+ =?utf-8?B?MG8ySjdxVmF1SUY5bDVyakxGaGIrNjgwWjhsS2g2VG5DOXZySFloSDVUNGZo?=
+ =?utf-8?B?REQ5dXVMbnozYUxqR3V2RjI5Qm1HL3ExbFI3YzRqWHVBdTI0eTBscjJ5K2JY?=
+ =?utf-8?B?ZzhzNzNoYTdHVDl2WC90UE96Z2c2RllhU3ZVdldEQmlIa1I5R29EcTJuKzEx?=
+ =?utf-8?B?L3RLdXRNV2lmcnNBYlM5ck1XY3FUWE1EMjFOdytVSDFIZnI2bmIybGtKVmZu?=
+ =?utf-8?B?Um1HMGlzNHlNczA5eVEyQS9EQVZtcGZSd09EVFdNSlVzZjlTRTdqeFhOMEhp?=
+ =?utf-8?B?L1hjL1VhSktWRHVyaCttSFlhZTJEalpuQk15ZktsOE8wSWdTbnh2ZnlNNFVa?=
+ =?utf-8?B?ZjJVRHBIa1o5Kzl1NkRPY0JGWnhwQW9RMmpKMFhiL2txQit5dm15VVRCSTdM?=
+ =?utf-8?B?K05tQ2Vndzl0d0RCekwrb0IrNzIrOVB3SnE0YkgrL2NOZmc9PQ==?=
+MIME-Version: 1.0
+
+<!DOCTYPE html><html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"u=
+rn:schemas-microsoft-com:office:office" lang=3D"en"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><t=
+itle></title><meta name=3D"viewport" content=3D"width=3Ddevice-width,initia=
+l-scale=3D1"><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>9=
+6</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-=
+-><!--[if !mso]><!--><link href=3D"https://workshop-email-content.com/custo=
+m_font_stylesheets/7a32621a-c76f-4ce4-a358-350a64d927d5.css" rel=3D"stylesh=
+eet" type=3D"text/css"><!--<![endif]--><style>=0D
+*{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{c=
+olor:inherit!important;text-decoration:inherit!important}#MessageViewBody a=
+{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.de=
+sktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.im=
+age_block img+div{display:none}sub,sup{font-size:75%;line-height:0} @media =
+(max-width:768px){.mobile_hide{display:none}.row-content{width:100%!importa=
+nt}.stack .column{width:100%;display:block}.mobile_hide{min-height:0;max-he=
+ight:0;max-width:0;overflow:hidden;font-size:0}.desktop_hide,.desktop_hide =
+table{display:table!important;max-height:none!important}}=0D
+</style><!--[if mso ]><style>sup, sub { font-size: 100% !important; } sup {=
+ mso-text-raise:10% } sub { mso-text-raise:-10% }</style> <![endif]--></hea=
+d><body class=3D"body" style=3D"background-color:#fff;margin:0;padding:0;-w=
+ebkit-text-size-adjust:none;text-size-adjust:none"><div style=3D"display: n=
+one">Team,=0D
+&nbsp;=0D
+I said something big was coming and here it is - the biggest SPIFFs in Serv=
+iceN... =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD &nbsp;</div><table class=3D"nl-container" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" styl=
+e=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:#fff"><tbody><t=
+r><td><table class=3D"row row-1" align=3D"center" width=3D"100%" border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=3D"row-conten=
+t stack" align=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;color:#0=
+00;width:800px" width=3D"800"><tbody><tr><td class=3D"column column-1" widt=
+h=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;t=
+ext-align:left;vertical-align:top;border-top:0;border-right:0;border-bottom=
+:0;border-left:0"><table class=3D"text_block block-1" width=3D"100%" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tbody><tr><td =
+class=3D"pad" style=3D"padding-bottom:15px;padding-left:40px;padding-right:=
+40px;padding-top:30px"><div style=3D"font-family:Arial,sans-serif"><div cla=
+ss=3D"" style=3D"font-size:12px;font-family:'Century Gothic','Helvetica Neu=
+e',Helvetica,Arial,sans-serif;mso-line-height-alt:18px;color:#000;line-heig=
+ht:1.5"><p style=3D"margin:0;font-size:16px;mso-line-height-alt:24px"><span=
+ style=3D"word-break: break-word; font-size: 16px;">Team,</span></p><p styl=
+e=3D"margin:0;font-size:16px;mso-line-height-alt:18px">&nbsp;</p><p style=
+=3D"margin:0;font-size:16px;mso-line-height-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">I said something b=
+ig was coming and here it is - the biggest SPIFFs in ServiceNow history.</s=
+pan></p><p style=3D"margin:0;font-size:16px;mso-line-height-alt:18px">&nbsp=
+;</p><p style=3D"margin:0;font-size:16px;mso-line-height-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">Now that 2025 is i=
+n full swing, it=E2=80=99s critical we move fast and drive elite-level exec=
+ution from the very start. These SPIFFs are designed to reward you for your=
+ efforts. You will not have an opportunity like this again. Don=E2=80=99t w=
+ait until SKO; close those deals and earn those SPIFFs NOW!</span></p><p st=
+yle=3D"margin:0;font-size:16px;text-align:center;mso-line-height-alt:18px" =
+data-offset-key=3D"b22vc-0-0">&nbsp;</p><p style=3D"margin:0;font-size:16px=
+;text-align:center;mso-line-height-alt:24px" data-offset-key=3D"b22vc-0-0">=
+<em><span style=3D"word-break: break-word; font-size: 16px;">Click the prev=
+iew below to watch the <a href=3D"https://workshop-email-tracking.com/anony=
+mous/c/eyJfcmFpbHMiOnsibWVzc2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpBMU56Z3dO=
+ekJtTFRVd09EZ3ROREZsWXkxaE9UZzBMVFJpWW1Vek4yWm1aamRtTnlJc0ltRnViMjU1Ylc5MWM=
+wTnZiblJoWTNSSlpDSTZJbVJsTmpRNFlXTTVMV1JtTnpJdE5EVTRZeTA0TUdZd0xUWTVaV0l6TW=
+pNNFlqQmlZaUo5IiwiZXhwIjpudWxsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--e7897=
+c210bda0476e09f073ddf53c16caab1b2e09434f14828b99d3fd020a39f" target=3D"_bla=
+nk" style=3D"text-decoration: underline; color: #0000ee;" rel=3D"noopener">=
+full video</a>.</span></em></p></div></div></td></tr></tbody></table><table=
+ class=3D"image_block block-2" width=3D"100%" border=3D"0" cellpadding=3D"3=
+0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-=
+table-rspace:0"><tbody><tr><td class=3D"pad"><div class=3D"alignment" align=
+=3D"center" style=3D"line-height:10px"><div style=3D"max-width:740px"><a hr=
+ef=3D"https://workshop-email-tracking.com/anonymous/c/eyJfcmFpbHMiOnsibWVzc=
+2FnZSI6ImV5SmxiV0ZwYkV4cGJtdEpaQ0k2SWpreE5EYzROVEU0TFRRd016QXROR1ZsWmkwNVpU=
+VTBMV0prWXprek0yRTBNRGd4T0NJc0ltRnViMjU1Ylc5MWMwTnZiblJoWTNSSlpDSTZJbVJsTmp=
+RNFlXTTVMV1JtTnpJdE5EVTRZeTA0TUdZd0xUWTVaV0l6TWpNNFlqQmlZaUo5IiwiZXhwIjpudW=
+xsLCJwdXIiOiJlbWFpbF9hbmFseXRpY3MifX0%3D--950ee17907cd3dc677518ccb1f9d25dc4=
+44a378c6908abd9c7d683b8e2cf5439" target=3D"_blank" style=3D"outline:none" t=
+abindex=3D"-1"><img src=3D"https://workshop-email-content.com/v1/q3m49enaby=
+.GtqszGCbABCgL-VwV-5wE1FHxcz5lWVYmPsfS5K-_JRq2kjPFWAiiYlDcTii7ziZ7NRhZmfuMO=
+MgSbH42kLiO3sIwR6vq-2OuCyazihrKp95Lkyg6tVnsA=3D=3D.jarzrqKxPRoWZn03.GoVIWhg=
+ss1JU0CAuCFrkyA=3D=3D/SPIFFvideo.gif" style=3D"display:block;height:auto;bo=
+rder:0;width:100%" width=3D"740" alt=3D"" title=3D"" height=3D"auto"></a></=
+div></div></td></tr></tbody></table><table class=3D"text_block block-3" wid=
+th=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-wor=
+d"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:15px;padding-left:4=
+0px;padding-right:40px;padding-top:20px"><div style=3D"font-family:Arial,sa=
+ns-serif"><div class=3D"" style=3D"font-size:12px;font-family:'Century Goth=
+ic','Helvetica Neue',Helvetica,Arial,sans-serif;mso-line-height-alt:18px;co=
+lor:#000;line-height:1.5"><p style=3D"margin:0;font-size:16px;mso-line-heig=
+ht-alt:24px">=0D
+<span style=3D"word-break: break-word; font-size: 16px;">Paul.&nbsp;</span>=
+</p></div></div></td></tr></tbody></table></td></tr></tbody></table></td></=
+tr></tbody></table><table class=3D"row row-2" align=3D"center" width=3D"100=
+%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" s=
+tyle=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=
+=3D"row-content stack" align=3D"left" border=3D"0" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rsp=
+ace:0;border-radius:0;color:#000;width:800px" width=3D"800"><tbody><tr><td =
+class=3D"column column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-ta=
+ble-rspace:0;font-weight:400;text-align:left;padding-bottom:5px;padding-top=
+:5px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-=
+left:0"><table class=3D"divider_block block-1" width=3D"100%" border=3D"0" =
+cellpadding=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-tab=
+le-lspace:0;mso-table-rspace:0">=0D
+<tbody><tr><td class=3D"pad"><div class=3D"alignment" align=3D"center"><tab=
+le border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" w=
+idth=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><t=
+d class=3D"divider_inner" style=3D"font-size:1px;line-height:1px;border-top=
+:1px solid #bbb"><span style=3D"word-break: break-word;">=E2=80=8A</span></=
+td></tr></tbody></table></div></td></tr></tbody></table></td></tr></tbody><=
+/table></td></tr></tbody></table><table class=3D"row row-3" align=3D"center=
+" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"p=
+resentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td=
+><table class=3D"row-content stack" align=3D"left" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0;border-radius:0;color:#000;width:800px" width=3D"800"><t=
+body><tr><td class=3D"column column-1" width=3D"100%" style=3D"mso-table-ls=
+pace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:5p=
+x;padding-top:5px;vertical-align:top;border-top:0;border-right:0;border-bot=
+tom:0;border-left:0"><table class=3D"image_block block-1" width=3D"100%" bo=
+rder=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td class=3D"pad" sty=
+le=3D"width:100%"><div class=3D"alignment" align=3D"center" style=3D"line-h=
+eight:10px"><div style=3D"max-width:800px"><img src=3D"https://workshop-ema=
+il-content.com/v1/q3m49enaby._VpuE-rRBbhueZ4Mn41zJE2zGmhPC4Oh5acQlnnY75LWNW=
+XS0-Yn7riTnpizzM-8ExXHfGU-rdmH5Hr1fV3Rwdxo68xwZitEO2wscd7H7gGLeSl25XQkSg=3D=
+=3D.Ju7c5bFco3XWar0b.FW_4JEHmwZzZvqpYkjkSSw=3D=3D/Q1-Spiffs.png" style=3D"d=
+isplay:block;height:auto;border:0;width:100%" width=3D"800" alt=3D"" title=
+=3D"" height=3D"auto"></div></div></td></tr></tbody></table><table class=3D=
+"paragraph_block block-2" width=3D"100%" border=3D"0" cellpadding=3D"10" ce=
+llspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table=
+-rspace:0;word-break:break-word"><tbody><tr><td class=3D"pad"><div style=3D=
+"color:#000;direction:ltr;font-family:'Century Gothic','Helvetica Neue',Hel=
+vetica,Arial,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;lin=
+e-height:120%;text-align:left;mso-line-height-alt:16.8px"><p style=3D"margi=
+n:0">=0D
+<em><strong>Disclaimer: </strong>These incentives are subject to the terms =
+and conditions of the 2025 Sales Compensation Plan, and individuals must be=
+ employed on the incentive payment date in order to be eligible to receive =
+the payment.</em></p></div></td></tr></tbody></table><table class=3D"text_b=
+lock block-3" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"=
+0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;wor=
+d-break:break-word"><tbody><tr><td class=3D"pad" style=3D"padding-bottom:30=
+px;padding-left:40px;padding-right:40px;padding-top:10px"><div style=3D"fon=
+t-family:Arial,sans-serif"><div class=3D"" style=3D"font-size:12px;font-fam=
+ily:'Century Gothic','Helvetica Neue',Helvetica,Arial,sans-serif;mso-line-h=
+eight-alt:21.6px;color:#000;line-height:1.8"><p style=3D"margin:0;font-size=
+:12px;mso-line-height-alt:21.6px">&nbsp;</p></div></div></td></tr></tbody><=
+/table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbod=
+y></table><!-- End --><img src=3D"https://workshop-email-tracking.com/anony=
+mous/r/de648ac9-df72-458c-80f0-69eb3238b0bb.gif" width=3D"1" height=3D"1" b=
+order=3D"0" alt=3D"" style=3D"width:1px !important;height:1px !important;bo=
+rder-width:0 !important;margin-top:0 !important;margin-right:0 !important;m=
+argin-bottom:0 !important;margin-left:0 !important;padding-top:0 !important=
+;padding-right:0 !important;padding-bottom:0 !important;padding-left:0 !imp=
+ortant;"></body></html>
+
