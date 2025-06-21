@@ -1,0 +1,871 @@
+Received: from PH0PR08MB8445.namprd08.prod.outlook.com (2603:10b6:510:29b::14)
+ by IA1PR08MB10590.namprd08.prod.outlook.com with HTTPS; Tue, 29 Apr 2025
+ 13:46:17 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=e1EGmyhTrABF8iPGkPXLFsODjWFJ+2sYu7cjL21YbYYfd8jPgw94+OUjRJ7om90L0qtabw4CgI+r0em4NAQqi0SwkcM8OKIX2BZS64gRAqCcyTzUq4OtAzberxZKFG6jmfQdkBtoLo5gAfZ6+ckUR+hi0iOWKOC4ffVGLM+XpKWqLnO+fgXFQcengFeMwU7BtYiO75UQrIyWSmwX5vTPV1yqwDu6S7z1lOaLLrRdkgCau68MCAHR04KZpgz1vr2YXqRKln0tUy7awZVUFhSlthJY9eKtzqTwfwWcdKu04ykd4NDQQS0wNQ2+1j7k2x9WDYJeD8AN0D8PPg4LdttwJQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cmAVbDd6jPdPff1yD9mJU+E/j+SOaqtMYeP7PVGEKuQ=;
+ b=h8mjhE24ah4qO7a7OX5ipq7zTOLX9bd1qXzBRwTU+0a5G3KR7JgXi8SruUGHdKQyZuLHoIGbHM6S3VclTs4xZTGVgvqzR8KIQdtnxY9O+BKMgntx48MpSf3zlOJywWTK+y9UvXCi44wmQR4ej0BN43DBtcgtQTRmz0F2XZvktVx7Js+n3a7jgXbE4JGvQXgloUAaZOCXFFVB8n32QHN+FW+i38W5dVG3Vv7NzECmpH7ePlx1D98ze5YLwh7nDPpBw4DJn60GQ0tBlv2w238h5fpdnOVwtzcSOmp1koiKAqNx+LghHDGjzMgd8NV9Lq4KkKt63Mgsbeuh71blTA0UFA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=softfail (sender ip
+ is 170.10.132.61) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=bounce.linkedin.com; dmarc=fail (p=reject sp=reject pct=100)
+ action=oreject header.from=linkedin.com; dkim=fail (body hash did not verify)
+ header.d=maile.linkedin.com; dkim=fail (body hash did not verify)
+ header.d=linkedin.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from CH0PR03CA0048.namprd03.prod.outlook.com (2603:10b6:610:b3::23)
+ by PH0PR08MB8445.namprd08.prod.outlook.com (2603:10b6:510:29b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.31; Tue, 29 Apr
+ 2025 13:46:15 +0000
+Received: from CH2PEPF0000009D.namprd02.prod.outlook.com
+ (2603:10b6:610:b3:cafe::b0) by CH0PR03CA0048.outlook.office365.com
+ (2603:10b6:610:b3::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.37 via Frontend Transport; Tue,
+ 29 Apr 2025 13:46:15 +0000
+Authentication-Results: spf=softfail (sender IP is 170.10.132.61)
+ smtp.mailfrom=bounce.linkedin.com; dkim=fail (body hash did not verify)
+ header.d=maile.linkedin.com;dkim=fail (body hash did not verify)
+ header.d=linkedin.com;dmarc=fail action=oreject
+ header.from=linkedin.com;compauth=none reason=451
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ bounce.linkedin.com discourages use of 170.10.132.61 as permitted sender)
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.132.61) by
+ CH2PEPF0000009D.mail.protection.outlook.com (10.167.244.25) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.20
+ via Frontend Transport; Tue, 29 Apr 2025 13:46:14 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1745934374;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 dkim-signature; bh=cmAVbDd6jPdPff1yD9mJU+E/j+SOaqtMYeP7PVGEKuQ=;
+	b=EXlrtBXZzQIJz6MwtayQZzK67yDvU6pZQ8vKOHP3Wk4GlqPujcuOcufp+VZpOnC0tJoqy3
+	Sc12vLStnlxn7qvjZucEpfpYJTZTaq/qPN6JIdOYeNVYKvsOZusXrdzZUzq0F9irQyL674
+	kVRdH8yrvggH84ySEtTY9DgCrC/HigKZHndWFK5+/IBCachMCaRKAtousfh6w3SgCkMcbF
+	knG6c9BM9O4ZVOwihaKEJixTWuaK5TtiUSy36m0BedV6HrgAmCwzreiCPGtLIYyJV3ZV/O
+	PzqjtVQu4FCuXnkfVTusCsONFQJZoEnA3yuFFIMXPUktYip2L4SeRMY3BC3+eA==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1745934374; a=rsa-sha256;
+	cv=none;
+	b=ZNA92CSdVLCt6lcQ7STUXW6eUbLcWXWvsYm+4IqppbQgbi5Ob/ekwCJiF0gWBsEF0tGJVe
+	Ztdw0qCblClpTgPcFZUSwOfO1lwU6dspMglY783QB7AcOx4b8RrGiNLgtrVtWrcoS+Nj6N
+	Q8Q3Rin0j+qcMwJQCWFe0Sqk5UycooBBipVqg1uDxEU0DnfRQgtOCkAeC5sV84Ki6iBqGp
+	4TLO2Z6G3s/nJGhAo00VVIUdWgIh5JOMRcPOicuEomOJyo4+7+L6GSIRIK04watQQ5Y54r
+	T+Ks/zjTwYYbviX+ZnFBb6kBQjj2pD+makkUNUJkrrttWisSDf1FN7jnFzQ3+g==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=maile.linkedin.com header.s=d2048-202308-0e header.b=fMkT5R5z;
+	dkim=pass header.d=linkedin.com header.s=d2048-202308-00 header.b="I/9cUZc5";
+	dmarc=pass (policy=reject) header.from=linkedin.com;
+	spf=pass (relay.mimecast.com: domain of s-2db73dbuenk3h90hb6acnrkxuaeir75ui2buxs55m40pbh2ekvbztsfr@bounce.linkedin.com designates 108.174.3.203 as permitted sender) smtp.mailfrom=s-2db73dbuenk3h90hb6acnrkxuaeir75ui2buxs55m40pbh2ekvbztsfr@bounce.linkedin.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=maile.linkedin.com header.s=d2048-202308-0e header.b=fMkT5R5z;
+	dkim=pass header.d=linkedin.com header.s=d2048-202308-00 header.b="I/9cUZc5";
+	dmarc=pass (policy=reject) header.from=linkedin.com;	spf=pass
+ (relay.mimecast.com: domain of
+ s-2db73dbuenk3h90hb6acnrkxuaeir75ui2buxs55m40pbh2ekvbztsfr@bounce.linkedin.com
+ designates 108.174.3.203 as permitted sender)
+ smtp.mailfrom=s-2db73dbuenk3h90hb6acnrkxuaeir75ui2buxs55m40pbh2ekvbztsfr@bounce.linkedin.com
+Received: from maile-bc.linkedin.com (maile-bc.linkedin.com [108.174.3.203])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-62-Vo_qtnaKN7iQap9emexqGw-1; Tue, 29 Apr 2025 09:46:11 -0400
+X-MC-Unique: Vo_qtnaKN7iQap9emexqGw-1
+X-Mimecast-MFC-AGG-ID: Vo_qtnaKN7iQap9emexqGw_1745934370
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maile.linkedin.com;
+	s=d2048-202308-0e; t=1745934306;
+	bh=6R+yjXtpLLTFioB9xt/sadIGg9AXc1dHehwmfvcJe8U=;
+	h=From:Subject:MIME-Version:Content-Type:To:Date:X-LinkedIn-Class:
+	 X-LinkedIn-Template:X-LinkedIn-fbl;
+	b=fMkT5R5znKh40JwpIBZiRnakD2VOAGOqvva79wK2ZYM67exe4VIoc9tu7CvIXRSHo
+	 NbnGF6PuDL7eQQXcCttx9KxY2Z84DFIzL8er+mlfBMmMtJFAHoXuBzI7HzICs97Bc3
+	 Xdwv4bg2FREAgaZhBQsmVy7GQp/WHjUPPsgighBkfGtv4j2c+BaYCwo/HV3CdSZ8B9
+	 h94uROkean48dW6qy7sMzJccZqtQIQs54QWjnTw/vWEZl/KtTwf2s0n6QWJvGGu5QS
+	 R17NzrWSyKyJPaNAb0McUhuvnT82lr82ZMkew/CK+SUp/NET8DD74eaIz3HGu3O9zV
+	 UhoyIgVBBtpVA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linkedin.com;
+	s=d2048-202308-00; t=1745934306;
+	bh=6R+yjXtpLLTFioB9xt/sadIGg9AXc1dHehwmfvcJe8U=;
+	h=From:Subject:MIME-Version:Content-Type:To:Date:X-LinkedIn-Class:
+	 X-LinkedIn-Template:X-LinkedIn-fbl;
+	b=I/9cUZc5UzeIQ3uozCoJKkQvKThXwFYv58+5pQ4/D+/2PbSJ/w8vxkOIcyofEqdRT
+	 6w6B3LhpeMdMwr4u0+PB+L4BJ+W+R/kJ0pKwSdh8LFxM1q/PxLKZUM7ehCCJ6R6Z4D
+	 nOViC5phLt7vHCfq9nu+7E1ShTcYabnsaY4iX78El6AtowVYqn5jttzc+lUZgIS+j0
+	 HxlO9LnkHBCKokRzjEDRrg5tICVuUmOcGypGNjG5NA48xuThR+S0jvBHYYEgmcQF9S
+	 7xofuc2ce1o6ySLlYrQl9wVlKRISK7A82vw9Y9d65HwnQpP10BwDy7N5iUomlyN6vs
+	 akzuZW+qcj4jg==
+From: LinkedIn Sales Navigator <messages-noreply@linkedin.com>
+Message-ID: <576443265.1068074.1745934306642@ltx1-app55398.prod.linkedin.com>
+Subject: Dan Turchin, Jessica Lawrence-Vaca, and others have updates
+To: Rob Spence <rob.spence@servicenow.com>
+Date: Tue, 29 Apr 2025 13:45:06 +0000 (UTC)
+X-LinkedIn-Class: EMAIL-DEFAULT
+X-LinkedIn-Template: email_lss_in_case_you_missed_it_digest
+X-LinkedIn-fbl: m2-aszsx16uehlcvp0ytagb7bs7f7wi0c5hogcrxnq2kb1nqs6zazvlo4pw2rbzn6u62jqk935c4xychz135uoleojkzi57a8kup39en8
+X-LinkedIn-Id: 53e07-ma2k700x-7r
+X-Mimecast-Spam-Score: -199
+X-Mimecast-MFC-PROC-ID: rsoPDSXysq9pQ3S7o6icoEGLa8RFuF5VmmRDSVfXMVA_1745934370
+X-Mimecast-Impersonation-Protect: Policy=Tag external email;Similar Internal Domain=false;Similar Monitored External Domain=false;Custom External Domain=false;Mimecast External Domain=false;Newly Observed Domain=false;Internal User Name=false;Custom Display Name List=false;Reply-to Address Mismatch=false;Targeted Threat Dictionary=false;Mimecast Threat Dictionary=false;Custom Threat Dictionary=false;External=true
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_1068072_565678366.1745934306640"
+Return-Path: s-2db73dbuenk3h90hb6acnrkxuaeir75ui2buxs55m40pbh2ekvbztsfr@bounce.linkedin.com
+X-MS-Exchange-Organization-ExpirationStartTime: 29 Apr 2025 13:46:15.0140
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: a81e9bca-9c36-4700-93dc-08dd872435f2
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009D:EE_|PH0PR08MB8445:EE_|IA1PR08MB10590:EE_
+X-MS-Exchange-Organization-AuthSource: CH2PEPF0000009D.namprd02.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: a81e9bca-9c36-4700-93dc-08dd872435f2
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:5;ARA:13230040|3072899012|1032899013|3092899012|5062899012|4092899012|2092899012|69100299015|5082899009|6062899009|13102899012|4022899009|13012899012|12012899012|82310400026|2066899003|8096899003|13003099007;
+X-Forefront-Antispam-Report: CIP:170.10.132.61;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:SKN;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-inbound-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(3072899012)(1032899013)(3092899012)(5062899012)(4092899012)(2092899012)(69100299015)(5082899009)(6062899009)(13102899012)(4022899009)(13012899012)(12012899012)(82310400026)(2066899003)(8096899003)(13003099007);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2025 13:46:14.8377
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a81e9bca-9c36-4700-93dc-08dd872435f2
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF0000009D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR08MB8445
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:02.8122785
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8678.027
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eC9ETjZqcVdpRVkyTEhMUURnTWxIMGxGQ0Z2M0Z4QlUybCtSVGhKSzlrbXh1?=
+ =?utf-8?B?dEw3T1lDT2c4NlozaytPRy8zdGE4Q0UrQ3VReFhrNUdLVTRRNjJoOS9rRXdP?=
+ =?utf-8?B?TWpRQkZFWHNxTWUvV3B2TFpFWTZOOFFDT21TZmlSWHhBL1pLTHZ6TGhPaU0r?=
+ =?utf-8?B?dG9EWk5LWURmb2VpRm5Ub1Q4LzJ4Mk5TTGx2R3NWcUpJL0N2ZEJ3VVl0Rk1R?=
+ =?utf-8?B?L0tHQWZaNkpzeE1LVklETFU1bU5ZZ0FnVEJFbEU4WGo4SWhEWTBDUDQ0dmZR?=
+ =?utf-8?B?cWQ1RWd3Y011eXJma2hxVFdEeWE3N3pzSkdJclhQNVo4Wm51V1BaOTI5aTYv?=
+ =?utf-8?B?TFZ4bVpaakpYenB5QXZIZHFZTE1SRC8wLzF0VE1pTkZ0YS9NUU9PaFR2UjdW?=
+ =?utf-8?B?dThFdGtud2NlSHVCQU1aTmUyMjhXVG03cnNSWkdXLzN6cnZuSnRjU0c1eG96?=
+ =?utf-8?B?aDY4QlVaTTlacU1LWndjbEZYSURQL21jQ1kvbmdpUGZkVXR3QW40SklmM0JH?=
+ =?utf-8?B?aHdCblZwNklxdWVwQXUwTGhQTS8wUFlRb1h6ZGk2ZkEvK2RuUTY5VEJpWndv?=
+ =?utf-8?B?bGtsT3Q1Q3pJMmw2ZENJUFlhTWd0TTBxRS91NTVjMS9acWxqbzFwODRubHI1?=
+ =?utf-8?B?ZXh1UEJrQUN0U21UTEZoVWZCRm01eHV0VVloWFV3MG9MMHUrM3BqU1VyS09B?=
+ =?utf-8?B?cXYzSmFXMUJXeUJOeFF4Ry83NDFkM0JtV0NXWnhJZlZ2Z3l5aDNjNUxhM3VS?=
+ =?utf-8?B?WFNSSVhOa2o2ZklpNVNFbGNKVDVpYk1yVzV3SnBtWCt1aGs1QWtScG9yQXJE?=
+ =?utf-8?B?VjJFNExiVUpXL2FBaEkySWx1NmhlaXowcU0waUZsSFZQWWF1cnFiYVlsZWk5?=
+ =?utf-8?B?UEhMQWFFOWFmMzVrVWxaajljV3Rndzc5RXNwdVpRSHUzTG1RcDdOWDJlSFp5?=
+ =?utf-8?B?NU1NcEtjemN2UkdUbWFvQ1ZKcCs2OFIrZDNKdUtQVmI4VFdaUHhqZlhxREFG?=
+ =?utf-8?B?UVpxOEFLOFNuZEQ1VE5RZHp4VzVhaEhZZk0vNW1aam5nSStodkJSV3l1emFi?=
+ =?utf-8?B?dWJnWmZ5dlRNUkhYZEJJQVBWaWhFYlZUb1dvemI4OVRmazF0QkFuNnJjTXl2?=
+ =?utf-8?B?NGF3NU9lcVVuS1kvb2pLcW9pSE1aR2JzQiszaytXYWR2TUV3alFaU3hvNStZ?=
+ =?utf-8?B?UE1OOHV5TVgxUjVvV1pweDRKMGhZQjJCQWsrMEFQWWMzNFEwRElrVWswcnY0?=
+ =?utf-8?B?OE9SVTQ1YlNQekhwOC9vdzArNjh2Z1dzeXo5bmVHYmduL0tIZ044dVEwRzZN?=
+ =?utf-8?B?U0duNElnS2NoTXdpR00xYTE0anFQTGp2REExeXdkLy9oVVNVMUltRC9iZldh?=
+ =?utf-8?B?YUpVTkJ0WVVOUFdxbW4xc0pnZTZaS3E5bDNxRHZTWHFLQ0Q5MitmUE50M0pU?=
+ =?utf-8?B?ZEgwQUtwU2NIalBvWEYyQXBQVHlyaE5RL3ZVcS9qL0N1blFqL0Zha1NUaFp3?=
+ =?utf-8?B?YnMxeXQ2OURXOGNWMjNBSVdFQkJsWHI2bHlBeDdPdEVUeDN5SG1Yb3FMSGJK?=
+ =?utf-8?B?Tmg2QlZrbkRQWm1VQmt5TFRKSmhxcGpldDkwUTc5Z3FvYXF4OGowaDkvdC9a?=
+ =?utf-8?B?VkpoLzRYelVFNVZ3Z0E0cnR4OERnNXhsUmxpTXdKcm0wKzQ1d2FsdU9QUS9L?=
+ =?utf-8?B?dHN4YnVUektmWFNKNk50Q0x2Rm43TEx4eFd2NXg4MDJaSmZqL1hLTjdCdWor?=
+ =?utf-8?B?d1BVam56S2NWbnd5Q0JRL2lBRUxWS21ZS2JzM2dPVUtMVWlMRFc2M2V1cktY?=
+ =?utf-8?B?VWhEc0lOMHl1UlQvN01KbEtWYjBIQTZUZExaZGFhZmUrZlltY0tNaVh1TU1v?=
+ =?utf-8?B?R1Rkc0Qyd0Yxd09SS01FRjgvVktydjlhTFkvVW9PRThYVGIxVXphN09jcDI5?=
+ =?utf-8?B?MUh5OHBseENxSkRVdWV0akp2blBycnROWmRpZVZsbytFUjNyMDByOFJzVDFC?=
+ =?utf-8?B?cFV6S0JiR052Ykp6UUR4ZFBrU1dPTWFDbktPTlhzQUlLdDFWcUZRUmQ2dmgy?=
+ =?utf-8?B?ckw5SzhoM2NXN2J4ZlhXUHpLQjhhR1FzVDRZWmxWSTlGWnhCTUYxV2wwemEy?=
+ =?utf-8?B?RFduczBQL3M5MUhhZ29ubWIweXhWcmhEb0UyU0ttd2xQdGE1SzU2NUw1aXVr?=
+ =?utf-8?B?WUhlcmtJOThuS3hSb0ptbXRvZmJZbmlhZXArdmdjbERZMUVUZE8vQTNtdUJt?=
+ =?utf-8?B?KzVvODl1WWhqMTNiTW1pSTdjbHlWWGoveXBvaHQzWkFESnpTQlpFblFyc09B?=
+ =?utf-8?B?aUNxcXBkQUxpQTJJbWVsN09ObHMvY1d1TVF2RjVnc09jMEtxT2NzTEdISFZm?=
+ =?utf-8?B?K0Fka0ZJb0pWU0s3VVMrL0hoZk5BMWFjSVcxZER5OGMvUjNxd0hqUHFMMXRw?=
+ =?utf-8?B?QWlhUlplbnZCY21uZzhkL1BtQVFpdzhJVkFTZFNVZlZnYUVnc0xxY0tBRE5Z?=
+ =?utf-8?B?ajljY0NrR0gxUlVnWjZlOVpmZG9sQ1gvTmhxYlN4dE5IWmxkMXdvNnhRbU9L?=
+ =?utf-8?B?dUpFVU5iRW9YYzdzNFdEc2k0M2lhQzZwSk9wYWowQkNNa05hblFMbUFPR2Er?=
+ =?utf-8?B?c21wTFJoWWpncWgvYytjM3gwaHd3V0pkeVdhd0VDNktwbUlXSEhMUlJDRlJt?=
+ =?utf-8?B?MC9QRjRFazNkVEtDT0s0d3V3bGZTc3RCV01yTWF4WVBIVDZkT0hvRnMyYTFk?=
+ =?utf-8?B?dEVUb2JGOHhwZjlBaGRhTDRtMmpCV0FXSThMaVE1OHovbTZ6RnVWQTE1Z3hF?=
+ =?utf-8?B?eSsyeklmZ0tRQ2wxSnEzNkNZT203UWtlK1AzNHJvQ0FzUGJYTGVyd2M2bnMv?=
+ =?utf-8?B?dFpXdnJld0xWT2hLUkczaEM3Vmp6THpsOENMOFhrNElWNTltaW9jSmMrODl0?=
+ =?utf-8?B?UzlONHZJUS9odllGS2dlWjJkTnNZRFkwRU1ydkdWUzFWNk04cXVySWFEWU5U?=
+ =?utf-8?B?di9QN1dsdmNxY0YrL3dnRTBHMWJnOEpPVFZSVm0xQ2JhNW05YnI3bU5QUUFv?=
+ =?utf-8?Q?1IG5bvqq8BG3tJ9y991ahSaTWgB6rBLMA=3D?=
+MIME-Version: 1.0
+
+------=_Part_1068072_565678366.1745934306640
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-ID: text-body
+
+[External Email]
+
+Stay on top with Sales Navigator notifications
+
+
+
+<strong>Dan Turchin</strong> shared an update.
+[ =F0=9F=8E=A7 #Podcast episode #333] Gou Rao sold his last company, Portwo=
+rx by Pure Storage, for $370M. He's at it again but this time he's disrupti=
+ng=E2=80=A6
+Chief Executive Officer =C2=B7 PeopleReign
+
+See what you missed: https://url.us.m.mimecastprotect.com/s/psylCBBYrEfD4kl=
+gNczf1c2XgRu?domain=3Dlinkedin.com
+
+Other notifications
+
+         =20
+<strong>Jessica Lawrence-Vaca</strong> shared an update.
+Chief Commercial Officer (CCO) =C2=B7 Array Technologies
+I'm thrilled to be heading to CLEANPOWER 2025 in Phoenix, AZ from May 19-22=
+. Let me know if you'll be there!=E2=80=A6
+
+
+
+<strong>Rahiem Swann</strong> shared an update.
+Vice President of Sales and Business Development =C2=B7 Advanced Energy Uni=
+ted
+Distributed Energy Resources and Virtual Power Plants are becoming larger e=
+ffectual parts of the energy load=E2=80=A6
+
+
+<strong>Rahiem Swann</strong> shared an update.
+Vice President of Sales and Business Development =C2=B7 Advanced Energy Uni=
+ted
+Looking forward to attending this year's annual #AABE Conference! Who am I =
+going to see in Atlanta this week?
+Our Platinum Presenting sponsors are empowering us to move forward. With mo=
+re than 1,500 energy=E2=80=A6
+
+
+<strong>Ben Norris</strong> shared an update.
+Vice President of Regulatory Affairs =C2=B7 Solar Energy Industries Associa=
+tion
+All sources of electricity are weather-dependent, and there are no technica=
+l reasons to favor some over=E2=80=A6
+But, renewables are so unreliable and intermittent!
+
+Now 42 straight and 83 of 115 100%=E2=80=A6
+
+
+<strong>Abby Hopper</strong> shared an update.
+President & CEO =C2=B7 Solar Energy Industries Association
+I am a Marriott loyalist. And a Southwest diehard.=20
+
+And I don=E2=80=99t stray. I will always pick a hotel from the=E2=80=A6
+
+
+
+
+<strong>Rahiem Swann, Ben Norris, Abby Hopper</strong> also have updates.
+
+See what you missed: https://url.us.m.mimecastprotect.com/s/psylCBBYrEfD4kl=
+gNczf1c2XgRu?domain=3Dlinkedin.com
+
+----------------------------------------
+
+This email was intended for Rob Spence (Staff Solution Consultant)
+Learn why we included this: https://url.us.m.mimecastprotect.com/s/iCNnCDkV=
+qEioVWORZc5hYcjTFb-?domain=3Dlinkedin.com
+You are receiving LinkedIn notification emails.
+
+Unsubscribe: https://url.us.m.mimecastprotect.com/s/EV9aCERVqQUlDz6Qjtpi7c7=
+wrnS?domain=3Dlinkedin.com     Help: https://url.us.m.mimecastprotect.com/s=
+/vECLCG6VRKfBMPLV9TQspcBgxVx?domain=3Dlinkedin.com
+
+=C2=A9 2025 LinkedIn Corporation, 1zwnj000 West Maude Avenue, Sunnyvale, CA=
+ 94085.
+LinkedIn and the LinkedIn logo are registered trademarks of LinkedIn.
+
+------=_Part_1068072_565678366.1745934306640
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-ID: html-body
+
+<html xmlns=3D"http://www.w3.org/1999/xhtml" lang=3D"en" xml:lang=3D"en"><h=
+ead>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"> <=
+meta name=3D"HandheldFriendly" content=3D"true"> <meta name=3D"viewport" co=
+ntent=3D"width=3Ddevice-width; initial-scale=3D0.666667; user-scalable=3D0"=
+> <meta name=3D"viewport" content=3D"width=3Ddevice-width"> <title></title>=
+ <style>
+            @media (max-width: 512px) { .mercado-container { width: 100% !i=
+mportant; } }
+          </style> <style>
+            @media (max-width: 480px) { .inline-button, .inline-button tabl=
+e { display: none !important; }
+            .full-width-button, .full-width-button table { display: table !=
+important; } }
+          </style> <style>body {font-family: -apple-system, system-ui, Blin=
+kMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+            'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid S=
+ans', 'Apple Color Emoji', 'Segoe UI Emoji',
+            'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica=
+, Arial, sans-serif;}</style> <!--[if mso]><style type=3D"text/css"> </styl=
+e><![endif]--> <!--[if IE]><style type=3D"text/css"> </style><![endif]--> <=
+/head> <body dir=3D"ltr" class=3D"font-sans bg-color-background-canvas w-fu=
+ll m-0 p-0 pt-1" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adj=
+ust: 100%; margin: 0px; width: 100%; background-color: #f3f2f0; padding: 0p=
+x; padding-top: 8px; font-family: -apple-system, system-ui, BlinkMacSystemF=
+ont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Ox=
+ygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji',=
+ 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sa=
+ns-serif;"><div class=3D"mc-ip-hide" style=3D"display:block !important; hei=
+ght:auto !important; background:#FFFFFF !important; opacity: 1 !important; =
+visibility:visible !important; color: #000000 !important; font-size: 12px !=
+important; font-family:Helvetica, Arial, sans-serif !important; text-align:=
+ left !important"><strong style=3D"display:block !important; height:auto !i=
+mportant; background:#FFFFFF !important; opacity: 1 !important; visibility:=
+visible !important; color: #000000 !important; font-size: 12px !important; =
+font-family:Helvetica, Arial, sans-serif !important; text-align: left !impo=
+rtant"><h3><strong><span style=3D"background-color:yellow;">[External Email=
+]</span></strong></h3></strong><br><hr></div> <div class=3D"h-0 opacity-0 t=
+ext-transparent invisible overflow-hidden w-0 max-h-[0]" style=3D"visibilit=
+y: hidden; height: 0px; max-height: 0; width: 0px; overflow: hidden; opacit=
+y: 0; mso-hide: all;" data-email-preheader=3D"true"><strong>Dan Turchin</st=
+rong> shared an update.</div> <div class=3D"h-0 opacity-0 text-transparent =
+invisible overflow-hidden w-0 max-h-[0]" style=3D"visibility: hidden; heigh=
+t: 0px; max-height: 0; width: 0px; overflow: hidden; opacity: 0; mso-hide: =
+all;"> =CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&n=
+bsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbs=
+p;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=
+=CD=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=
+=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =
+=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=
+=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbsp;=CD=
+=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F=
+&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&n=
+bsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbs=
+p;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=
+=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=
+=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=
+=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=
+=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=
+=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F=
+&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&n=
+bsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp=
+; =CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=
+=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbsp;=
+=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=
+=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=
+=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =CD=
+=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F=
+&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp; =CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&n=
+bsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp;=CD=8F&nbsp=
+;=CD=8F&nbsp; </div> <table role=3D"presentation" valign=3D"top" border=3D"=
+0" cellspacing=3D"0" cellpadding=3D"0" width=3D"512" align=3D"center" class=
+=3D"mercado-container w-[512px] max-w-[512px] mx-auto my-0 p-0 bg-color-bac=
+kground-container" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-a=
+djust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; margin-left: aut=
+o; margin-right: auto; margin-top: 0px; margin-bottom: 0px; width: 512px; m=
+ax-width: 512px; background-color: #ffffff; padding: 0px;"> <tbody> <tr> <t=
+d class=3D"text-center p-3" style=3D"-webkit-text-size-adjust: 100%; -ms-te=
+xt-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding=
+: 24px; text-align: center;"> <table role=3D"presentation" valign=3D"top" b=
+order=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" class=3D"min=
+-w-full" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100=
+%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%;"> <tbody>=
+ <tr> <td align=3D"left" valign=3D"middle" style=3D"-webkit-text-size-adjus=
+t: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspac=
+e: 0pt;"> <a href=3D"https://url.us.m.mimecastprotect.com/s/mbWJCJ698XfBY2Q=
+7oTvtjcyWEZI?domain=3Dlinkedin.com" target=3D"_blank" class=3D"w-[84px]" st=
+yle=3D"color: #0a66c2; cursor: pointer; display: inline-block; text-decorat=
+ion: none; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; widt=
+h: 84px;"> <img alt=3D"LinkedIn" src=3D"https://image-tracking-service.us-1=
+.mimecastcybergraph.com/v1/image?imageData=3DH4yMZ%2FVXnfklEQx%2FNQMLW7jcQs=
+vLKRqIIVsvECN9%2B6PILCYsdX4iPOn1DpTSDgJYvOI5ZN1O8JOCDxBJ0Sp%2F2ShoGWp0d9Gy8=
+Tr161sB%2FdRuz5h0VE0HsQOywQ6IzaXEJDlJmFXa4upBsNX%2BPKixwK%2FpSFDKETFxkO3j7c=
+GCCo1y4GIG%2Fa8ywqq4wKepxgNhtiOaUf6z0pMbzNK9FCrjPfi4WyDXo6oMusDK3A%2FG6E1Cv=
+ovaic66w9LZPlW1RCjA7qC5s%2FaD3QwpelGty3nhtyCnB0ZQ%2FS80SrDn" class=3D"h-[21=
+px] w-[84px]" style=3D"outline: none; text-decoration: none; -ms-interpolat=
+ion-mode: bicubic; height: 21px; width: 84px;" width=3D"84" height=3D"21"> =
+</a> </td> <td valign=3D"middle" align=3D"right" style=3D"-webkit-text-size=
+-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table=
+-rspace: 0pt;"> <table role=3D"presentation" valign=3D"top" border=3D"0" ce=
+llspacing=3D"0" cellpadding=3D"0" width=3D"100%" data-test-header-profile=
+=3D"" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; =
+mso-table-lspace: 0pt; mso-table-rspace: 0pt;"> <tbody> <tr> <td align=3D"r=
+ight" valign=3D"middle" class=3D"w-[32px]" style=3D"-webkit-text-size-adjus=
+t: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspac=
+e: 0pt; width: 32px;" width=3D"32"> <a href=3D"https://url.us.m.mimecastpro=
+tect.com/s/wnGaCKrV8EfDnYrjkcGuVc5hqqR?domain=3Dlinkedin.com" target=3D"_bl=
+ank" style=3D"color: #0a66c2; cursor: pointer; display: inline-block; text-=
+decoration: none; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100=
+%;"> <img alt=3D"Rob Spence" src=3D"https://image-tracking-service.us-1.mim=
+ecastcybergraph.com/v1/image?imageData=3DBVXG8BoCtj41H6yTxJyiL%2B%2B0EhMtj3=
+yp2oPzhV2T5efQBMbxoB0aCku2q0DDQHEj173CGe26wL2qmpPzYbyTVAw11v%2FZOjRmu1IH%2F=
+LJQt8glX%2FysAh8tnlfIzrnBp8G9S2eqPw2DvOBrqvQTbaXkOpZMHYoUn8TTVz1z7%2FWc%2Fz=
+0PRvfuP54H79Q1EJKGS9seRgqCZwbz2IQHaXmlqN0Kr24AI3EzyBoG7kST6hEGiSJ4uYLSSP1Z%=
+2BNkbhBihXUWlScNBOjcpFcrLPqwPHqiFD%2FVWjz27K%2BmqjVvl1BWOVecCUje5Wgnx%2BMNi=
+4Mwo6PZCgBtVktNNb%2F2Vmv1ridZ8HuOBMh0p0%2BaRVD8BxfhL7%2FDYI1L0z%2FmkI52XylP=
+DawS8cj5L7%2F0hV%2FJpfVv8a%2BPy9YqK%2FklvJi5g1C%2B1%2FZhDe%2FQuptnKkqAFAZbp=
+aSga65ygcJhwOoUfDa755XizxlBD0BuS3Y9JCOabUtljh%2BADCnYln%2FuOyj8%3D" class=
+=3D"rounded-[100%] w-[32px] h-[32px]" style=3D"outline: none; text-decorati=
+on: none; -ms-interpolation-mode: bicubic; height: 32px; width: 32px; borde=
+r-radius: 100%;" width=3D"32" height=3D"32"> </a> </td> </tr> </tbody> </ta=
+ble> </td> </tr> </tbody> </table> </td> </tr> <tr> <td class=3D"px-3 pb-3"=
+ style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-t=
+able-lspace: 0pt; mso-table-rspace: 0pt; padding-left: 24px; padding-right:=
+ 24px; padding-bottom: 24px;"> <div> <table role=3D"presentation" valign=3D=
+"top" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" style=
+=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;"> <tbody> <tr> <td style=3D"-webkit-text=
+-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-=
+table-rspace: 0pt;"> <h2 class=3D"py-1 text-xl text-center leading-regular =
+font-bold text-system-gray-90" style=3D"margin: 0; padding-top: 8px; paddin=
+g-bottom: 8px; text-align: center; font-size: 24px; font-weight: 600; line-=
+height: 1.25; color: #282828;"> Stay on top with Sales Navigator notificati=
+ons </h2> </td> </tr> <td style=3D"-webkit-text-size-adjust: 100%; -ms-text=
+-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"> <table =
+role=3D"presentation" valign=3D"top" border=3D"0" cellspacing=3D"0" cellpad=
+ding=3D"0" width=3D"100%" class=3D"entity-lockup" style=3D"-webkit-text-siz=
+e-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-tabl=
+e-rspace: 0pt; padding-top: 8px; padding-bottom: 8px;"> <tbody> <td align=
+=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: =
+100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 8px; paddi=
+ng-bottom: 8px;"> <a href=3D"https://url.us.m.mimecastprotect.com/s/9KtjCL9=
+VZBck1gYJ2hrCVcy4tSK?domain=3Dlinkedin.com" target=3D"_blank" style=3D"colo=
+r: #0a66c2; cursor: pointer; display: inline-block; text-decoration: none; =
+-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;"> <img class=3D=
+"inline-block relative bg-color-entity-ghost-background clip-path-circle-50=
+ rounded-full w-12 h-12" src=3D"https://image-tracking-service.us-1.mimecas=
+tcybergraph.com/v1/image?imageData=3DwCYkGb1Zzum510GIjpRPMe0xQYjYNxgVVaI%2B=
+mjVj7%2Fb5KBQ46fZXSpME6Y5ytUj4Mf5TEX5wkSYzcNWQs2QuxHyHrTwCYAQ7FXWUX%2Bd9Feq=
+Bqu19%2B1SY8YHREExu3ytoWshkVlQlSSrRc58QSrVZWwymNqVaHUaJTbiTVdh6qE26YzvpxYyK=
+CURgkPRoUQpNsq5tTIwYnGuqnvoIaTx2B066C7CtaDGlIdBkCw3ILkXZQTafddCF20%2BBzDGYE=
+xcAuQPRrYvrdHOPcbNh1PDgi9U081XgcFVMkU%2BlXVxJfODpzmLwgZP2KHkW0tkg8DOPyDezcg=
+js%2Fr4xgxxLf0g0aXCJZ2eYed0fE8Dd1wUuqsaboVyJf2LO6I2E9DVxD%2Fo7hMnBKef5uIEtL=
+2BBO%2Fbv6qeN0lJaDOkbNcMktz%2FJZe%2BqXMlEqE8XUUBg8yuLyk%2BGANAHFgHxt7Rj3woW=
+cnkJfahRcZobCQs59wPjpovTntSC%2FbtXAso%3D" alt=3D"=E2=80=99s profile image" =
+style=3D"outline: none; text-decoration: none; -ms-interpolation-mode: bicu=
+bic; position: relative; display: inline-block; height: 96px; width: 96px; =
+border-radius: 9999px; background-color: #eae6df; clip-path: circle(50%);" =
+width=3D"96" height=3D"96"> </a> </td> <tr valign=3D"middle" align=3D"cente=
+r"> <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 8px; padding-b=
+ottom: 8px;"> <p class=3D"headline-text" style=3D"margin: 0; width: 350px; =
+font-weight: 300; line-height: 1.5; color: #282828; text-wrap: balance;"> <=
+strong>Dan Turchin</strong> shared an update. </p> <p class=3D"hero-body-co=
+ntent" style=3D"margin: 0; color: #282828; font-weight: 300; width: 80%; te=
+xt-wrap: wrap; line-height: 1.5;"> [ =F0=9F=8E=A7 #Podcast episode #333] Go=
+u Rao sold his last company, Portworx by Pure Storage, for $370M. He's at i=
+t again but this time he's=E2=80=A6 </p> <span class=3D"lead-positions-cont=
+ainer" style=3D"display: inline-block; width: 80%;"> <p class=3D"text-xs le=
+ading-regular text-system-gray-70 pt-0.5 pb-1" style=3D"margin: 0; font-wei=
+ght: 400; padding-bottom: 8px; padding-top: 4px; font-size: 12px; line-heig=
+ht: 1.25; color: #666666;"> Chief Executive Officer =C2=B7 PeopleReign </p>=
+ </span> </td> </tr> </tbody> </table> </td> <tr> <td style=3D"-webkit-text=
+-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-=
+table-rspace: 0pt;"> <table role=3D"presentation" valign=3D"top" border=3D"=
+0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" class=3D"email-button=
+ " data-test-id=3D"email-button" style=3D"-webkit-text-size-adjust: 100%; -=
+ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"> =
+<tbody> <tr> <td valign=3D"middle" align=3D"middle" style=3D"-webkit-text-s=
+ize-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-ta=
+ble-rspace: 0pt;"> <a href=3D"https://url.us.m.mimecastprotect.com/s/lKtKCM=
+8VZBi2ZL6QYCPF5c8cjXE?domain=3Dlinkedin.com" target=3D"_blank" aria-label=
+=3D"See what you missed" class=3D"align-top no-underline" style=3D"color: #=
+0a66c2; cursor: pointer; display: inline-block; text-decoration: none; -web=
+kit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; vertical-align: top=
+; text-decoration-line: none;"> <table role=3D"presentation" valign=3D"top"=
+ border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"auto" class=3D"b=
+order-separate" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adju=
+st: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: se=
+parate;"> <tbody> <tr> <td class=3D"btn-sm btn-primary border-color-brand b=
+utton-link leading-regular !min-h-[auto] !shadow-none border-1 border-solid=
+" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt; height: min-content; border-radiu=
+s: 24px; padding-top: 7px; padding-bottom: 7px; padding-left: 16px; padding=
+-right: 16px; text-align: center; font-size: 14px; font-weight: 600; cursor=
+: pointer; text-decoration-line: none; background-color: #0a66c2; color: #f=
+fffff; border-width: 1px; border-style: solid; border-color: #0a66c2; line-=
+height: 1.25; min-height: auto !important; box-shadow: 0 0 #0000, 0 0 #0000=
+, 0 0 #0000 !important;"> <a href=3D"https://url.us.m.mimecastprotect.com/s=
+/lKtKCM8VZBi2ZL6QYCPF5c8cjXE?domain=3Dlinkedin.com" target=3D"_blank" tabin=
+dex=3D"-1" aria-hidden=3D"true" class=3D"no-underline" style=3D"color: #0a6=
+6c2; cursor: pointer; display: inline-block; text-decoration: none; -webkit=
+-text-size-adjust: 100%; -ms-text-size-adjust: 100%; text-decoration-line: =
+none;"> <span class=3D"no-underline text-white" style=3D"color: #ffffff; te=
+xt-decoration-line: none;"> See what you missed </span> </a> </td> </tr> </=
+tbody> </table> </a> </td> </tr> </tbody> </table> </td> </tr> <tr> <td sty=
+le=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table=
+-lspace: 0pt; mso-table-rspace: 0pt;"> <p class=3D"pt-3 text-lg font-bold l=
+eading-regular text-system-gray-90" style=3D"margin: 0; padding-top: 24px; =
+font-size: 20px; font-weight: 600; line-height: 1.25; color: #282828;"> Oth=
+er notifications </p> </td> </tr> <tr> <td style=3D"-webkit-text-size-adjus=
+t: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspac=
+e: 0pt;"> <table role=3D"presentation" valign=3D"top" border=3D"0" cellspac=
+ing=3D"0" cellpadding=3D"0" width=3D"100%" class=3D"entities-digest-contain=
+er" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt;"> <tbody> <tr> <td style=3D"-we=
+bkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: =
+0pt; mso-table-rspace: 0pt; padding-top: 16px; vertical-align: top; width: =
+48px;" width=3D"48"> <a href=3D"https://url.us.m.mimecastprotect.com/s/F7j1=
+CNk6O1iZBQM2pCyHPcyLhhj?domain=3Dlinkedin.com" target=3D"_blank" style=3D"c=
+olor: #0a66c2; cursor: pointer; display: inline-block; text-decoration: non=
+e; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;"> <img class=
+=3D"inline-block relative bg-color-entity-ghost-background clip-path-circle=
+-50 rounded-full w-6 h-6" src=3D"https://image-tracking-service.us-1.mimeca=
+stcybergraph.com/v1/image?imageData=3DWEsqFUBAENcTK%2B85kcwyvoJ3mChRQ4xD0Qg=
+%2FbpBoEe5lPutRlrOtd83ECjn5b2Adq0kTS48IIKUGvmr%2B1jlBqWlb2pH49%2FDyw0TJDnhh=
+rvxp6nXawsJtEUw8V16cP9lzhHJVpFV77u55o4CdRQUnW47gZu2W0I8ABP2ZWhQWopBscowBeU9=
+WYMuPT9mKgCP6tUtamh8tLCTOrqmyoL9KF16%2Fu59wfzzNLkOOjAZ6mCXSzlgfvOBOruB1myQh=
+%2FnR0SW0h2kT1TLZ66ETqo0AWV3OlYVSEPdPIhD2guWV%2BlNf%2BE7PXlxXXjb1%2Bov0j5V7=
+uZ5QENms2hNxXqiEvzfm4igEvk7Fvjc8Ucp32XsWvfL%2BEwBYP7uT%2F3ZDbrEzn0rA1DMOosu=
+emYON1ryUyeKdsce8CtOFJYlk7HVQOpdkw8MldL3B%2FsXP2quaT3CvKA11w2gu4AFpjvn1UdYh=
+hIIdtkZ7sDMuvcT2DigG43dqJrozevOmvpg0%3D" alt=3D"=E2=80=99s profile image" s=
+tyle=3D"outline: none; text-decoration: none; -ms-interpolation-mode: bicub=
+ic; position: relative; display: inline-block; height: 48px; width: 48px; b=
+order-radius: 9999px; background-color: #eae6df; clip-path: circle(50%);" w=
+idth=3D"48" height=3D"48"> </a> </td> <td class=3D"pl-1" style=3D"-webkit-t=
+ext-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; padding-left: 8px; padding-top: 16px; vertical-align:=
+ top;"> <a href=3D"https://url.us.m.mimecastprotect.com/s/sfCFCOY0g9sNKg26k=
+HwIxcGE3BC?domain=3Dlinkedin.com" target=3D"_blank" style=3D"color: #0a66c2=
+; cursor: pointer; display: inline-block; text-decoration: none; -webkit-te=
+xt-size-adjust: 100%; -ms-text-size-adjust: 100%;"> <span class=3D"text-sm =
+leading-regular text-system-gray-90" style=3D"font-size: 14px; line-height:=
+ 1.25; color: #282828;"> <strong>Jessica Lawrence-Vaca</strong> shared an u=
+pdate. </span> <span> <p class=3D"text-xs leading-regular text-system-gray-=
+70 pt-0.25" style=3D"margin: 0; font-weight: 400; padding-top: 2px; font-si=
+ze: 12px; line-height: 1.25; color: #666666;"> Chief Commercial Officer (CC=
+O) =C2=B7 Array Technologies </p> </span> <span> <p class=3D"body-content" =
+style=3D"margin: 0; color: #282828; font-weight: 300; text-wrap: wrap; widt=
+h: 85%; padding-top: 10px; font-size: small;"> I'm thrilled to be heading t=
+o CLEANPOWER 2025 in Phoenix, AZ from May 19-22. Let me know if you'll be t=
+here!=E2=80=A6 </p> </span> <table role=3D"presentation" valign=3D"top" bor=
+der=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" style=3D"-webk=
+it-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0p=
+t; mso-table-rspace: 0pt;"> <tbody> <tr> <td class=3D"thumbnail-lockup" sty=
+le=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table=
+-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 16px; vertical-align: top=
+; width: 48px;" width=3D"48"> <img class=3D"inline-block relative bg-color-=
+entity-ghost-background w-8 h-8" src=3D"https://image-tracking-service.us-1=
+.mimecastcybergraph.com/v1/image?imageData=3Dldn7J9EXkups%2Bv6vX1gO%2BiKlUB=
+bMid%2BACDw5hEHn8UJfTZu6PaXrCgBruCHrAs8EBnBKkvbAzazaZPkPyzrYrgfIwr04Xmwld85=
+bMYvBR5%2BROtkexXWsVxdqD66LpYBvTpgNyKKU9zGvHBG%2Fj4ebZMezdFH%2BuwxVNbyVg%2F=
+B%2ByC5bS2F0Q12VTTrYoHg1Bpv5%2FSnRgssgoOvkszBsea7cXlBQ5AR5uVrBXnK%2FOUPJKL6=
+zjDwKVgLlDzsJngst%2B3bsVnnIiBC%2Fcl05ORzCtFbPBMdU4wuOR33VCA%2Fgg2gZe6UWDRk8=
+Y7fWqvDki5YmQA46j2DQs7jOXoMtk6XGsqH%2BRWQp4BSqv6g66mSKf59CLw%2BkJtAlo%2FyUK=
+NXqMlDgzVkbZEtTwKFTLha8l2CKfWFh3g5n3C8%2B4IFmOvcjPk8cTnRBpQKzq8YZziiIN64YUG=
+c%3D" alt=3D"thumbnail" style=3D"outline: none; text-decoration: none; -ms-=
+interpolation-mode: bicubic; position: relative; display: inline-block; hei=
+ght: 64px; width: 64px; background-color: #eae6df;" width=3D"64" height=3D"=
+64"> </td> <td width=3D"85%" class=3D"pl-1" style=3D"-webkit-text-size-adju=
+st: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspa=
+ce: 0pt; padding-left: 8px; padding-top: 16px; vertical-align: top;"> <p cl=
+ass=3D"thumbnail-content" style=3D"margin: 0; color: #282828; font-weight: =
+bold; font-size: small;"> </p> </td> </tr> </tbody> </table> </a> </td> </t=
+r> <tr> <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: =
+100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 16px; vert=
+ical-align: top; width: 48px;" width=3D"48"> <a href=3D"https://url.us.m.mi=
+mecastprotect.com/s/QgZ9CPNVjJC0x257ncQS5cxAkpa?domain=3Dlinkedin.com" targ=
+et=3D"_blank" style=3D"color: #0a66c2; cursor: pointer; display: inline-blo=
+ck; text-decoration: none; -webkit-text-size-adjust: 100%; -ms-text-size-ad=
+just: 100%;"> <img class=3D"inline-block relative bg-color-entity-ghost-bac=
+kground clip-path-circle-50 rounded-full w-6 h-6" src=3D"https://image-trac=
+king-service.us-1.mimecastcybergraph.com/v1/image?imageData=3DMhUPKQxf3zfEv=
+TLWimz9SEqdYKH4%2BPiX6y40vb3qS2QbPHAx%2Fv2TdmhXJPHIlC4vxqMnIEUiDMW0AIVrIYzj=
+ksT42BbglXQxYecniKtsepIm1oJFOUMubXHbbuXEesJaWXVbe4KciZqDIUg9pOwDtlBAc1ns%2F=
+NZAlcE3E%2FuY%2B88yJjmr2neY9mV%2BCnEIpMhdaKsvTeXmThuvb%2FnLXMQ6UuvSD14KaceN=
+mRXSwTxMtm2vPp0Sky8qVhxjxoaFcj%2F7CdfrtNRKINGpc3Vp3Pluk%2BKnKN%2BUSi09KRML%=
+2BzI2SbDWcuM6kW2Eh8QXcAq2pO1bz1z%2Bzz0zzqqrglZXfWSicOy%2F2AHh1LTIb71pbxXLS5=
+EYFvwhYpXri1uaVkviEZbXFSpuX9F5mX83WhQQqIdKw0eqZDTSO9OHnZ7Ho%2BT53KgvPVqsOe3=
+89RhfA2JPwH5wFmm3U803rsYF9HTkUdhlkjCY" alt=3D"=E2=80=99s profile image" sty=
+le=3D"outline: none; text-decoration: none; -ms-interpolation-mode: bicubic=
+; position: relative; display: inline-block; height: 48px; width: 48px; bor=
+der-radius: 9999px; background-color: #eae6df; clip-path: circle(50%);" wid=
+th=3D"48" height=3D"48"> </a> </td> <td class=3D"pl-1" style=3D"-webkit-tex=
+t-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso=
+-table-rspace: 0pt; padding-left: 8px; padding-top: 16px; vertical-align: t=
+op;"> <a href=3D"https://url.us.m.mimecastprotect.com/s/sfCFCOY0g9sNKg26kHw=
+IxcGE3BC?domain=3Dlinkedin.com" target=3D"_blank" style=3D"color: #0a66c2; =
+cursor: pointer; display: inline-block; text-decoration: none; -webkit-text=
+-size-adjust: 100%; -ms-text-size-adjust: 100%;"> <span class=3D"text-sm le=
+ading-regular text-system-gray-90" style=3D"font-size: 14px; line-height: 1=
+.25; color: #282828;"> <strong>Rahiem Swann</strong> shared an update. </sp=
+an> <span> <p class=3D"text-xs leading-regular text-system-gray-70 pt-0.25"=
+ style=3D"margin: 0; font-weight: 400; padding-top: 2px; font-size: 12px; l=
+ine-height: 1.25; color: #666666;"> Vice President of Sales and Business De=
+velopment =C2=B7 Advanced Energy United </p> </span> <span> <p class=3D"bod=
+y-content" style=3D"margin: 0; color: #282828; font-weight: 300; text-wrap:=
+ wrap; width: 85%; padding-top: 10px; font-size: small;"> Distributed Energ=
+y Resources and Virtual Power Plants are becoming larger effectual parts of=
+ the energy load=E2=80=A6 </p> </span> </a> </td> </tr> <tr> <td style=3D"-=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt; padding-top: 16px; vertical-align: top; width=
+: 48px;" width=3D"48"> <a href=3D"https://url.us.m.mimecastprotect.com/s/Qg=
+Z9CPNVjJC0x257ncQS5cxAkpa?domain=3Dlinkedin.com" target=3D"_blank" style=3D=
+"color: #0a66c2; cursor: pointer; display: inline-block; text-decoration: n=
+one; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;"> <img cla=
+ss=3D"inline-block relative bg-color-entity-ghost-background clip-path-circ=
+le-50 rounded-full w-6 h-6" src=3D"https://image-tracking-service.us-1.mime=
+castcybergraph.com/v1/image?imageData=3DkA42FygdXOQo%2BNfKoRmueIomDExcmOpWq=
+8bbDFodkOC4AMvtZ2lyuzkV2Mijf7JDH07636qGLxtjFdZ26M5tN%2BEV5gQ5giOt60RX80XWIs=
+mqlfNlAhchz5ugzvM5ZDH15rJIyHQjLwrd3qRKRWWjYA9qbaHketae6hpymJj87zVfyo78P4DqB=
+iyoTw6H1MPE4l8S%2BhOlaa95ECp5FrtviCyxm3gXAt%2FBkEg7zIJmbvcqIEF18sdJnBINdFpn=
+3NEw9Zwx%2FJEpSnl1qyb3RCQrv4xkMKSjdIwZrOlANufkl6OpLbe0V445wZJbJsqzMX19iYt3x=
+19Nk5w6g1FmTmJlBP%2FN%2BV3XxUgagR%2F5qzG%2Bdnc4d2g9dk0z%2B2yuO6w8pX0D3RWpyk=
+9Xqh2j94bKAkMf9pZc1d9NejgFgt245pEa2KjSN%2F2b%2FhzmK9oKj9MglR3E5jFQGFgMd9x%2=
+B%2BcqYDJRBQK5%2B" alt=3D"=E2=80=99s profile image" style=3D"outline: none;=
+ text-decoration: none; -ms-interpolation-mode: bicubic; position: relative=
+; display: inline-block; height: 48px; width: 48px; border-radius: 9999px; =
+background-color: #eae6df; clip-path: circle(50%);" width=3D"48" height=3D"=
+48"> </a> </td> <td class=3D"pl-1" style=3D"-webkit-text-size-adjust: 100%;=
+ -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; =
+padding-left: 8px; padding-top: 16px; vertical-align: top;"> <a href=3D"htt=
+ps://url.us.m.mimecastprotect.com/s/sfCFCOY0g9sNKg26kHwIxcGE3BC?domain=3Dli=
+nkedin.com" target=3D"_blank" style=3D"color: #0a66c2; cursor: pointer; dis=
+play: inline-block; text-decoration: none; -webkit-text-size-adjust: 100%; =
+-ms-text-size-adjust: 100%;"> <span class=3D"text-sm leading-regular text-s=
+ystem-gray-90" style=3D"font-size: 14px; line-height: 1.25; color: #282828;=
+"> <strong>Rahiem Swann</strong> shared an update. </span> <span> <p class=
+=3D"text-xs leading-regular text-system-gray-70 pt-0.25" style=3D"margin: 0=
+; font-weight: 400; padding-top: 2px; font-size: 12px; line-height: 1.25; c=
+olor: #666666;"> Vice President of Sales and Business Development =C2=B7 Ad=
+vanced Energy United </p> </span> <span> <p class=3D"body-content" style=3D=
+"margin: 0; color: #282828; font-weight: 300; text-wrap: wrap; width: 85%; =
+padding-top: 10px; font-size: small;"> Looking forward to attending this ye=
+ar's annual #AABE Conference! Who am I going to see in Atlanta this week? <=
+/p> </span> <table role=3D"presentation" valign=3D"top" border=3D"0" cellsp=
+acing=3D"0" cellpadding=3D"0" width=3D"100%" style=3D"-webkit-text-size-adj=
+ust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt;"> <tbody> <tr> <td class=3D"thumbnail-lockup" style=3D"-webkit-te=
+xt-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; ms=
+o-table-rspace: 0pt; padding-top: 16px; vertical-align: top; width: 48px;" =
+width=3D"48"> <img class=3D"inline-block relative bg-color-entity-ghost-bac=
+kground w-8 h-8" src=3D"https://image-tracking-service.us-1.mimecastcybergr=
+aph.com/v1/image?imageData=3DMynsBZud9A0KRiaB8pMsMSX0SLZPE52iq4X%2Fdh%2B2RN=
+yvpHCUulUU4iDl53WaeHk1CxLOPr1KFrc4w7i0SyooHdJi6THx1tJ6ZisP%2B3woKdFsGXaS3Tv=
+Qz3oCnY%2FVYNAANihPNp8c%2BWsMXv01pI1TJbUihogt9%2BbIw8lwf0LV%2FOqjvg%2BzX1PQ=
+9zuyMhQPT5Ae2oZ4GxkW5HIu4XHXxQ7LCGdgZenGvfLIw0yA%2F2kpJc9CaYXtjT%2FhO8VN%2F=
+SckeUcE0XXQf2Yqi0NM0AKtRdMhzfqKafl7AfqoKfhp" alt=3D"thumbnail" style=3D"out=
+line: none; text-decoration: none; -ms-interpolation-mode: bicubic; positio=
+n: relative; display: inline-block; height: 64px; width: 64px; background-c=
+olor: #eae6df;" width=3D"64" height=3D"64"> </td> <td width=3D"85%" class=
+=3D"pl-1" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 10=
+0%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-left: 8px; paddin=
+g-top: 16px; vertical-align: top;"> <p class=3D"thumbnail-content" style=3D=
+"margin: 0; color: #282828; font-weight: bold; font-size: small;"> Our Plat=
+inum Presenting sponsors are empowering us to move forward. With more than =
+1,500 energy=E2=80=A6 </p> </td> </tr> </tbody> </table> </a> </td> </tr> <=
+tr> <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 16px; vertical=
+-align: top; width: 48px;" width=3D"48"> <a href=3D"https://url.us.m.mimeca=
+stprotect.com/s/3k3hCQW8kLFXWKN5LC5TAcGiQ7O?domain=3Dlinkedin.com" target=
+=3D"_blank" style=3D"color: #0a66c2; cursor: pointer; display: inline-block=
+; text-decoration: none; -webkit-text-size-adjust: 100%; -ms-text-size-adju=
+st: 100%;"> <img class=3D"inline-block relative bg-color-entity-ghost-backg=
+round clip-path-circle-50 rounded-full w-6 h-6" src=3D"https://image-tracki=
+ng-service.us-1.mimecastcybergraph.com/v1/image?imageData=3DrV3S0p7MCZDTi5U=
+NvrCznAafZ06Wugo3NIc0e1N%2FxbgKLcmhJmZ9UDd3cOYkQewg5HR%2BnPJYsBx8IWKRCR%2F8=
+OzcFPfhHLUwD2Q36XqKYGtzUY7mQcLM5kWjARjtw5acBfET%2BBqTmZ0tNyh2TY8SDzuFVnuH%2=
+By0aM%2BXr%2Fw9hzJfGn9tIFhsPodQwNTgYX9PIONB4PXChEcZ%2BiFG%2BDHNU62yw1Z5ff0P=
+ymZ7PD%2FRN8LJ4%2BzfdHyAEg2pOu4IrU%2F7Z1wnZ5TpNluS7GBARUXfjf5fcDjzsWM%2BNJO=
+SoR%2FSiTRj7R%2BfaYGLZL4gn%2BcZyG0dMbhOTM2d3eRutZlKC9Eazm2Oa6B5jQgOHVoyup1s=
+unRv2OAK5K%2FEjABU13%2BsU6JSSYk8Or2chmWO8fUGLSZNKz%2Fs5V%2F8a8AePa0DfFShIv7=
+zY4dE8iLFb0nJj6REGzFMleBNErijTI5ivLCvN481vcdlwI" alt=3D"=E2=80=99s profile =
+image" style=3D"outline: none; text-decoration: none; -ms-interpolation-mod=
+e: bicubic; position: relative; display: inline-block; height: 48px; width:=
+ 48px; border-radius: 9999px; background-color: #eae6df; clip-path: circle(=
+50%);" width=3D"48" height=3D"48"> </a> </td> <td class=3D"pl-1" style=3D"-=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt; padding-left: 8px; padding-top: 16px; vertica=
+l-align: top;"> <a href=3D"https://url.us.m.mimecastprotect.com/s/sfCFCOY0g=
+9sNKg26kHwIxcGE3BC?domain=3Dlinkedin.com" target=3D"_blank" style=3D"color:=
+ #0a66c2; cursor: pointer; display: inline-block; text-decoration: none; -w=
+ebkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;"> <span class=3D"=
+text-sm leading-regular text-system-gray-90" style=3D"font-size: 14px; line=
+-height: 1.25; color: #282828;"> <strong>Ben Norris</strong> shared an upda=
+te. </span> <span> <p class=3D"text-xs leading-regular text-system-gray-70 =
+pt-0.25" style=3D"margin: 0; font-weight: 400; padding-top: 2px; font-size:=
+ 12px; line-height: 1.25; color: #666666;"> Vice President of Regulatory Af=
+fairs =C2=B7 Solar Energy Industries Association </p> </span> <span> <p cla=
+ss=3D"body-content" style=3D"margin: 0; color: #282828; font-weight: 300; t=
+ext-wrap: wrap; width: 85%; padding-top: 10px; font-size: small;"> All sour=
+ces of electricity are weather-dependent, and there are no technical reason=
+s to favor some over=E2=80=A6 </p> </span> <table role=3D"presentation" val=
+ign=3D"top" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"=
+ style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-t=
+able-lspace: 0pt; mso-table-rspace: 0pt;"> <tbody> <tr> <td class=3D"thumbn=
+ail-lockup" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: =
+100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 16px; vert=
+ical-align: top; width: 48px;" width=3D"48"> <img class=3D"inline-block rel=
+ative bg-color-entity-ghost-background w-8 h-8" src=3D"https://image-tracki=
+ng-service.us-1.mimecastcybergraph.com/v1/image?imageData=3D2f7Oq9PIzBsj9rU=
+%2B%2B%2FEEk4M6Z9TQOEex0xClQAhdtRwtXu7cd8r6sslwUQOOm%2FSzwZ0oCHMDwm4CJUfUcV=
+huWMsQ%2FhsedOjnb55Ew0p%2FJQBOBEDPxS8H%2BpfBATTfy%2BiXR%2BwFW2Mgqh6SVhLyNnI=
+VEl4i18uTfdFC4JTiiuTmh0lqyXpESThgOgxLDEutKyEpxQrSfm9wjuI6GZ2o6CprOvTIyEeym%=
+2FH2LHZ91aiTVwli0TVnfM4Vsjt3j0q6CPKhguKz4iIQqt15ZS29wkYv3Qfbuff4UqUa51i9K2h=
+BVjZwW7gX722XwA72SCQ1W0SNR8lIiQE20atDTQwQHFyT%2Bei3kDvLxObq%2FXZBXpABeyqpC4=
+%2F7CDcU%2FxFcivPR%2FyOgMD40tj6CbX%2Bf9qxF22XntkWVX16UqwQGmh1rN1FbKLxpzE1iM=
+dLY3ukYPiWNCVTkzvpU" alt=3D"thumbnail" style=3D"outline: none; text-decorat=
+ion: none; -ms-interpolation-mode: bicubic; position: relative; display: in=
+line-block; height: 64px; width: 64px; background-color: #eae6df;" width=3D=
+"64" height=3D"64"> </td> <td width=3D"85%" class=3D"pl-1" style=3D"-webkit=
+-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt;=
+ mso-table-rspace: 0pt; padding-left: 8px; padding-top: 16px; vertical-alig=
+n: top;"> <p class=3D"thumbnail-content" style=3D"margin: 0; color: #282828=
+; font-weight: bold; font-size: small;"> But, renewables are so unreliable =
+and intermittent! Now 42 straight and 83 of 115 100%=E2=80=A6 </p> </td> </=
+tr> </tbody> </table> </a> </td> </tr> <tr> <td style=3D"-webkit-text-size-=
+adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-=
+rspace: 0pt; padding-top: 16px; vertical-align: top; width: 48px;" width=3D=
+"48"> <a href=3D"https://url.us.m.mimecastprotect.com/s/LnCdCR6VlBfGLpgAXcr=
+Upc1k_0H?domain=3Dlinkedin.com" target=3D"_blank" style=3D"color: #0a66c2; =
+cursor: pointer; display: inline-block; text-decoration: none; -webkit-text=
+-size-adjust: 100%; -ms-text-size-adjust: 100%;"> <img class=3D"inline-bloc=
+k relative bg-color-entity-ghost-background clip-path-circle-50 rounded-ful=
+l w-6 h-6" src=3D"https://image-tracking-service.us-1.mimecastcybergraph.co=
+m/v1/image?imageData=3DZCqPNDBZe4k5%2B12W0BrB8ZDDERbi7zmOwEphEIpIYYZx5gotkl=
+gJY5CupHrYsnUNvS7BDSVlHD91I9cnYHd3paLOfhMmNwczR3PB0lVaN8bFgzqWRWmfGRSSHlG7t=
+QJ0XC60Hluqi8FybriDPhvo09OFPIOr1d6woB58htHBeoy9TuhUW1T8lfij%2FyrG0YyQd62dva=
+D6OOSxqAJEoJeWlD8M1UZasuty%2BtTaBl8AtKMv6vGWzzJytC%2BEG2GaPvGpR20HAjsu0cCAK=
+PTzYEjN5dWc7lVVq9bsivrFUESaVzQydMsaONA%2BHseBqYc%2FtoLvp3ZFb7bLEltC7NEYNOiw=
+ZUYKPef%2B9UflsBcrtJLQRoWiPQryokqi5835WchN3whm7hyY7H18rxRnZbwbTE8qMZVYcz6KR=
+jsgJhBvH5Okx10NyrDQKXa6FR511u5WqfsfBO8utkCagJEo6ftt2V9%2BagmPsdku3Fo39QfcEV=
+OgU2hd5uwEcq0%3D" alt=3D"=E2=80=99s profile image" style=3D"outline: none; =
+text-decoration: none; -ms-interpolation-mode: bicubic; position: relative;=
+ display: inline-block; height: 48px; width: 48px; border-radius: 9999px; b=
+ackground-color: #eae6df; clip-path: circle(50%);" width=3D"48" height=3D"4=
+8"> </a> </td> <td class=3D"pl-1" style=3D"-webkit-text-size-adjust: 100%; =
+-ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; p=
+adding-left: 8px; padding-top: 16px; vertical-align: top;"> <a href=3D"http=
+s://url.us.m.mimecastprotect.com/s/sfCFCOY0g9sNKg26kHwIxcGE3BC?domain=3Dlin=
+kedin.com" target=3D"_blank" style=3D"color: #0a66c2; cursor: pointer; disp=
+lay: inline-block; text-decoration: none; -webkit-text-size-adjust: 100%; -=
+ms-text-size-adjust: 100%;"> <span class=3D"text-sm leading-regular text-sy=
+stem-gray-90" style=3D"font-size: 14px; line-height: 1.25; color: #282828;"=
+> <strong>Abby Hopper</strong> shared an update. </span> <span> <p class=3D=
+"text-xs leading-regular text-system-gray-70 pt-0.25" style=3D"margin: 0; f=
+ont-weight: 400; padding-top: 2px; font-size: 12px; line-height: 1.25; colo=
+r: #666666;"> President &amp; CEO =C2=B7 Solar Energy Industries Associatio=
+n </p> </span> <span> <p class=3D"body-content" style=3D"margin: 0; color: =
+#282828; font-weight: 300; text-wrap: wrap; width: 85%; padding-top: 10px; =
+font-size: small;"> I am a Marriott loyalist. And a Southwest diehard. And =
+I don=E2=80=99t stray. I will always pick a hotel from the=E2=80=A6 </p> </=
+span> <table role=3D"presentation" valign=3D"top" border=3D"0" cellspacing=
+=3D"0" cellpadding=3D"0" width=3D"100%" style=3D"-webkit-text-size-adjust: =
+100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt;"> <tbody> <tr> <td class=3D"thumbnail-lockup" style=3D"-webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-tab=
+le-rspace: 0pt; padding-top: 16px; vertical-align: top; width: 48px;" width=
+=3D"48"> <img class=3D"inline-block relative bg-color-entity-ghost-backgrou=
+nd w-8 h-8" src=3D"https://image-tracking-service.us-1.mimecastcybergraph.c=
+om/v1/image?imageData=3DIFyeT2M5%2B9pWmhH4LPdLjEkZPsqHIHbL%2BggeP5BYr%2BCft=
+cMZukJRyzDx5D%2Fl21JTXyTioifbIH%2FDAezIKaEx7N2fwn3TJpTIdZTDNw9lVn6apoSfnT9r=
+A8MTExrv%2FGEsCLWzqnEURdbGvSjArGoDeklNgPz1GSIMUKvJAljcWRpouzT1die0qV2n%2Bqj=
+8F%2FPPTKNu77WhrszFpTc9%2B7iFXPhPmt%2BMbRbmxycql2kmrT15ikoC8qiCkizg5R9n2LaJ=
+PvtKFZfEr7LZ3kVOGKJOhX6EAmgE3VhspET%2F1BfH7p4WCSUKp4WDzSHSqh91kmEQEw0ROMoQ5=
+A4uUs7tep%2FPUoYAduM6HseOGwuDCUOxxMbQ%2BccPaGIgryx4WXOlbiLPBzCL7HD1EztJgk19=
+P11QkZMUN7MWm86q3ZoS5pc%2BWlV0ewSQp4Wtgvbbnf7Q72STd10y1Ss4LS8e" alt=3D"thum=
+bnail" style=3D"outline: none; text-decoration: none; -ms-interpolation-mod=
+e: bicubic; position: relative; display: inline-block; height: 64px; width:=
+ 64px; background-color: #eae6df;" width=3D"64" height=3D"64"> </td> <td wi=
+dth=3D"85%" class=3D"pl-1" style=3D"-webkit-text-size-adjust: 100%; -ms-tex=
+t-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-=
+left: 8px; padding-top: 16px; vertical-align: top;"> <p class=3D"thumbnail-=
+content" style=3D"margin: 0; color: #282828; font-weight: bold; font-size: =
+small;"> </p> </td> </tr> </tbody> </table> </a> </td> </tr> </tbody> </tab=
+le> </td> </tr> <tr> <td class=3D"pt-2" style=3D"-webkit-text-size-adjust: =
+100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; padding-top: 16px;"> <table role=3D"presentation" valign=3D"top" borde=
+r=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" class=3D"email-b=
+utton " data-test-id=3D"email-button" style=3D"-webkit-text-size-adjust: 10=
+0%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0p=
+t;"> <tbody> <tr> <td valign=3D"middle" align=3D"left" style=3D"-webkit-tex=
+t-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso=
+-table-rspace: 0pt;"> <a href=3D"https://url.us.m.mimecastprotect.com/s/psy=
+lCBBYrEfD4klgNczf1c2XgRu?domain=3Dlinkedin.com" target=3D"_blank" aria-labe=
+l=3D"See what you missed" class=3D"align-top no-underline" style=3D"color: =
+#0a66c2; cursor: pointer; display: inline-block; text-decoration: none; -we=
+bkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; vertical-align: to=
+p; text-decoration-line: none;"> <table role=3D"presentation" valign=3D"top=
+" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"auto" class=3D"=
+border-separate" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adj=
+ust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: s=
+eparate;"> <tbody> <tr> <td class=3D"btn-sm btn-primary border-color-brand =
+button-link leading-regular !min-h-[auto] !shadow-none border-1 border-soli=
+d" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso=
+-table-lspace: 0pt; mso-table-rspace: 0pt; height: min-content; border-radi=
+us: 24px; padding-top: 7px; padding-bottom: 7px; padding-left: 16px; paddin=
+g-right: 16px; text-align: center; font-size: 14px; font-weight: 600; curso=
+r: pointer; text-decoration-line: none; background-color: #0a66c2; color: #=
+ffffff; border-width: 1px; border-style: solid; border-color: #0a66c2; line=
+-height: 1.25; min-height: auto !important; box-shadow: 0 0 #0000, 0 0 #000=
+0, 0 0 #0000 !important;"> <a href=3D"https://url.us.m.mimecastprotect.com/=
+s/psylCBBYrEfD4klgNczf1c2XgRu?domain=3Dlinkedin.com" target=3D"_blank" tabi=
+ndex=3D"-1" aria-hidden=3D"true" class=3D"no-underline" style=3D"color: #0a=
+66c2; cursor: pointer; display: inline-block; text-decoration: none; -webki=
+t-text-size-adjust: 100%; -ms-text-size-adjust: 100%; text-decoration-line:=
+ none;"> <span class=3D"no-underline text-white" style=3D"color: #ffffff; t=
+ext-decoration-line: none;"> See what you missed </span> </a> </td> </tr> <=
+/tbody> </table> </a> </td> </tr> </tbody> </table> </td> </tr> </tbody> </=
+table> </div> </td> </tr> <tr> <td class=3D"bg-color-background-canvas p-3"=
+ style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-t=
+able-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f3f2f0; padding=
+: 24px;"> <table role=3D"presentation" valign=3D"top" border=3D"0" cellspac=
+ing=3D"0" cellpadding=3D"0" width=3D"100%" class=3D"text-xs" style=3D"-webk=
+it-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0p=
+t; mso-table-rspace: 0pt; font-size: 12px;"> <tbody> <tr> <td class=3D"pb-1=
+ m-0" data-test-id=3D"email-footer__intended" style=3D"-webkit-text-size-ad=
+just: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rs=
+pace: 0pt; margin: 0px; padding-bottom: 8px;"> This email was intended for =
+Rob Spence (Staff Solution Consultant) </td> </tr> <tr> <td class=3D"pb-1 m=
+-0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; margin: 0px; padding-bottom: 8p=
+x;"> <a href=3D"https://url.us.m.mimecastprotect.com/s/cAd3CVOVvZs2AEPD8COc=
+3cE6K1S?domain=3Dlinkedin.com" target=3D"_blank" class=3D"text-inherit unde=
+rline" style=3D"cursor: pointer; display: inline-block; text-decoration: no=
+ne; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: inhe=
+rit; text-decoration-line: underline;">Learn why we included this.</a> </td=
+> </tr> <tr> <td class=3D"pb-1 m-0" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ margin: 0px; padding-bottom: 8px;">You are receiving LinkedIn notification=
+ emails.</td> </tr> <tr> <td class=3D"pb-1 m-0" style=3D"-webkit-text-size-=
+adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-=
+rspace: 0pt; margin: 0px; padding-bottom: 8px;"> <a href=3D"https://url.us.=
+m.mimecastprotect.com/s/EV9aCERVqQUlDz6Qjtpi7c7wrnS?domain=3Dlinkedin.com" =
+target=3D"_blank" class=3D"text-inherit underline" style=3D"cursor: pointer=
+; display: inline-block; text-decoration: none; -webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; color: inherit; text-decoration-line: unde=
+rline;">Unsubscribe</a> &nbsp;&nbsp;=C2=B7&nbsp;&nbsp; <a href=3D"https://u=
+rl.us.m.mimecastprotect.com/s/IuDkCW69PBf6BQyA8Cof8coXT98?domain=3Dlinkedin=
+.com" target=3D"_blank" class=3D"text-inherit underline" style=3D"cursor: p=
+ointer; display: inline-block; text-decoration: none; -webkit-text-size-adj=
+ust: 100%; -ms-text-size-adjust: 100%; color: inherit; text-decoration-line=
+: underline;">Help</a> </td> </tr> <tr> <td class=3D"pb-1" style=3D"-webkit=
+-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt;=
+ mso-table-rspace: 0pt; padding-bottom: 8px;"> <a href=3D"https://url.us.m.=
+mimecastprotect.com/s/4l1OCXD9QVi4YgMxZuGh1cWekBM?domain=3Dlinkedin.com" ta=
+rget=3D"_blank" style=3D"color: #0a66c2; cursor: pointer; display: inline-b=
+lock; text-decoration: none; -webkit-text-size-adjust: 100%; -ms-text-size-=
+adjust: 100%;"> <img src=3D"https://image-tracking-service.us-1.mimecastcyb=
+ergraph.com/v1/image?imageData=3DsjLpUUfB8znM%2FNYbW2MjDWif0njW19ahPQ9v819q=
+IuyLLLs9HvQdu7q1hx1%2FMp133vCcVa5EK47wDlSRt8Jf%2BSX90T5NI4stSIDgdZSekpKG0t2=
+v2DaUXPtTzhVO9dwh0pU520h%2F86EtRyGVo%2FtTtjUbVqCcE5yEXpVoFdyZAXM%2BFxagQKuA=
+LC3z6xOmpWKNHKLz4PfY2qQVlA%2FdwZdTcnrcZC%2Fk44sRC2OldPkaSSsR1bGVtoENsBNhOMd=
+j9iDiyYR9298UInmVZHt9gdXaEPkd6L05tnf8ztcK" alt=3D"LinkedIn" class=3D"block =
+h-[14px] w-[56px] image-rendering-crisp" style=3D"outline: none; text-decor=
+ation: none; image-rendering: -moz-crisp-edges; image-rendering: -o-crisp-e=
+dges; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-ed=
+ges; -ms-interpolation-mode: nearest-neighbor; display: block; height: 14px=
+; width: 56px;" width=3D"56" height=3D"14"> </a> </td> </tr> <tr> <td data-=
+test-copyright-text=3D"" style=3D"-webkit-text-size-adjust: 100%; -ms-text-=
+size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"> =C2=A9 2=
+025 LinkedIn Corporation, 1=E2=80=8C000 West Maude Avenue, Sunnyvale, CA 94=
+085. <span data-test-trademarks-text=3D""> LinkedIn and the LinkedIn logo a=
+re registered trademarks of LinkedIn. </span> </td> </tr> </tbody> </table>=
+ </td> </tr> </tbody> </table> <img alt=3D"" role=3D"presentation" src=3D"h=
+ttps://image-tracking-service.us-1.mimecastcybergraph.com/v1/image?imageDat=
+a=3DEzHDoiGyaqsbFxtvySn3WPN5SDWh3ya2nsRrln1QVDF%2FkYHkSt0V3JfjgzZnORWnwgNbK=
+1s8A8s4ZlhNb9GUoVFox0vmsSq%2BoHjTjgOHc493%2BF21MByO0iFoLxkM0I%2B%2FdBeDAals=
+oi6RDJKq%2BdRkRhqF3pGy9Y8n2HVrpl0oXY5NMtIQP%2Fe9Hf7pulQXCyZM1jQe0O7ghIXt%2B=
+3Z7zrX90l22MpTqbq1fTQgfsgWo1FcHgAGh7uAgoQsxs2gJ%2Foo3R%2FETGmKZf99oqegzNfVv=
+%2F899wAsP8ejOjxkdJ3AtVJRi4VtgsZfO0p66xs9odGRQpGs1%2Fnzfa%2BQa9%2FeNJmi1a5B=
+dqWFCKZxJl7D1GTl9lj2Vta%2BojlzHt%2Fj2DSRavWUrKGTacpeq3QxAPA%3D%3D" style=3D=
+"outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; wid=
+th: 1px; height: 1px;" width=3D"1" height=3D"1"> </body> </html>
+
+------=_Part_1068072_565678366.1745934306640--

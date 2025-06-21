@@ -1,0 +1,441 @@
+Received: from DM8PR08MB7302.namprd08.prod.outlook.com (2603:10b6:8:31::14) by
+ DS7PR08MB10577.namprd08.prod.outlook.com with HTTPS; Wed, 8 Jan 2025 16:06:38
+ +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=WO4mjnEfBIniBtppNM9frn2B2Vll5K3+VVO8Nj01RHbjfoVRyHZX/G3zElNCH6Maetbn4aeVHqOuBQ52TmmO2uiKjkG6yn0SvYP8CogUfbjTqk7QG/7vw6+fJGqL7+5OC+Bz+DZEMDtHHKPH4RdLNCwwJO5t+XHjrMlrHhUDTcH0xBBgKHOP0kCuhnDx5csk8vNjB4YM1Jkl0B/fUIEG0nYpxkGCkS4kts7/k/hQy853ahCO74CDNxPp2RYGaKRDe2wqiG14Iq83hP+12LkuGI5T6/1D2px4yR4ii+Q/7u+stouaR14MXykqynq+hqKTbvVijUOnSRI9DmQ28u0H7A==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uy3rvn9TnLeCZUDqIk9UnS02AU6/SUCsndU1RDcJ9PM=;
+ b=pe7ekONeJNNX4xeQ/OuE8ds/QUGlq4b4eFcBM1Ozxh9b1vMOzR09UBSPiFQVW2B4VTh1ay7dw+vLvdIu1LSv8/seaCZU9fTybRanY4OrNWWxo7exhx6zT9qGGtfH+xrTUkm41m8Wr/Cgn4K7/B9l3wVvOMjueeNtx/8VDby3ePahGerQPMJWMbSY6LariEU6nMeOBxICUsGU+d89mkZkmvLDxxbQoaoJDGOUb8psPcy+Y33cYk57QJU9LMi86u+592+TDVFc6H7rj8l18GjQrcxuAWsmNAq70HprOOFG3pbVD5gihSY2RVL5zvmnqWT5erbGCtvAJ4JFoR3f0pJ39Q==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=softfail (sender ip
+ is 170.10.128.131) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=workshop.servicenow.com; dmarc=pass (p=reject sp=reject
+ pct=100) action=none header.from=servicenow.com; dkim=pass (signature was
+ verified) header.d=servicenow.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from BYAPR11CA0066.namprd11.prod.outlook.com (2603:10b6:a03:80::43)
+ by DM8PR08MB7302.namprd08.prod.outlook.com (2603:10b6:8:31::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Wed, 8 Jan
+ 2025 16:06:36 +0000
+Received: from SJ5PEPF00000206.namprd05.prod.outlook.com
+ (2603:10b6:a03:80:cafe::9) by BYAPR11CA0066.outlook.office365.com
+ (2603:10b6:a03:80::43) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.10 via Frontend Transport; Wed,
+ 8 Jan 2025 16:06:36 +0000
+Authentication-Results: spf=softfail (sender IP is 170.10.128.131)
+ smtp.mailfrom=workshop.servicenow.com; dkim=pass (signature was verified)
+ header.d=servicenow.com;dmarc=pass action=none
+ header.from=servicenow.com;compauth=pass reason=100
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ workshop.servicenow.com discourages use of 170.10.128.131 as permitted
+ sender)
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ SJ5PEPF00000206.mail.protection.outlook.com (10.167.244.39) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.7
+ via Frontend Transport; Wed, 8 Jan 2025 16:06:35 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1736352395;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=uy3rvn9TnLeCZUDqIk9UnS02AU6/SUCsndU1RDcJ9PM=;
+	b=iIOA+nvCx9Qhxh4nFPjiQAqNrPzQy4Pz/qL1P0MiX3m5AS1xrth4fHBdwdb41V56Iqovz9
+	kIpyjOSWk5LxHjkEEXHbTHYkCiIoJ1BUpaw7rsws+7HVTmLGei4dmJsBt4Ctixmhz+pgws
+	PcYWfIaQ+FK8Xsmgvl4EBos4r4igFsphbrW3yQskOYM+PRJZF8aegGe4uU0xdXoDRF98Om
+	MfpU3xdKylO9v+TnTu43YF8bl0NQyf87ZSXiS5S8IPfbKsyLEPLhSG+TqwEcB9zJT7IKeF
+	Q1em/307GhUr3wClprWMf1gHPfSb9eftb9OqOW3FAb8K3egCQAtWfW9FsRpWNw==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1736352395; a=rsa-sha256;
+	cv=none;
+	b=sBLkQGNHybjzvZnAOr+RlM8edoL+/PS7ixjWeu/YhSce1jO1WzU+ea227C8ccFtAU7redN
+	dqWtQYVNIu7jn04X10zD9cT+s4/LLSi6Btvdqkxxv9p2xKwJWZSjbC8FuPpp0VsnhKiBDj
+	dhhaes/vYddjC8UpMyTuEqTkLOho7wJmeoP5HwYdIFQNHH0pgDcFMA5Va0LvStZGA3FnvT
+	QfFoItDxRf8t1gDirFVaP+TDP4optzcSf4r1aa+IQAxlGPVjG/KkXo3zsIFfVJwzL9PpwL
+	Z6lzdeCM9zo9P0e0YIiZLRaGHbp8l8MGbVqc84WXn9RHszLZGDIzqqxQ6oFveg==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=servicenow.com header.s=wrk header.b=t2bDspCf;
+	dmarc=pass (policy=reject) header.from=servicenow.com;
+	spf=pass (relay.mimecast.com: domain of "bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com" designates 149.72.61.106 as permitted sender) smtp.mailfrom="bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=servicenow.com header.s=wrk header.b=t2bDspCf;	dmarc=pass
+ (policy=reject) header.from=servicenow.com;	spf=pass (relay.mimecast.com:
+ domain of
+ "bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+ designates 149.72.61.106 as permitted sender)
+ smtp.mailfrom="bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com"
+Received: from o1.ptr5628.useworkshop.com (o1.ptr5628.useworkshop.com
+ [149.72.61.106]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-427-zhKMMEnPP9OHYBP-LV6FUQ-1; Wed, 08 Jan 2025 11:06:28 -0500
+X-MC-Unique: zhKMMEnPP9OHYBP-LV6FUQ-1
+X-Mimecast-MFC-AGG-ID: zhKMMEnPP9OHYBP-LV6FUQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=servicenow.com;
+	h=from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:from:subject:to;
+	s=wrk; bh=uy3rvn9TnLeCZUDqIk9UnS02AU6/SUCsndU1RDcJ9PM=;
+	b=t2bDspCfAHAmXaWwPbAN6y8k/fMTKoEuDh4bxiRND9y/EtxmwmmFGn310Flgx0Zk3m38
+	o51Bbk2s0+/G4Mes4YwCos8eZWXLySdAxP6vgTcSdPx+iW0AgtzHNkAXHBDDEwho2o834K
+	Es+fy0EjXAWAI2JFoTb7ttxl4H+trI5dlsd/uU+TmnPpip8RyG9ie9XBJp3n5KMtzM21kP
+	p+/JAIFpHs7BKKxPodOr4SrRYCfKWXjh+HIX6NDDmQ8ZLIibubechbGbhTZUHFv6CO3DFp
+	mUfp4wCsoiia+kzRnjXrh1WsmpuljFxPl24vp5T0XCCUe0RKKPzXDvsy79HNgNkA==
+Received: by recvd-66f9bffd65-l86mf with SMTP id recvd-66f9bffd65-l86mf-1-677EA1BA-70
+	2025-01-08 16:03:06.476118786 +0000 UTC m=+4732815.689925725
+Received: from useworkshop.com (unknown)
+	by geopod-ismtpd-33 (SG) with ESMTP
+	id w_48RVSAS8yUDtwHYqsFKg
+	for <rob.spence@servicenow.com>;
+	Wed, 08 Jan 2025 16:03:06.430 +0000 (UTC)
+Date: Wed, 8 Jan 2025 16:03:06 +0000
+From: Paul Smith <paul.smith@servicenow.com>
+Message-ID: <97489c00-678b-4d33-831d-ac83deedd6b1@app-mail.useworkshop.com>
+Subject: Welcome to 2025: Elevating for scale
+X-Workshop-Company-Id: 8ec66bbd-5dc8-410b-90fe-cfc9c4d8605f
+X-Workshop-Recipient-Id: 8382e1f0-3330-45f1-8f55-4a53a9abf155
+X-Workshop-Safelist-Key: wrk.2022-05-06.041ce2a9f5f4cec1a289ca9829d0c630
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+Precedence: Bulk
+Reply-To: paul.smith@servicenow.com
+X-SG-EID: =?us-ascii?Q?u001=2E6ul7+ZWiH5HbHONueu9AYo7g=2F5RI3J0ipo6XQQQG=2FvonWhMoDgZEfcqSZ?=
+ =?us-ascii?Q?7Bk9eIr2QHPbHAYicduezjzT11C4hVMCpEuhwgW?=
+ =?us-ascii?Q?ncbLyvRRCdzSfdcYYLsxPpiZ313wdDR0=2FbfQCfY?=
+ =?us-ascii?Q?SvWSXyEWFCrY=2FzbBWqVoiTGyaqWQlY8+VFC6tWY?=
+ =?us-ascii?Q?0A0UpitqlpPDKXnZa=2Faesjl6Esliy+eQ3Yl5JU6?=
+ =?us-ascii?Q?3lAXUyS4rodTVTOeGitAExF7k7LzuCA2Q73K1O7?= =?us-ascii?Q?q8cI?=
+X-SG-ID: =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BpTL9BgbK5wfSJMJGMsmprBqkKB6kcgAhLHfR?=
+ =?us-ascii?Q?FI8Cjdpt=2F2qgUNWQAk33ajogQ02GpCY5bA9rpbr?=
+ =?us-ascii?Q?aibnRRFxBEQ7hIrs+SyUzOBDJTqeWuHBKEmIIJU?=
+ =?us-ascii?Q?WyZKnRG7FREEyBawpdYyqvXo80Y=2Fk9iviUoBnfj?=
+ =?us-ascii?Q?YDBrgmJMXAxvxoIDap50vnlWgyvESsYCccv2NaT?=
+ =?us-ascii?Q?4RT7A+mgZEAVduuVqZAOe8Iio1UX+666eVXUGL3?=
+ =?us-ascii?Q?ekFAN3ZO0w6MGDVE=2F7aezsgqZ4tGx5GYDxqlwYR?=
+ =?us-ascii?Q?EVL1VrxdEg4l10Gv1cTUlQMWtHWsbY8i6gQMCTO?=
+ =?us-ascii?Q?gL+9MvDFcrS38A9sje6YYPBNbXHh+OKeyQPAYDA?=
+ =?us-ascii?Q?LPGgQrVENgYlJurL8bjhVeErHyZ1ygp=2F2YO26yy?=
+ =?us-ascii?Q?DjTM+IZ9e5D9cBnilpuo5jXWJBc8bc9k1yC6ibR?= =?us-ascii?Q?J?=
+To: rob.spence@servicenow.com
+X-Entity-ID: u001.5upK2BKYwpCg/JZYYuooNw==
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: wEXcOz5HfOKjMKo_SML4XzlpZpNil20lVC0OllktcN8_1736352386
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Return-Path: bounces+22944788-7358-rob.spence=servicenow.com@workshop.servicenow.com
+X-MS-Exchange-Organization-ExpirationStartTime: 08 Jan 2025 16:06:36.2419
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: f7dcc00f-e099-4a77-ba18-08dd2ffe6d89
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000206:EE_|DM8PR08MB7302:EE_|DS7PR08MB10577:EE_
+X-MS-Exchange-Organization-AuthSource: SJ5PEPF00000206.namprd05.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: f7dcc00f-e099-4a77-ba18-08dd2ffe6d89
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-BypassClutter: true
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|69100299015|5073199012|29132699027|82310400026|8096899003|4076899003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(69100299015)(5073199012)(29132699027)(82310400026)(8096899003)(4076899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2025 16:06:35.9294
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7dcc00f-e099-4a77-ba18-08dd2ffe6d89
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF00000206.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR08MB7302
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:02.1396802
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8335.010
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RE9TK3NGQS91LzVLbUJpMFQvS3NINjZycVllUU1qaS85cU5xOUk4dGpzSktv?=
+ =?utf-8?B?bU5Gc0hOY3Ird0ptZk8xT2QrWHhzRWVGSFpjeFM2QmtMK3VlUXNmc1MvTVd1?=
+ =?utf-8?B?ZWdKSzlqcVAvNnRIdW1KUXJXcFIwZjdLNVdDWWF5UVE4MUx1VGxoVGZqU2NV?=
+ =?utf-8?B?RklZZitHMENTcHMrWkIyZjlTZjB2aUV0S1kzbEZZbW80UWpiVFZWQ1Z4bG9r?=
+ =?utf-8?B?c0VhdXRWdjYyVUpOZnZMNUdBMVlSQzYrNDVwN2h3SUpLVU1qdnZUYUkwWTl2?=
+ =?utf-8?B?YUM4enZlc01LTFdiQjVncFI4NHJCZ2ZudFh4bVB2UVIyMXRSYjdLekw0RlRG?=
+ =?utf-8?B?cE1HTFhoclNEUHFQQzVwRmJIbmFqdFhBR2J4bmEvRDJPRWdwM1JCZjE5Y1kw?=
+ =?utf-8?B?QjdvQ0tGaFlrdlVKeHM3VFNYakJwSnQ5dElaNWNDYjFOYktVSGtGczdHeDNw?=
+ =?utf-8?B?RklvUHVkbjhUOGxzd1VqZ1FaZGR3cVNMcTBsemQxY3hHQ0JmbUI0VDhLRlBI?=
+ =?utf-8?B?cSs1TU12OWVZSndEZEhmNjhlNDFpbGo1UURtdFFJZ1U3Y1BXNnZjSlZtZU5Q?=
+ =?utf-8?B?Y2E1SU42UFIyQzlaeWhsWkFvdHkwdlBHQk5IR2FDVW10eUNwZ1I2dVZHZG9Y?=
+ =?utf-8?B?cks3bWJHMlFnb1B6Z1p2NVlCaHhXNk12ZkZEMjFjOG9NeDFGWWI3dTVwOWNu?=
+ =?utf-8?B?c3doSEFDSGlvODVGUS9jRkJGRSs3bWZmZHFCOEtNWEJMVjhIR2o3c1lXSHI3?=
+ =?utf-8?B?OUN6K0FxcndGdDJ3eEdrZFpUYlYzUWhVVHBQOE1iTUhUY2FkVmcvbEV0aVFt?=
+ =?utf-8?B?ejBmYVZBMzlpcDZVcS9RZVlydnBzZkI4cjluNUNsR3V5OFVGbysyMW9uWkdk?=
+ =?utf-8?B?TURTWmVzeXNYWXdmV1NSOUNTMFZWckZTTlRmRkJJTmhSS1g1WGpvWFF0cVdi?=
+ =?utf-8?B?QUk0ajhTblRYcHpnWFdhSi9MSExmaElsRVRBM3UwRCsvcTlQSHVZQ0lHZjRJ?=
+ =?utf-8?B?akNiWlVVZno3R3pSbU9xY3N5dzM3dEY5K3pvME9OUGphOTByQ2wxaXRjbHI4?=
+ =?utf-8?B?NUFDUFpFYWJnTXp6bUdPeUZYdjlFNG0zK0Nha21iL0N1bUU4UzNpVFVDRWlk?=
+ =?utf-8?B?MWlCOTZ1b00zYnd4VTRlU2lId0hFcy8xSzFuRE1iY2RFMHVwQ0NxZWJCWTVS?=
+ =?utf-8?B?RGg0L3l1WmtNU2IxZDNBODREQTdBSnpQeFJIeGJ6dUplTE15T1VGbTMxcE82?=
+ =?utf-8?B?MTN4aGRaeTh2ZStBTndUTThSTDdJSHYxT3hMVmhncUlvQ3BFQnRYWjJTWWw0?=
+ =?utf-8?B?TVI2b1pOK1l3VGFXWThnQ3p1bERwK3NTUzVndGtVTHl4SkQ2VWhjVFpKQmM1?=
+ =?utf-8?B?U1VsUERDR3BLaWNQZmtNY1dJbVBOZ2haeEZDSFRJMnFTZ0dTeTRJNDFseFlj?=
+ =?utf-8?B?UWM2cFk5cyt1Q0IxbmJtQTEvT0g2L285U2ZqWEEwRERBRUVDL0FGcW93TGJp?=
+ =?utf-8?B?QW1oMlVIME5NYWErUk8yOWpPT2VJbnMrODkrdzAxNUpYVjdqRUw0bzc4RzBv?=
+ =?utf-8?B?bTRjVkpULzNWRVpnK0FVeXIrMk1sbHZTYUNMVFppckVOZWxnUVYrY2FGMjNj?=
+ =?utf-8?B?N3pxaXlQek9yWkJiQlJOZlJRSXNnUUtaYkpGd1A0WTFMUDFQek80SUJpa0dj?=
+ =?utf-8?B?NGtNNDFiK2QxK05nLzlvSEdXWjEyem9uN2N0bTR6YVE2bmQwUWpBQVJ1NWRr?=
+ =?utf-8?B?ZGlTL2IzeGJYMmNBTmpndXJMMU9hMW1sQzZhWkNpUC9aL3RJdWVCZFM4dXhs?=
+ =?utf-8?B?V2dQU0pHQVVRd2NyUSt3K3g5NXEzaDVsU1FlRzhQV0JCSndvK2tJendIMGdu?=
+ =?utf-8?B?NVIrdUEzUlZZOVo2cXJVRGVxaFA1OVFCaVdyaDVlMFdFRlE9PQ==?=
+MIME-Version: 1.0
+
+<!DOCTYPE html><html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"u=
+rn:schemas-microsoft-com:office:office" lang=3D"en"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><t=
+itle></title><meta name=3D"viewport" content=3D"width=3Ddevice-width,initia=
+l-scale=3D1"><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>9=
+6</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-=
+-><!--[if !mso]><!--><link href=3D"https://workshop-email-content.com/custo=
+m_font_stylesheets/7a32621a-c76f-4ce4-a358-350a64d927d5.css" rel=3D"stylesh=
+eet" type=3D"text/css"><!--<![endif]--><style>=0D
+*{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{c=
+olor:inherit!important;text-decoration:inherit!important}#MessageViewBody a=
+{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.de=
+sktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.im=
+age_block img+div{display:none}sub,sup{font-size:75%;line-height:0} @media =
+(max-width:720px){.mobile_hide{display:none}.row-content{width:100%!importa=
+nt}.stack .column{width:100%;display:block}.mobile_hide{min-height:0;max-he=
+ight:0;max-width:0;overflow:hidden;font-size:0}.desktop_hide,.desktop_hide =
+table{display:table!important;max-height:none!important}}=0D
+</style><!--[if mso ]><style>sup, sub { font-size: 100% !important; } sup {=
+ mso-text-raise:10% } sub { mso-text-raise:-10% }</style> <![endif]--><!--[=
+if true]><style>.forceBgColor{background-color: white !important}</style><!=
+[endif]--></head><body class=3D"body forceBgColor" style=3D"background-colo=
+r:transparent;margin:0;padding:0;-webkit-text-size-adjust:none;text-size-ad=
+just:none"><div style=3D"display: none">Team,=0D
+You crushed it yet again, truly demonstrating elite-level execution every s=
+tep of... =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD &nbsp;</div><table class=3D"nl-container" width=3D"100=
+%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" s=
+tyle=3D"mso-table-lspace:0;mso-table-rspace:0;background-color:transparent"=
+><tbody><tr><td><table class=3D"row row-1" align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" styl=
+e=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=3D"=
+row-content stack" align=3D"left" border=3D"0" cellpadding=3D"0" cellspacin=
+g=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:=
+0;color:#000;width:700px" width=3D"700"><tbody><tr><td class=3D"column colu=
+mn-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-we=
+ight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:=
+top;border-top:0;border-right:0;border-bottom:0;border-left:0"><table class=
+=3D"paragraph_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"10"=
+ cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-ta=
+ble-rspace:0;word-break:break-word"><tbody><tr><td class=3D"pad"><div style=
+=3D"color:#000;direction:ltr;font-family:'Century Gothic','Helvetica Neue',=
+Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;=
+line-height:120%;text-align:left;mso-line-height-alt:16.8px"><p style=3D"ma=
+rgin:0;margin-bottom:16px">Team,</p><p style=3D"margin:0;margin-bottom:16px=
+">=0D
+You crushed it yet again, truly demonstrating elite-level execution every s=
+tep of the way in 2024! I am grateful for the kind words Bill shared in his=
+ note, as it is a direct reflection of the work you all do every day. I=E2=
+=80=99m incredibly proud of this outstanding team and in awe of your unwave=
+ring dedication to our customers. THANK YOU!</p><p style=3D"margin:0;margin=
+-bottom:16px">=0D
+Bill challenged all of us on the P5 Team to focus on simplicity and scale a=
+s part of our fast start to 2025. When I think about the feedback you=E2=80=
+=99ve given me over the past year, it=E2=80=99s clear we need to simplify o=
+ur structure so every member of this team can be even more successful with =
+our customers and partners. As our company gets bigger, as this field organ=
+ization elevates, I want us to have a structure that removes friction from =
+our work. I want your daily experience to be simpler, with an operating mod=
+el that exists to help you focus on achieving great outcomes. Please consid=
+er the following changes in that spirit. &nbsp;=0D
+</p><p style=3D"margin:0;margin-bottom:16px"><strong>Worldwide Sales</stron=
+g></p><p style=3D"margin:0;margin-bottom:16px">We have a world-class sales =
+team focused on delivering NNACV every single quarter. I am naming <strong>=
+Paul Fipps </strong>as<strong> </strong><strong>EVP, Worldwide Sales</stron=
+g>,<strong> </strong>reporting to me, to ensure that every account team get=
+s every available resource to make us successful.</p><p style=3D"margin:0;m=
+argin-bottom:16px">=0D
+Paul will represent our Geo Presidents at the corporate level: <strong>Cath=
+y Mauzaize </strong>(EMEA)<strong>, Tom Hannigan </strong>(AMS),<strong> Ma=
+satoshi Suzuki </strong>(Japan),<strong> </strong>and <strong>Detlef Krause=
+ </strong>(APAC). They will serve as his worldwide sales leadership team.</=
+p><p style=3D"margin:0;margin-bottom:16px">=0D
+Let me be clear: every move we make is about empowering our Geos. For this =
+reason, decision making, and autonomy will increase within our Geos. Effect=
+ive immediately, the Solution Consulting teams will report directly to our =
+Geo Presidents, building on the move we made with the Specialist Sales team=
+s in the field last year.</p><p style=3D"margin:0;margin-bottom:16px">=0D
+Cathy, Tom, Suzuki-san, Detlef and our entire sales team are the custodians=
+ of our customer relationships. This team is the envy of the industry. Paul=
+=E2=80=99s mandate from me is simple: make this the best company in the ind=
+ustry for the best sales professionals to thrive. I know he will do an outs=
+tanding job.</p><p style=3D"margin:0;margin-bottom:16px"><strong>A GTM Mode=
+l Built for Scale</strong></p><p style=3D"margin:0;margin-bottom:16px">=0D
+We have many critical teams in this field organization. To scale faster and=
+ simplify how we go to market, we are creating ONE GTM team, bringing toget=
+her our Industry, Solutions, Mid-Market, Marquee, and Partner functions und=
+er the leadership of <strong>Erica Volini, </strong><strong>EVP, Worldwide =
+Industries, Partners &amp; Go to Market, </strong>reporting to me.<strong> =
+</strong>Under Erica=E2=80=99s leadership, I have every confidence that thi=
+s team will elevate how we function as an organization.</p><p style=3D"marg=
+in:0;margin-bottom:16px">Erica=E2=80=99s new leadership team includes <stro=
+ng>Holly Briedis</strong> (Global Industries), <strong>Matt Taylor</strong>=
+ (Global Solutions Sales &amp; Programs), <strong>Marcelo Giampietro</stron=
+g> (Digital GTM), <strong>Michael Park</strong> (AI GTM), <strong>Jeff Marg=
+olese</strong> (Global Solution Consulting), and a to be hired Global Partn=
+erships &amp; Channels leader and a Marquee leader.</p><p style=3D"margin:0=
+;margin-bottom:16px">=0D
+Additionally, Hyperscalers, Inspire Value, and Value Excellence will also r=
+eport into this team.</p><p style=3D"margin:0;margin-bottom:16px"><strong>T=
+hack Brown</strong> will report to Paul Fipps and work closely with his LT =
+as we transition into this new model. He will also be taking on additional =
+responsibilities to be announced in the coming weeks. I want to thank Thack=
+ for his support and leadership as we make these shifts.</p><p style=3D"mar=
+gin:0;margin-bottom:16px">=0D
+<strong>Doubling Down on Customer Excellence</strong></p><p style=3D"margin=
+:0;margin-bottom:16px">=0D
+As we scale, we must continue to prioritize customer adoption as much as NN=
+ACV. Customers that go live smoothly get to value faster, grow more quickly=
+, and propel us on our journey to $20B+. As we elevate our Customer Excelle=
+nce Group as a critical function within this company, I am very pleased to =
+announce that <strong>Simon Short</strong> will join my leadership team, re=
+porting to me. Let me be candid: we have so many talented colleagues who ar=
+e focused on customer success. They have been through many changes as the c=
+ompany has worked to find the right model for scale. Bill, the P5 and I are=
+ fully behind Simon to ensure that this team gets the stability and sponsor=
+ship it deserves. &nbsp;=0D
+</p><p style=3D"margin:0;margin-bottom:16px"><strong>Elite-Level Execution<=
+/strong>&nbsp;</p><p style=3D"margin:0;margin-bottom:16px">To ensure we rea=
+ch our goals, <strong>Robin Manherz</strong>, <strong>SVP, Global Operation=
+s &amp; Planning</strong> will continue to be fully focused on building the=
+ right systems and processes across our organization to drive elite-level e=
+xecution. Robin will continue to report to me.</p><p style=3D"margin:0;marg=
+in-bottom:16px">=0D
+<strong>Ulrik Nehammer, Chairman, International</strong> will also continue=
+ to report to me as he continues his invaluable work with our most critical=
+ customers and leans in with our Geo teams.</p><p style=3D"margin:0;margin-=
+bottom:16px">=0D
+Additionally, as we look at Bill=E2=80=99s aspirations for our brand and re=
+putation, there is no denying the positive impact ServiceNow.org has had on=
+ how we show up in the market. To further this halo effect, <strong>Vanessa=
+ Smith, President, ServiceNow.org</strong> will report directly to Nick Tzi=
+tzon. Our commitment to the mission of .org has never been stronger.</p><p =
+style=3D"margin:0;margin-bottom:16px">=0D
+Finally, I am very happy to share that <strong>Shakira Talbot </strong>is<s=
+trong> </strong>now <strong>GVP, Global Customer &amp; Field Operations. </=
+strong>She has and will continue to be my right hand in all that we do whil=
+e also being an incredible partner to my global leadership team.</p><p styl=
+e=3D"margin:0;margin-bottom:16px">=0D
+In summary, organization and leadership announcements should always be abou=
+t giving this team the support it needs to be successful. This is a very dy=
+namic moment in the industry. Our customers are being flooded with big prom=
+ises from so many others. They are counting on us to be the one they can tr=
+ust. We don=E2=80=99t have time for complexity. We need this field organiza=
+tion to be focused on bringing out the very best in all of us. I=E2=80=99m =
+confident this structure will serve that goal.</p><p style=3D"margin:0;marg=
+in-bottom:16px">As we head to SKO, NOW is our time to celebrate our achieve=
+ments and redouble our focus on the future. Let's make 2025 our best year e=
+ver. Thank you!</p><p style=3D"margin:0">Paul.&nbsp;</p></div></td></tr></t=
+body></table></td></tr></tbody></table></td></tr></tbody></table><table cla=
+ss=3D"row row-2" align=3D"center" width=3D"100%" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=
+=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presenta=
+tion" style=3D"mso-table-lspace:0;mso-table-rspace:0;color:#000;width:700px=
+" width=3D"700"><tbody><tr><td class=3D"column column-1" width=3D"100%" sty=
+le=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left=
+;padding-bottom:5px;padding-top:5px;vertical-align:top;border-top:0;border-=
+right:0;border-bottom:0;border-left:0"><table class=3D"text_block block-1" =
+width=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=3D"pr=
+esentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break=
+-word"><tbody><tr><td class=3D"pad"><div style=3D"font-family:sans-serif"><=
+div class=3D"" style=3D"font-size:12px;font-family:'Century Gothic','Helvet=
+ica Neue',Helvetica,Arial,sans-serif;mso-line-height-alt:14.399999999999999=
+px;color:#555;line-height:1.2"><p style=3D"margin:0;font-size:12px;mso-line=
+-height-alt:14.399999999999999px">&nbsp;</p></div></div></td></tr></tbody><=
+/table></td></tr></tbody></table></td></tr></tbody>=0D
+</table></td></tr></tbody></table><!-- End --><img src=3D"https://workshop-=
+email-tracking.com/anonymous/r/ef2fb397-3061-4700-b50b-35ba62211f0f.gif" wi=
+dth=3D"1" height=3D"1" border=3D"0" alt=3D"" style=3D"width:1px !important;=
+height:1px !important;border-width:0 !important;margin-top:0 !important;mar=
+gin-right:0 !important;margin-bottom:0 !important;margin-left:0 !important;=
+padding-top:0 !important;padding-right:0 !important;padding-bottom:0 !impor=
+tant;padding-left:0 !important;"></body></html>
+

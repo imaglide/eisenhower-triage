@@ -1,0 +1,564 @@
+Received: from BN0PR08MB7344.namprd08.prod.outlook.com (2603:10b6:408:169::16)
+ by IA1PR08MB10590.namprd08.prod.outlook.com with HTTPS; Mon, 16 Jun 2025
+ 22:10:21 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=BDQ5ug/8s3UGq2+ZHRNPL+QaXX54M5qJCklw4uL3KVeeN45M/UMt+TZc8qLiIxEyjrR8qb9pGsvJCJbpZ2GCQr1/X/wy0GNvOIGqPIWp3jXIC7dJ6EOWRUjTgV4VFYR+SfagAeCPrs5DY1n43wukZQ4xVS0NofnW/v1lq1pUul8h9znyIu5EtFhEhRPhNzqwjHmjiUmZA5uYlGq92ZzIrngRAzeyI6gW04tkgDLHTm8Fpp3rjhqKF7829IdSo7pWZYwiEF/B8fQb9dm9yQ1IlG2PRcb7s+vzmG9q1clnVC8lIgdMx/xi50uAJbSMtCmbbDAiEu5qq81MVdL5vgoi3g==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=83B5690Ddbqx++Bt8kcgAgcC8NqJY4nb5FQiM/DfKbQ=;
+ b=mJf1qYrkPav1f7rJX4ibGMy4ctgRhPdCETE1FZU/sokzo622hyECbZugMbEvnKKAc3i5FXfAtlhxry4XZ4Vq6we4J04yKV5gPtczowD7fx5plzvUSD6f/iTvdXqhUzl+5a4HlK8PwrzUgtNylhCcS0tQEObAPW7RpGax9CxGxS9okVrIHi/e2MFKbcXOb43cXsofxBOsp+4hHdx5LtX6YqYoYc5gK5KHv+Eb+2B5WHeh7JQgfoYV7P/k/rqfQwcDxvqux87Lt5RvUFHpOz7VSgQXY6FErTfeO8fz0oEPLWwpNCXmOtR5egM8bFKfDQ5yevy9ez/1JDa7+TG1xvAGvQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=fail (sender ip is
+ 170.10.128.131) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=us.mail.concursolutions.com; dmarc=fail (p=reject sp=reject
+ pct=100) action=oreject header.from=concursolutions.com; dkim=fail (body hash
+ did not verify) header.d=concursolutions.com; dkim=fail (body hash did not
+ verify) header.d=amazonses.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from CH0PR03CA0013.namprd03.prod.outlook.com (2603:10b6:610:b0::18)
+ by BN0PR08MB7344.namprd08.prod.outlook.com (2603:10b6:408:169::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.30; Mon, 16 Jun
+ 2025 22:10:18 +0000
+Received: from DS2PEPF00003444.namprd04.prod.outlook.com
+ (2603:10b6:610:b0:cafe::d3) by CH0PR03CA0013.outlook.office365.com
+ (2603:10b6:610:b0::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.22 via Frontend Transport; Mon,
+ 16 Jun 2025 22:10:18 +0000
+Authentication-Results: spf=fail (sender IP is 170.10.128.131)
+ smtp.mailfrom=us.mail.concursolutions.com; dkim=fail (body hash did not
+ verify) header.d=concursolutions.com;dkim=fail (body hash did not verify)
+ header.d=amazonses.com;dmarc=fail action=oreject
+ header.from=concursolutions.com;compauth=none reason=451
+Received-SPF: Fail (protection.outlook.com: domain of
+ us.mail.concursolutions.com does not designate 170.10.128.131 as permitted
+ sender) receiver=protection.outlook.com; client-ip=170.10.128.131;
+ helo=us-smtp-inbound-delivery-1.mimecast.com;
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ DS2PEPF00003444.mail.protection.outlook.com (10.167.17.71) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.15
+ via Frontend Transport; Mon, 16 Jun 2025 22:10:17 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1750111817;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 dkim-signature; bh=83B5690Ddbqx++Bt8kcgAgcC8NqJY4nb5FQiM/DfKbQ=;
+	b=sS9D1punC6ZXkBc1KLhLl2N+Xx2aJQLki8gz0SySWE97LzzXCB7ShsuSFqhuXriZJzSlpX
+	RmY6Bea1/xbb/xnWFtt7BCoAvETBH8qbqzHkHmvbZ5AGu17HFm6VW8kQgQJkdVBOUAMlsS
+	fSF1cRiTTNJjNicdjn5ccnbqpiuQdjvctENsihxRZ/kGSRY0S2WXnaQjui4s2ATW1GtB3f
+	llJwBhRW2rWgXUFxtgp9i/bZ/eYS9yfUbBjBabQ40qcW5Woqd2dbQ+2BdpNsgkXqXeIxjf
+	IPivKUTNqj77dy4F47PxOo6+Zfu3RQ5oWAbCu95tXNW8+JUJkRGJ95P2plmZkA==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1750111817; a=rsa-sha256;
+	cv=none;
+	b=Y1UsLAUt1IySNvB755v9DQpQ9LUq4l2qnmgc/w3Ho405o96cHlnHPcm9f2srn0R8NtDp5U
+	T7K2mdIsEc3WauTMuajbgPlK3rhPFCsmvR6hXA0eaiZQtjI875O32tqHzNNk6/7YaFtiOs
+	f3LdabIWFr5fxwWR5nZb8wiFB+lvYuWncdL83GdOy6MjLkq0UxpALx1toBqpwtdEpe1TAY
+	ZOP46r/+AmiuX1Y5b6JIBQ36xefnG9BGYbM0zkYdazPnqBmU7he6nS2xKs4P1udHxQ35Tx
+	rIb3/Hux4KkoyZzkSHrvGfTJL+9i8UPLmeNKqz6mJeqw1dYHHYALjQ9i/9glHA==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=concursolutions.com header.s=dxmaml5pgohn27v54r352qlwowbiziqh header.b=hAMPyrtu;
+	dkim=pass header.d=amazonses.com header.s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx header.b=innCN7AH;
+	dmarc=pass (policy=reject) header.from=concursolutions.com;
+	spf=pass (relay.mimecast.com: domain of 010101977acb0317-bf05cc99-a036-46a1-9b11-dc53d879d21e-000000@us.mail.concursolutions.com designates 54.240.61.21 as permitted sender) smtp.mailfrom=010101977acb0317-bf05cc99-a036-46a1-9b11-dc53d879d21e-000000@us.mail.concursolutions.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=concursolutions.com header.s=dxmaml5pgohn27v54r352qlwowbiziqh
+ header.b=hAMPyrtu;	dkim=pass header.d=amazonses.com
+ header.s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx header.b=innCN7AH;	dmarc=pass
+ (policy=reject) header.from=concursolutions.com;	spf=pass
+ (relay.mimecast.com: domain of
+ 010101977acb0317-bf05cc99-a036-46a1-9b11-dc53d879d21e-000000@us.mail.concursolutions.com
+ designates 54.240.61.21 as permitted sender)
+ smtp.mailfrom=010101977acb0317-bf05cc99-a036-46a1-9b11-dc53d879d21e-000000@us.mail.concursolutions.com
+Received: from a61-21.smtp-out.us-west-2.amazonses.com
+ (a61-21.smtp-out.us-west-2.amazonses.com [54.240.61.21]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-TO87iyxPNWWLcxrsc7X6Rg-2; Mon,
+ 16 Jun 2025 18:10:15 -0400
+X-MC-Unique: TO87iyxPNWWLcxrsc7X6Rg-2
+X-Mimecast-MFC-AGG-ID: TO87iyxPNWWLcxrsc7X6Rg_1750111802
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=dxmaml5pgohn27v54r352qlwowbiziqh; d=concursolutions.com;
+	t=1750111814;
+	h=Content-Type:From:To:Subject:Message-ID:Date:MIME-Version;
+	bh=4knnjGwvfjHdpPnqnp/E/fLdgMvSymEHvM3OsyF6kY0=;
+	b=hAMPyrtu3zg3Wm9kW0cWY4PPfnBmyg0AKh3ioAOIR0sSkuosf0odDklQ/mrH9uEr
+	djvboajMMp6LAe85B1WtG1kr1MdN7P+kJ7E3v0eepVTQG5bWncu2XWXllMHsJAi2UeM
+	j43tQKHDhprg0Bdwmtz/ROcn/6HOk/trxvcVKGhA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1750111814;
+	h=Content-Type:From:To:Subject:Message-ID:Date:MIME-Version:Feedback-ID;
+	bh=4knnjGwvfjHdpPnqnp/E/fLdgMvSymEHvM3OsyF6kY0=;
+	b=innCN7AHP35n2jXLpsRc1Aun2g0YsOjobKb74+RLPAXemvCkrZw+EUQTKQ13W7c2
+	ppaAcjumpXV73oO424EDQBJbyj2AOvdnpP8ADLZ8FAUYyuskYce2YX7dPc6WcwMLgyc
+	NFQLIZ4dYOhk2sPBjqQp1HYFBzAKP2L6XQweH3V8=
+X-Concur-Message-ID: 32cfea0a-cc11-488e-a2f4-22fb47a0f5d2
+From: "AutoNotification@concursolutions.com" <AutoNotification@concursolutions.com>
+To: rob.spence@servicenow.com
+Subject: Expense Report Status Change
+Message-ID: <010101977acb0317-bf05cc99-a036-46a1-9b11-dc53d879d21e-000000@us-west-2.amazonses.com>
+Date: Mon, 16 Jun 2025 22:10:14 +0000
+Feedback-ID: ::1.us-west-2.GzywmVI8kNM4uHWfLdXvwbyHjsRqc2FOo0MhwVF8nt0=:AmazonSES
+X-SES-Outgoing: 2025.06.16-54.240.61.21
+X-Mimecast-Spam-Score: -98
+X-Mimecast-MFC-PROC-ID: qGsL7CFuxjwEeqxN7uetiVeYcNzDOQ_chbluTsby6Wk_1750111802
+Content-Type: multipart/alternative;
+ boundary="----sinikael-?=_1-17501118143950.39278066256055566"
+Return-Path: 010101977acb0317-bf05cc99-a036-46a1-9b11-dc53d879d21e-000000@us.mail.concursolutions.com
+X-MS-Exchange-Organization-ExpirationStartTime: 16 Jun 2025 22:10:18.0114
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 249b1526-3bc6-4e13-bf3c-08ddad229401
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003444:EE_|BN0PR08MB7344:EE_|IA1PR08MB10590:EE_
+X-MS-Exchange-Organization-AuthSource: DS2PEPF00003444.namprd04.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 249b1526-3bc6-4e13-bf3c-08ddad229401
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:2;ARA:13230040|82310400026|12012899012|6062899009|5082899009|13012899012|13102899012|32142699015|4092899012|31092699021|3072899012|3092899012|69100299015|5062899012|2092899012|4076899003|8096899003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:SKN;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(82310400026)(12012899012)(6062899009)(5082899009)(13012899012)(13102899012)(32142699015)(4092899012)(31092699021)(3072899012)(3092899012)(69100299015)(5062899012)(2092899012)(4076899003)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2025 22:10:17.7974
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 249b1526-3bc6-4e13-bf3c-08ddad229401
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF00003444.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR08MB7344
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.5499006
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8835.025
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NkJ6SVNQbFdJK29nZHZIRFptdzdJM2orTGFtTm8xNGpwc1U4dnprQk5lWHk2?=
+ =?utf-8?B?eWZRMGkrZGd4cUE3L253SWlvbzV2QUJZY0haRHRoQWRWVEExc3B3NGsxRTht?=
+ =?utf-8?B?Yk01WlN6QXVvNk1Ed0F3WmxIaEJBU01qYnNoTEgyd2hmYkpTSXpkMHk0QnA4?=
+ =?utf-8?B?TmlyZ2N0SklmeW9McHhXVTA2WTNlU0h4L0s4K2ZMLzF4Yzg0SEpVWGpnazNT?=
+ =?utf-8?B?VjZTdVdCYW5BVnFxemsySWMxSVcvNXZUK092RnJBUEhvSTRld1JUenl4cUVx?=
+ =?utf-8?B?STllUlp1MHl4b0M3TklIL1JsL3p4VC9qTjBnK0hJQmVab0d5Sk5TdEloWjVu?=
+ =?utf-8?B?cXhEWU9HWkd5bjF0MmhCUVoweVNGOTlRU0puK2dVS2hCbW9KeUl4SlBrazgx?=
+ =?utf-8?B?ZDNHOElPNGR4TDR3ZDBNS2h5WXB0OEY2dWtRWjNiK0pFbjBlOVRVZytFR1hF?=
+ =?utf-8?B?SWcwVFFVQ2RlU0QzZUUrazRwV0psemFKUElxS0dmVEZRMUw5QnFRenFuZDBv?=
+ =?utf-8?B?WHZUeXYxVEZSVmNNT3ArWlErOG9zeUtrQnN6RVQ2RGI1cHp5cU5xWURlTktM?=
+ =?utf-8?B?WUUyazFRZ3FGSlU2aG50S2hIL3IrZkt1MTU0REh6M1laOXduRTVvSWJuenZG?=
+ =?utf-8?B?ZnFSaGZVV1lydG92WGZHeExCQm9FS0dBazVQRnJNcFBaK05GMWxRbnBkNyt5?=
+ =?utf-8?B?UzNZcm9JN3JLVWYvVlpNNkwyRUlpcy90RU1jaFBVdkJ3UXBGTkpQbStkVk9w?=
+ =?utf-8?B?SXpTKzMyTXpLdWdQdnA0RnZVYTM1R3V1aGxvVnpSSXI1NWR2SGJrSXhPU241?=
+ =?utf-8?B?N0taUk9pKzhNRTFPM1h1UVVCUVppSytIVE0wQXZqc3lsa2xtZ2VkNTByT2l2?=
+ =?utf-8?B?aXdzU1RLaTkvc0I4NmFKQmdEN285ZXhrT1V6RGJCUWpnKzB2cWxuTWVZOFBV?=
+ =?utf-8?B?dC96dTdUQSt4Nk5sMjgvRFZsc01kUmNXWjRFKzB0M2llbFo4WTQ1VGR4M2dP?=
+ =?utf-8?B?dE9wQWZFSExIZ2Ftd3g3QjBnMWNsejF4WW40TmJlanN2UmVBV2JRbHhta3cw?=
+ =?utf-8?B?YUk2TkFmaUNNa1I1STdMQVJnL2VMQTNha3dDbVN1dXc1ZTRFd1h5dXdML01Z?=
+ =?utf-8?B?dGJYakRHVVMzeEZlUnhISVlscXN5NDFKVWJ4OElYK3JrQ1NnMHNoVGUvTnNa?=
+ =?utf-8?B?TGtLNytuc1o1c3BQYlhHeUw5dWdIR25CWC92eEo1WDFkNXczbnBDUVlBNS8r?=
+ =?utf-8?B?cFFnSitacFZncFpyeFlkNHpYcUVRNDJvMTdCQmdyeURDUHUwTlpBT0JMMExN?=
+ =?utf-8?B?QlMxWlNaU1E0dWN2N2V6NEJIK2JKMkJXUWwrK3VaNkw0UjNzQ3oyVitXbDll?=
+ =?utf-8?B?Mmx5bE40R3dXQnpMS1FCNnI3K0dJM2diTXlKbUtTazZ1K2NnVzZPdzRXQk5t?=
+ =?utf-8?B?TFdUTWl5bXRzeGZ4TkMrOXIwOGNCNW5wSlFIbENhTTFuMTVBQVNGY0FUejJh?=
+ =?utf-8?B?SCswVmRYTXZkSkZsazVYMWd4ZWJHR1BGVEJFeTh4a3BCLzByMkNLclhSUm5D?=
+ =?utf-8?B?MkwxajFaUllNVlowbTc3cjJOTjUzSXBSZmlKTnVMVXFhNkdFMDkwTi9XYkxi?=
+ =?utf-8?B?dTNoVENCQ0toU2hJWmVyQmY0djgvS3Y4NHpLRXpPUE1lSkIrc1YyUHRUcytF?=
+ =?utf-8?B?TG84T3RVdkx5TDluVUdlMHhWRUxFUVBlQjZFcmdWMEQrcGFaQ3hLWTAyZzVi?=
+ =?utf-8?B?OHphNkxaM01kbkVuUkdqSHFucmlWSkxmZDZETW9IZUJjTlROMFl1c1B0VGFD?=
+ =?utf-8?B?RzZXSFd1TGNGdklFUllVbWlyTldvQ0tiMmE3Y1pac0RQR3NTS2puTVFNWXUw?=
+ =?utf-8?B?cGRvbmdUc3R3cnJYUXNtYjJaaFlwY0l3ZUcrZXgvVjlBWE41MDZ1WVdycnJn?=
+ =?utf-8?B?QlZNd2JUaDkrbExKUnBLUE5pMy8vb0o4NnN6RTdSVW9jRWhZb1FGblVGdVRw?=
+ =?utf-8?B?VEpZREhhRlUzdFMzeU01c2pyV3dxelhKaklVbStkK282b21HTXgvK0tHSzRI?=
+ =?utf-8?B?WS9MUm1FT3ZEY3E2V1pZYnU4Qk5XSmQrSVJVS3haT00xbTZHVnkwNmF3MlBw?=
+ =?utf-8?B?QnNDd2Q5YUVpems2TjdMeHgxTjU5eUsvVGVuV0tBc1FDWXdGV1JNSDJ6QlI0?=
+ =?utf-8?B?RUtFaHo5WnppZytwTytiem9odU84RUNTYlh0cFBzTHdpU3grU1RYNHNESldC?=
+ =?utf-8?B?OURESUFKZ0dvcFRZQ01zRnR1Wjd2WUZMMGJvUU43R1lLWWpwVVIyS3haUXFx?=
+ =?utf-8?B?QldjeFpNMzFveGY5MXRyeE52NFk2QkliZk54SmxhMEpuQndsUytRU25FZkJQ?=
+ =?utf-8?B?d2luYW1aQmc5d245UkRQOWVxc2hnZlhHVVNQcjl5cnc3OUhVRjN3MWptQmVR?=
+ =?utf-8?B?akd2WjkrQmFXMUQxeXlkY1IxK3hRSzE5T3lsaWdZSVpvMjZ3eFNtMWFVR2FG?=
+ =?utf-8?B?YXRaTy8xOVg1Q0cxKzVmVi9RenZ1dzhNRmRXZG5nTmZIcS9lUDJzWnRVS29R?=
+ =?utf-8?B?NWdMamhDdEZYZVovenRHM3dWQWI4VjY4bTFtMitlcmtETlNkcXQwdzdYMFUz?=
+ =?utf-8?B?UHhMQ3pWd3d6a3h4anBKVG1zM25IaVR0azU2bG5ybXN4OGRrenlsWFU0Mmty?=
+ =?utf-8?B?anJjOGIvUEUwVkltelpkUmJtNDgxaDVaY1VnZzJNSkFKTVZTcTI1SlR2U0NT?=
+ =?utf-8?B?d2pFU0pOMFJaVG9LcVhsYWdSTkRKV2N1bTVQR2ZCc01BUXFzT05mK25qaHg1?=
+ =?utf-8?B?WUtPR1RLR094L3JkVGxJeStBVWRhOFZOODV1SnJtY2NZVGVOYk0xNDUybHdW?=
+ =?utf-8?B?L3FjWmtSbXZ6OFFhWFZrU3ZEaWxxL3dYWVVmaTBUbmx6UVlsUVMxMmRlb0t3?=
+ =?utf-8?B?QldBL1IwdDlQM1NMZ3FFMFF1MEhmT2E4MG5SdURYZDcybXJHZjlxVXBqRE1y?=
+ =?utf-8?B?U2R6ejJGSnA3NlJCLytxcldEQSt1ZXRROTRtOVJyRWFrUDVGK0g2c0ZObkNh?=
+ =?utf-8?B?bTFvZUxWUjd4Z1RrVE1vZXJ0YkhSdXVtMkRrclBVUjh2N2RLWGVBbU1sZUNX?=
+ =?utf-8?Q?uVRGdZ6RA?=
+MIME-Version: 1.0
+
+------sinikael-?=_1-17501118143950.39278066256055566
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Your expense report listed below has changed status.
+       =20
+   =20
+   =20
+   =20
+        Changed By
+        =C2=A0
+        Concur System
+   =20
+   =20
+        Report Name
+        =C2=A0
+        Infosys Connect
+   =20
+   =20
+        Report Date
+        =C2=A0
+        05/29/2025
+   =20
+   =20
+        Submit Date
+        =C2=A0
+        06/16/2025
+   =20
+    =C2=A0
+   =20
+   =20
+       =20
+            Amount Approved
+       =20
+        =C2=A0
+       =20
+            866.13=C2=A0USD
+       =20
+   =20
+   =20
+    =C2=A0
+   =20
+        Approval Status Set To
+        =C2=A0
+        Approved
+   =20
+   =20
+        Payment Status Set To
+        =C2=A0
+        Extracted for Payment
+   =20
+   =20
+       =20
+   =20
+   =20
+       =20
+   =20
+View Report
+
+--
+
+------sinikael-?=_1-17501118143950.39278066256055566
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html><html style=3D"margin: 0; font-family: 'Helvetica Neue', Hel=
+vetica, Arial, sans-serif; font-size: 14px;"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><m=
+eta content=3D"width=3Ddevice-width" name=3D"viewport">
+ =20
+  <title></title>
+  <style media=3D"all" type=3D"text/css">
+@media only screen and (max-width: 640px) {
+  body {
+    padding: 0 !important;
+  }
+
+  h1,
+h2,
+h3,
+h4 {
+    font-weight: 800;
+    margin: 20px 0 5px !important;
+  }
+
+  h1 {
+    font-size: 22px !important;
+  }
+
+  h2 {
+    font-size: 18px !important;
+  }
+
+  h3 {
+    font-size: 16px !important;
+  }
+
+  .container {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .footer {
+    width: auto;
+  }
+
+  .content {
+    padding: 0 !important;
+  }
+
+  .content-wrap {
+    padding: 12px !important;
+  }
+
+  .invoice {
+    width: 100% !important;
+  }
+
+  .aa {
+    margin: auto !important;
+  }
+}
+</style>
+</head>
+<body itemscope=3D"" itemtype=3D"http://schema.org/EmailMessage" style=3D"m=
+argin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font=
+-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust:=
+ none; height: 100%; line-height: 1.6em; background-color: #f9f9f9; width: =
+100%;">
+  <table class=3D"body-wrap" style=3D"margin: 0; font-family: 'Helvetica Ne=
+ue', Helvetica, Arial, sans-serif; font-size: 14px; background-color: #f9f9=
+f9; width: 100%;" width=3D"100%" bgcolor=3D"#f9f9f9">
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+      <td class=3D"container" width=3D"600" style=3D"font-family: 'Helvetic=
+a Neue', Helvetica, Arial, sans-serif; font-size: 14px; vertical-align: top=
+; display: block; max-width: 640px; margin: 0 auto; clear: both;" valign=3D=
+"top">
+        <div class=3D"content" style=3D"font-family: 'Helvetica Neue', Helv=
+etica, Arial, sans-serif; font-size: 14px; max-width: 640px; margin: 0 auto=
+; display: block; padding: 20px;">
+          <table class=3D"brand" style=3D"margin: 0; font-family: 'Helvetic=
+a Neue', Helvetica, Arial, sans-serif; font-size: 14px; width: 100%; paddin=
+g: 0px 0px 20px 0px;" width=3D"100%">
+            <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetic=
+a, Arial, sans-serif; font-size: 14px;">
+              <td align=3D"left" style=3D"margin: 0; font-family: 'Helvetic=
+a Neue', Helvetica, Arial, sans-serif; font-size: 14px; width: 50%; vertica=
+l-align: middle;" width=3D"50%" valign=3D"middle">
+                  <img class=3D"logo" src=3D"https://image-tracking-service=
+.us-1.mimecastcybergraph.com/v1/image?imageData=3DzyDNQ3wTLbxO6K0AwSjBIdxxl=
+dpn2SWvWvSc%2BnYqQPAjHRrSEGI5OVAIF5RRatnbWweIALKPCtSVp9ggAGHCjTy2pt3YaiH%2F=
+v9agWo3KQi1DkZZuKjZEbJTIxyPoQKLY%2BTmu7tkjO9MJiReD2LdHXU0ZTsAXy14uKkjedncx4=
+ZY8OqM95LRqpraRKr89jqSOctcFjtta%2BGxGbVTcL8j0DnUTEVvR8PZEGd7GoXqGWrlB6IucFZ=
+FU8lZwzdEMe%2Bp9Jq%2BGQ2NyOhyIlTk1hSHogkY%2BnP3z4ruZpFwiy9gjU501oQmLHQq6yFy=
+SY4LVhiSH0O3uHFAcQPCDPEk%3D" alt=3D"SAP Concur Logo" height=3D"60" style=3D=
+"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; fo=
+nt-size: 14px; max-width: 100%; display: block;">
+              </td>
+              <td align=3D"right" style=3D"margin: 0; font-family: 'Helveti=
+ca Neue', Helvetica, Arial, sans-serif; font-size: 14px; width: 50%; vertic=
+al-align: middle;" width=3D"50%" valign=3D"middle">
+                  <img class=3D"logo" src=3D"https://image-tracking-service=
+.us-1.mimecastcybergraph.com/v1/image?imageData=3DTuJ%2FKNrRax7P9lKDfPCpatf=
+3a3XLcM46gn8zXXog7DDCtcuyQROfPt4fLDDd9wsAd9oDjHtPmeLHRiAv4RqZZmpBPQczgXSBEr=
+kWR2C5KKma4xHRFCXP4lTovJXL5DzoQ0%2BlCJt08%2Fjl2uNALSXVY6m2MdGr5OviCnz3W5nyY=
+Ok5fXniaBrK4SUO%2BUvA2%2B1FZC9W4UxYOeNaGFyDPmN0SbJug05denm%2F3ZkzrWYQUzOg8K=
+JLyYs2jW5nj9hE9h1rosbFfWqVzTfKumo80WgAX3ko5ipW6YwNcVX58Sl%2FFaoruebU7Ih%2FH=
+JHZRrN17XQ%3D" alt=3D"SAP Concur Logo" height=3D"55" style=3D"margin: 0; fo=
+nt-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px;=
+ max-width: 100%; display: block;">
+              </td>
+            </tr>
+          </table>
+<table cellpadding=3D"0" cellspacing=3D"0" class=3D"main" width=3D"100%" st=
+yle=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-ser=
+if; font-size: 14px; background-color: #fff; border: 1px solid #e9e9e9; bor=
+der-radius: 3px;" bgcolor=3D"#fff"><tr style=3D"margin: 0; font-family: 'He=
+lvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px;"><td class=3D=
+"alert alert-good" style=3D"margin: 0; font-family: 'Helvetica Neue', Helve=
+tica, Arial, sans-serif; font-size: 18px; color: #fff; font-weight: 500; pa=
+dding: 20px; text-align: center; border-radius: 3px 3px 0 0; display: flex;=
+ align-items: center; justify-content: center; vertical-align: middle; back=
+ground-color: #2379bf;" align=3D"center" valign=3D"middle" bgcolor=3D"#2379=
+bf">Expense Report Status Change</td></tr><tr style=3D"margin: 0; font-fami=
+ly: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px;"><td c=
+lass=3D"content-wrap" style=3D"margin: 0; font-family: 'Helvetica Neue', He=
+lvetica, Arial, sans-serif; font-size: 14px; vertical-align: top; padding: =
+20px;" valign=3D"top"><table id=3D"emailbody" style=3D"margin: 0; font-fami=
+ly: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; width:=
+ 100%;" cellpadding=3D"0" cellspacing=3D"0" summary=3D"configurable" width=
+=3D"100%">
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td class=3D"intro" colspan=3D"3" style=3D"margin: 0; font-family: =
+'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; vertical-a=
+lign: top;" valign=3D"top">
+            <h3 style=3D"font-family: 'Helvetica Neue', Helvetica, Arial, '=
+Lucida Grande', sans-serif; color: #000; margin: 20px 0 0; line-height: 1.2=
+em; font-weight: 400; font-size: 18px;">Your expense report listed below ha=
+s changed status.</h3>
+        </td>
+    </tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;"><td colspan=3D"3" style=3D"margin: 0; font-=
+family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; ve=
+rtical-align: top;" valign=3D"top"><hr style=3D"font-family: 'Helvetica Neu=
+e', Helvetica, Arial, sans-serif; font-size: 14px; margin: 10px 0; border: =
+0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px =
+solid rgba(255, 255, 255, 0.3); margin-bottom: 15px;"></td></tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top; width: 40%;" width=
+=3D"40%" valign=3D"top"><p class=3D"data" style=3D"margin: 0; font-family: =
+'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; margin-bot=
+tom: 10px; font-weight: normal;">Changed By</p></td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top">&nb=
+sp;</td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">Concur System</p></td>
+    </tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">Report Name</p></td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top">&nb=
+sp;</td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">Infosys Connect</p></td>
+    </tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">Report Date</p></td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top">&nb=
+sp;</td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">05/29/2025</p></td>
+    </tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">Submit Date</p></td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top">&nb=
+sp;</td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">06/16/2025</p></td>
+    </tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;"><td style=3D"margin: 0; font-family: 'Helve=
+tica Neue', Helvetica, Arial, sans-serif; font-size: 14px; vertical-align: =
+top;" valign=3D"top">&nbsp;</td></tr>
+   =20
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top">
+            <p class=3D"data" style=3D"margin: 0; font-family: 'Helvetica N=
+eue', Helvetica, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; f=
+ont-weight: normal;">Amount Approved</p>
+        </td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top">&nb=
+sp;</td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top">
+            <p class=3D"data" style=3D"margin: 0; font-family: 'Helvetica N=
+eue', Helvetica, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; f=
+ont-weight: normal;">866.13&nbsp;USD</p>
+        </td>
+    </tr>
+   =20
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;"><td colspan=3D"3" style=3D"margin: 0; font-=
+family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; ve=
+rtical-align: top;" valign=3D"top">&nbsp;</td></tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">Approval Status Set To</p></td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top">&nb=
+sp;</td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">Approved</p></td>
+    </tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">Payment Status Set To</p></td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top">&nb=
+sp;</td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"><p =
+class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; font-weight: nor=
+mal;">Extracted for Payment</p></td>
+    </tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td colspan=3D"3" style=3D"margin: 0; font-family: 'Helvetica Neue'=
+, Helvetica, Arial, sans-serif; font-size: 14px; vertical-align: top;" vali=
+gn=3D"top"><p class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Ne=
+ue', Helvetica, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; fo=
+nt-weight: normal;"></p></td>
+    </tr>
+    <tr style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+        <td colspan=3D"3" style=3D"margin: 0; font-family: 'Helvetica Neue'=
+, Helvetica, Arial, sans-serif; font-size: 14px; vertical-align: top;" vali=
+gn=3D"top"><p class=3D"data" style=3D"margin: 0; font-family: 'Helvetica Ne=
+ue', Helvetica, Arial, sans-serif; font-size: 14px; margin-bottom: 10px; fo=
+nt-weight: normal; font-style: italic;"></p></td>
+    </tr>
+</table><div class=3D"approvalLink" style=3D"margin: 0; font-family: 'Helve=
+tica Neue', Helvetica, Arial, sans-serif; font-size: 14px;"><br style=3D"ma=
+rgin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-=
+size: 14px;"><a style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetic=
+a, Arial, sans-serif; font-size: 14px; text-decoration: none; color: #FFF; =
+background-color: #2379bf; border: solid #2379bf; border-width: 10px 20px; =
+line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; d=
+isplay: inline-block; border-radius: 5px; text-transform: capitalize; margi=
+n-right: 16px;" href=3D"https://url.us.m.mimecastprotect.com/s/gT1oCyPvwkf6=
+L53GYiZfLhx-qqq?domain=3Dconcursolutions.com">View Report</a></div></td></t=
+r></table>
+
+          </div>
+        </td>
+        <td style=3D"margin: 0; font-family: 'Helvetica Neue', Helvetica, A=
+rial, sans-serif; font-size: 14px; vertical-align: top;" valign=3D"top"></t=
+d>
+      </tr>
+    </table>
+  </body>
+</html>
+
+------sinikael-?=_1-17501118143950.39278066256055566--

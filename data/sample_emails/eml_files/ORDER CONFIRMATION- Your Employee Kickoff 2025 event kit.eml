@@ -1,0 +1,455 @@
+Received: from BY1PR08MB10115.namprd08.prod.outlook.com
+ (2603:10b6:a03:5a8::21) by BN5PR08MB10586.namprd08.prod.outlook.com with
+ HTTPS; Fri, 20 Dec 2024 15:58:15 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=QMEu9WBFy0tlTfF09Sd4UkXbF+2URWdXvfxTkJqkVnrJPwXq/MbochXW9Kah6TyfnFbsXRARmv5QaUWIvvJgEdn0mw+xp8fQSXsHZy8kJQLrg9+nsLDbc8oHiAqzO6bDt0og3TXm2I8zr3VDVQU8h7D+RGuPwdET3pRHp+dPf2DTxO8Jzc3bbfcVeW9n/7r7/6dYK+rb2TKNvLBTfORlW8DvrO/OOBCRAw2Lvd2uuZcF77ZfRe2ZPnU5DMgCYWT4TAs/dxq8NNzRvn14IBU+BVXDCsruyEi3jQEcAh3M14olx9NZFSs1lkOA9A8N7gScL11407abj/JmOZoI7STM2Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bIoHB/3SRA+TLsvANzRKfVRZBSsSjJIELSe23D/yExo=;
+ b=emtSILRR/xqI0nHQipZ4w1pX1k3tTO9EKHeOOVVUQTIFgJcBmxFgo3uDnTeZeSjOuUhlUBVbEY1ZeKpZDRYDgSXbdDGIr4HfgvqYoIU2ssSbbpOsj8k71W9Qasfi1EToNN4yzrCBFWf4R16gxPLcBWoVGliCirUMU6YF9XgEdEUgnbyL/7JAXyLhbu3X+7psP/y2KRD8coVX+MGFR5A6oHEt+4JP3wAl2CiY1Y+0IG+sF2+OZmCTJR3xdCRll+p73XHdyTBWyG3TlgqSAcMjQeZXjIeR6Xomc9NM5Y6aToQTkqbPLiR+1SqoRwr6qhjDz7dE8h6FJhzhwjQ/9nMpTg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=softfail (sender ip
+ is 205.139.110.120) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=email01.cognitoforms.com; dmarc=fail (p=none sp=none pct=100)
+ action=none header.from=cognitoforms.com; dkim=fail (body hash did not
+ verify) header.d=mandrillapp.com; dkim=fail (body hash did not verify)
+ header.d=cognitoforms.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from CY8PR10CA0045.namprd10.prod.outlook.com (2603:10b6:930:4b::23)
+ by BY1PR08MB10115.namprd08.prod.outlook.com (2603:10b6:a03:5a8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.17; Fri, 20 Dec
+ 2024 15:58:12 +0000
+Received: from CY4PEPF0000EE3C.namprd03.prod.outlook.com
+ (2603:10b6:930:4b:cafe::ca) by CY8PR10CA0045.outlook.office365.com
+ (2603:10b6:930:4b::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.24 via Frontend Transport; Fri,
+ 20 Dec 2024 15:58:12 +0000
+Authentication-Results: spf=softfail (sender IP is 205.139.110.120)
+ smtp.mailfrom=email01.cognitoforms.com; dkim=fail (body hash did not verify)
+ header.d=mandrillapp.com;dkim=fail (body hash did not verify)
+ header.d=cognitoforms.com;dmarc=fail action=none
+ header.from=cognitoforms.com;compauth=none reason=405
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ email01.cognitoforms.com discourages use of 205.139.110.120 as permitted
+ sender)
+Received: from us-smtp-inbound-delivery-1.mimecast.com (205.139.110.120) by
+ CY4PEPF0000EE3C.mail.protection.outlook.com (10.167.242.13) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.15
+ via Frontend Transport; Fri, 20 Dec 2024 15:58:11 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1734710291;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:dkim-signature;
+	bh=bIoHB/3SRA+TLsvANzRKfVRZBSsSjJIELSe23D/yExo=;
+	b=NvvsBrXEOERfk5huX2H8w5gZqkqcIyYiXxHE3w4BoXsJsb2RwbTeYfLzTN7qMCBXYZDiS3
+	V0SzOKIbfTLWlPGnourPHwOXL1wQAA+M6Pa7UD5+qeVV7WWb/IHHtEx6S2OwzcjlFLM9ji
+	dGVBM05RQ0AziocO0+QZ1h3oM0f7GsBDNNLXRZrcmniXOyTm9C2JmmJweFx4zsdYApwb5p
+	o/mH82gM9mxZDKB3v1fnJF+0+T1IiTrc4XIqzM5hFCVWl+nvUYiFg6kAN/FAcd6H/sugK1
+	xaeqCimYmc64HrTFI+pNxEZSmGHCAYQi04zazOTtobRSt6DkjmbDzk0EG50JWA==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1734710291; a=rsa-sha256;
+	cv=none;
+	b=LgVe1QOyKea/jFnsYFcvOWhvAh3wg+yLkTVsGVPOGm8vDM8KXQMczrusGBlg40HEPDjW07
+	HWowvLdd9X41nzLTDqqqP3Ex3rQq14eySoMhFQE/Ax3TBifj5EaBgFew3rg+eJP51Ca+FV
+	zl1dIO37HF0VQQIAiDrQX0mpgxId4ACGEte44CeqRYx0oJucezDHOyYrp6KeBiXc0c/Pi7
+	lN3nqtOLThaHYSKmMh4kHgpCGNQMFXpwfPj5fHtszGeFTqPO1jQqGl0gPrins3bqpRmmgj
+	2cTyYbgid+eQCRZm8Qf1F/GJzgdlHDjUPE3Wjy42ScTM153JhawuzgRYlCpZbg==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=mandrillapp.com header.s=mte1 header.b=mZDEKZcW;
+	dkim=pass header.d=cognitoforms.com header.s=mte1 header.b="o/icl4OD";
+	dmarc=pass (policy=none) header.from=cognitoforms.com;
+	spf=pass (relay.mimecast.com: domain of bounce-md_30313695.6765940e.v1-38bc8d57fdf44627bfefe9378c374526@email01.cognitoforms.com designates 198.2.187.82 as permitted sender) smtp.mailfrom=bounce-md_30313695.6765940e.v1-38bc8d57fdf44627bfefe9378c374526@email01.cognitoforms.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=mandrillapp.com header.s=mte1 header.b=mZDEKZcW;	dkim=pass
+ header.d=cognitoforms.com header.s=mte1 header.b="o/icl4OD";	dmarc=pass
+ (policy=none) header.from=cognitoforms.com;	spf=pass (relay.mimecast.com:
+ domain of
+ bounce-md_30313695.6765940e.v1-38bc8d57fdf44627bfefe9378c374526@email01.cognitoforms.com
+ designates 198.2.187.82 as permitted sender)
+ smtp.mailfrom=bounce-md_30313695.6765940e.v1-38bc8d57fdf44627bfefe9378c374526@email01.cognitoforms.com
+Received: from smtp1.cognitoforms.com (smtp1.cognitoforms.com
+ [198.2.187.82]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-608-EeSwkpPZPeCOpLiKVGnyqA-1; Fri, 20 Dec 2024 10:58:07 -0500
+X-MC-Unique: EeSwkpPZPeCOpLiKVGnyqA-1
+X-Mimecast-MFC-AGG-ID: EeSwkpPZPeCOpLiKVGnyqA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+	s=mte1; t=1734710287; x=1734970787;
+	bh=IwAlp264IMs//enUHOSFUNwYxE6q+7fjdQ1XmSjB/Os=;
+	h=From:Subject:reply-to:To:Feedback-ID:Message-Id:Date:MIME-Version:
+	 Content-Type:CC:Date:Subject:From;
+	b=mZDEKZcW5O1alK1Q6GknUztzuP6vA4Ef0ysT5iSH81Bnc2EctMNGhrpuMgyF5fK0M
+	 OdKmcj4hxVDEDzOYCZJ2hdYQK9z8WiVXbsFRpeOgC6ZDHkXhpDxjjMjrzhC1BtW91K
+	 B0/7K5Q8bSvH2mG84iiSpH0llX4NMZl9y60SpnOPDb/W6B4PuUBvlK+Zwagm4EoSJC
+	 +lDNSlr+B7Hrzj8cNZrSrAJB88KxFpNGcPyhnSb2KI45chW7tnMkEMChV7LdZlMN7/
+	 Nk1NHB1izDPEV/0IE5I7R4JpcKUMJGEgVdprJ7aouDRW0sEeYXofUPiKFa+GaRm1rC
+	 KbRPiuHhbiKvA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cognitoforms.com;
+	s=mte1; t=1734710287; x=1734970787;
+	i=notifications@cognitoforms.com;
+	bh=IwAlp264IMs//enUHOSFUNwYxE6q+7fjdQ1XmSjB/Os=;
+	h=From:Subject:reply-to:To:Feedback-ID:Message-Id:Date:MIME-Version:
+	 Content-Type:CC:Date:Subject:From;
+	b=o/icl4OD6WBLUsIfkqH/ww7ydqhxbf6WyymJPYiIEIBk8O7j+aRTsxY+tar5026h+
+	 xQvdiLm+LcwKqJZ9MYHwRlt7Jasn4HRpO3KEoUyV4e8PGoPKiwGiR6uk7Ud7QyVhwk
+	 yFoxnH12EYcPUs3/zsF8xtQlYuTMDH+MgqJDfei1JRAy/OPaYrTqntjn9Xp8tjVb9J
+	 u1eI4MUgPWlli08ezUGtTQLOPi38tzocHJzt9DDJe2ZDMd7xNk1I5uGizZLNC/ARjO
+	 QABzvPkiKl/vKfKFk4CZhuLg44h3Gr0KO44wTbvQGTugHZmje93AnAN245xW+9N6Pc
+	 Pvc9lh77cNT+A==
+Received: from pmta09.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
+	by smtp1.cognitoforms.com (Mailchimp) with ESMTP id 4YFBsC0T0WzCf9KLw
+	for <rob.spence@servicenow.com>; Fri, 20 Dec 2024 15:58:07 +0000 (GMT)
+From: ServiceNowAMS <notifications@cognitoforms.com>
+Subject: =?utf-8?Q?ORDER=20CONFIRMATION:=20Your=20Employee=20Kickoff=202025=20event=20kit?=
+Received: from [4.156.104.40] by mandrillapp.com id 38bc8d57fdf44627bfefe9378c374526; Fri, 20 Dec 2024 15:58:06 +0000
+reply-to: servicenowams@brandito.net
+To: rob.spence@servicenow.com
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30313695.38bc8d57fdf44627bfefe9378c374526?=
+X-Mandrill-User: md_30313695
+Feedback-ID: 30313695:30313695.20241220:md
+Message-Id: <30313695.20241220155806.6765940ee54c46.83118912@smtp1.cognitoforms.com>
+Date: Fri, 20 Dec 2024 15:58:06 +0000
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: 2uqKDd5AhJfjdiOPEyVb5YeuOCDNeic4-KQYxr7x5bQ_1734710287
+X-Mimecast-Impersonation-Protect: Policy=Tag external email;Similar Internal Domain=false;Similar Monitored External Domain=false;Custom External Domain=false;Mimecast External Domain=false;Newly Observed Domain=false;Internal User Name=false;Custom Display Name List=false;Reply-to Address Mismatch=false;Targeted Threat Dictionary=false;Mimecast Threat Dictionary=false;Custom Threat Dictionary=false;External=true
+Content-Type: multipart/alternative; boundary="_av-yYuXpy9pZNJpl7n71M8Ahw"
+Return-Path: bounce-md_30313695.6765940e.v1-38bc8d57fdf44627bfefe9378c374526@email01.cognitoforms.com
+X-MS-Exchange-Organization-ExpirationStartTime: 20 Dec 2024 15:58:12.0403
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 26bb83f9-0c01-4778-6965-08dd210f1b29
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3C:EE_|BY1PR08MB10115:EE_|BN5PR08MB10586:EE_
+X-MS-Exchange-Organization-AuthSource: CY4PEPF0000EE3C.namprd03.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 26bb83f9-0c01-4778-6965-08dd210f1b29
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:2;ARA:13230040|82310400026|3092899012|2092899012|3072899012|4092899012|5062899012|13012899012|13102899012|12012899012|7053199007|8096899003;
+X-Forefront-Antispam-Report: CIP:205.139.110.120;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(82310400026)(3092899012)(2092899012)(3072899012)(4092899012)(5062899012)(13012899012)(13102899012)(12012899012)(7053199007)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2024 15:58:11.7903
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26bb83f9-0c01-4778-6965-08dd210f1b29
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3C.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR08MB10115
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.4541902
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8272.000
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ODMySjNwclJRUlVzdW5sT0hoSDRPOE9LMllYbmt1YVlhS1VFdi9FeXhkelg2?=
+ =?utf-8?B?UE1Kd1ZwUlB4dXpFY2QrRjBTcnRVV1pIbTloMlBQMTVKZURFc3JGUm1oUy9U?=
+ =?utf-8?B?WTVxZVZJVUJhclg2bFVyc01rRGVvZ0pMUnFJRVg0Rkw5UUJTYytueDJiZHFz?=
+ =?utf-8?B?TnlPWXh3QjIvSmlzWWhmVFZJRUMxUjQ2aWJEZlA5Y3dydlovbWlmdU95RDRI?=
+ =?utf-8?B?Zlk2MEZZZWRjRDhoNjh0dFlWbCsxcDZmRUxyN28vSmhhRm44djNaa1BmRk41?=
+ =?utf-8?B?bG9TMkZXWFhrc200VVJjdmR0NDB5SnpQK3pCV1Q5bFM3emp2VTNCTWJVQUFT?=
+ =?utf-8?B?Y1krNUM0elNJSzRBMzBMekZvbzlHYi9ERjlpTm9rdHBsdmJDeDRVN2FJLzFI?=
+ =?utf-8?B?djdKOWNtZkp1V29hejZyVCtFOWk0clBlaFhnWXZGMjQrdHBNMnRQam9vcDFR?=
+ =?utf-8?B?RERLcEUxa253cTl0M0JaVkZuT2FKd2JabUlybDRnZWVpQksxUlp0NTFnb0RY?=
+ =?utf-8?B?MlVBbDF5dzl1TnhuWEpKTGNwRjVoNWw0bHQ2RGFjdHIrdk9ZNGU1Y3hDY2Z2?=
+ =?utf-8?B?eGJDUmtnS2VKMCs0QXJPY0VqbGhlMDU4eXpmNEZyVGloK3llK1FlUFM5SGlR?=
+ =?utf-8?B?cDFKcVh5K1hHYTVPU1JoZ0FvZ1c4TVk5cVJyTEpyNkRGT3BmZUhZeVhib3VZ?=
+ =?utf-8?B?eTJGYUoxMFQ5dWFMbjN6MFc2Z0NLalJRWno0ZkQwUCtpelNuSm92MXd5SGph?=
+ =?utf-8?B?dXlicVRXd3JTRTVscWZsOWF2R0tTYlJYcUQwTFVxUWcrTDFKbVZSaDJPdGtR?=
+ =?utf-8?B?Uk13SGtJOG5TREZGeStob0U3Zm9wZ1U0ZllqT21qWXdlTzZ6dmdnNEZWREVt?=
+ =?utf-8?B?dk8weHVmZE0rdUlIeXIxQWJkdlkwN0Fzbm9YeExWRDdLaHlXS2d3T3BBRzdY?=
+ =?utf-8?B?WkFlK1AxODB5VkRvYnA3R2p4cHFScEZoY20rL1pDZHNacFFCT3JJaDQ4NUJM?=
+ =?utf-8?B?eWdXVVFmSHErSitKUWVmb1o3RWMxMUd3b2R2ZmNRQk11K1M4aENTcEk5eEVr?=
+ =?utf-8?B?UlNReWdpc0FhSTVEZCttc0wvbHZnVEJVSmMrdlhPQVFIWmtyeVlSTThZT3N0?=
+ =?utf-8?B?SmkzZ2g4NGhsUUJjVWpPZ1NJNU4xcktJUTdLSm5pYTczSGNFYzlJU2lqRFVm?=
+ =?utf-8?B?ZkZYUXhIbTdReElJRy9KdkpEYTRCeG9Nd1JsazZ1TjJrR3o2MUJoTlNzSjdR?=
+ =?utf-8?B?cERCenR1TldlT1VubjNOT2VpRTloRWZ0VjloelQzZHc5R1B5Y2twN3dwbElz?=
+ =?utf-8?B?MlpRSG9JSkpRSE5KYzlleFpCN1I1aG9EaHp2dUhoT253UzMrS3d6Sk9MdU5h?=
+ =?utf-8?B?N3huWGIvTUZmTXJPT25ta2xleU5FRFZ1dXVKZXd1MHhSZFR2M0FFVnFuMXpF?=
+ =?utf-8?B?RjF2Y1FvNm1JNmQwRTBTRGdOYXZzQWJQTXBPTHF1TG83eTJvNm83VVkweklP?=
+ =?utf-8?B?ZlBlQkZQYjZFWmZ3THpPbHFxWGloMVVFQVppYkloQUF5VUVmVkpmNlpJSUp3?=
+ =?utf-8?B?VkpvWlRHbngxR3R3OXZxN29yVXBYUHJBZXJmWXdlZXNSWE9TOHZmdEd4MzlG?=
+ =?utf-8?B?WER0bzFYWTJyblBFMWNFbTdBZHFzSWFuRjFqTHVCZzI5UG5TbG03MmU3U3NJ?=
+ =?utf-8?B?aFJUMzl6dXpmTms1SFpseG1hS29BSlNVcll0OXpOTFEyZXBxQWpSdUhLTW8x?=
+ =?utf-8?B?dUFsMEY3OFlWRytGUWgvU29GMWhPL2dIRk41cDBWM0N5K2JibnNQd0lORS9G?=
+ =?utf-8?B?OXU0TXBMVWlsWHV6TVVpMXJ5cU44ZUFGTC8reEFqbGdBcVhXNnUvMDFhMDBM?=
+ =?utf-8?B?eU5XN3hyTzV1S25LeUR2VWluSjhRTDNaWnh2ajN4UFVaL2puR1A5QnNaWFp3?=
+ =?utf-8?B?cHY5Vm43RXJ2UTgxTkFqbDZaVmMzZkVGcmpGZlZZM0liWkpadld0blBUQXlv?=
+ =?utf-8?B?SC80enlmZ3FVZWdmUVVBR0wwYktNdFhjRFZSR3FJRnRnMzN6YkxuL3RFcWRG?=
+ =?utf-8?B?ZTIwVG0zcDlvc1l3c0UxLzUxNElMaHJrN24vbUdLSGdlL2d0MHIrRGJRZ1F0?=
+ =?utf-8?B?Q3YxRFowVzdJdm5yb3NhZUdOaU5Sa1IyUFQzTEYxeDhxMzJ3MGpsZ3Q4eUli?=
+ =?utf-8?B?NFFEd2hpWVpZdkRuU2l2NURsQ1QwMUJWaDlZb296Z1JXVlJiRVpLTURnNFd1?=
+ =?utf-8?B?Mm5pc1RQR2lSdFBzaU44K1BPaHlSYStYbnA2RGhCWUlQZDRHK00wZjduTE93?=
+ =?utf-8?B?NWlwQVJNZzlXbjlhcnpVM3BDdEJRQTRjLzg0R24yQTVLWmJ0K0pGTERveXhr?=
+ =?utf-8?B?R3RnRmVTSEEzdlY0NHI3a1Rrc0tqU29hY0x4ZWtVZVFhSENzRUhvbXhKVHQy?=
+ =?utf-8?B?SGZ1YWptQzYrKzZYNjRabVVybXRZUVd0Y0JxYmlqeTZ2VTV6V0FJZ01uUTNy?=
+ =?utf-8?B?ZkNReVliUTc3V2NIUFBBaUw0YXljYk1ITTB5U1RESmR5UXRIeXJrTWowK1Z1?=
+ =?utf-8?B?b2lJZW1sekVURC9YWmM1Y3ZlRGF6QUk4ZzVpeVhKTWMrTkYvUW95Z1I5MDNX?=
+ =?utf-8?B?UElrdU84cDVENkhWMmpmRHZBdVVnZGY1V0dmSDNXRXczY2ZCdkdjZC9oSzZQ?=
+ =?utf-8?B?RU05K3NuNWxRWHBtcSszeGFFT3NhM1VUZ1daM0l4M0RDdzJQUnBMdEpNYVlp?=
+ =?utf-8?B?d25tZFFJQ25uRURyOEFDc2ZqWHk0Z2dmajlKMnV1TE1CMkpvaHB0YnI0azZP?=
+ =?utf-8?B?bzBUcEVSc25EckVjalFYeDBqaG9tL0t0TFFOZkZ1ckZJcTRSclNTQUR2V1RV?=
+ =?utf-8?B?ZmM0bkpYangxeFBIKzNTSmRwUlFscUZiUld6SUJFV25iRTB3ZTBpaWxyempm?=
+ =?utf-8?B?NzQyekpydSt0Ykg3Y1VCQis4RkViZ0c1clgyWENSTXByTGZTNFh0eklaMUpE?=
+ =?utf-8?B?VDF6S0V2eDhWUXRLVmJhUnU5eTBUbWtTR3VVK2h6MzE2Z3lEWTIzZU5CQmVI?=
+ =?utf-8?B?cEZwTDhRNDVJbWhqUk50dWFSNWF1bmpjbWlyWFhXUFdVNXFCWXVIVzhDNjFa?=
+ =?utf-8?B?ejluOGU5bnJSMWQzTG9ROTVXTHM5MktPam1Obk1zNEFKOStRWU9SK054MkVB?=
+ =?utf-8?B?RlNPVm5wQnlhdEdqVEgyelRSR3d1bW5nczlpUjJ3NzJ6dU5weGs0bFBhamJH?=
+ =?utf-8?B?d2VUL0J3aHBmMnVJQ1VwZTdXS3pZd1k2ZldrMVRzMWE1aXcveTlPRjRLSjk4?=
+ =?utf-8?B?ZnJabFJncW1HNHlCbHVQYVRlQ2lWU2VDc3o2SGZkTGtxMWk3NTlBWEs0U0d3?=
+ =?utf-8?Q?=3D?=
+MIME-Version: 1.0
+
+--_av-yYuXpy9pZNJpl7n71M8Ahw
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+[External Email]
+
+         =3D=3D Thank you for ordering your Employee Kickoff kit! =3D=3D
+
+=C2=A0
+
+*Shipping details*
+
+ - Orders placed before January 1 will arrive ahead of Employee Kickoff. If
+you place your order to be picked up in a viewing room =E2=80=93 don=E2=80=
+=99t forget
+it! Kits will not be held after the live event. Kits are limited to one per
+person.
+ - For any orders placed after January 1, please be patient with shipping
+delays due to the holiday season.
+
+*Please note:=C2=A0*Your order will not be available for review on your Com=
+pany
+Store account, as it has been placed directly with our regional suppliers.
+If you have any questions, please reach out to=C2=A0servicenowams@brandito.=
+net.
+
+*Can=E2=80=99t wait for the big day? *In the meantime, check out our=C2=A0*=
+2025
+strategy microsite* <https://surf.service-now.com/ourstrategy>=C2=A0to lear=
+n
+more about our purpose and values, companywide priorities, and what=E2=80=
+=99s
+coming to YOU at Employee Kickoff 2025.
+
+=3D=3D Entry Details =3D=3D
+
+Your ServiceNow email addressrob.spence@servicenow.comNameRobert
+SpenceT-shirt sizeMDeliveryHome addressAddress16 Dorset Road, Pawtucket, RI
+02860, United StatesPhone7814248429
+
+--_av-yYuXpy9pZNJpl7n71M8Ahw
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'><html xmlns=3D"http://www.w3.=
+org/1999/xhtml"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.=
+0">
+<meta name=3D"x-apple-disable-message-reformatting">
+<!--[if !mso]><!-->
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+<!--<![endif]-->
+<!--[if mso]>
+<style>
+	li p {
+		margin: 0 !important;
+	}
+</style>
+<![endif]--><style>#outlook a{padding:0}.ReadMsgBody{width:100%}.ExternalCl=
+ass{width:100%}.ExternalClass,.ExternalClass p,.ExternalClass span,.Externa=
+lClass font,.ExternalClass td,.ExternalClass div{line-height:100%}body,tabl=
+e,td,p,a,li,blockquote{-webkit-text-size-adjust:100%;-ms-text-size-adjust:1=
+00%}table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}*,body,li{margin:0;p=
+adding:0}table{border-collapse:collapse !important}body,#bodyTable,#bodyCel=
+l{height:100% !important;margin:0;padding:0;width:100% !important}#bodyCell=
+{padding:20px}body,#bodyTable{background-color:#fff}h2{color:#404040 !impor=
+tant;display:block;font-family:Arial,Helvetica,sans-serif;font-size:18px;fo=
+nt-style:normal;font-weight:bold;line-height:100%;letter-spacing:normal;tex=
+t-align:left}#header{text-align:center;border-bottom:2px solid #ddd}#logo{m=
+ax-width:150px;margin-top:15px}.bodyContent th,.bodyContent td{font-size:13=
+px;font-family:Arial,Helvetica,sans-serif;line-height:125%}#pseudo-body{fon=
+t-family:Helvetica,Arial,sans-serif;color:#333;font-size:16px}.bodyContent{=
+font-family:Arial,Helvetica,sans-serif;font-size:14px;text-align:left}.body=
+Content a:link,.bodyContent a:visited,.bodyContent a .yshortcuts{color:#eb4=
+102;font-weight:normal;text-decoration:underline}.header-2{font-size:1.5em;=
+padding-left:5px;margin-top:10px;margin-bottom:10px}.header-3{margin:0;colo=
+r:#333;font-size:1.3em}.small{font-size:.75em;color:#777;line-height:1.4;fo=
+nt-family:Helvetica,Arial,sans-serif}.label{font-size:.8em;font-weight:bold=
+;text-transform:uppercase}.wrapper{margin-top:20px;margin-bottom:30px}.vert=
+ical-spacing{padding-bottom:20px}h1{font-size:1.8em}h2{font-size:1.4em}h3{f=
+ont-size:1em}h4{font-size:.9em}h5{font-size:.8em}h6{font-size:.7em}h1,h2,h3=
+,h4,h5,h6{margin:0;font-family:Helvetica,Arial,sans-serif;color:#333;font-w=
+eight:bold}p{font-family:Helvetica,Arial,sans-serif;color:#333;line-height:=
+1.4}a{color:#d85427;text-decoration:underline 1px #d85427;text-underline-of=
+fset:1px}.cognito-content{font-family:Helvetica,Arial,sans-serif;font-size:=
+14px;text-align:left;color:#333}.cognito-content p,.cognito-content ul,.cog=
+nito-content ol,.cognito-content hr,.cognito-content img,.cognito-content p=
+re{margin-top:1em;margin-bottom:1em}.cognito-content>*:first-child{margin-t=
+op:0}.cognito-content p:empty,.cognito-content li p,.cognito-content li+ul,=
+.cognito-content li+ol,.cognito-content li>ol,.cognito-content li>ul{margin=
+-top:0;margin-bottom:0}.cognito-content ul,.cognito-content ol{padding-left=
+:1.5em;margin-left:0}.cognito-content ul{list-style-type:disc}.cognito-cont=
+ent li+ul,.cognito-content li ul{list-style-type:circle}.cognito-content li=
+ *+p,.cognito-content li p+p{margin-top:1em}.cognito-content h1,.cognito-co=
+ntent h2,.cognito-content h3,.cognito-content h4,.cognito-content h5,.cogni=
+to-content h6{margin-top:.7em;margin-bottom:.7em}#templateFooter{background=
+-color:#fff;border-top:1px solid #fff;border-bottom:2px solid #ddd}.footerC=
+ontent{color:gray;font-family:Arial,Helvetica,sans-serif;font-size:10px;lin=
+e-height:150%;background-color:#fff;text-align:left}.footerContent .footerC=
+ontent a:link,.footerContent .footerContent a:visited,.footerContent .foote=
+rContent a .yshortcuts,.footerContent .footerContent a span{color:#606060;f=
+ont-weight:normal;text-decoration:underline}.real-table-container{backgroun=
+d:#fff;border-right:2px solid #ddd;border-bottom:2px solid #ddd}.real-table=
+-container thead{background-color:#333;color:#fff;text-align:left}.real-tab=
+le-container td,.real-table-container th{padding-top:8px;padding-bottom:8px=
+;font-family:Helvetica,Arial,sans-serif}th{font-size:11px;text-align:left;t=
+ext-transform:uppercase;color:#777}thead th{font-size:1em;color:#fff}td{pad=
+ding:1px}table.cellpadding-0 td{padding:0px}table.cellpadding-4 td{padding:=
+4px}table.cellpadding-5 td{padding:5px}table.cellpadding-8 td{padding:8px}t=
+able.cellpadding-12 td{padding:12px}table.cellpadding-20 td{padding:20px}ta=
+ble[cellspacing=3D"0"]{border-spacing:0;border-collapse:collapse}td.price,t=
+head .price{text-align:center;padding:0}td.group{font-size:.75em;font-style=
+:italic;font-weight:bold;border-bottom:none;border-top:2px solid #ddd;color=
+:#888;padding-bottom:0;padding-left:0;padding-top:15px}.variant{font-style:=
+italic}.total{background-color:#f6f6f6;font-weight:bold}.grand-total{backgr=
+ound-color:#ddd;font-size:1.5em}@media only screen and (max-width: 600px){i=
+mg{height:auto !important;max-width:600px !important;width:100% !important}=
+}@media only screen and (max-width: 480px){body,table,td,p,a,li,blockquote{=
+-webkit-text-size-adjust:none !important}body{width:100% !important;min-wid=
+th:100% !important}#bodyCell{padding:10px !important}}</style></head><body =
+leftmargin=3D"0" marginwidth=3D"0" topmargin=3D"0" marginheight=3D"0" offse=
+t=3D"0" style=3D"-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;=
+margin: 0;padding: 0;background-color: #fff;width: 100% !important;min-widt=
+h: 100% !important;height: 100% !important;"><div class=3D"mc-ip-hide" styl=
+e=3D"display:block !important; height:auto !important; background:#FFFFFF !=
+important; opacity: 1 !important; visibility:visible !important; color: #00=
+0000 !important; font-size: 12px !important; font-family:Helvetica, Arial, =
+sans-serif !important; text-align: left !important"><strong style=3D"displa=
+y:block !important; height:auto !important; background:#FFFFFF !important; =
+opacity: 1 !important; visibility:visible !important; color: #000000 !impor=
+tant; font-size: 12px !important; font-family:Helvetica, Arial, sans-serif =
+!important; text-align: left !important"><h3><strong><span style=3D"backgro=
+und-color:yellow;">[External Email]</span></strong></h3></strong><br><hr></=
+div><table width=3D"100%" id=3D"pseudo-body" style=3D"-webkit-text-size-adj=
+ust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0pt;mso-table-rspace=
+: 0pt;font-family: helvetica, arial, sans-serif;color: #333333;font-size: 1=
+6px;border-collapse: collapse !important;"><tr><td bgcolor=3D"#eeeeee" alig=
+n=3D"center" style=3D"-webkit-text-size-adjust: 100%;-ms-text-size-adjust: =
+100%;mso-table-lspace: 0pt;mso-table-rspace: 0pt;"><table width=3D"100%" id=
+=3D"header" style=3D"-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 1=
+00%;mso-table-lspace: 0pt;mso-table-rspace: 0pt;border-bottom: 2px solid #d=
+ddddd;border-collapse: collapse !important;"><tr><td bgcolor=3D"#ffffff" al=
+ign=3D"center" width=3D"100%" style=3D"-webkit-text-size-adjust: 100%;-ms-t=
+ext-size-adjust: 100%;mso-table-lspace: 0pt;mso-table-rspace: 0pt; padding:=
+ 20px; line-height: 1.3; text-align: center;"><table width=3D"100%" style=
+=3D"-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lsp=
+ace: 0pt;mso-table-rspace: 0pt;border-collapse: collapse !important;"><tr><=
+td align=3D"center" style=3D"-webkit-text-size-adjust: 100%;-ms-text-size-a=
+djust: 100%;mso-table-lspace: 0pt;mso-table-rspace: 0pt; line-height: 1.3;"=
+><div style=3D"max-width:600px;margin:0 auto;"><!--[if (gte mso 9)|(IE)]><t=
+able width=3D"600" align=3D"center" style=3D"width:600px"><tr><td align=3D"=
+center"><![endif]--><table width=3D"100%" class=3D"cognito-content" align=
+=3D"center" style=3D"color: rgb(51, 51, 51); font-family: helvetica, arial,=
+ sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; li=
+ne-height: 1.3; margin-left: auto; margin-right: auto;"><tr><td style=3D"te=
+xt-align: left;"><h2>Thank you for ordering your Employee Kickoff kit!</h2>=
+<p>&nbsp;</p><p><strong>Shipping details</strong></p><ul><li>Orders placed =
+before January 1 will arrive ahead of Employee Kickoff. If you place your o=
+rder to be picked up in a viewing room =E2=80=93 don=E2=80=99t forget it! K=
+its will not be held after the live event. Kits are limited to one per pers=
+on.</li><li><p>For any orders placed after January 1, please be patient wit=
+h shipping delays due to the holiday season.</p></li></ul><p><strong>Please=
+ note:&nbsp;</strong>Your order will not be available for review on your Co=
+mpany Store account, as it has been placed directly with our regional suppl=
+iers. If you have any questions, please reach out to&nbsp;servicenowams@bra=
+ndito.net.</p><p><strong>Can=E2=80=99t wait for the big day? </strong>In th=
+e meantime, check out our&nbsp;<a href=3D"https://surf.service-now.com/ours=
+trategy" target=3D"_blank" rel=3D"noopener noreferrer nofollow"><strong>202=
+5 strategy microsite</strong></a>&nbsp;to learn more about our purpose and =
+values, companywide priorities, and what=E2=80=99s coming to YOU at Employe=
+e Kickoff 2025.</p></td></tr></table><!--[if (gte mso 9)|(IE)]></td></tr></=
+table><![endif]--></div></td></tr></table></td></tr></table><table bgcolor=
+=3D"#eeeeee" cellpadding=3D"5" class=3D"cellpadding-5" width=3D"100%" style=
+=3D"-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lsp=
+ace: 0pt;mso-table-rspace: 0pt;border-collapse: collapse !important;"><tr><=
+td align=3D"center" style=3D"line-height: 1.3; -webkit-text-size-adjust: 10=
+0%;-ms-text-size-adjust: 100%;mso-table-lspace: 0pt;mso-table-rspace: 0pt;"=
+><div style=3D"max-width:600px;margin:0 auto;"><!--[if (gte mso 9)|(IE)]><t=
+able width=3D"600" align=3D"center" style=3D"width:600px"><tr><td><![endif]=
+--><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" c=
+lass=3D"wrapper cellpadding-0" style=3D"-webkit-text-size-adjust: 100%;-ms-=
+text-size-adjust: 100%;mso-table-lspace: 0pt;mso-table-rspace: 0pt;margin-t=
+op: 20px;margin-bottom:0;border-collapse: collapse !important;"><tr><td val=
+ign=3D"top" style=3D"-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 1=
+00%;mso-table-lspace: 0pt;mso-table-rspace: 0pt;"><table width=3D"100%"><tr=
+><td style=3D"padding-bottom: 20px;"><h2 class=3D"header-2" style=3D"color:=
+ #333333;display: block;font-family: helvetica, arial, sans-serif;font-size=
+: 1.7em;font-style: normal;font-weight: bold;line-height: 100%;letter-spaci=
+ng: normal;text-align: left;margin-bottom: 0;">Entry Details</h2></td></tr>=
+</table><table width=3D"100%" cellpadding=3D"12" class=3D"wrapper cellpaddi=
+ng-12" style=3D"-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;m=
+so-table-lspace: 0pt;mso-table-rspace: 0pt;border-collapse: collapse !impor=
+tant;"><tr><td class=3D"real-table-container" style=3D"-webkit-text-size-ad=
+just: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0pt;mso-table-rspac=
+e: 0pt;background: white;border-right: 2px solid #dddddd;border-bottom: 2px=
+ solid #dddddd;margin-left: 10px;"><table width=3D"100%" cellspacing=3D"0" =
+cellpadding=3D"4" class=3D"cellpadding-4" style=3D"-webkit-text-size-adjust=
+: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0pt;mso-table-rspace: 0=
+pt;border-collapse: collapse !important;"><tr><th valign=3D"top" style=3D"w=
+idth: 40%; font-size: 12px;text-align: left;text-transform: uppercase;color=
+: #777777;padding-top: 15px;padding-bottom: 15px;border-bottom: 1px solid #=
+eeeeee;font-family: Helvetica, Arial, sans-serif;">Your ServiceNow email ad=
+dress</th><td valign=3D"top" style=3D"-webkit-text-size-adjust: 100%;-ms-te=
+xt-size-adjust: 100%;mso-table-lspace: 0pt;mso-table-rspace: 0pt;text-align=
+:left;padding-top: 15px;padding-bottom: 15px;border-bottom: 1px solid #eeee=
+ee;font-family: Helvetica, Arial, sans-serif;">rob.spence@servicenow.com</t=
+d></tr><tr><th valign=3D"top" style=3D"width: 40%; font-size: 12px;text-ali=
+gn: left;text-transform: uppercase;color: #777777;padding-top: 15px;padding=
+-bottom: 15px;border-bottom: 1px solid #eeeeee;font-family: Helvetica, Aria=
+l, sans-serif;">Name</th><td valign=3D"top" style=3D"-webkit-text-size-adju=
+st: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0pt;mso-table-rspace:=
+ 0pt;text-align:left;padding-top: 15px;padding-bottom: 15px;border-bottom: =
+1px solid #eeeeee;font-family: Helvetica, Arial, sans-serif;">Robert Spence=
+</td></tr><tr><th valign=3D"top" style=3D"width: 40%; font-size: 12px;text-=
+align: left;text-transform: uppercase;color: #777777;padding-top: 15px;padd=
+ing-bottom: 15px;border-bottom: 1px solid #eeeeee;font-family: Helvetica, A=
+rial, sans-serif;">T-shirt size</th><td valign=3D"top" style=3D"-webkit-tex=
+t-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0pt;mso-ta=
+ble-rspace: 0pt;text-align:left;padding-top: 15px;padding-bottom: 15px;bord=
+er-bottom: 1px solid #eeeeee;font-family: Helvetica, Arial, sans-serif;">M<=
+/td></tr><tr><th valign=3D"top" style=3D"width: 40%; font-size: 12px;text-a=
+lign: left;text-transform: uppercase;color: #777777;padding-top: 15px;paddi=
+ng-bottom: 15px;border-bottom: 1px solid #eeeeee;font-family: Helvetica, Ar=
+ial, sans-serif;">Delivery</th><td valign=3D"top" style=3D"-webkit-text-siz=
+e-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0pt;mso-table-r=
+space: 0pt;text-align:left;padding-top: 15px;padding-bottom: 15px;border-bo=
+ttom: 1px solid #eeeeee;font-family: Helvetica, Arial, sans-serif;">Home ad=
+dress</td></tr><tr><th valign=3D"top" style=3D"width: 40%; font-size: 12px;=
+text-align: left;text-transform: uppercase;color: #777777;padding-top: 15px=
+;padding-bottom: 15px;border-bottom: 1px solid #eeeeee;font-family: Helveti=
+ca, Arial, sans-serif;">Address</th><td valign=3D"top" style=3D"-webkit-tex=
+t-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0pt;mso-ta=
+ble-rspace: 0pt;text-align:left;padding-top: 15px;padding-bottom: 15px;bord=
+er-bottom: 1px solid #eeeeee;font-family: Helvetica, Arial, sans-serif;">16=
+ Dorset Road, Pawtucket, RI 02860, United States</td></tr><tr><th valign=3D=
+"top" style=3D"width: 40%; font-size: 12px;text-align: left;text-transform:=
+ uppercase;color: #777777;padding-top: 15px;padding-bottom: 15px;border-bot=
+tom: 1px solid #eeeeee;font-family: Helvetica, Arial, sans-serif;">Phone</t=
+h><td valign=3D"top" style=3D"-webkit-text-size-adjust: 100%;-ms-text-size-=
+adjust: 100%;mso-table-lspace: 0pt;mso-table-rspace: 0pt;text-align:left;pa=
+dding-top: 15px;padding-bottom: 15px;border-bottom: 1px solid #eeeeee;font-=
+family: Helvetica, Arial, sans-serif;">7814248429</td></tr></table></table>=
+</td></tr></table></td></tr></table><!--[if (gte mso 9)|(IE)]></td></tr></t=
+able><![endif]--></div></td></tr></table></body></html>
+
+--_av-yYuXpy9pZNJpl7n71M8Ahw--

@@ -1,0 +1,1965 @@
+Received: from SA6PR08MB9796.namprd08.prod.outlook.com (2603:10b6:806:422::17)
+ by DS7PR08MB10577.namprd08.prod.outlook.com with HTTPS; Thu, 9 Jan 2025
+ 20:23:29 +0000
+ARC-Seal: i=4; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=fail;
+ b=IC52stScs6IAThrxnQkhMYweDqwy7yDrUcD8WFeTY9gfPDbXFkcD4kVvkrGp82vvdwF30yCcMYqFSBORafo/+64OpgzDN7ALCgcWI2xFP9YyHKzTWgSsXoOrav/mvRn5IH8jcWrUi5Bkp0aOeoGtdGLw10AaMTfx9oIo7wK1uIT2H9RRkdyVxN4y1YeL2QnMWEBLnNFr9FcTKWRN/3IGPo30h3p/v6IT3EHCsWxUUB+tN4uA8Jyjhv+u+YXC6Jd2cmvjW1wCTMg1GOJx77rRTf2D9MvajfNH4fPRnfgxV9qIHz+c8w0mz4cpV4WSnHHlHtaku9X9DuBeudFj8nfBVw==
+ARC-Message-Signature: i=4; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FWwHiM19mLis0vSxm9H+0qyQMgoQIvRrnyz73ehXpNU=;
+ b=En+bls6vy9SFzgcO2FLGVpEJ6oXG/DUyDjOv+q0ZADQ8PEwvaHHUc4K3OM6RIxtWqmuXHW+pp/PV8cvdfSGH9kduGI2UnZ247Kf7Mn38s7NISEeKNYtq4UoxVXx5dQ/cdhfB4ODiuARvd1gxofmu00P0bkFgoSrl3i8MT3yaMMSxNu7k8LweW9Y5yPNNnj+ENjp7D0QhNQNOIzmij95KpZQlx4ZEIDpBWGOw1ymgY3h7GzolZ8ElB44kDWYZKJSOK1uogfCTsTUyRcSDIyx/NMj8L+udILukcUUuy8GhJnEJV7uJeZKtCUv8KCnLoE3Q4zzwfZB6NeKULjzVKL1rFw==
+ARC-Authentication-Results: i=4; mx.microsoft.com 1; spf=fail (sender ip is
+ 170.10.128.131) smtp.rcpttodomain=servicenow.com smtp.mailfrom=infosys.com;
+ dmarc=fail (p=reject sp=reject pct=100) action=oreject
+ header.from=infosys.com; dkim=fail (body hash did not verify)
+ header.d=infosys.com; arc=fail (49)
+Received: from SA9PR13CA0174.namprd13.prod.outlook.com (2603:10b6:806:28::29)
+ by SA6PR08MB9796.namprd08.prod.outlook.com (2603:10b6:806:422::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.11; Thu, 9 Jan
+ 2025 20:23:24 +0000
+Received: from SA2PEPF00003AE5.namprd02.prod.outlook.com
+ (2603:10b6:806:28:cafe::f7) by SA9PR13CA0174.outlook.office365.com
+ (2603:10b6:806:28::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.5 via Frontend Transport; Thu, 9
+ Jan 2025 20:23:24 +0000
+Authentication-Results: spf=fail (sender IP is 170.10.128.131)
+ smtp.mailfrom=infosys.com; dkim=fail (body hash did not verify)
+ header.d=infosys.com;dmarc=fail action=oreject
+ header.from=infosys.com;compauth=none reason=451
+Received-SPF: Fail (protection.outlook.com: domain of infosys.com does not
+ designate 170.10.128.131 as permitted sender)
+ receiver=protection.outlook.com; client-ip=170.10.128.131;
+ helo=us-smtp-inbound-delivery-1.mimecast.com;
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ SA2PEPF00003AE5.mail.protection.outlook.com (10.167.248.5) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.7
+ via Frontend Transport; Thu, 9 Jan 2025 20:23:23 +0000
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1736454203;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FWwHiM19mLis0vSxm9H+0qyQMgoQIvRrnyz73ehXpNU=;
+	b=g6P5MoryZ1+31q8mKVIfdJzBAmil1hbNmBfinoWs5rDTMlT0xnr2Ks98aO3GBlH9zIYwdg
+	9Uc6URft5xYHBKS9JwDp50JZsdpa2lcFqGPTz5ZQK4Gy2TLU2vMludNZHxj9NGXuongEBb
+	kexd0PcfuMn4Z9xZucFmmlqs66HHWA66UXrtT6ca6NzVvuVhFS5VoC+Yvff83oAeyp0e10
+	AgfPZMrcOtRM7FlY3bx5R/wlvS6LavvnA74grSc68Engxc3PhykENLP8UsFBtXVgU9pCdq
+	oX7VGr6uOvxq0wu8pwd2WLE459IEXqyhMgPUAlT4gbALWmRCiD+CZLbHAk8f6A==
+ARC-Seal: i=3; s=201903; d=dkim.mimecast.com; t=1736454203; a=rsa-sha256;
+	cv=pass;
+	b=L2ZnmVCUmL0B23kBWQNp0Cg/FmzyIIjTkOOdw+j0bUbcDgczNFntkgyKyjZVRVQtWB0aDE
+	XsS+eKQTDduynhHrQcYECvlkmWHPb5dJVLxT3duULwY96jDEhIqjBX19YyB6dlNofPNf1O
+	OwQdZoTgrq1l+hrKMdE76XB5oYCUIglbOrqAE0FzvxE1coLA3W9+/bQS1F0ou4CIO6MxN+
+	9Ox7PUue7YctszXDFvzYq5Tuq6Rn5X5BdL5JQX63Ytg21E1/lXbs1lS92Q1O6fPr/H+iOu
+	7i+efdnQov+g+1tSCeSqB0iqo/dYTzqeZGH8aUZyOqp/PeViqND3nhhbAuFlPQ==
+ARC-Authentication-Results: i=3;
+	relay.mimecast.com;
+	dkim=pass header.d=infosys.com header.s=TM-DKIM-20211201111149 header.b=kpoG8vQ2;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	dmarc=pass (policy=reject) header.from=infosys.com;
+	spf=pass (relay.mimecast.com: domain of david.brady@infosys.com designates 18.185.115.7 as permitted sender) smtp.mailfrom=david.brady@infosys.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=infosys.com header.s=TM-DKIM-20211201111149 header.b=kpoG8vQ2;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");	dmarc=pass (policy=reject)
+ header.from=infosys.com;	spf=pass (relay.mimecast.com: domain of
+ david.brady@infosys.com designates 18.185.115.7 as permitted sender)
+ smtp.mailfrom=david.brady@infosys.com
+Received: from repost01.tmes.trendmicro.eu (repost01.tmes.trendmicro.eu
+ [18.185.115.7]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-663-h_ngvGFpOcepP2cGRjzoNA-1; Thu, 09 Jan 2025 15:23:20 -0500
+X-MC-Unique: h_ngvGFpOcepP2cGRjzoNA-1
+X-Mimecast-MFC-AGG-ID: h_ngvGFpOcepP2cGRjzoNA
+Received: from 104.47.26.111_.trendmicro.com (unknown [172.21.181.66])
+	by repost01.tmes.trendmicro.eu (Postfix) with SMTP id CEEA210000078;
+	Thu,  9 Jan 2025 20:23:18 +0000 (UTC)
+X-TM-MAIL-RECEIVED-TIME: 1736454197.523000
+X-TM-MAIL-UUID: 4d9e10fa-9a7b-46b1-8653-7de93bc634ac
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (unknown [104.47.26.111])
+	by repre01.tmes.trendmicro.eu (Trend Micro Email Security) with ESMTPS id 7FE52100014C3;
+	Thu,  9 Jan 2025 20:23:17 +0000 (UTC)
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=cqqAdKc0oTzWajRg19EPuVunxSwLJxLilHSkNOKrsGIVSk7HBj3ABtHgI218/1pUGn6VBflRftXrNxqsD/TpdB6UwdAou8FVezZ9WtK4GqUF7T0L+p+oVf9l2i+8K4A3iR5ikge+t7OKuOKhGFUXjeBUr5zygGSp6D/HQ63ux3tVFTDWsqaC8IXo6gaSZCgGbPTmNxEVikxg4VUcYj8ulGOb5PkS59Kaxgpr2GHMN+oo7VQmeI15XMjkb4Ge7fJjU3HU0ib3SiUdmq6EigKFSpu4OgZrYGjnMZBBWHoabJd6/HRPBDjPc1vDaUQFCJ68/sRlYJthUipNGFBdOOnS1g==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ly7UK+mC6SGRtBZu0hgK9RhUm6PC/xXd0fCD2bZB6e4=;
+ b=gC8hiSTXwd85SDAWl3WiGRLOelPSK352pxk8iaTsItEM056UCihta0DvjfFQIdodaygGcM/nM7EMKd1jwK1pzFHWI2hTMriwYsda+AJJtB4dLeDgPhkLn1fGBkX/nv7iQb+hL0sJ6zLAh5Bhuq/VLF/Gqokvjlpe0kf8rb5DJdlpMxYEKRulamzXP48UuaN/GfQR66U7643EOFScR12PZn9GoSeBPVfKFnZg8uGAiOINmJIUzqlYtmUHHaQenugk326ok9+AN3vg2w2JKmUK4lq9QaLKUWZ3pnoW6aO1tqq3IFz7MHXFYzjoY5klJcKe5ZS5hRg08B5CFa/oTiRaNA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 144.49.245.132) smtp.rcpttodomain=principal.com smtp.mailfrom=infosys.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=infosys.com;
+ dkim=pass (signature was verified)
+ header.d=infosystechnologies.onmicrosoft.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=infosys.com] dkim=[1,1,header.d=infosys.com]
+ dmarc=[1,1,header.from=infosys.com])
+Received: from KL1PR0401CA0020.apcprd04.prod.outlook.com (2603:1096:820:e::7)
+ by SEZPR02MB7367.apcprd02.prod.outlook.com (2603:1096:101:1ee::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.11; Thu, 9 Jan
+ 2025 20:23:11 +0000
+Received: from HK3PEPF0000021E.apcprd03.prod.outlook.com
+ (2603:1096:820:e:cafe::b7) by KL1PR0401CA0020.outlook.office365.com
+ (2603:1096:820:e::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.12 via Frontend Transport; Thu,
+ 9 Jan 2025 20:23:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 144.49.245.132)
+ smtp.mailfrom=infosys.com; dkim=pass (signature was verified)
+ header.d=infosystechnologies.onmicrosoft.com;dmarc=pass action=none
+ header.from=infosys.com
+Received: from mail.ds.dlp.protect.symantec.com (144.49.245.132) by
+ HK3PEPF0000021E.mail.protection.outlook.com (10.167.8.40) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8335.7 via Frontend Transport; Thu, 9 Jan 2025 20:23:10 +0000
+X-CFilter-Loop: Reflected
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tgp/3AABycugbMs7JsrvcUG7p5lSpbJVVTQb/LLiYlbdDn8UW9KBTIscOwOT3TlvWyIdH/PNvuyOZZJ5IeFV+bEyvwe0vMZicX21xuq3L3vq8Q6LKaORybeIm5ls4cGgKkGAqK+uaPnGt+LhJZ4NLB4EZCS1z75YZgUn2RApLAaLz04FuyT0efE/GsJkAdwkQUhqTy/iE8SiNDYZuVvZP/IoLUk4yFgOvZZEYL0c2fHOIo/UOpqoqXvOr4WCKdzhOXIS1G26Ifaidnl0snK6RhKJl+YF0VaRIrKirEqBKFguxQjl5gQCXd7cfyl3psp06VgqKw1F+Y2NEuOK4LM4OQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ly7UK+mC6SGRtBZu0hgK9RhUm6PC/xXd0fCD2bZB6e4=;
+ b=gpRIy7Qk2kU2LkZKdN7XX1W6g5A80KcVYYXdrn1lS/Jnk7ZK/UIhYZkMHhwJiffTOZsGVngU52ATUJSsFv3wpNGD/YeIkVM+5yhWxlovodTa6qwAM3V/45xoP0oI3hQF5C/Gmj2y0cS+mKT5ngHljJAlrDEX7eor7Y/yXAO9uLIsQVrzumjaQmDP7xpPBJSolC6Nmkfy3ZjJnLUgC6jL8+PaS7IZpoSCZR3jiOajpAtGBpcmWat+dcUxLffsttmjtWyWaGdbnSUUQFpJkX0l+4XFnDdfLAN2z1+CA7rFMpnIUpUTnHKn9W5C49nhK6yeysXNV+0cAjZMQtIoSj123w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=infosys.com; dmarc=pass action=none header.from=infosys.com;
+ dkim=pass header.d=infosys.com; arc=none
+Received: from PH0PR15MB4688.namprd15.prod.outlook.com (2603:10b6:510:8d::7)
+ by SJ0PR15MB5131.namprd15.prod.outlook.com (2603:10b6:a03:422::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Thu, 9 Jan
+ 2025 20:23:04 +0000
+Received: from PH0PR15MB4688.namprd15.prod.outlook.com
+ ([fe80::135b:81b6:417f:3cfe]) by PH0PR15MB4688.namprd15.prod.outlook.com
+ ([fe80::135b:81b6:417f:3cfe%4]) with mapi id 15.20.8335.012; Thu, 9 Jan 2025
+ 20:23:04 +0000
+From: David Brady <david.brady@infosys.com>
+To: "Cheeseman, Brittani" <cheeseman.brittani@principal.com>
+CC: "Strike, CJ" <strike.cj@principal.com>, "Muller, Casie"
+	<Muller.Casie@principal.com>, "Sorensen, Jess" <sorensen.jess@principal.com>,
+	"Leyes, Mike" <leyes.mike@principal.com>, "McCool, Bethany"
+	<McCool.Bethany@principal.com>, "Lietz, Jacob" <Lietz.Jacob@principal.com>,
+	"Fox, Karen" <Fox.Karen@principal.com>, "Cheeseman, Brittani"
+	<cheeseman.brittani@principal.com>, Nathan Ogbourne
+	<nathan.ogbourne@infosys.com>, Hemambaradara Rao Erra
+	<HemambaradaraRao_E@infosys.com>, Elton Martin Barretto
+	<Elton_Barretto@infosys.com>, Brad Wiggins <brad.wiggins@servicenow.com>,
+	=?iso-8859-1?Q?D=E9von_Carew?= <devon.carew@servicenow.com>, Rob Spence
+	<rob.spence@servicenow.com>
+Subject: RE: Infosys/SNOW Issues and Concerns
+Thread-Topic: Infosys/SNOW Issues and Concerns
+Thread-Index: AQHbXVvUAQuwzahp3USGTopm6Sok4LMNgSMQgAEcY6eAAEk7YA==
+Date: Thu, 9 Jan 2025 20:23:04 +0000
+Message-ID: <PH0PR15MB46885BB48F6D5FFDB46D7D83FE132@PH0PR15MB4688.namprd15.prod.outlook.com>
+References: <SA2PR10MB453791A7A4DBA6F6CA68899089142@SA2PR10MB4537.namprd10.prod.outlook.com>
+ <PH0PR15MB46881780FD353ABF58BE2BEAFE122@PH0PR15MB4688.namprd15.prod.outlook.com>
+ <SA2PR10MB45376C954E1743679B3EDD5E89132@SA2PR10MB4537.namprd10.prod.outlook.com>
+In-Reply-To: <SA2PR10MB45376C954E1743679B3EDD5E89132@SA2PR10MB4537.namprd10.prod.outlook.com>
+Accept-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_ActionId=05751707-727b-4901-8d53-10b8346446c3;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_ContentBits=0;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Enabled=true;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Method=Standard;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Name=a0819fa7-4367-4500-ba88-dd630d977609;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_SetDate=2025-01-08T22:37:41Z;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_SiteId=63ce7d59-2f3e-42cd-a8cc-be764cff5eb6;MSIP_Label_f1a85edf-1344-4c6a-a94e-0a9833d749f3_ContentBits=0;MSIP_Label_f1a85edf-1344-4c6a-a94e-0a9833d749f3_Enabled=True;MSIP_Label_f1a85edf-1344-4c6a-a94e-0a9833d749f3_Method=Standard;MSIP_Label_f1a85edf-1344-4c6a-a94e-0a9833d749f3_Name=Internal
+ Use;MSIP_Label_f1a85edf-1344-4c6a-a94e-0a9833d749f3_SetDate=2025-01-09T15:46:49.747Z;MSIP_Label_f1a85edf-1344-4c6a-a94e-0a9833d749f3_SiteId=3bea478c-1684-4a8c-8e85-045ec54ba430
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=infosys.com
+x-ms-traffictypediagnostic: PH0PR15MB4688:EE_|SJ0PR15MB5131:EE_|HK3PEPF0000021E:EE_|SEZPR02MB7367:EE_|SA2PEPF00003AE5:EE_|SA6PR08MB9796:EE_|DS7PR08MB10577:EE_
+X-MS-Office365-Filtering-Correlation-Id: 734ecc85-703f-4fa2-66f9-08dd30eb77bb
+X-DetectorID-Processed: 72a03c32-98c5-11ec-9465-3272fbf0ad55
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|4022899009|1800799024|376014|366016|7416014|8096899003|19033499003|38070700018
+X-Microsoft-Antispam-Message-Info-Original: =?us-ascii?Q?rl8FAkt+OpRSVI3WC7v5VKV0bWuNRSjaiq/RcpLyXGlWs4ZpIjsjKiLcU1mp?=
+ =?us-ascii?Q?ou9wKxF5ogastZ7yXFmlRyZvY8mX10DSZ273xWRnkhtyld8rzlETD4I7SxwF?=
+ =?us-ascii?Q?mWaPA4JDf8L0CtQwl7nsWtKu7kpdu1b7FIm1hRMRHShrAcWOXx9zaSknMoLE?=
+ =?us-ascii?Q?w0z8Hpc2I3pX91lMCtQeLzo+XLLEHEufu1KNjqoQSu7koMmXfhZKCG59pQt9?=
+ =?us-ascii?Q?bR3I3I3Dj9i9mBiSNfSwD8bujyLmpW1VCEBZAVRr9lnKqbMgOu85eCGof6fE?=
+ =?us-ascii?Q?du4yCeucgTsGuQQlpovllQVL9JKqCRYAB4iFx2GygR6JmW/xPjJ5GcwBaw0T?=
+ =?us-ascii?Q?OovrfIkyrCJNJZn5jBBRjihbLvSa11qqW2sAwQ9NtZg6Ez6QJzWW+YGH+57W?=
+ =?us-ascii?Q?q2iFzoGNasSSKLP1O49/T2z21N55OUC1TbPp3oss0g2u6jhlbWcPpzzHARRJ?=
+ =?us-ascii?Q?dl8EyCGE66UlcK18O0EsI3jFxsNizhbFYoTUAyyuESK5lysa/d4PTJ2Kyu+M?=
+ =?us-ascii?Q?7oXpBSxgqOWn8mIbEwzUzU6LmIAYGqC1aXrl/v27gcg1H+jGAGN92C2QoNhn?=
+ =?us-ascii?Q?LgVAitOrUMJjDIphTVrAF7ol29nun60kjEcf9vtXLXvBNg8oIK7jLLc726D/?=
+ =?us-ascii?Q?pHTQM3kHt86F1QIwhLcYte+TD1mcpFFyflvP2fUw9eGUZoaTBrFHG/ElfRlB?=
+ =?us-ascii?Q?du30pTUly/2YL8LRI+Q8FrYn3Ndd/CnmPQc1L6gT2GMLJ9pLi2qSlbEwG+NO?=
+ =?us-ascii?Q?KGvNZvxkTszGfA2lvOp2IlEpxXEE0LtDSityTR/LAC2DAP0U/5BhX9N66YIB?=
+ =?us-ascii?Q?7LXE0Z74qreTxRaC8jq/C1crLq7WjUQ/SKnBrDlvaAm+gM1DmLFOQlLvjsN+?=
+ =?us-ascii?Q?VVtU9TG/aKLu9dx19VOJvogLzgnzTNC+s1NUAYBNN7tJc65JTO5wWM7oYqP2?=
+ =?us-ascii?Q?o0U3eDnwKKuTf0h5bzIdTV/4KhYmHo49rv4u0Fd3a5Yk9aboaGKzy86qpLHG?=
+ =?us-ascii?Q?/JWqJHyyo4XVjm1Q2G4mDzMfbvr/NyInAmer4L8AJIoOo1a7tIx5oauHCuba?=
+ =?us-ascii?Q?HqFOUlMUHOHeuWDDEl5cEOrfDAXLpm3yAq8atkSvzzeQ4RArFnV6YzLn/C3g?=
+ =?us-ascii?Q?rsXQdXnw84omhT0lmhaHVKJqFnGCSDHnyLdDKVEdPgDiGeFw9hyXgXgPF8Bv?=
+ =?us-ascii?Q?cIw0cHKdkv1GFOrDAhmFxjzZwPI2AjfGd8AKLS1YmUlonrP4lOmvgkD+TQWm?=
+ =?us-ascii?Q?z4kQlx3xz/TVAMNNWmbURUbgBf7N8asXjP3UsBbjApSUlBqmy6q0+RLm/a1L?=
+ =?us-ascii?Q?Y7r2UM+j/heq+EV7yZFlW1Pj9O0JjkEtd8vZaDX19Bw/dvMd2qE2tDNUgShr?=
+ =?us-ascii?Q?mf5azlARSVqPbtVOkCtE4ArTfghPJaKj6ST/hhPUgId36bl0aVHMgCXCzGT1?=
+ =?us-ascii?Q?uM607S6q6c9vh925O6b/ttFO54kZS9Sb?=
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR15MB4688.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(4022899009)(1800799024)(376014)(366016)(7416014)(8096899003)(19033499003)(38070700018);DIR:OUT;SFP:1101
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR15MB5131
+X-EOPAttributedMessage: 1
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: HK3PEPF0000021E.apcprd03.prod.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 6dccb1c1-3fa4-4804-1a93-08dd30eb6be1
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|36860700013|35042699022|1800799024|14060799003|7416014|82310400026|4022899009|376014|8096899003|4076899003|19033499003
+X-Microsoft-Antispam-Message-Info-Original: =?us-ascii?Q?ClX5qM2l0EpbPTHqYAvO0ER5NITgzOqBKcET5rN5sJ1tkwuRybKyEbfHOH/y?=
+ =?us-ascii?Q?i5u13YbiagbnulZFh48dWPd4ciZy8xmccp/fb9rnDlLksjYv4m64ag/8PyZJ?=
+ =?us-ascii?Q?xYW4GuGoqA6xAGAB1lEAn6ePX5SUPgPM2HeoElX8ma4h59lsXGaSQpnYcpxE?=
+ =?us-ascii?Q?8QM2zFiGE9rVYQbkUw8VxLdijxlmlU0Yn/2+aJ4n4gJ2M3UtBtf90hOO4hUL?=
+ =?us-ascii?Q?83x9AE/iz6UFAI+3wsP8qCQLDJVNpguwuVMhUgHwe9N7eA3pilVm9cvecHHs?=
+ =?us-ascii?Q?7R0rE8QX7ej8oKI2KmWccM6JvAqrNJ68N9aUiqWA/kNjDqm0u3PlaV28OBug?=
+ =?us-ascii?Q?exo4lpftaEQ9URQOajXrLhha+p+YT1jxieENpdtCM2m5UThfhbBlxBMEfXkP?=
+ =?us-ascii?Q?gkyR5v5bJ6q+6SOIkkqmi+TYpKaqgEk3ipUERbpSIP7DxqaRC+VHsM/JoSpp?=
+ =?us-ascii?Q?Gm4sQE3Ec+PTWsB5YZiG0TyS5eOSDHaI3vQq7EUQ1MUETcGJkBFUS/mNC9o3?=
+ =?us-ascii?Q?VMApcXe/t4K6XQHdia+rn+bmGgRnC+UulsXYeW7d7uWQAdpUqYveqTFKCAz1?=
+ =?us-ascii?Q?PIJ4wbXNWCE8ZtVqIwxUPGpRBzEpwSto94ymqGPiuRzY/7sxt2k+j/lrmoZ9?=
+ =?us-ascii?Q?6hL7gq6wimGcDVWfOONopLY4++jIFDKKmIXAhO4ppGtBQEXmxmKevVFLfoJn?=
+ =?us-ascii?Q?+74NGwDFnSvay5OA1ZRhhw4imIiSFBOqlfF2QIBX+D+tD9kE8iSoLT4jAkHX?=
+ =?us-ascii?Q?F6h32nqCwSW8GqEOJP9QN+ld7/ujUINWDxL2k3EYx4Jn07tARAqim53qlSnp?=
+ =?us-ascii?Q?TvcFVSsN7WShOnf4VMMHCwRysep7OkvPMWhMQfbcQm+eaQJA3R7ZPtaN0w1A?=
+ =?us-ascii?Q?Z8+RBoLCUEnLmfoi8QFBHbR3W/bjM5+X7MPTFDKkVX5exOwruQ+gZQk0oGvO?=
+ =?us-ascii?Q?4wu7IW/P4ZzD7sSWAZbi0bqdok0mhj6XboC6RqfmwMxbWCwXLwRj/oXyPOOA?=
+ =?us-ascii?Q?jQZAr4sjtjfxjQ3dEJge9BbLzJIvzef4iVRqSQBM5fO+fyEBkQ2RcSoXAAuJ?=
+ =?us-ascii?Q?2jDLX/Z/En0p2xTDsou48l4ojVT/aCSk4WtvnGBg7dyDUgRZBP6D6ElGAvWy?=
+ =?us-ascii?Q?X0MXCWmx1jJP8jJCFRT0QJ+a8yuHixO6I7obVJEqyemPV4KAAsrT2/3X5A/+?=
+ =?us-ascii?Q?T2DjYYaNIi5FmU1PXnRIg8H00C7/+wbrsVw4stCeNPZ1IR8Fe4kOzTBeLFSS?=
+ =?us-ascii?Q?0CUP/nEegOmufj+PN0TtWmB4edKBaJwrhk9wEinFNiaHLoZoCGTSnnipSOp9?=
+ =?us-ascii?Q?DSHKYoWSpe3cwm3XKJvv55fWlZ3MpYOCqtdkMC5EZOEgszCLcFzaXjugueRK?=
+ =?us-ascii?Q?VFFlSVwW4BKUV5NTag8TpNS+EsrAAmY5HHezl7714IqXcPC2R6Vvo1rIxYiV?=
+ =?us-ascii?Q?G+NWcE22LwMscuuc//ujduH1yuMV/JzVrxbJgmt21WzckYQ2m7YTTZ3GMZP2?=
+ =?us-ascii?Q?GGUI9PK/mX0oSwk=3D?=
+X-Forefront-Antispam-Report-Untrusted: CIP:144.49.245.132;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.ds.dlp.protect.symantec.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(35042699022)(1800799024)(14060799003)(7416014)(82310400026)(4022899009)(376014)(8096899003)(4076899003)(19033499003);DIR:OUT;SFP:1101
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Kv9I7hxS72OWZ0Fj+z/5y9TOH3myvV/psr8SxIK79YqD4swVgT/mVOXLZ6ccvdiIW+GwSTqk3e1+Sf/ZVIv+RdzfMwgwTmuC65gtNBl7dtAEiRdFOutZsPUHFT/FvBrgd8miQBc6v4IxCUvdKgCRaImJjUGL5RxCRQI2gSP1piKB7tAtHmZIv882yS1UvW97T3WVoffm/nbNgmr/1UjPcU22ID2EXecI16jCsD0hHqx+C+TFX6dD+V9NZ7kr8ddRiz87Qw4OSefsZSU7UXLTyEhMJZE/ly90poPeQrTj4zg8wSwDxBNgx61DOIuJmFGvdP298r+bj9eFPg0TPd8vsb+Q6ErnUZjdxzkuvpDI1xRLCudhQNvLb9mXIjw+rSo+Wad3t/aqq0vKwn8aIa0GI4OIY9wp2CH1YVg/DxBGuhliv9olKj49Q5PGYp4VSYteFHLBR/7W2jQLj/d5ABm5hUgBc9DvilWfbZNPnwrKSXqA6cao8UqLRzNcykmKClNl63/9xRwSMZsyqxq1nyCn8iByYDtNlc1CmIsW1csC/aX/s3Ebbr+vSnhq3yeUTEC8gAoFyeyVcD6D4QgndAOzETA7hq3862Lz/U7RGJ8SZLX9So1GPw6WenGxocEAuVvR+E7fV9Jh4shTcUASbm8cHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR02MB7367
+X-TM-AS-ERS: 104.47.26.111-0.0.0.0
+X-TMASE-Version: StarCloud-1.3-9.1.1028-28914.002
+X-TMASE-Result: 10--35.070700-4.000000
+X-TMASE-MatchedRID: 0FbuSxFHrmmq/fEiftHAdrQwV9gLxvWjBzUoVrWHSOnSg2Pk7znFqd4e
+	kns3Samn+HWh3/hSrx6V7xnbt3ZeeTLGoBQixGyzWH8kr8KksdIF7eh/bG4q+FcZWcaHu3QW5tv
+	kaJqj9DE3pfnPDfzvFirha3Sivu57f3QXKojray1h5kB9mJ9D/JxZOT6rPtaiCKg+R3eMjvT2d5
+	U+T4xXCoyEv/D1id3FWc/8XaEVNqMQZ5d5TJ1aRQh9z496KgMNJUMe+s5cvaMwSFcRnZipPbT95
+	omWrGBD5v+PI2dHqAx3eSbZTF71YjNM0PWEMrjP11jL1iI7d4Lk+QJ4zu017YHV87ajhAZwwwai
+	9ENwln1OrUa7R6wRyk9Z5oOPlSIT2tV4EQq5TkOMvAZiUC9f4lL6oExDaP3uQgkktHY8AWMasRA
+	AGt4hSHTCCevWlqqFW4KLY7bwZxNDeh2Fp4P7apK0VdSi10xqAUrsLLdlj6EAOGYi7i834H09ll
+	iLL9kBAxI+UWxLhU3wBQQaHlM5HveNgJcavMPpQxMOuwN9Yts70BtMXRaQwsL3f3LpFUCUDEbvm
+	Yr23qP1IzxUhTb3Eg/vk61iYn5LOgbyUu2iaLLshkWiBb2VgBUQ1G8C4AHJiurj7qqCa5qIFJp9
+	vDIEExuz4n4FoUNd4M9RkeRuM6CDmpsbNfe2AH//IbWeLEacOMs2TRO2UiLl/akqBj9zTVh/wut
+	Moz0cfq8PtL8g8LaSK+hINuA7dMZeKXZtwaKGOkfZU73S4YwW7LbH+/NBkW8ORWp/jqsKgNYg5W
+	lzvjEekJx06TvQk2mYX3M6up7VbbTUXhY/2ccCngKphxwWrzmoMBkrmuf/mCYM4MaoFU/p4fMuH
+	+emCBLdYzv1bejiXVhjpNLnNMaMGnQxsGJZyVTwrswUN8fLKiMPzmN80hkDUCEiLLPoQX9+pfYx
+	UG5uCIBDOEdC+2mbCOivU2HrC0kVAPr0TXS8
+X-TMASE-XGENCLOUD: 89a2588b-2cbe-4085-b047-533df9942efd-0-0-200-0
+X-TM-Deliver-Signature: F764032D40227962806F9D54FC661BE7
+X-TM-Addin-Auth: MGWJIm97jEWd+RW04IsMDQ8t4wdt5JgXjqu6ztNqKSo1EnS1hZcC7zIsZLv
+	zra4M56Wl8JP4PB2KSrb3+sqMzLhE/kol4FqRN0+3pQQcdPB6SMDcvk8gtxUeMHTprDtqnBSqk5
+	hMz495QnxkJHwDvHWOpJUEkreYCwnFhLgf8OiK+Fd1OIvmRHIfg+WQrH4tbugVJILrVMugbSDHw
+	uZCsRD0hAZhZiF5kToO/e1x45cWw7xwKz+sjbAuwAR1asGcd46RLrCNi/9jCjlq7dycnccDWGek
+	+LyKXlm8fC3HwgVoE1Z0q5nG+TmF8M8qXYjfnIussb7D+Yuqm7i1+oeJcA==.f4sbc3JDKBlTC7
+	K+5oKasAvRMA33kCf9YzuOmHh9WWqbhCJvVO37jRxqZSM2gPW7xrdTN5hweA7wZIcghbaibg9e7
+	YhvAxaCQYCSMqGnc8myVZ/v2njdlxvgcNR6eBLME2PBzXLxQI6qsFyOldUgBJ1SYnODij28Zkqz
+	M4Ilz1jlZY7JZdIa+mbnr6Yz9EFSydyxQROd/IUC58w6szi58ASiDHMyjFISYSIaimikXsFjRyK
+	svQxcJQmZO9d9IRwywu7V8iFgJxH8yCrTlHPjznDmo96mWd8M/b/La+g4aQIpCNn7HPGnjX1OfC
+	ASmY1CG5lkUhpmUW6FRUKVZYN3TA==
+X-TM-Addin-ProductCode: EMS
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=infosys.com;
+	s=TM-DKIM-20211201111149; t=1736454198;
+	bh=tj2Wz+PMDqIc0Ot3Z5mNT0ETBWQa1xsz4Ar3baVRAy4=; l=67129;
+	h=From:To:Date;
+	b=kpoG8vQ2jXi5xe1Gzn+UdVb2/naMJObbeilArVnylSqVUVHtVTcFFJ5l59v7WaG9c
+	 RduKQyt32x8UKBwPPy1zcPjrP/D46ZM6QlPh8o/2anumUvghJIJcMzi7rlkhI0TEGE
+	 HDArhhx6luSoLkr0R6QwmrxCHehrz4AyxcMnvp4TLpm3EgWayEEnD2uk4oFVZhwxzT
+	 w/uTMeoJ19S5V87m2UogoO0ZADl/WgjVgqwDDda70icL9ovxqBWbY3ZKjq6003egy5
+	 cEplFE5LhGj4V80OOCYjMKR5u3TQkU6ubNF3Z5MZoIJBZ/uO3iF8hzNta1ZISysRFY
+	 dXK3TqpmgkdfA==
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: m1wTumyEsd-wKbApEunnXkOffu4Cs_mOst2zaKJI7lA_1736454199
+X-Mimecast-Impersonation-Protect: Policy=Tag external email;Similar Internal Domain=false;Similar Monitored External Domain=false;Custom External Domain=false;Mimecast External Domain=false;Newly Observed Domain=false;Internal User Name=false;Custom Display Name List=false;Reply-to Address Mismatch=false;Targeted Threat Dictionary=false;Mimecast Threat Dictionary=false;Custom Threat Dictionary=false;External=true
+Content-Language: en-US
+Content-Type: multipart/related;
+	boundary="_004_PH0PR15MB46885BB48F6D5FFDB46D7D83FE132PH0PR15MB4688namp_";
+	type="multipart/alternative"
+Return-Path: david.brady@infosys.com
+X-MS-Exchange-Organization-ExpirationStartTime: 09 Jan 2025 20:23:24.0696
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 734ecc85-703f-4fa2-66f9-08dd30eb77bb
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: SA2PEPF00003AE5.namprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Exchange-Organization-AuthSource: SA2PEPF00003AE5.namprd02.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 5fbdbcd9-490f-4cec-88b3-08dd30eb6fe0
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|35042699022|22103399003|4022899009|31092699021|82310400026|8096899003|4076899003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(35042699022)(22103399003)(4022899009)(31092699021)(82310400026)(8096899003)(4076899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2025 20:23:23.8665
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 734ecc85-703f-4fa2-66f9-08dd30eb77bb
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00003AE5.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR08MB9796
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:06.0201117
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8335.010
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?windows-1256?Q?kFWV/BfyBNhgmyEAwJa74+LoICMz/1h1srXCkREdmTPJ9u+DATCDKem5?=
+ =?windows-1256?Q?GJ3H/UiEkmD5hjbrvh76h16ZXtMVWA54m1WNx40PGt3DSI/LALmenH5l?=
+ =?windows-1256?Q?5mtf/PRMN96DTyg6OgnfEh25ReF2JIiDQ/0pCumwpNxMoUuF9Z7vizul?=
+ =?windows-1256?Q?vxRCL5rpyF2Wl+30YdiFJxYEei26pxTaDq+OZFS6p/ilePjOTxGtli+W?=
+ =?windows-1256?Q?Du2W65fNgSD2TybD+RO6N2zz2DxJCjmgnu1sZRx2HZ3DqQLkXf8Blzxm?=
+ =?windows-1256?Q?U7DMb1J6CmsBpsZp6mEo/INlC3TMMFiOnjXrw8Fyg9Vw/H0TuanruX15?=
+ =?windows-1256?Q?LspTRi+tgDxaChayx0WbGcg+uwvsH5CyaKjSE2o4b6Qfzdk4xCkmzgQN?=
+ =?windows-1256?Q?QXhwKHQMmnsKfq2U9dt3XhbdYeaHJaKXW8gO+K7hXOnrdwWUNyjiFiFz?=
+ =?windows-1256?Q?J87Y3Hz1UcQB8mxFDKVnjfHx0e7unmUXxOUR8FCz1ncW3fnWpuEn2Wqi?=
+ =?windows-1256?Q?AG34/fOWP8CwkiwytC4vH3/GrD0sSgiuDahp2ChuV6MBwMzRyKN450G3?=
+ =?windows-1256?Q?OXB+F7s76Lr+u9qXIzoYYIgbDyapHpYd8WhyZ/aihl5z1xQskQceok7c?=
+ =?windows-1256?Q?aEtTCIpzm/4ysTzlLBnKCWPKYHPFyEV7rFpX5oOxw2PeHebtDRlnwy+8?=
+ =?windows-1256?Q?ZknV8Q462LHB+xAz9ljVpUUkkOgfkFNVNadf3O3V8rlSJwe5PCCUSnRJ?=
+ =?windows-1256?Q?CICdkRMfhzAJYpvQyZ6wLu0qqg4Ndb8U42z3yVjp0O+3kw/OMCtS/Rqp?=
+ =?windows-1256?Q?ILN4vc8DrvyLqnaQssDV7HI7IpzTYijCjTFbzl+/72jRlT/hrSKWPb7D?=
+ =?windows-1256?Q?whFMWmkY3bdF9waTleqmcZaCLJaLFbskvgspYHw7KFuLAJx1w3iYd/Um?=
+ =?windows-1256?Q?lP2xxWM69Dw5/jZ2VkV4wXn03ZGPsDop2324Ot1MpcGY9CkSmTuRhfOA?=
+ =?windows-1256?Q?ete8YymUT5P7vk0UxepZOnHK+CEWBWEZBN1W8LTvgfhjxjjUfIbxOw+w?=
+ =?windows-1256?Q?JjUt9LzcjxvdEvWrfnFNarEIQpKEYKBNeEJveOoK3QbnDgog+ERoirrY?=
+ =?windows-1256?Q?Qm3E6VkdCVrqBGeIuE/8AcM5gbfbnQkzl8JqhpAezS02OUb8B03X/49x?=
+ =?windows-1256?Q?u3HTAB92WcLoWRfW7XxPyX0MsHrInfTdyvkEfhh6624ydk7QAn1ERLsE?=
+ =?windows-1256?Q?uU7LJsM7EMZUmuEKLSpjqC8nDOJHp5aGN8YaXxG+1Z6Tvrt9Stdy5PGS?=
+ =?windows-1256?Q?4UQjL8/AUUgVIxOwkE7gpmyf/U+nvIC/UX4HIOrdzaYAg94GVopGVUlS?=
+ =?windows-1256?Q?3MMF8f+3Fc/+wzYyVoNrwy+O83Kkd5Vs4rql7FuLhta0grg4QlaFN9MF?=
+ =?windows-1256?Q?2hK2IULDBPYTptTQvm16hMcDkSiCy67EXJfoN3A+T+pdYi0hkEk5oh08?=
+ =?windows-1256?Q?OEdK72rO2AdO6fzTCMLBc3glsW1fft4bvE8hXqlmDPnvjf3h8Ypj3XKU?=
+ =?windows-1256?Q?834rMsC2B0n4XuKXsJ7F4HrhrxHJjQQxs1DOlVb8ZtIzZMHjWhrEyPul?=
+ =?windows-1256?Q?QfHQ7qG4ADA5GIebCwMZB6OjBmeAnBUGbVoEuWYimJutn0fYWhdJEc/9?=
+ =?windows-1256?Q?EQOMmzNGcCZsvqFPBkXVOTsRhuZgb4XT8CTbKeRAzEytebrfNidYNolr?=
+ =?windows-1256?Q?zNaGmibRcN3kDHHBVRT6fwMacBwqVNkDpIaaVDbUWzyAyeshIOw/VleP?=
+ =?windows-1256?Q?HaqcWahwtp7f2KWcRlzAzlqfkG3f4UZqfSG5cldeoIWQPB/K1gjENgO7?=
+ =?windows-1256?Q?PLN/ZzbNs+4PdKpiudSbO5xtrHI0aucJEvzprUW2op4OVBRL0JVloApE?=
+ =?windows-1256?Q?mXfuydmUgLOWU9G8nPKOiJlkXsuZOHXCNFbc22shncP5LuIDL6X8F3e6?=
+ =?windows-1256?Q?Z5imdB9VGFV0rOZ1UdFVa6hDtBx2SJ4K1iPIKgGdF0uZ2nmjyPSrmYPa?=
+ =?windows-1256?Q?U9URdL0WJWa654XX2UUb5IrWmHN70P9ktW1b1LWEs6zivfzN+aiOo/tP?=
+ =?windows-1256?Q?zIif6NwPFQxF7tqTFDTapj2F8mYurYABveR6o0dYR3NPHXILjI6G0xaw?=
+ =?windows-1256?Q?qzUwVg3cFboI3a10GBjv6XrkTP3mjirdkGeJ4tYqTdNx5gzma9p/XxIK?=
+ =?windows-1256?Q?gckTo3Ztgr2cb2pxdqXzv0gE6SRhne7USdyrzn5i2sDlHKNjSxDeFrar?=
+ =?windows-1256?Q?YtG5JVRb7nzittAyAYauzo7C+9c=3D?=
+MIME-Version: 1.0
+
+--_004_PH0PR15MB46885BB48F6D5FFDB46D7D83FE132PH0PR15MB4688namp_
+Content-Type: multipart/alternative;
+	boundary="_000_PH0PR15MB46885BB48F6D5FFDB46D7D83FE132PH0PR15MB4688namp_"
+
+--_000_PH0PR15MB46885BB48F6D5FFDB46D7D83FE132PH0PR15MB4688namp_
+Content-Type: text/plain; charset="WINDOWS-1252"
+Content-Transfer-Encoding: quoted-printable
+
+[External Email]
+
+Hi Brittani,
+
+I met with Devon, Rob and Elton this afternoon, and will provide the status=
+ below.  Additionally:
+
+
+  *   As mentioned on a separate thread, nothing will be removed from your =
+instances without your understanding first.  My goal here is, for the licen=
+sing that was "pre-buy" that you don't own or "freebee" that is superseded =
+by the actual licenses that you DO own, I don't want them showing false pos=
+itive statuses in your reporting (line "expired").  Any of this action will=
+ be part of our bi-weekly license meeting going forward.
+  *   Ah, the bi-weekly license meeting you requested.  Rob Spence from SN =
+and myself are committed to this meeting.  Let's start with every other wee=
+k (starting next week!) and see if that's too much too little and adjust). =
+ Please provide me some repeatable 30 minute slots for you and yours, and I=
+ will arrange with Rob.
+
+
+  *   Other Status:
+     *   App Engine licenses -
+        *   Despite the "expired" status, you should still have full use of=
+ the product while the cleanup and counting continues.  Please let me know =
+if you do not.
+        *   Devon states that SN is working with Principal directly on a) t=
+he cleanup effort (linking the custom tables to apps, etc), b) educating pr=
+incipal ranks on the disciplined use of app engine/tables/users to ensure t=
+o minimize license usage mistakes that can "cost you".
+        *   Devon estimates that from his perspective, the cleanup and coun=
+ting activities will take from 30 to 60 more days to complete.  We can disc=
+uss this status as part of our bi-weekly meeting going forward.
+     *   SPM Licenses -
+        *   25 showing as expired - this should not have happened.  The 25 =
+should have been mated to the new purchase and simply shown the overall cou=
+nt/usage.
+        *   Rob Spence is meeting with "order processor" team this afternoo=
+n and will provide me a status on why this has not taken place yet.  All of=
+ the paperwork is confirmed completed.  I will provide you what status I ha=
+ve tomorrow.
+     *   The rest of the cleanup
+        *   Again - "removing nothing" until confirmed with you.
+        *   The SAM license "pre-buy" has truly expired.  You do not own th=
+ese licenses and they will be removed from the environment.  We will not do=
+ this until after our first bi-weekly license meeting (hopefully next week)=
+.
+        *   iHub Standard is not required by Principal as Principal already=
+ owns iHub Enterprise.  I have requested that iHub Standard be removed from=
+ the instance, to avoid confusion and potential false counting going forwar=
+d.   We will not do this until after our first bi-weekly license meeting (h=
+opefully next week).
+        *   AI Starter Kit is a freebee that is not currently owned or used=
+ by Principal.  I have requested that AI Starter Kit be removed from the in=
+stance, to avoid confusion going forward.   We will not do this until after=
+ our first bi-weekly license meeting (hopefully next week).
+
+Brittani, apologies this day has gotten away from me a bit and I need to wr=
+ap up some other items.  I am happy though to touch base with you tomorrow =
+AM (or whenever.. and with whomever) to review the rest and the go forward.=
+  I can make myself available any time before noon EST. and 2-3pm EST.  Ple=
+ase let me know when you would like to chat.
+
+Regards,
+Dave B
+508-254-4097
+
+From: Cheeseman, Brittani <cheeseman.brittani@principal.com>
+Sent: Thursday, January 9, 2025 10:47 AM
+To: David Brady <david.brady@infosys.com>; Nathan Ogbourne <nathan.ogbourne=
+@infosys.com>; Hemambaradara Rao Erra <HemambaradaraRao_E@infosys.com>; Elt=
+on Martin Barretto <Elton_Barretto@infosys.com>; Brad Wiggins <brad.wiggins=
+@servicenow.com>; D=E9von Carew <devon.carew@servicenow.com>
+Cc: Strike, CJ <strike.cj@principal.com>; Muller, Casie <Muller.Casie@princ=
+ipal.com>; Sorensen, Jess <sorensen.jess@principal.com>; Leyes, Mike <leyes=
+.mike@principal.com>; McCool, Bethany <McCool.Bethany@principal.com>; Lietz=
+, Jacob <Lietz.Jacob@principal.com>; Fox, Karen <Fox.Karen@principal.com>
+Subject: Re: Infosys/SNOW Issues and Concerns
+
+
+[**EXTERNAL EMAIL**] Please verify sender address and exercise caution befo=
+re clicking on any link.
+Hello Dave,
+
+Before any more items are discussed to be removed from our account, I would=
+ like to have the discussion that was requested below. The original contrac=
+t and Amendment 1 have a couple of the items that you listed as not necessa=
+ry or as a freebee.
+
+Thank you,
+Brittani
+
+
+
+Classification: Internal Use
+
+________________________________
+From: David Brady <david.brady@infosys.com<mailto:david.brady@infosys.com>>
+Sent: Wednesday, January 8, 2025 4:58 PM
+To: Cheeseman, Brittani <cheeseman.brittani@principal.com<mailto:cheeseman.=
+brittani@principal.com>>; Nathan Ogbourne <nathan.ogbourne@infosys.com<mail=
+to:nathan.ogbourne@infosys.com>>; Hemambaradara Rao Erra <HemambaradaraRao_=
+E@infosys.com<mailto:HemambaradaraRao_E@infosys.com>>; Elton Martin Barrett=
+o <Elton_Barretto@infosys.com<mailto:Elton_Barretto@infosys.com>>; Brad Wig=
+gins <brad.wiggins@servicenow.com<mailto:brad.wiggins@servicenow.com>>; D=
+=E9von Carew <devon.carew@servicenow.com<mailto:devon.carew@servicenow.com>=
+>
+Cc: Strike, CJ <strike.cj@principal.com<mailto:strike.cj@principal.com>>; M=
+uller, Casie <Muller.Casie@principal.com<mailto:Muller.Casie@principal.com>=
+>; Sorensen, Jess <sorensen.jess@principal.com<mailto:sorensen.jess@princip=
+al.com>>; Leyes, Mike <leyes.mike@principal.com<mailto:leyes.mike@principal=
+.com>>; McCool, Bethany <McCool.Bethany@principal.com<mailto:McCool.Bethany=
+@principal.com>>; Lietz, Jacob <Lietz.Jacob@principal.com<mailto:Lietz.Jaco=
+b@principal.com>>; Fox, Karen <Fox.Karen@principal.com<mailto:Fox.Karen@pri=
+ncipal.com>>
+Subject: [External] RE: Infosys/SNOW Issues and Concerns
+
+CAUTION: This email originated from a source outside the Principal network.=
+ Do not click links or open attachments unless you recognize the sender and=
+ know the content is safe. The original sender of this email is david.brady=
+@infosys.com<mailto:david.brady@infosys.com>.
+
+Hi there Brittani,
+
+
+
+Apologies, I only got to this this morning.  Your larger (on-going) concern=
+s aside, I have spoken to SN folks today and have Qs and Notes out to Infos=
+ys team members regarding the state of your license consumption.  The 2 mos=
+t pressing issues I see are:
+
+
+
+  *   App engine - I spoke to SN today and they understand that we all made=
+ an agreement at a joint meeting about 3-4 weeks ago that a) you use it, b)=
+ the consumption dashboard available to you doesn't count it accurately (at=
+ all actually) and that c) until you are provided an accurate count, there =
+is no action in this area.  Unfortunately, the licenses were systemically r=
+etired anyway, as there is a date on them in the instance.  I am meeting wi=
+th Devon and team tomorrow to review all of this, and part of that agenda i=
+s to ensure that this is corrected ASAP.
+  *   New SPM Licenses - well, they should be there in your instance and th=
+ey are not.  In a perfect storm of absenteeism, Elton has been sick all wee=
+k, Hemanth is traveling in India and working on IST hours and the SN rep re=
+sponsible for finalizing and processing order forms was out today as well. =
+ I have email out to all of them regarding where these licenses are (you ar=
+e correct, the amendment 7  paperwork has been completed mid-Dec but there =
+is also other paperwork between Infy and SN that I am trying to chase down)=
+.  I expect to hear from Hemanth tonight and hopefully the SN order process=
+or first thing in the morning, and then I can drive to square this one away=
+.
+
+
+
+As for the others, SAM is a pre-buy and should not be in your instance at a=
+ll, the iHub starter is not required as you already own iHub Enterprise, an=
+d AI Starter is an unused freebee that should not be in the instances.  I w=
+ill work with the team to ensure these are removed from you instance and do=
+ not show up on the report any longer.
+
+
+
+If you would please give the team another 24 hours to straighten things out=
+, I would appreciate it.  This holiday season was not the best for communic=
+ations.  That said, I will work with the team to a) get all of this address=
+ed ASAP and b) work with you on the joint periodic license meetings you hav=
+e proposed previously.  I will give you a call in the morning.
+
+
+
+Regards,
+
+Dave B
+508-254-4097
+
+
+
+
+Classification: Internal Use
+
+From: Cheeseman, Brittani <cheeseman.brittani@principal.com<mailto:cheesema=
+n.brittani@principal.com>>
+Sent: Friday, January 3, 2025 12:49 PM
+To: David Brady <david.brady@infosys.com<mailto:david.brady@infosys.com>>; =
+Nathan Ogbourne <nathan.ogbourne@infosys.com<mailto:nathan.ogbourne@infosys=
+.com>>; Hemambaradara Rao Erra <HemambaradaraRao_E@infosys.com<mailto:Hemam=
+baradaraRao_E@infosys.com>>; Elton Martin Barretto <Elton_Barretto@infosys.=
+com<mailto:Elton_Barretto@infosys.com>>; Brad Wiggins <brad.wiggins@service=
+now.com<mailto:brad.wiggins@servicenow.com>>; D=E9von Carew <devon.carew@se=
+rvicenow.com<mailto:devon.carew@servicenow.com>>
+Cc: Strike, CJ <strike.cj@principal.com<mailto:strike.cj@principal.com>>; M=
+uller, Casie <Muller.Casie@principal.com<mailto:Muller.Casie@principal.com>=
+>; Sorensen, Jess <sorensen.jess@principal.com<mailto:sorensen.jess@princip=
+al.com>>; Leyes, Mike <leyes.mike@principal.com<mailto:leyes.mike@principal=
+.com>>; McCool, Bethany <McCool.Bethany@principal.com<mailto:McCool.Bethany=
+@principal.com>>; Lietz, Jacob <Lietz.Jacob@principal.com<mailto:Lietz.Jaco=
+b@principal.com>>; Fox, Karen <Fox.Karen@principal.com<mailto:Fox.Karen@pri=
+ncipal.com>>
+Subject: Infosys/SNOW Issues and Concerns
+
+
+
+[**EXTERNAL EMAIL**] Please verify sender address and exercise caution befo=
+re clicking on any link.
+
+Hello Dave and team,
+
+
+
+There seems to be confusion that has been happening since our(Dave, Casie, =
+Brittani) conversation on December 16th where Infosys requested "Renewal" o=
+f a handful of licenses. As we discussed within that meeting, our renewal d=
+ate is not until June and the only item that previously was not co termed w=
+ith our purchase date was SPM licenses(Amendment 7 co termed these). Along =
+with the discrepancy around the "renewal" date there were questions and iss=
+ues that Principal posed back to Infosys on several different licenses that=
+ needed to be addressed before conversations could continue.
+
+
+
+On Friday the 27th and Monday 30th several Principal team members were need=
+ing to provide(at Infosys request) last-minute information to Infosys and S=
+erviceNow to make sure that nothing in our instance was turned off or adjus=
+ted . Also, at the same time we were requested to confirm we had received S=
+PM licenses(not currently showing in our instance) and requested to track d=
+own a couple POs that Accounting said they had not received.
+
+
+
+
+
+Please find the list below of concerns:
+
+
+
+*      Why does several of our items show expired on the attached document?=
+ Who is responsible for getting these updated? What are next steps? Time fr=
+ame?
+
+*      Where do our current SPM licenses stand? The signed Amendment 7 was =
+sent to Infosys on December 12th and the contract was countersigned by Info=
+sys on December 16th but according to the report it shows that our contract=
+/licenses are expired.
+
+     *   When we make purchases what is the timeframe that we should expect=
+ them to show up in our instance?
+
+*      What happened from the conversation that was had on December 16th wh=
+ere questions were posed back to Infosys regarding the ITSM Developer licen=
+ses, the incorrect renewal date, and the App Engine licenses. I know that I=
+ personally spoke with Infosys on the 18th and was told that we did not nee=
+d to worry about these at this time because of the discrepancies that were =
+happening and questions that were raised. From what occurred on the  30th t=
+his sentiment did not seem to be shared across the Infosys team.
+
+*      Why was there conversations around removing a license(app engine) th=
+at we actively use?
+
+     *   Why is Infosys not reaching out to Principal to speak with us arou=
+nd removing any of the licenses that we have attached to our account?
+
+*      When and to whom was a Change Request sent to that address the App E=
+ngine licenses?
+
+*      Timeliness of invoicing - December 30th I was requested to track dow=
+n two POs that Infosys Accounting had said they had not received.  I resent=
+ both POs to Infosys; One Po was sent/issued in 2022, and the other was sen=
+t/issued in March of 2024. As I understand year end clean-up, invoicing has=
+ been a point of concern for us in the past.  The team is a bit confused on=
+ why invoices are not being issued on or close to the agreed upon dates. If=
+ you can give us insight that would allow us to better understand that woul=
+d be very much appreciated.
+
+*      Timeliness of responses - Questions surrounding licenses have been o=
+ngoing for several months. Whether it be new purchase or existing licenses =
+answers take several follow ups and several meetings to get answers. I have=
+ requested a biweekly meeting since the beginning of November to meet with =
+Infosys and ServiceNow Licensing /Sourcing team to help bring clarity to co=
+nversations around purchases and licenses. This is something I very much be=
+lieve could have avoided this confusion and last-minute scramble.  It is al=
+so frustrating that we have been discussing many of the issues and discrepa=
+ncies for months now with Infosys on our biweekly calls and the situation s=
+till came to Principal people that were off work needing to jump on and res=
+pond on last minute items.
+
+
+
+With this high-level information, I think you can understand this last-minu=
+te scramble is very frustrating, and we need to set up time for us to discu=
+ss and address these issues.
+
+
+
+Please let me know times that your team has available at the end of next we=
+ek/beginning of the following.
+
+
+
+Thank you,
+Brittani
+
+
+
+Brittani Cheeseman
+
+Sr Infrastructure Engineer II
+
+Enterprise Capacity Planning & IT Asset Management
+
+Pronouns: she/her/hers
+
+Principal | Des Moines, IA 50392
+
+[principal_st_full]
+
+
+
+
+
+Classification: Internal Use
+
+-----Message Disclaimer-----
+This email is intended for the recipient specified in this message. It may =
+contain information that is privileged, confidential and exempt from disclo=
+sure under applicable laws. If you are not the intended recipient, sharing =
+or copying this communication is prohibited. If received in error, please s=
+end a note to connect@principal.com<mailto:connect@principal.com> and delet=
+e the original message and any attachments. Principal Financial Group or an=
+y of its member companies may retain emails as required by law or regulatio=
+n. This email is not an electronic signature, unless a specific statement t=
+o the contrary is included in this message.
+
+To unsubscribe from marketing communications, go to https://url.us.m.mimeca=
+stprotect.com/s/1_6QCVOVvZs2jx3PnCGfOSE-Yed?domain=3Dprincipal.com<https://=
+url.us.m.mimecastprotect.com/s/Hed6CW69PBf6w5OyLfxhWSoIEWt?domain=3Dprincip=
+al.com>.
+-----Message Disclaimer-----
+This email is intended for the recipient specified in this message. It may =
+contain information that is privileged, confidential and exempt from disclo=
+sure under applicable laws. If you are not the intended recipient, sharing =
+or copying this communication is prohibited. If received in error, please s=
+end a note to connect@principal.com<mailto:connect@principal.com> and delet=
+e the original message and any attachments. Principal Financial Group or an=
+y of its member companies may retain emails as required by law or regulatio=
+n. This email is not an electronic signature, unless a specific statement t=
+o the contrary is included in this message.
+
+To unsubscribe from marketing communications, go to https://url.us.m.mimeca=
+stprotect.com/s/1_6QCVOVvZs2jx3PnCGfOSE-Yed?domain=3Dprincipal.com<https://=
+url.us.m.mimecastprotect.com/s/Hed6CW69PBf6w5OyLfxhWSoIEWt?domain=3Dprincip=
+al.com>.
+
+--_000_PH0PR15MB46885BB48F6D5FFDB46D7D83FE132PH0PR15MB4688namp_
+Content-Type: text/html; charset="WINDOWS-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252"><div class=3D"mc-ip-hide" style=3D"display:block !important; height:au=
+to !important; background:#FFFFFF !important; opacity: 1 !important; visibi=
+lity:visible !important; color: #000000 !important; font-size: 12px !import=
+ant; font-family:Helvetica, Arial, sans-serif !important; text-align: left =
+!important"><strong style=3D"display:block !important; height:auto !importa=
+nt; background:#FFFFFF !important; opacity: 1 !important; visibility:visibl=
+e !important; color: #000000 !important; font-size: 12px !important; font-f=
+amily:Helvetica, Arial, sans-serif !important; text-align: left !important"=
+><h3><strong><span style=3D"background-color:yellow;">[External Email]</spa=
+n></strong></h3></strong><br><hr></div><table class=3D"CGBannerCode" style=
+=3D"left: initial !important; height:auto !important; width:auto !important=
+; opacity: 1 !important; visibility:visible !important; max-width: 100% !im=
+portant;" id=3D"CGBNR-e5604e81e8ed99bb8742d2c4ae43b5c088d6b87bb1d06a9cd2d27=
+a84" data-type=3D"TEXT"><tr style=3D"display: none; mso-hide: all; width: 0=
+px; height: 0px; max-width: 0px; max-height: 0px; font-size: 0px; line-heig=
+ht: 0px; color: white; text-decoration: none;" id=3D"CGBNRPRVW-e5604e81e8ed=
+99bb8742d2c4ae43b5c088d6b87bb1d06a9cd2d27a84"><td>Hi Brittani,   I met with=
+ Devon, Rob and Elton this afternoon, and will provide the status below.  A=
+dditionally:   As mentioned on a separate thread, nothing will be removed f=
+rom your instances without your understanding first.  My goal here is, for =
+the licensing that was =93&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#820=
+4;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#=
+8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp=
+;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&n=
+bsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204=
+;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8=
+204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;=
+&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nb=
+sp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;=
+&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#82=
+04;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&=
+#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbs=
+p;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&=
+nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;</td></tr><tr><td><table=
+ class=3D"CGBannerCode" id=3D"CGBNR-TEXT-e5604e81e8ed99bb8742d2c4ae43b5c088=
+d6b87bb1d06a9cd2d27a84" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" st=
+yle=3D"width:590px; height: 144 px; font-family: Arial,sans-serif;"><tr><td=
+ style=3D"width:2% !important; background-color: #1976D2; margin: auto; tex=
+t-align: center; border-radius: 10px 0px 0px 10px !important; left: initial=
+ !important; height:auto !important; width:auto !important; opacity: 1 !imp=
+ortant; visibility:visible !important; max-width: 100% !important;" class=
+=3D"textIconPane"><div class=3D"CGBannerCode" id=3D"CGBNR-LEFT-PANE-e5604e8=
+1e8ed99bb8742d2c4ae43b5c088d6b87bb1d06a9cd2d27a84" style=3D"display:inline-=
+block;font-family: Arial, sans-serif, serif;"><span style=3D"width: 14px !i=
+mportant; font-family:Arial, sans-serif !important; display: block !importa=
+nt; color: #FFFFFF; font-size: 1.5em !important; line-height: 100% !importa=
+nt; font-weight: bold !important; left: initial !important; height:auto !im=
+portant; width:auto !important; opacity: 1 !important; visibility:visible !=
+important; max-width: 100% !important;">i</span></div></td><td style=3D"wid=
+th:98% !important; background-color: #c6ddf3; color: #000000; position: rel=
+ative !important; border-radius: 0 10px 10px 0 !important; left: initial !i=
+mportant; height:auto !important; width:auto !important; opacity: 1 !import=
+ant; visibility:visible !important; max-width: 100% !important;" class=3D"d=
+ataPane"><div class=3D"CGBannerCode" id=3D"CGBNR-RIGHT-PANE-e5604e81e8ed99b=
+b8742d2c4ae43b5c088d6b87bb1d06a9cd2d27a84" style=3D"border-width: 10px !imp=
+ortant; border-style: solid !important; border-color: #c6ddf3 !important; b=
+order-radius: 0 10px 10px 0 !important;"><table id=3D"CGBNR-ALERT-PANE-e560=
+4e81e8ed99bb8742d2c4ae43b5c088d6b87bb1d06a9cd2d27a84" class=3D"CGBannerCode=
+" style=3D"width: 100%; table-layout: fixed"><tr><td><b>This message needs =
+your attention</b><ul style=3D"margin-top: 0 !important; padding-left: 15px=
+ !important; left: initial !important; height:auto !important; width:auto !=
+important; opacity: 1 !important; visibility:visible !important; max-width:=
+ 100% !important;"><li>Someone new is on this email.</li></ul></td></tr></t=
+able><table class=3D"CGBannerCode" id=3D"CGBNR-LOGO-PANE-e5604e81e8ed99bb87=
+42d2c4ae43b5c088d6b87bb1d06a9cd2d27a84" style=3D"width: 100%; table-layout:=
+ fixed"><tr><td style=3D"vertical-align: bottom; opacity: 0.6;"><div style=
+=3D"float: right; text-align: right; font-size: 0.7em;">Provided by Service=
+Now DT (Employee Portal KB0077950) - This banner is visible only to Service=
+Now employees.</div></td></tr></table></div></td></tr></table></td></tr><tr=
+ style=3D"display: none; mso-hide: all; width: 0px; height: 0px; max-width:=
+ 0px; max-height: 0px; font-size: 0px; line-height: 0px; color: white; text=
+-decoration: none;" id=3D"CGBNRIDCTR-e5604e81e8ed99bb8742d2c4ae43b5c088d6b8=
+7bb1d06a9cd2d27a84"><td>CGBANNERINDICATOR</td></tr></table><html xmlns:v=3D=
+"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office=
+:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" xmlns:m=3D"http:=
+//schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http://www.w3.org/TR/=
+REC-html40">
+<head>
+
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style><![endif]--><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Aptos;}
+@font-face
+	{font-family:"FS Elliot Pro";}
+@font-face
+	{font-family:"Calibri sans-serif";}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{mso-style-priority:34;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+span.EmailStyle20
+	{mso-style-type:personal-reply;
+	font-family:"Aptos",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;
+	mso-ligatures:none;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+/* List Definitions */
+@list l0
+	{mso-list-id:239680972;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-638700122 67698689 67698691 67698693 67698689 67698=
+691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l0:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l0:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l0:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l0:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l0:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l1
+	{mso-list-id:1404840347;
+	mso-list-template-ids:-856027588;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l1:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l2
+	{mso-list-id:1722440107;
+	mso-list-template-ids:-2020676742;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l2:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l2:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l2:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l2:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l2:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l2:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l2:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l2:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l3
+	{mso-list-id:1941912805;
+	mso-list-template-ids:-1623140306;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l3:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l3:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l3:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l3:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l3:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l3:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l3:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l3:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-US" link=3D"blue" vlink=3D"purple" style=3D"word-wrap:brea=
+k-word">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Hi Brittani,<o:p></=
+o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">I met with Devon, R=
+ob and Elton this afternoon, and will provide the status below.&nbsp; Addit=
+ionally:<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<ul style=3D"margin-top:0in" type=3D"disc">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level1 =
+lfo4"><span style=3D"font-size:11.0pt">As mentioned on a separate thread,
+<u>nothing will be removed from your instances without your understanding f=
+irst</u>.&nbsp; My goal here is, for the licensing that was =93pre-buy=94 t=
+hat you don=92t own or =93freebee=94 that is superseded by the actual licen=
+ses that you DO own, I don=92t want them showing
+ false positive statuses in your reporting (line =93expired=94).&nbsp; Any =
+of this action will be part of our bi-weekly license meeting going forward.=
+<o:p></o:p></span></li><li class=3D"MsoListParagraph" style=3D"margin-left:=
+0in;mso-list:l0 level1 lfo4"><span style=3D"font-size:11.0pt">Ah,
+<u>the bi-weekly license meeting you requested</u>.&nbsp; Rob Spence from S=
+N and myself are committed to this meeting.&nbsp; Let=92s start with every =
+other week (starting next week!) and see if that=92s too much too little an=
+d adjust).&nbsp; Please provide me some repeatable
+ 30 minute slots for you and yours, and I will arrange with Rob.<o:p></o:p>=
+</span></li></ul>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<ul style=3D"margin-top:0in" type=3D"disc">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level1 =
+lfo4"><b>Other Status:<o:p></o:p></b></li><ul style=3D"margin-top:0in" type=
+=3D"circle">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level2 =
+lfo4"><span style=3D"font-size:11.0pt">App Engine licenses =96
+<o:p></o:p></span></li><ul style=3D"margin-top:0in" type=3D"square">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level3 =
+lfo4"><span style=3D"font-size:11.0pt">Despite the =93expired=94 status, yo=
+u should still have full use of the product while the cleanup and counting =
+continues. &nbsp;Please let me know if you do not.<o:p></o:p></span></li><l=
+i class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level3 lf=
+o4"><span style=3D"font-size:11.0pt">Devon states that SN is working with P=
+rincipal directly on a) the cleanup effort (linking the custom tables to ap=
+ps, etc), b) educating principal ranks
+ on the disciplined use of app engine/tables/users to ensure to minimize li=
+cense usage mistakes that can =93cost you=94.<o:p></o:p></span></li><li cla=
+ss=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level3 lfo4"><=
+span style=3D"font-size:11.0pt">Devon estimates that from his perspective, =
+the cleanup and counting activities will take from 30 to 60 more days to co=
+mplete.&nbsp; We can discuss this status
+ as part of our bi-weekly meeting going forward.<o:p></o:p></span></li></ul=
+>
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level2 =
+lfo4"><span style=3D"font-size:11.0pt">SPM Licenses =96
+<o:p></o:p></span></li><ul style=3D"margin-top:0in" type=3D"square">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level3 =
+lfo4"><span style=3D"font-size:11.0pt">25 showing as expired =96 this shoul=
+d not have happened.&nbsp; The 25 should have been mated to the new purchas=
+e and simply shown the overall count/usage.<o:p></o:p></span></li><li class=
+=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level3 lfo4"><sp=
+an style=3D"font-size:11.0pt">Rob Spence is meeting with =93order processor=
+=94 team this afternoon and will provide me a status on why this has not ta=
+ken place yet.&nbsp; All of the paperwork
+ is confirmed completed.&nbsp; I will provide you what status I have tomorr=
+ow.<o:p></o:p></span></li></ul>
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level2 =
+lfo4"><span style=3D"font-size:11.0pt">The rest of the cleanup<o:p></o:p></=
+span></li><ul style=3D"margin-top:0in" type=3D"square">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level3 =
+lfo4"><span style=3D"font-size:11.0pt">Again =96 =93removing nothing=94 unt=
+il confirmed with you.<o:p></o:p></span></li><li class=3D"MsoListParagraph"=
+ style=3D"margin-left:0in;mso-list:l0 level3 lfo4"><u><span style=3D"font-s=
+ize:11.0pt">The SAM license =93pre-buy=94</span></u><span style=3D"font-siz=
+e:11.0pt"> has truly expired.&nbsp; You do not own these licenses and they =
+will be removed from
+ the environment.&nbsp; We will not do this until after our first bi-weekly=
+ license meeting (hopefully next week).<o:p></o:p></span></li><li class=3D"=
+MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level3 lfo4"><u><spa=
+n style=3D"font-size:11.0pt">iHub Standard</span></u><span style=3D"font-si=
+ze:11.0pt"> is not required by Principal as Principal already owns iHub Ent=
+erprise.&nbsp; I have requested
+ that iHub Standard be removed from the instance, to avoid confusion and po=
+tential false counting going forward.&nbsp;&nbsp; We will not do this until=
+ after our first bi-weekly license meeting (hopefully next week).<o:p></o:p=
+></span></li><li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-li=
+st:l0 level3 lfo4"><u><span style=3D"font-size:11.0pt">AI Starter Kit</span=
+></u><span style=3D"font-size:11.0pt"> is a freebee that is not currently o=
+wned or used by Principal.&nbsp; I have requested that AI
+ Starter Kit be removed from the instance, to avoid confusion going forward=
+.&nbsp;&nbsp; We will not do this until after our first bi-weekly license m=
+eeting (hopefully next week).<o:p></o:p></span></li></ul>
+</ul>
+</ul>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Brittani, apologies=
+ this day has gotten away from me a bit and I need to wrap up some other it=
+ems.&nbsp; I am happy though to touch base with you tomorrow AM (or wheneve=
+r.. and with whomever) to review the rest
+ and the go forward.&nbsp; I can make myself available any time before noon=
+ EST. and 2-3pm EST.&nbsp; Please let me know when you would like to chat.<=
+o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Regards,<o:p></o:p>=
+</span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Dave B<o:p></o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">508-254-4097<o:p></=
+o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif">From:</span></b><span style=3D"font-size:11.0pt;=
+font-family:&quot;Calibri&quot;,sans-serif"> Cheeseman, Brittani &lt;cheese=
+man.brittani@principal.com&gt;
+<br>
+<b>Sent:</b> Thursday, January 9, 2025 10:47 AM<br>
+<b>To:</b> David Brady &lt;david.brady@infosys.com&gt;; Nathan Ogbourne &lt=
+;nathan.ogbourne@infosys.com&gt;; Hemambaradara Rao Erra &lt;HemambaradaraR=
+ao_E@infosys.com&gt;; Elton Martin Barretto &lt;Elton_Barretto@infosys.com&=
+gt;; Brad Wiggins &lt;brad.wiggins@servicenow.com&gt;; D=E9von Carew
+ &lt;devon.carew@servicenow.com&gt;<br>
+<b>Cc:</b> Strike, CJ &lt;strike.cj@principal.com&gt;; Muller, Casie &lt;Mu=
+ller.Casie@principal.com&gt;; Sorensen, Jess &lt;sorensen.jess@principal.co=
+m&gt;; Leyes, Mike &lt;leyes.mike@principal.com&gt;; McCool, Bethany &lt;Mc=
+Cool.Bethany@principal.com&gt;; Lietz, Jacob &lt;Lietz.Jacob@principal.com&=
+gt;;
+ Fox, Karen &lt;Fox.Karen@principal.com&gt;<br>
+<b>Subject:</b> Re: Infosys/SNOW Issues and Concerns <o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p><b><span style=3D"font-size:13.0pt;font-family:&quot;Calibri sans-serif&=
+quot;;color:yellow;background:red">[**EXTERNAL EMAIL**] Please verify sende=
+r address and exercise caution before clicking on any link.</span></b><o:p>=
+</o:p></p>
+<div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Hello Dave,<o:p></o:p></=
+span></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
+</p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Before any more items ar=
+e discussed to be removed from our account, I would like to have the discus=
+sion that was requested below. The original contract and Amendment 1 have a=
+ couple of the items that you listed
+ as not necessary or as a freebee.<o:p></o:p></span></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
+</p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Thank you,<o:p></o:p></s=
+pan></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">Brittani<o:p></o:p></spa=
+n></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
+</p>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p style=3D"margin:5.0pt"><span style=3D"font-size:9.0pt;font-family:&quot;=
+FS Elliot Pro&quot;;color:#737373">Classification: Internal Use<o:p></o:p><=
+/span></p>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"2" width=3D"98%" align=3D"center">
+</div>
+<div id=3D"divRplyFwdMsg">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;color:black">From:</span></b><span style=3D"font-=
+size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black">&nbsp;D=
+avid Brady &lt;<a href=3D"mailto:david.brady@infosys.com">david.brady@infos=
+ys.com</a>&gt;<br>
+<b>Sent:</b>&nbsp;Wednesday, January 8, 2025 4:58 PM<br>
+<b>To:</b>&nbsp;Cheeseman, Brittani &lt;<a href=3D"mailto:cheeseman.brittan=
+i@principal.com">cheeseman.brittani@principal.com</a>&gt;; Nathan Ogbourne =
+&lt;<a href=3D"mailto:nathan.ogbourne@infosys.com">nathan.ogbourne@infosys.=
+com</a>&gt;; Hemambaradara Rao Erra &lt;<a href=3D"mailto:HemambaradaraRao_=
+E@infosys.com">HemambaradaraRao_E@infosys.com</a>&gt;;
+ Elton Martin Barretto &lt;<a href=3D"mailto:Elton_Barretto@infosys.com">El=
+ton_Barretto@infosys.com</a>&gt;; Brad Wiggins &lt;<a href=3D"mailto:brad.w=
+iggins@servicenow.com">brad.wiggins@servicenow.com</a>&gt;; D=E9von Carew &=
+lt;<a href=3D"mailto:devon.carew@servicenow.com">devon.carew@servicenow.com=
+</a>&gt;<br>
+<b>Cc:</b>&nbsp;Strike, CJ &lt;<a href=3D"mailto:strike.cj@principal.com">s=
+trike.cj@principal.com</a>&gt;; Muller, Casie &lt;<a href=3D"mailto:Muller.=
+Casie@principal.com">Muller.Casie@principal.com</a>&gt;; Sorensen, Jess &lt=
+;<a href=3D"mailto:sorensen.jess@principal.com">sorensen.jess@principal.com=
+</a>&gt;;
+ Leyes, Mike &lt;<a href=3D"mailto:leyes.mike@principal.com">leyes.mike@pri=
+ncipal.com</a>&gt;; McCool, Bethany &lt;<a href=3D"mailto:McCool.Bethany@pr=
+incipal.com">McCool.Bethany@principal.com</a>&gt;; Lietz, Jacob &lt;<a href=
+=3D"mailto:Lietz.Jacob@principal.com">Lietz.Jacob@principal.com</a>&gt;;
+ Fox, Karen &lt;<a href=3D"mailto:Fox.Karen@principal.com">Fox.Karen@princi=
+pal.com</a>&gt;<br>
+<b>Subject:</b>&nbsp;[External] RE: Infosys/SNOW Issues and Concerns</span>=
+ <o:p></o:p></p>
+<div>
+<p class=3D"MsoNormal">&nbsp;<o:p></o:p></p>
+</div>
+</div>
+<div align=3D"center">
+<table class=3D"MsoNormalTable" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" width=3D"100%" style=3D"width:100.0%;background:#FF7000;border-colla=
+pse:collapse;box-sizing: border-box;border-spacing: 0px">
+<tbody>
+<tr style=3D"height:23.25pt">
+<td width=3D"1440" style=3D"width:15.0in;padding:2.5pt 2.5pt 2.5pt 2.5pt;he=
+ight:23.25pt">
+<p class=3D"MsoNormal" align=3D"center" style=3D"text-align:center"><b><spa=
+n style=3D"font-family:&quot;Arial&quot;,sans-serif;color:black">CAUTION:</=
+span></b><span style=3D"font-family:&quot;Arial&quot;,sans-serif;color:blac=
+k">&nbsp;This email originated from a source outside the Principal
+ network. Do not click links or open attachments unless you recognize the s=
+ender and know the content is safe. The original sender of this email is
+</span><span style=3D"font-family:&quot;Arial&quot;,sans-serif;color:#0076C=
+F"><a href=3D"mailto:david.brady@infosys.com">david.brady@infosys.com</a></=
+span><span style=3D"font-family:&quot;Arial&quot;,sans-serif;color:black">.=
+</span><o:p></o:p></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><span style=3D"font-size:11.0pt">Hi there Brittani,</span><o:p></o:p></p=
+>
+<p><span style=3D"font-size:11.0pt">&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"font-size:11.0pt">Apologies, I only got to this this morn=
+ing.&nbsp; Your larger (on-going) concerns aside, I have spoken to SN folks=
+ today and have Qs and Notes out to Infosys team members regarding the stat=
+e of your license consumption.&nbsp; The 2 most
+ pressing issues I see are:</span><o:p></o:p></p>
+<p><span style=3D"font-size:11.0pt">&nbsp;</span><o:p></o:p></p>
+<ul style=3D"margin-top:0in" type=3D"disc">
+<li class=3D"MsoNormal" style=3D"mso-list:l3 level1 lfo1"><b><span style=3D=
+"font-size:11.0pt">App engine</span></b><span style=3D"font-size:11.0pt">&n=
+bsp;=96 I spoke to SN today and they understand that we all made an agreeme=
+nt at a joint meeting about 3-4 weeks ago that
+ a) you use it, b) the consumption dashboard available to you doesn=92t cou=
+nt it accurately (at all actually) and that c) until you are provided an ac=
+curate count, there is no action in this area. &nbsp;Unfortunately, the lic=
+enses were systemically retired anyway,
+ as there is a date on them in the instance.&nbsp; I am meeting with Devon =
+and team tomorrow to review all of this, and part of that agenda is to ensu=
+re that this is corrected ASAP.</span><o:p></o:p></li><li class=3D"MsoNorma=
+l" style=3D"mso-list:l3 level1 lfo1"><b><span style=3D"font-size:11.0pt">Ne=
+w SPM Licenses</span></b><span style=3D"font-size:11.0pt">&nbsp;=96 well, t=
+hey should be there in your instance and they are not.&nbsp; In a perfect s=
+torm of absenteeism, Elton has
+ been sick all week, Hemanth is traveling in India and working on IST hours=
+ and the SN rep responsible for finalizing and processing order forms was o=
+ut today as well.&nbsp; I have email out to all of them regarding where the=
+se licenses are (you are correct, the
+ amendment 7&nbsp; paperwork has been completed mid-Dec but there is also o=
+ther paperwork between Infy and SN that I am trying to chase down).&nbsp; I=
+ expect to hear from Hemanth tonight and hopefully the SN order processor f=
+irst thing in the morning, and then I can
+ drive to square this one away.</span><o:p></o:p></li></ul>
+<p><span style=3D"font-size:11.0pt">&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"font-size:11.0pt">As for the others, SAM is a pre-buy and=
+ should not be in your instance at all, the iHub starter is not required as=
+ you already own iHub Enterprise, and AI Starter is an unused freebee that =
+should not be in the instances.&nbsp; I
+ will work with the team to ensure these are removed from you instance and =
+do not show up on the report any longer.</span><o:p></o:p></p>
+<p><span style=3D"font-size:11.0pt">&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"font-size:11.0pt">If you would please give the team anoth=
+er 24 hours to straighten things out, I would appreciate it.&nbsp; This hol=
+iday season was not the best for communications.&nbsp; That said, I will wo=
+rk with the team to a) get all of this addressed
+ ASAP and b) work with you on the joint periodic license meetings you have =
+proposed previously.&nbsp; I will give you a call in the morning.</span><o:=
+p></o:p></p>
+<p><span style=3D"font-size:11.0pt">&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"font-size:11.0pt">Regards,</span><o:p></o:p></p>
+<p><span style=3D"font-size:11.0pt">Dave B<br>
+508-254-4097</span><o:p></o:p></p>
+<p><span style=3D"font-size:11.0pt">&nbsp;</span><o:p></o:p></p>
+<div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</div>
+<p style=3D"margin:5.0pt"><span style=3D"font-size:9.0pt;font-family:&quot;=
+FS Elliot Pro&quot;;color:#737373">Classification: Internal Use<o:p></o:p><=
+/span></p>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p><b><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-=
+serif">From:</span></b><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif">&nbsp;Cheeseman, Brittani &lt;<a href=3D"mailto:che=
+eseman.brittani@principal.com">cheeseman.brittani@principal.com</a>&gt;<br>
+<b>Sent:</b>&nbsp;Friday, January 3, 2025 12:49 PM<br>
+<b>To:</b>&nbsp;David Brady &lt;<a href=3D"mailto:david.brady@infosys.com">=
+david.brady@infosys.com</a>&gt;; Nathan Ogbourne &lt;<a href=3D"mailto:nath=
+an.ogbourne@infosys.com">nathan.ogbourne@infosys.com</a>&gt;; Hemambaradara=
+ Rao Erra &lt;<a href=3D"mailto:HemambaradaraRao_E@infosys.com">Hemambarada=
+raRao_E@infosys.com</a>&gt;;
+ Elton Martin Barretto &lt;<a href=3D"mailto:Elton_Barretto@infosys.com">El=
+ton_Barretto@infosys.com</a>&gt;; Brad Wiggins &lt;<a href=3D"mailto:brad.w=
+iggins@servicenow.com">brad.wiggins@servicenow.com</a>&gt;; D=E9von Carew &=
+lt;<a href=3D"mailto:devon.carew@servicenow.com">devon.carew@servicenow.com=
+</a>&gt;<br>
+<b>Cc:</b>&nbsp;Strike, CJ &lt;<a href=3D"mailto:strike.cj@principal.com">s=
+trike.cj@principal.com</a>&gt;; Muller, Casie &lt;<a href=3D"mailto:Muller.=
+Casie@principal.com">Muller.Casie@principal.com</a>&gt;; Sorensen, Jess &lt=
+;<a href=3D"mailto:sorensen.jess@principal.com">sorensen.jess@principal.com=
+</a>&gt;;
+ Leyes, Mike &lt;<a href=3D"mailto:leyes.mike@principal.com">leyes.mike@pri=
+ncipal.com</a>&gt;; McCool, Bethany &lt;<a href=3D"mailto:McCool.Bethany@pr=
+incipal.com">McCool.Bethany@principal.com</a>&gt;; Lietz, Jacob &lt;<a href=
+=3D"mailto:Lietz.Jacob@principal.com">Lietz.Jacob@principal.com</a>&gt;;
+ Fox, Karen &lt;<a href=3D"mailto:Fox.Karen@principal.com">Fox.Karen@princi=
+pal.com</a>&gt;<br>
+<b>Subject:</b>&nbsp;Infosys/SNOW Issues and Concerns</span><o:p></o:p></p>
+</div>
+<p>&nbsp;<o:p></o:p></p>
+<p><b><span style=3D"font-size:13.0pt;font-family:&quot;Calibri sans-serif&=
+quot;;color:yellow;background:red">[**EXTERNAL EMAIL**] Please verify sende=
+r address and exercise caution before clicking on any link.</span></b><o:p>=
+</o:p></p>
+<p><span style=3D"color:#333333">Hello Dave and team,</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">There seems to be confusion that has been =
+happening since our(Dave, Casie, Brittani) conversation on December 16<sup>=
+th</sup>&nbsp;where Infosys requested =93Renewal=94 of a handful of license=
+s. As we discussed within that meeting, our
+ renewal date is not until June and the only item that previously was not c=
+o termed with our purchase date was SPM licenses(Amendment 7 co termed thes=
+e). Along with the discrepancy around the &quot;renewal&quot; date there we=
+re questions and issues that Principal posed
+ back to Infosys on several different licenses that needed to be addressed =
+before conversations could continue.&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">On Friday&nbsp;the 27<sup>th</sup>&nbsp;an=
+d Monday 30<sup>th</sup>&nbsp;several Principal team members were needing t=
+o provide(at Infosys request) last-minute information to Infosys and Servic=
+eNow to make sure that nothing in our instance was
+ turned off or adjusted . Also, at the same time we were requested to confi=
+rm we had received SPM licenses(not currently showing in our instance) and =
+requested to track down a couple POs that Accounting said they had not rece=
+ived.&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">&nbsp;</span><o:p></o:p></p>
+<p>&nbsp;<o:p></o:p></p>
+<p><span style=3D"color:#333333">Please find the list below of concerns:</s=
+pan><o:p></o:p></p>
+<p><span style=3D"color:#333333">&nbsp;</span><o:p></o:p></p>
+<p style=3D"margin-left:38.25pt;text-indent:-.25in"><span style=3D"font-siz=
+e:10.0pt;font-family:Symbol;color:#333333">=B7</span><span style=3D"font-si=
+ze:7.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#333333">&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style=3D"color:#333333">Why does several of our items show exp=
+ired on the attached document? Who is responsible for getting these updated=
+? What are next steps? Time frame?</span><o:p></o:p></p>
+<p style=3D"margin-left:38.25pt;text-indent:-.25in"><span style=3D"font-siz=
+e:10.0pt;font-family:Symbol;color:#333333">=B7</span><span style=3D"font-si=
+ze:7.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#333333">&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style=3D"color:#333333">Where do our current SPM licenses stan=
+d? The signed Amendment 7 was sent to Infosys on December 12<sup>th</sup>&n=
+bsp;and the contract was countersigned by Infosys on December 16<sup>th</su=
+p>&nbsp;but according to the report it shows
+ that our contract/licenses are expired.&nbsp;</span><o:p></o:p></p>
+<ul style=3D"margin-top:0in" type=3D"disc">
+<ul style=3D"margin-top:0in" type=3D"circle">
+<li class=3D"MsoNormal" style=3D"color:#333333;mso-list:l1 level2 lfo2">Whe=
+n we make purchases what is the timeframe that we should expect them to sho=
+w up in our instance?<o:p></o:p></li></ul>
+</ul>
+<p style=3D"margin-left:38.25pt;text-indent:-.25in"><span style=3D"font-siz=
+e:10.0pt;font-family:Symbol;color:#333333">=B7</span><span style=3D"font-si=
+ze:7.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#333333">&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style=3D"color:#333333">What happened from the conversation th=
+at was had on December 16<sup>th</sup>&nbsp;where questions were posed back=
+ to Infosys regarding the ITSM Developer licenses, the incorrect renewal da=
+te, and the App Engine licenses. I know
+ that I personally spoke with Infosys on the 18<sup>th</sup>&nbsp;and was t=
+old that we did not need to worry about these at this time because of the d=
+iscrepancies that were happening and questions that were raised. From what =
+occurred on the &nbsp;30<sup>th</sup>&nbsp;this
+ sentiment did not seem to be shared across the Infosys team.&nbsp;&nbsp;</=
+span><o:p></o:p></p>
+<p style=3D"margin-left:38.25pt;text-indent:-.25in"><span style=3D"font-siz=
+e:10.0pt;font-family:Symbol;color:#333333">=B7</span><span style=3D"font-si=
+ze:7.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#333333">&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style=3D"color:#333333">Why was there conversations around rem=
+oving a license(app engine) that we actively use?</span><o:p></o:p></p>
+<ul style=3D"margin-top:0in" type=3D"disc">
+<ul style=3D"margin-top:0in" type=3D"circle">
+<li class=3D"MsoNormal" style=3D"color:#333333;mso-list:l2 level2 lfo3">Why=
+ is Infosys not reaching out to Principal to speak with us around removing =
+any of the licenses that we have attached to our&nbsp;account?&nbsp;<o:p></=
+o:p></li></ul>
+</ul>
+<p style=3D"margin-left:38.25pt;text-indent:-.25in"><span style=3D"font-siz=
+e:10.0pt;font-family:Symbol;color:#333333">=B7</span><span style=3D"font-si=
+ze:7.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#333333">&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style=3D"color:#333333">When and to whom was a Change Request =
+sent to that address the App Engine licenses?</span><o:p></o:p></p>
+<p style=3D"margin-left:38.25pt;text-indent:-.25in"><span style=3D"font-siz=
+e:10.0pt;font-family:Symbol;color:#333333">=B7</span><span style=3D"font-si=
+ze:7.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#333333">&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style=3D"color:#333333">Timeliness of invoicing - December 30<=
+sup>th</sup>&nbsp;I was requested to track down two POs that Infosys Accoun=
+ting had said they had not received.&nbsp; I resent both POs to Infosys; On=
+e Po was sent/issued in 2022, and the other
+ was sent/issued in March of 2024. As I understand year end clean-up, invoi=
+cing has been a point of concern for us in the past.&nbsp; The team is a bi=
+t confused on why invoices are not being issued on or close to the agreed u=
+pon dates. If you can give us insight
+ that would allow us to better understand that would be very much appreciat=
+ed.</span><o:p></o:p></p>
+<p style=3D"margin-left:38.25pt;text-indent:-.25in"><span style=3D"font-siz=
+e:10.0pt;font-family:Symbol;color:#333333">=B7</span><span style=3D"font-si=
+ze:7.0pt;font-family:&quot;Times New Roman&quot;,serif;color:#333333">&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style=3D"color:#333333">Timeliness of responses - Questions su=
+rrounding licenses have been ongoing for several months. Whether it be new =
+purchase or existing licenses answers take several follow ups and several m=
+eetings to get answers. I have requested
+ a biweekly meeting since the beginning of November to meet with Infosys an=
+d ServiceNow Licensing /Sourcing team to help bring clarity to conversation=
+s around purchases and licenses. This is something I very much believe coul=
+d have avoided this confusion and
+ last-minute scramble.&nbsp; It is also frustrating that we have been discu=
+ssing many of the issues and discrepancies for months now with Infosys on o=
+ur biweekly calls and the situation still came to Principal people that wer=
+e off work needing to jump on and respond
+ on last minute items.&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">With this high-level information, I think =
+you can understand this last-minute scramble is very frustrating, and we ne=
+ed to set up time for us to discuss and address these issues.</span><o:p></=
+o:p></p>
+<p><span style=3D"color:#333333">&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">Please let me know times that your team ha=
+s available at the end of next week/beginning of the following.</span><o:p>=
+</o:p></p>
+<p><span style=3D"color:#333333">&nbsp;</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">Thank you,<br>
+Brittani</span><o:p></o:p></p>
+<p><span style=3D"color:#333333">&nbsp;</span><o:p></o:p></p>
+<p><b><span style=3D"color:black">Brittani Cheeseman</span></b><o:p></o:p><=
+/p>
+<p><span style=3D"color:black">Sr Infrastructure Engineer II</span><o:p></o=
+:p></p>
+<p style=3D"background:white"><span style=3D"color:black">Enterprise Capaci=
+ty Planning &amp; IT Asset Management</span><o:p></o:p></p>
+<p style=3D"background:white"><span style=3D"color:black">Pronouns: she/her=
+/hers</span><o:p></o:p></p>
+<p><span style=3D"color:black">Principal | Des Moines, IA 50392</span><o:p>=
+</o:p></p>
+<p><img border=3D"0" width=3D"165" height=3D"48" style=3D"width:1.7222in;he=
+ight:.5in" id=3D"x_x_Picture_x0020_1" src=3D"cid:image001.png@01DB62A8.BE2A=
+1BA0" alt=3D"principal_st_full"><o:p></o:p></p>
+<p>&nbsp;<o:p></o:p></p>
+<p>&nbsp;<o:p></o:p></p>
+<p style=3D"margin:5.0pt"><span style=3D"font-size:9.0pt;font-family:&quot;=
+FS Elliot Pro&quot;;color:#737373">Classification: Internal Use</span><o:p>=
+</o:p></p>
+<p>-----Message Disclaimer-----<br>
+This email is intended for the recipient specified in this message. It may =
+contain information that is privileged, confidential and exempt from disclo=
+sure under applicable laws. If you are not the intended recipient, sharing =
+or copying this communication is
+ prohibited. If received in error, please send a note to <u><span style=3D"=
+color:#467886"><a href=3D"mailto:connect@principal.com"><span style=3D"colo=
+r:#467886">connect@principal.com</span></a></span></u>&nbsp;and delete the =
+original message and any attachments. Principal
+ Financial Group or any of its member companies may retain emails as requir=
+ed by law or regulation. This email is not an electronic signature, unless =
+a specific statement to the contrary is included in this message.<br>
+<br>
+To unsubscribe from marketing communications, go to <u><span style=3D"color=
+:#467886"><a href=3D"https://url.us.m.mimecastprotect.com/s/Hed6CW69PBf6w5O=
+yLfxhWSoIEWt?domain=3Dprincipal.com"><span style=3D"color:#467886">www.prin=
+cipal.com/do-not-contact-form</span></a></span></u>.<o:p></o:p></p>
+<div>
+<p class=3D"MsoNormal">-----Message Disclaimer-----<br>
+This email is intended for the recipient specified in this message. It may =
+contain information that is privileged, confidential and exempt from disclo=
+sure under applicable laws. If you are not the intended recipient, sharing =
+or copying this communication is
+ prohibited. If received in error, please send a note to <a href=3D"mailto:=
+connect@principal.com">
+connect@principal.com</a> and delete the original message and any attachmen=
+ts. Principal Financial Group or any of its member companies may retain ema=
+ils as required by law or regulation. This email is not an electronic signa=
+ture, unless a specific statement
+ to the contrary is included in this message. <br>
+<br>
+To unsubscribe from marketing communications, go to <a href=3D"https://url.=
+us.m.mimecastprotect.com/s/Hed6CW69PBf6w5OyLfxhWSoIEWt?domain=3Dprincipal.c=
+om">
+www.principal.com/do-not-contact-form</a>.<o:p></o:p></p>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+--_000_PH0PR15MB46885BB48F6D5FFDB46D7D83FE132PH0PR15MB4688namp_--
+
+--_004_PH0PR15MB46885BB48F6D5FFDB46D7D83FE132PH0PR15MB4688namp_
+Content-Type: image/png; name="image001.png"
+Content-Description: image001.png
+Content-Disposition: inline; filename="image001.png"; size=7004;
+	creation-date="Thu, 09 Jan 2025 20:23:03 GMT";
+	modification-date="Thu, 09 Jan 2025 20:23:03 GMT"
+Content-ID: <image001.png@01DB62A8.BE2A1BA0>
+Content-Transfer-Encoding: base64
+
+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
+
+--_004_PH0PR15MB46885BB48F6D5FFDB46D7D83FE132PH0PR15MB4688namp_--

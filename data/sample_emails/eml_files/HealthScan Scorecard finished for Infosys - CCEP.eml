@@ -1,0 +1,386 @@
+Received: from DS0PR08MB9257.namprd08.prod.outlook.com (2603:10b6:8:193::13)
+ by DS7PR08MB10577.namprd08.prod.outlook.com with HTTPS; Fri, 10 Jan 2025
+ 18:52:01 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=TmKVtaZXxkWLLn930w6PS+pfcrRIkHyxeODM1czVPUZAL5mlCG3yQ7K87MZstFE+MErT7qVL9E4ncEU3kZzOm68APCBrpiGG6RbF2erDvBZzOQct3ftjNM04cZGUsCqRooPs1aOGpUAEJzpNLpBG3dx1HZr70aAQWg9vNpQt1NQ5Y0AUib8CZq/nFTUnbFxaOSuQwllOB84r6rBTj0GLQy8cZqUZKnl4d9tBRSwskE9Xya+shq9L6nQAImF0YmiCYVq5sbYOWzLjRN2jVOMW0KKxfNoGEDIJ0iu+wFTWSLdDo7DQOd7zQTxZ9W1tg6apUNoltPt7QjlgTECzuYkBHQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yj8uR+eOthYY2eN5PKb68T96ryBgCFSZ6LtcDVPNVoE=;
+ b=o/u5133hZbsNonZAk5mpC4DC+Y21dm4i0z4ZYeBbbbaI/HyzCQRU5ozPtamP/RYNh0loVcj6rWP5zG4sXPoyTFGOOZ5hyUSDSwsgth0wR5fPqktwuV19vORkDCe3aKE6XnZ8CVpCSWTpDzbUdAaRyqUGm8wxAWr1JdEmm2QO3rA2yvWJQ6kWGyG82cUK7PLfDWQOB/NZ68KuMvxCEs6F//Xt5HyWqgEG0TGjq3BHAgooMr3svVCgPhtd+oIgWB8v1iCYTCfND0Z/5LFGGC7G5lF34/wvvotRPhvXnin2qqyV1wf+x752dTPUlDxlZlfKnKkNVoysQkSU88fE1EssFA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=softfail (sender ip
+ is 170.10.132.61) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=service-now.com; dmarc=fail (p=reject sp=reject pct=100)
+ action=oreject header.from=service-now.com; dkim=fail (body hash did not
+ verify) header.d=service-now.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from SJ0PR05CA0016.namprd05.prod.outlook.com (2603:10b6:a03:33b::21)
+ by DS0PR08MB9257.namprd08.prod.outlook.com (2603:10b6:8:193::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.11; Fri, 10 Jan
+ 2025 18:51:59 +0000
+Received: from SJ5PEPF000001EB.namprd05.prod.outlook.com
+ (2603:10b6:a03:33b:cafe::e8) by SJ0PR05CA0016.outlook.office365.com
+ (2603:10b6:a03:33b::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.8 via Frontend Transport; Fri,
+ 10 Jan 2025 18:51:58 +0000
+Authentication-Results: spf=softfail (sender IP is 170.10.132.61)
+ smtp.mailfrom=service-now.com; dkim=fail (body hash did not verify)
+ header.d=service-now.com;dmarc=fail action=oreject
+ header.from=service-now.com;compauth=none reason=451
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ service-now.com discourages use of 170.10.132.61 as permitted sender)
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.132.61) by
+ SJ5PEPF000001EB.mail.protection.outlook.com (10.167.242.199) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8335.7
+ via Frontend Transport; Fri, 10 Jan 2025 18:51:58 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1736535117;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:dkim-signature;
+	bh=yj8uR+eOthYY2eN5PKb68T96ryBgCFSZ6LtcDVPNVoE=;
+	b=cuDux5IIWIsXiuSNtObCAJLjcepzBtq099ejsQMBbwWlNbvBUo3p+AHVx1Kej7Q5WwWwVm
+	59xKHgWZvBoddS8wZipo0QhhkolkcUV0Iu4/AZ5sjS/fA4F7PD5aO4DWO9FSffa0+zenUI
+	PUPbaEkBiss0Df9LsHidAemO0zRMNLIj7iFDTGDS8+z5uN/8kHJ1sbpR8GK5vIKe6YFcdt
+	c+D4lQycAIX/nmdMI1pF4YwFDSZemp/ac/0RuP+z9KYbYAvQq9pH/MzHs13TMIKgLGyWTH
+	W5IVX228At6yRbq8LAvnu3ejXtOKJky17jbdyTrrkqYrBXGbXCcN7ZeS40LMgA==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1736535117; a=rsa-sha256;
+	cv=none;
+	b=UxOSIa1DFwvu8fhpmPBBzDyPh9NrtnweMVNX4k2qBG2fx5d/JXyzrXBT51UI4lJvRjGBCF
+	XaO7IGLbicNPtlo3KiD8l3twX1/zg67lxnI9dNuIrXXSp9nzeJZq1+UNBkxSX9RbDcbN4M
+	Jp8aWjtVFGF0nawgEWlXTA/SXIyouCpTZz+koMtLXrwEahU1g5sRjEvDLqwT5lAuFIPre5
+	ADeFsrWB26g1i6tHuD65DlOBHlZA5dwgwaTMoPKsBH83d02ICb6uZg8gtJfYbihxNKPkFT
+	aJy7mrUgcs6GTQAzVT3FNX+Vv0WUvExMekkxEstepFXhXndunsmD3HYoiWPe8g==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=service-now.com header.s=6e326c68-2ce5-11ef-b5c8-0050568cadb3 header.b=eiU4aOC4;
+	dmarc=pass (policy=reject) header.from=service-now.com;
+	spf=pass (relay.mimecast.com: domain of healthscan@service-now.com designates 199.91.141.23 as permitted sender) smtp.mailfrom=healthscan@service-now.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=service-now.com header.s=6e326c68-2ce5-11ef-b5c8-0050568cadb3
+ header.b=eiU4aOC4;	dmarc=pass (policy=reject) header.from=service-now.com;
+	spf=pass (relay.mimecast.com: domain of healthscan@service-now.com designates
+ 199.91.141.23 as permitted sender) smtp.mailfrom=healthscan@service-now.com
+Received: from outbound38.service-now.com (outbound38.service-now.com
+ [199.91.141.23]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-198-ERsikdViPXaLAqWRWAHXQg-1; Fri, 10 Jan 2025 13:51:56 -0500
+X-MC-Unique: ERsikdViPXaLAqWRWAHXQg-1
+X-Mimecast-MFC-AGG-ID: ERsikdViPXaLAqWRWAHXQg
+Received: from app151033.phx201.service-now.com (unknown [10.249.57.169])
+	by outbound38.service-now.com (Postfix) with ESMTP id 6F94060000B9
+	for <rob.spence@servicenow.com>; Fri, 10 Jan 2025 10:51:55 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 outbound38.service-now.com 6F94060000B9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=service-now.com;
+	s=6e326c68-2ce5-11ef-b5c8-0050568cadb3; t=1736535115; x=1737744715;
+	bh=zVZsSf5j3ROeaiAvteldsV8ojNIa8Q+BeoQBIrxvxpM=;
+	h=Date:From:Reply-To:To:Message-ID:Subject:From:To:Cc:Date:Subject;
+	b=eiU4aOC4fRhJi8W1Y+EUcdyu84dRZ5gsFDVMhZMr/gi0BudOJhqojMya0tNg6+C5+
+	 HLFFLGq4C5cjhkaXoTYDTUQFPqAMstrgJ+wcgYaxkjjBqFpOA/rayJDl6MttqaiB1+
+	 H7BvibfbsBNUIjuClBQvi/Ep5hsQctSh5syTEpBaPO3jBglytWHZEblWAyfGmnTaX9
+	 S6OoeLiv7BtFZN+468SEmmtBcsnJlFA+9336PTXCP94xjwz0tnSA3popsNwRNmwWiR
+	 fmU8FufBu4BdpCJJh1sJKWt9v1aY3B7m6/fioJTpWvkd6y9Bgzq9fNBAza9qNyfXVo
+	 258/Q2zzRnBYQ==
+Date: Fri, 10 Jan 2025 10:51:55 -0800 (PST)
+From: ServiceNow HealthScan <healthscan@service-now.com>
+Reply-To: ServiceNow HealthScan <healthscan@service-now.com>
+To: rob.spence@servicenow.com
+Message-ID: <1707341309.3105.1736535115445@app151033.phx201.service-now.com>
+Subject: HealthScan Scorecard finished for Infosys - CCEP
+X-ServiceNow-Source: Notification-dfcaf1a713b94344e0dcb2566144b09c
+X-ServiceNow-SysEmail-Version: 2
+Precedence: bulk
+Auto-Submitted: auto-generated
+X-ServiceNow-Generated: true
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: NRzvLXOm5tBQfT5I1PDaLlm5t8QoEkr38VMINVdNNwc_1736535115
+Content-Type: multipart/related;
+	boundary="----=_Part_3104_2135457995.1736535115439"
+Return-Path: healthscan@service-now.com
+X-MS-Exchange-Organization-ExpirationStartTime: 10 Jan 2025 18:51:58.9855
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: b7b01e3a-4bb0-4132-bc1b-08dd31a7dcc7
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EB:EE_|DS0PR08MB9257:EE_|DS7PR08MB10577:EE_
+X-MS-Exchange-Organization-AuthSource: SJ5PEPF000001EB.namprd05.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: b7b01e3a-4bb0-4132-bc1b-08dd31a7dcc7
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-BypassClutter: true
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|82310400026|2092899012|12012899012|3072899012|4076899003|8096899003;
+X-Forefront-Antispam-Report: CIP:170.10.132.61;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-inbound-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(82310400026)(2092899012)(12012899012)(3072899012)(4076899003)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2025 18:51:58.6730
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7b01e3a-4bb0-4132-bc1b-08dd31a7dcc7
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF000001EB.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR08MB9257
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:02.9193444
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8335.010
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?b3Z0YlAyWHJocVhHSVc2d1o5NXRwOGxFaHdWMm55RE12T1MrZDNXN21LK1lr?=
+ =?utf-8?B?YS9lMUVLRUtaZzBoa0Q5ZnIxOXRKN1NydW94QnNuWjQwOTlOeWpPOVRkclln?=
+ =?utf-8?B?dVN0U21aNm9xLzBwZjhDc0M3U1pwN1B1Q29Qb2JVVjJ2TjU0WGtpQlA2Mmg5?=
+ =?utf-8?B?ZHkrUG1ESVZMRUttcG9KcHppV0dyVGRiaWh0T3NIQWdYNkRUZmVkTzd0UEZD?=
+ =?utf-8?B?U0JjK1pvckNVVkNIdGFkSnlrS1Vwd1R1SFVwV1d0ZGhXbjlmdDdCYnBMS3RJ?=
+ =?utf-8?B?QU0wNDdCamxLcUk4ZjI5a24yd3Fpb2VGSVczUkxXNVJWMGVlVEFRVWhPdVRI?=
+ =?utf-8?B?UmhJV1FqOUNFWklDSE41SUYvMjdraE9UOG15WkU0U3J6ZHdsRFBXT2pVeDdH?=
+ =?utf-8?B?TTg4SVJvazZHSktEZURoODA5QkZDQ0t5UUlPbVNKQVRpYXlmY1pnWjFlZGp0?=
+ =?utf-8?B?UmNGMEZkUDJuN0FNZm82eG85ZzFrajNJWTU5NHU0OWJ5UlRHZHN2bmoyZGl3?=
+ =?utf-8?B?SG4ycDV3dVdINkFxSFhaU2pTVjFLa2lldjUxNXZpYlhLbEJmVnpmZGhWSkRC?=
+ =?utf-8?B?TmJuUWorUVBvRHFHVnh0OUdMZEFhV2xoMlFxcUtWWWdocERoQXZlZWUyRTVE?=
+ =?utf-8?B?Y2x5K1pFenZIZDZrN2pDMEgzL0NPcDRaenB1ZU5SN0gzYk5qV3R0TDBHamRY?=
+ =?utf-8?B?cHhxY1ZNZS82dmQrSGhieFU4UEZoSGpEOFlOUGJPZGhta0ZiVzFxNXQwOFph?=
+ =?utf-8?B?clJ4Qk9jQnNYZ3lESGwxdjRGSUJPYnNxUEtpV0lYb0hYWk1kajI3YVo4Y0Y5?=
+ =?utf-8?B?VjVtM3ZOQTlYeG1iak9EMVUyQmNVd1l4WkJWcnV1NFZ5NVRFR2JBY0RSK3RC?=
+ =?utf-8?B?MkRXWE9Ibi82bzBiTWJOLzdZVGMxUVZsM25Ga0twY0R3YTh6blFEOTJrQ0Zy?=
+ =?utf-8?B?bFA5YjE3R2JzbWd4SVE5MmtPK1lVeC81cUErditpTTlIZUJUL1ZXaUE0SHl6?=
+ =?utf-8?B?MVJhY3dYRlllYnh2VmpUdy9sVzE1aTR2SlVvOCtKZ0NXd1ZiV3M5ZTBtdVpO?=
+ =?utf-8?B?c2w0aDE2VFFrMk13TGJHZ1ZkOER0UUV6Mm1TV2pVTTRVeUpDY1lXRnVKRm9j?=
+ =?utf-8?B?RXZVRU9IaGQ3dW93V1cvYjRFODNUVEpsdi8yZzNDN09lck8xd3M3N1orMTNj?=
+ =?utf-8?B?bTA2TXJHUThjZEE0Y09ISXN4a2htbXNDVGYwSCtsMERBTXUvcGdMOHlMSTU5?=
+ =?utf-8?B?aDZPMEJLMDZHTXpCLzNEWXQxcFZacGdLVE9jTjZQR2xOTThSQmVUS0w2bjZW?=
+ =?utf-8?B?REJqT1E3eUduOGdUN0FydUtJZzZidGhXYWMzM2tIZW1ZS1JGRWZzcU0zMTdJ?=
+ =?utf-8?B?azFGZi9BWm4wNU5qOEFldzJMTHgxYnJBYW1hN2lzWWdHSGpPYTdZMFJBb1Yw?=
+ =?utf-8?B?U3BBMTVFUGJOTE5UTy90cnY3N2w1RmlXZ2RYZ2VVVTdlZnNHenZlVzZjZVFq?=
+ =?utf-8?B?T0V5Ukg4VDhUaUhWY25IWkc2K3ByVUNtdFlsVEVhbGJNeDgyTjA3clUzL2hJ?=
+ =?utf-8?B?NysxUlZLcFluTHFkMGt1VWNuZmxLVGdja0Q4Y1ppYmZNZmx5WHNnTW5ZYWFa?=
+ =?utf-8?B?QnF4WitBMTJRaE1sWEJWWStUb2cvSHQybW1Dd0ZuU3lsMkJOM3pkZk1pSHpX?=
+ =?utf-8?B?dVBqT3ZUdFc1bVZSbXF3OUdXbHJxaER1dkp4R0k5UGhWb1MxenZ6QldXdnZJ?=
+ =?utf-8?B?TDBFNUxmMDgvOXRBREc1RWJ3YWRKVkxZQmg3MVpaeGxZVFIxZXQ3ODdndEFH?=
+ =?utf-8?B?NTJXYm9aTWswYzg3V3ZBQmxjb3ZjNTg2V3M5OUY1TU56QUFQTitqYkQzVnI1?=
+ =?utf-8?B?cm1FNWhrODQxaFF2Y3NIa2dvbEh1V01ZODJxQmt6UXFGVXlxNkdPemxTRlBE?=
+ =?utf-8?B?S3RPV1N6U3pMbXhwTThIUlR3aU0wVVdQbkh1VHhURHhYWXZvVW96NnhHVWFY?=
+ =?utf-8?B?K1Y0ZGxwSEl1MThzbnRmbVlOQlA5emlJOEt1S1FCWkMyN05DMVhkRDIwdTEw?=
+ =?utf-8?B?eTdTVjV4S3hTOWV1MXhoVGVwNnlCVzV4UFZwVU9hVm9GQWY3NUZRTjNRMTFL?=
+ =?utf-8?B?MUh4VEFPVU9HQzc2aks4YWJmWlVHQlhUOEVVMk5qSE9MdWkwbnFkd2kxcllM?=
+ =?utf-8?B?UW9IcURJVU5kalk1S0dzN0RsaFAwY3BpNkVvZlhabXNWMy9NaWdtVEdac2lw?=
+ =?utf-8?B?dGFnUXVzTlIvbldVTjFjL3JoWUNRckJ6MWRQMFRhZXJZb096bUdPTEFIZ1k4?=
+ =?utf-8?B?Q3gvdlJ1eGRkWmo2Yjl0MDNUcVU4SStoVXI5bWErWUJrTzJVL2dkeHpBNFA4?=
+ =?utf-8?B?TzFqclArbEcwd09MbGpzZkNUdW5abXh2VGtJaTZxSzI1c2FHSlE5UVpxUWEz?=
+ =?utf-8?B?ckVQcmxGZFZjd2FiMkdsanpYUSttaFhYVWZGdmR2U1VCN1AraUpSRjNVMXI0?=
+ =?utf-8?B?UnJLUXNyZzR0QUtkSkFvQzVrVndhZXFoYThlNmYxUno4Qzcwa2ZpWUYwbGlK?=
+ =?utf-8?B?WWpVeDRyQlRTS04yR0ZRazVZb3Y1Nnc3OTRZdERkV0RKU2pNQk91TGlSZ1F1?=
+ =?utf-8?B?WWpXeVIyMDRyRDRHaGpWSXZGM0hudk51V0dhTW1NN0FzdjlIOVlBakxkdGx3?=
+ =?utf-8?B?cVhCZ2dmYlVFT0dsZ3RlSWxXUnpnaEdRR1JFbXJ3aCtwMjk0dStjcUVJc2VL?=
+ =?utf-8?B?YXBERTZpUDlyY3Y1Zk5BSlFKMWJhTHFvMXh6ZjZqeG9aU09xa3RUOUZIUGx1?=
+ =?utf-8?B?aDhLRDJIbldYZXp2REVkYjc2Uis1Qi91VjVxUXNyVHgyaVhJd2lIaUFFLzYw?=
+ =?utf-8?Q?SYap6mHUPJC11BQkuupv8PrCIzUjiDDV/VCnKjPI=3D?=
+MIME-Version: 1.0
+
+------=_Part_3104_2135457995.1736535115439
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+
+<html><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"></=
+head><body><p>&nbsp;</p>
+<div class=3D"container" style=3D"width: 100%; background-color: #f0f0f0; m=
+argin: 0px; padding-top: 40px; text-align: center;"><p><img style=3D"align:=
+ baseline;" title=3D"" src=3D"cid:pie_banner.pngx@SNC.ab381e009ee4c10" alt=
+=3D"" align=3D"baseline" border=3D"" hspace=3D"" vspace=3D""></p>
+<table class=3D"mainTable" style=3D"width: 720px; margin-left: auto; margin=
+-right: auto; padding: 0px; border-width: 0px; border-collapse: collapse;" =
+cellpadding=3D"0">
+<tbody><!-- Logo --><!-- Recipient & Subject -->
+<tr>
+<td>
+<div style=3D"padding: 40px 60px 0px 60px; border-bottom: 1px solid #ddd; b=
+ackground-color: #fff;">
+<div class=3D"recipientName" style=3D"font-size: 24px; color: #2e2e2e; marg=
+in-bottom: 10px; font-weight: bold;" align=3D"left">Hi,</div>
+<div class=3D"subject" style=3D"font-size: 16px; color: #646464; margin-bot=
+tom: 20px;" align=3D"left">The scan you've requested has finished.</div>
+</div>
+</td>
+</tr>
+<!--  Content -->
+<tr>
+<td>
+<div style=3D"padding: 20px 60px 40px 60px; background-color: #fff;"><!-- T=
+O DO -->
+<div class=3D"description" style=3D"font-size: 16px; color: #646464; line-h=
+eight: 24px; margin-bottom: 15px;" align=3D"left">Details of the scan:</div=
+>
+<div class=3D"description" style=3D"font-size: 15px; color: #646464; line-h=
+eight: 24px;" align=3D"left">
+<table class=3D"detailsTable" style=3D"width: 601px;" border=3D"0">
+<tbody>
+<tr>
+<td style=3D"font-weight: bold;">Customer:</td>
+<td>Infosys - CCEP</td>
+</tr>
+<tr>
+<td style=3D"font-weight: bold;">Instance:</td>
+<td>cokeccep</td>
+</tr>
+<tr>
+<td style=3D"font-weight: bold;">State:</td>
+<td>Complete </td>
+</tr>
+<tr>
+<td style=3D"font-weight: bold;">Type:</td>
+<td>Scorecard</td>
+</tr>
+<tr>
+<td style=3D"font-weight: bold;">Finished at:</td>
+<td>2025-01-10 10:45:45 PST</td>
+</tr>
+<tr>
+<td style=3D"font-weight: bold;">Scan Duration:</td>
+<td>59 Minutes</td>
+</tr>
+</tbody>
+</table>
+<span style=3D"font-size: 10pt;"></span></div>
+<div class=3D"description" style=3D"font-size: 13px; color: #646464; line-h=
+eight: 24px; margin-bottom: 5px;" align=3D"left">See the results of the sca=
+n: <a href=3D"https://healthscan.service-now.com/hsp?id=3Dhealthscan_scan_i=
+nprogress&amp;sys_id=3Dbfcc5a8dc38352145778dfa6050131d9">View the results</=
+a></div>
+<div>&nbsp;</div>
+<div style=3D"font-size: 13px; color: #646464; line-height: 24px; margin-bo=
+ttom: 5px;" align=3D"left"><a href=3D"https://healthscan.service-now.com/hs=
+p?id=3Dhs_definition_results">Click here</a> to rank definitions and help t=
+une HealthScan's precision.</div>
+</div>
+</td>
+</tr>
+<!-- Footer -->
+<tr>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>&nbsp;</p><div>&nbsp;</div><div style=3D"display:inline">Ref:MSG3038802_=
+fBLWOL2eg7caxXbP4unT</div></body></html>=
+
+------=_Part_3104_2135457995.1736535115439
+Content-Type: image/png; name="image"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline; filename="image"
+Content-ID: <pie_banner.pngx@SNC.ab381e009ee4c10>
+
+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
+AAAAAElFTkSuQmCC
+
+------=_Part_3104_2135457995.1736535115439--

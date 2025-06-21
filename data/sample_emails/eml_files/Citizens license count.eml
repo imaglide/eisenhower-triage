@@ -1,0 +1,718 @@
+Received: from SA1PR08MB7679.namprd08.prod.outlook.com (2603:10b6:806:1fa::20)
+ by IA1PR08MB10590.namprd08.prod.outlook.com with HTTPS; Mon, 28 Apr 2025
+ 17:50:03 +0000
+ARC-Seal: i=4; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=fail;
+ b=Xbmgj+uxMtPGvUxniwW6O/5zFxIAYt0GITzha7g+S3EOVI5jvfbZcNXL1EE/QJXZhtEWh5b+zwLIZF4c3CYfbRiQ6Rgu+EteRyYEGfIgvx/eWuXfNpUz7unsZRnFRZn2IUX4kr5Wtux68CcXIUvdJQOexewQFIgbh8BQ90sztHr3a81OfhCeIJdfYv67V0eUxHiuDOMbTbGF7p/ic5NwuvAHfG0b58bs0h5Hy1niTkjWtvELixMi0hqI0zMoDSrT8BEAmwwhMDNHA2IN480SYT5uDtluC2+2QXByaSbUVszgBVbqEcd6GfSjKOUYp1RWZhGfE7PYcECfMJ0ggnbkig==
+ARC-Message-Signature: i=4; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Tr09MmBAgRJHqqoUmhFZc61ww7x0H2rO+X8SbIZxgRQ=;
+ b=l6qR+1O7IsbaVXMUkXraPgajJTf5AqykMRlFK+EkZR42dC6IN2L51BWLx/2GEp0c8ozC3cc5qWyY/+KlCfVzDx0ap2cUzXLxMEBYYfAsM4NoIQqK71hdFih5/F6Y2X1/yj73NmjJE/WrmAXgPglqnaJOqladQguuTpuJ+vXeD7CFUzVslUBW/nkImBPQmCuKEW4dTS722iZJTDBws1GCaTM6ZBYoVWLHXqChlZY2L1nFVDwwzei5mmwk8mfSwTKExKlflt3o8R2XaHmGGNceb2pBmHesQCeHIclAnT0TYYxWLR0SHq1qfpG+ZmWVgnQvc5KuRhVxW9aoybNe81aoOg==
+ARC-Authentication-Results: i=4; mx.microsoft.com 1; spf=fail (sender ip is
+ 170.10.128.131) smtp.rcpttodomain=servicenow.com smtp.mailfrom=infosys.com;
+ dmarc=fail (p=reject sp=reject pct=100) action=oreject
+ header.from=infosys.com; dkim=fail (body hash did not verify)
+ header.d=infosys.com; arc=fail (49)
+Received: from BY1P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::10)
+ by SA1PR08MB7679.namprd08.prod.outlook.com (2603:10b6:806:1fa::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Mon, 28 Apr
+ 2025 17:50:00 +0000
+Received: from SJ1PEPF00001CDF.namprd05.prod.outlook.com
+ (2603:10b6:a03:59d:cafe::12) by BY1P220CA0003.outlook.office365.com
+ (2603:10b6:a03:59d::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.41 via Frontend Transport; Mon,
+ 28 Apr 2025 17:50:00 +0000
+Authentication-Results: spf=fail (sender IP is 170.10.128.131)
+ smtp.mailfrom=infosys.com; dkim=fail (body hash did not verify)
+ header.d=infosys.com;dmarc=fail action=oreject
+ header.from=infosys.com;compauth=none reason=451
+Received-SPF: Fail (protection.outlook.com: domain of infosys.com does not
+ designate 170.10.128.131 as permitted sender)
+ receiver=protection.outlook.com; client-ip=170.10.128.131;
+ helo=us-smtp-inbound-delivery-1.mimecast.com;
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ SJ1PEPF00001CDF.mail.protection.outlook.com (10.167.242.7) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8678.33
+ via Frontend Transport; Mon, 28 Apr 2025 17:49:59 +0000
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1745862599;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 dkim-signature; bh=Tr09MmBAgRJHqqoUmhFZc61ww7x0H2rO+X8SbIZxgRQ=;
+	b=asqkeosth1YMI7TCNdJfIWw2gzpefHaGGfF9PFdgVFLON2uqCmThEtccN7TIQf9jid9a2d
+	AadljmQnpEPTWDYirCm1Ws4M80T9iKUI9ospFBChALtnmetOTc3RFGDkp8IBiKGadrXY1g
+	TkCsCAJkeLjqU/TcPVyOClS9c1XKPyjRbipa5nkSIGfl9qq+LcjpvSCcTDrKCFrP5RAHzB
+	81t0Hb9AQjZP7U+aJEO56Rc9JLBCXa1bqviAeClXjrOaO/TrIrv5AepOaM0s4ZYWth1VDl
+	o4+WFYD2UMyMkfhET8xIQKrv7JlqRLt8wXw6trlXjR2jSUD5pPWeQbDnUviZaw==
+ARC-Seal: i=3; s=201903; d=dkim.mimecast.com; t=1745862599; a=rsa-sha256;
+	cv=pass;
+	b=pxR1x9ehCPM4Gon4i7Z0FoBgJAxYErHIaoEaIJE2V2e4IfGL0m4fXgLSwAL0JJX5WPM+W5
+	hHx2vqwm2/GkkUbY6Z87oivgbAzJqWPM9RDFa28B47RcQuMkNavB3OlsJGKCxvbEOvbOqp
+	/9BHtxflkpmEQ5LcEmsCiOfhBEpapFhIFCUzkiONPOppMVAW17dohRBquxLRmLfYL/hgEM
+	Bx69Z/N87LSNcLBJHUsP+LITUkUFTjVVNegy8ytJJhx+vjYCvuLaZurrRfFiY8XgMAE3BO
+	xNfzljDaup+r7tGRZ4V9uQYfJyiyfwgEwzw3+tBfJqBOUQ0P89a5d9aVRJmelA==
+ARC-Authentication-Results: i=3;
+	relay.mimecast.com;
+	dkim=pass header.d=infosys.com header.s=TM-DKIM-20211201111149 header.b="KailG/p4";
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	dmarc=pass (policy=reject) header.from=infosys.com;
+	spf=pass (relay.mimecast.com: domain of hemambaradararao_e@infosys.com designates 18.185.115.119 as permitted sender) smtp.mailfrom=hemambaradararao_e@infosys.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=infosys.com header.s=TM-DKIM-20211201111149 header.b="KailG/p4";
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");	dmarc=pass (policy=reject)
+ header.from=infosys.com;	spf=pass (relay.mimecast.com: domain of
+ hemambaradararao_e@infosys.com designates 18.185.115.119 as permitted sender)
+ smtp.mailfrom=hemambaradararao_e@infosys.com
+Received: from repost01.tmes.trendmicro.eu (repost01.tmes.trendmicro.eu
+ [18.185.115.119]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-391-LdgY26PePcy3X7KoykHXPA-1; Mon, 28 Apr 2025 13:49:56 -0400
+X-MC-Unique: LdgY26PePcy3X7KoykHXPA-1
+X-Mimecast-MFC-AGG-ID: LdgY26PePcy3X7KoykHXPA_1745862595
+Received: from 40.93.128.30_.trendmicro.com (unknown [172.21.203.159])
+	by repost01.tmes.trendmicro.eu (Postfix) with SMTP id 2A95910000839
+	for <rob.spence@servicenow.com>; Mon, 28 Apr 2025 17:49:55 +0000 (UTC)
+X-TM-MAIL-RECEIVED-TIME: 1745862594.368000
+X-TM-MAIL-UUID: 0c3de71b-c065-4ba2-98d7-822ec1105f2d
+Received: from HK3PR03CU002.outbound.protection.outlook.com (unknown [40.93.128.30])
+	by repre01.tmes.trendmicro.eu (Trend Micro Email Security) with ESMTPS id 5A06C1000031E
+	for <rob.spence@servicenow.com>; Mon, 28 Apr 2025 17:49:54 +0000 (UTC)
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=i5bTHsRgx5mIYKM7aFYeCm8w7TXtgxU5gv+m5ZHhus7qPwzs+XHDS1TKr6++5pMVGz/3TY0+Vq4iLQ431L9BKIlmmwsNM/69x74ZyeqEXNnHhCAkddguXn/+05bg9rUTsG71mroo2Xyzyop13+xc1ZbqR+VnE7mHgSp+ks1OD27UkwRtA4l7f5rasmUu4wW5sdxbX7bppXTrNyuBgCYA3j0ThJX9PHkO8YtV6M+hmtiTFTQht9S8gSElNIRZpEjR+qfDYNKqZpMqTC8APPHlfLiUrWvDuiFeUUIZknugDuyPDxn6KZsvMC0Phpc+2VtP08YwfyoB+MbZ87Q6TtWLrg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rkbKSE3qkHx6Id4RjSrEUjw9ZKfUl5qdp9CcxSP6xi0=;
+ b=c8QcXGqAEgM6k8Y5o+cwpIr6c3A4zUmvAGoZpzh4RA6NIGngTg/bCaqtMkoNodMZHIWuJgijVxONtgC4HQffI8WmevPLO6Enypx1X24xLDIIYpaM+4jwQleh7VLJ5EzPUum5Rj8kXBY5jeM2MjtuwePdTVXJUVEnPfxUm4UbLZuftGwE0iHq4zk+4Pdu1+XXnp+9+1v7dzhU4pXV/Iu1EAXlHehUxyjTdXOs6cgu7V32XO7U2Kuy+Ajwgl1mmkaWNH4xPtsQVLEeS/HMJNh/dYwx4WGsXAWzq3CX6XFxBo1CyNk3BjNduIythr7Ppe6M4dG1pTW3PFZPBEVw1D8GAg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 144.49.245.130) smtp.rcpttodomain=servicenow.com smtp.mailfrom=infosys.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=infosys.com;
+ dkim=pass (signature was verified)
+ header.d=infosystechnologies.onmicrosoft.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=infosys.com] dkim=[1,1,header.d=infosys.com]
+ dmarc=[1,1,header.from=infosys.com])
+Received: from OS7PR01CA0046.jpnprd01.prod.outlook.com (2603:1096:604:254::10)
+ by JH0PR02MB7009.apcprd02.prod.outlook.com (2603:1096:990:4e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.31; Mon, 28 Apr
+ 2025 17:49:50 +0000
+Received: from OSA0EPF000000C6.apcprd02.prod.outlook.com
+ (2603:1096:604:254:cafe::18) by OS7PR01CA0046.outlook.office365.com
+ (2603:1096:604:254::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.40 via Frontend Transport; Mon,
+ 28 Apr 2025 17:49:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 144.49.245.130)
+ smtp.mailfrom=infosys.com; dkim=pass (signature was verified)
+ header.d=infosystechnologies.onmicrosoft.com;dmarc=pass action=none
+ header.from=infosys.com
+Received: from mail.ds.dlp.protect.symantec.com (144.49.245.130) by
+ OSA0EPF000000C6.mail.protection.outlook.com (10.167.240.52) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8678.33 via Frontend Transport; Mon, 28 Apr 2025 17:49:49 +0000
+X-CFilter-Loop: Reflected
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TSpxyQdTj+D7stOcM1MNS1lZA2Qhkw3ICV5KB1EV7Pi1Jqh0ruSqqM/28yS74LDQ6Bq8VU41tWD7/+0ArKGmXK3BeT+56gZfktDwS68KR/ONsXgszSrXLQUadrZIR26oMSMvT8tunG8zs1mvob6O+tjmhQf2JTtueaadMIsty8MVdhaF0fqop8aI/UkhZlDVxpLINBji51zkkr2PpkFskDhFM9eVEM/cPQdqg91l5GY3et+FSJOZO4o2JBDLQrkrm9jvnYD5UqKu54/hc+y3JgMuaZUWK+iHE0UqvSTw0OYNp6/ALs9VcdvHRpzCR+hcZTMC7/YkFx+7sldDqctd5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rkbKSE3qkHx6Id4RjSrEUjw9ZKfUl5qdp9CcxSP6xi0=;
+ b=iFXoiXu9rG7e67wgwCDNDOyqvEVyeyjLPKUPX7TxMexT4yTIzneKyMwENns2eXHjDaQc6spH1cnbk3zkST7SL5kk+v/idgDDrbBdgiVD90ybJg38myW+wwkNnVlqOs0mQAQAZEt59QEQw3wPMfw93CO6RqglWrV3OVd1Q66t9H4mLxtYfYWQXHhHj5FqiCvLnlvKz3h7n0Ptxx6zE8k7+EiPZFPwkoaAIOLXazL1zfKQIBSl4bjHnKNvkVlxUW9UFqkqvyRtGfakE6mFSsOBoob6Btmafh4NdGNNjMHAge2zCG+geS7Zu5wUU8pVzlS/+IwVoF7/xkybO31K1LrySg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=infosys.com; dmarc=pass action=none header.from=infosys.com;
+ dkim=pass header.d=infosys.com; arc=none
+Received: from PH0PR15MB5757.namprd15.prod.outlook.com (2603:10b6:510:284::20)
+ by DS4PPF3B8203DFC.namprd15.prod.outlook.com (2603:10b6:f:fc00::993) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.27; Mon, 28 Apr
+ 2025 17:49:39 +0000
+Received: from PH0PR15MB5757.namprd15.prod.outlook.com
+ ([fe80::4156:5001:2a6a:1978]) by PH0PR15MB5757.namprd15.prod.outlook.com
+ ([fe80::4156:5001:2a6a:1978%6]) with mapi id 15.20.8678.025; Mon, 28 Apr 2025
+ 17:49:39 +0000
+From: Hemambaradara Rao Erra <HemambaradaraRao_E@infosys.com>
+To: Rob Spence <rob.spence@servicenow.com>
+Subject: Citizens license count
+Thread-Topic: Citizens license count
+Thread-Index: Adu4ZcfuCvWBKRVFQCOocGDhKimClw==
+Date: Mon, 28 Apr 2025 17:49:39 +0000
+Message-ID: <PH0PR15MB57576BD386A497AD625ABC3DEE812@PH0PR15MB5757.namprd15.prod.outlook.com>
+Accept-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_ActionId=69a5fd7d-55fd-42e8-80e2-cd681d97d6db;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_ContentBits=0;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Enabled=true;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Method=Standard;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Name=a0819fa7-4367-4500-ba88-dd630d977609;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_SetDate=2025-04-28T17:48:25Z;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_SiteId=63ce7d59-2f3e-42cd-a8cc-be764cff5eb6;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Tag=10,
+ 3, 0, 1
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=infosys.com
+x-ms-traffictypediagnostic: PH0PR15MB5757:EE_|DS4PPF3B8203DFC:EE_|OSA0EPF000000C6:EE_|JH0PR02MB7009:EE_|SJ1PEPF00001CDF:EE_|SA1PR08MB7679:EE_|IA1PR08MB10590:EE_
+X-MS-Office365-Filtering-Correlation-Id: be76d296-603a-4b7e-6387-08dd867d18e6
+X-DetectorID-Processed: bd92f66d-d33a-456d-b98b-d2b354244dce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018|8096899003
+X-Microsoft-Antispam-Message-Info-Original: =?us-ascii?Q?HuLdSvkyFs7MtVI3T43fPJbILhTYKa0pLqKCeMP83NhdIaOceRgWloXu27ci?=
+ =?us-ascii?Q?FJvXnDHS6+H9BAA7dNVCnn81Q3HmvC0zA0f4HkmtN/B40wTzMToRYW0rUC74?=
+ =?us-ascii?Q?fxuPMj/vgGTaci5EdlCSQnH/E/fFiNNs0T0UtN5nvJwpUvwiXXjOzDbG0isG?=
+ =?us-ascii?Q?de3DlsJWz04zl1et8yNcu2zUke1GIY1hibk6Pt4aGEzL5U3LQfCy6TYjcGNf?=
+ =?us-ascii?Q?/0xJOcrV5pxQsjoyrGzdD8RKXl+cSXKkCw6854ivB649ibLxHd/WnALoyCKy?=
+ =?us-ascii?Q?rtLdqPAE6HGMqjShbsR1WHs28OFTfMBPtzyf30omL6CwxIA18og6STtzvOFr?=
+ =?us-ascii?Q?Sg1VemKEEnxjQpTBcRUkeUr9RkfEypW6XeQuvf7xsmmKdloAB+GYX7ai46ph?=
+ =?us-ascii?Q?A5GVCIm//HARBl7fdBfYMcelpiPkVvO4CjDNVC3d4oUhB+nbc0SMD0TqyAIH?=
+ =?us-ascii?Q?v1/gkEhHqAN06VDtnjE1DaNhzlfyIbPu4LOukCi+tL002QXB26bFG/ORLsFN?=
+ =?us-ascii?Q?Nkt8sgB0QDEozB4xBcuevWDP4REl7esAlaaur5zPrHfVXhf5vOeNkSywAfRq?=
+ =?us-ascii?Q?NuQZ347AwOLmJvboM5wdT5Lw7Vgg3/Dn3ARQSCCksBOx+nRSslX0QSnHQcBP?=
+ =?us-ascii?Q?vxRssyDxdjyw8GomtwHOtNssIjPB/6eB1ekJtDN6RBS9xnWyhpxzSk4QKOK9?=
+ =?us-ascii?Q?8mtUyfXDzqoZTXOA8oo67MebMCZx/iyMmgLLwY0LFQ/a0RFNd4u7PhGdsVuc?=
+ =?us-ascii?Q?ubQ+H/mDuSBuaRL9GnPvGyaxed8hJhS+7bI/TWvYy1PxHpRn2wGQHZBmd2sk?=
+ =?us-ascii?Q?bn1yRPu85U/vpo2GVD+bzlWsd/vj2HfZ0MLGJSGzSr61ZINFpJ9Fsm6Y0YpA?=
+ =?us-ascii?Q?w3TgDoxOPyBgfCmf4ku+tY5aIJe1De0LRz1WYn+bR8mwX8gdTEgSmkIYXOq9?=
+ =?us-ascii?Q?7B4OQiUihFnBI6sKNjW4vO4vVOKmBckNHkyNK8simAbB1CqRQkIjIBXqNIGz?=
+ =?us-ascii?Q?0dQc0Zp3MaivYcfN5kg/B8OjVsS9OIXUitzDI6I+erVqnE2LDnx3yc3ajzLV?=
+ =?us-ascii?Q?s1RwVVgh3/nwQmRdATrrvwDg4zX2PdeJirhZ2kG1B4FS8Bv0uzAw338hkRmm?=
+ =?us-ascii?Q?Q/3+M/ACh7z9J4hKP/B7qYPGOtLuAIzgjsUfn+XsierQR0R3/rex9//DN9j7?=
+ =?us-ascii?Q?d124eB+E2u5l76igJ+fh8uQHOPEYYzRsO8hxNUf3kt8/tYVY6NazoKVsPAt1?=
+ =?us-ascii?Q?WS2Zwceo2j0h33OeSPfEyju+/pbyNEvQD8nhCQNNYKq0I5aNkzi7VMPbvlgB?=
+ =?us-ascii?Q?4fz4zqRP6y1Hac35Hf+0wvXunbdUwCjh89WcNUeFNgZ0xEE+47DNHJKZxf7v?=
+ =?us-ascii?Q?FStbrKzRSWk8VMo9/vV9FVycyNFjpkRQtreAXI7vBBE2HEf6S6J9oaSeArB2?=
+ =?us-ascii?Q?DFpxH3TusMcHgHwMrGJrF2q+2BG8OYx12sr7P4WoJXrqljqZpke12w=3D=3D?=
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR15MB5757.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018)(8096899003);DIR:OUT;SFP:1101
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF3B8203DFC
+X-EOPAttributedMessage: 1
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: OSA0EPF000000C6.apcprd02.prod.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: d72bbb04-4086-4fc8-e2f6-08dd867d0c5e
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|14060799003|82310400026|36860700013|376014|35042699022|1800799024|8096899003
+X-Microsoft-Antispam-Message-Info-Original: =?us-ascii?Q?RUdFE0LP3cRtzI+OKT/dPSOaO/+BCv1WxsolieM6tBL36cPlV+crmeIwcqXE?=
+ =?us-ascii?Q?Wl86AGvxEAlXWgxOpRje2+vTxbbpBHJA2F5+ByrqDj97XfySM8LwPkKTAG9q?=
+ =?us-ascii?Q?RMHRkmEssc3qTR1Gxg9s0nzlA7A/k4wwk92spOhEG+QIvERU1PEUuL1ExbuH?=
+ =?us-ascii?Q?k29tFl0RjLv0o5MsuLOhbJgScKzaV5W3FpgrmYRpnNfI5J17l8UvGUIEf2Zv?=
+ =?us-ascii?Q?dwGFDNuwExSLTEXYOdU8Z95FUOYLcVntW1QH6qJU7JFbfr0Fp0sY6OjiV5ji?=
+ =?us-ascii?Q?wZp9YyREJa6lL6GxeGPqVJRmAm7XLfWxB0OifzHTY8GpBhNyC3lLLHCTAgtP?=
+ =?us-ascii?Q?47n/68YK/SCjAILwKtSQT3iRzUZuVIcBnfUEyvg4t2N9dA4bjY3B4s33Tzn+?=
+ =?us-ascii?Q?4cdH2DBp8XFudC6LCPNehhOSypvK4T4yRfoUL3yq/x1r4T3HNVLgAEtLMAl7?=
+ =?us-ascii?Q?W4LXGHlX1RVICNGdeL3cC8AuI+Qj6ByAkuWAvST2uHC1jBHcgodvCzGA6yGi?=
+ =?us-ascii?Q?vh3m+u7a1w71wb1BZwD5NOlV5QIXV9g1377vMUN+7RKG8QtZUgcCK8NZmpaj?=
+ =?us-ascii?Q?vkUvcjIDXRTC2zuGuvHc8g9NBApVQsiK8YxDW8CSMmVk7jnongbkMeIkHjHS?=
+ =?us-ascii?Q?iB4MTVOw3Zyajj0TE0htM0uQXymM21qvrpevjg0+x/oPR2ZDoxR95eoC/mXO?=
+ =?us-ascii?Q?giNWicny67igDOFgE1oqP2D7AU19zSbxadmTEqZ+0e0j8T8kd6lLXJjbLvCp?=
+ =?us-ascii?Q?fD0UO1N96I6efVuJUEq+i0zXdTVllv4wMaU9md8wruWIBFpl5xEPTiretflk?=
+ =?us-ascii?Q?GG7SGuOohoDL04jvoS6ODV8wJtnuZf8qvIp6lvl3r6oTahDpuV4QUpMNIE8N?=
+ =?us-ascii?Q?GAHCpAm1hpcN85FRMNzkpJI2/IUhCVdQOVMmFtnBMptmPP97d9k50lOdE0vE?=
+ =?us-ascii?Q?pg+OEkiopQzpBnTdkuVDY2B+i3fRNR9vdTnvavq2aNg8IKOWrlEwT0VSGIlF?=
+ =?us-ascii?Q?quAiiLuM3EShwP4DQXNYUp+MYkqaSzrVczl3b9E4TmVqW2Vb4oySrV3UhBFi?=
+ =?us-ascii?Q?bQg3V0nD54XSjAq1B2y4SansImAHkrxcNlb7fHOnnTL/qhnpda9GXnTwvVPL?=
+ =?us-ascii?Q?9UNb/YFoizW2wkqDiCefxXJA1B3QKVGZ6HbuSrGAXDJzecXWct0AWbzK0Cmk?=
+ =?us-ascii?Q?twF2JyOSh0rGUkiq1e4C7OKcZcyl08So/j8FfokxgfFcCTCZ4Pn3DftqLqTX?=
+ =?us-ascii?Q?sVE9tlNFWVquaBkeZN7vSRApH6gLYA35/mV5edq3mwc7Dft3ta1jxwiFxe+n?=
+ =?us-ascii?Q?qorEEh3R8XDEA+mR1TLD5GaCkDW3cOfVf4i5e6g5JQDB5mutJeGoPFz1bL1s?=
+ =?us-ascii?Q?wd5a8+K0NZYAXyuEVbe1flCQa5oAgD8vGQFb0fDTdcZKjguIeiHINrxNYTc/?=
+ =?us-ascii?Q?/qYvChftYa6LBnV786sAD5O7+f5KI0bn6zU62ELUdOdhzbL6wmIoqZawT6RZ?=
+ =?us-ascii?Q?wzwM+ZLP9amG0rNbxmU6KX4oXEsc2wyy1bYL?=
+X-Forefront-Antispam-Report-Untrusted: CIP:144.49.245.130;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.ds.dlp.protect.symantec.com;PTR:address-144-49-245-130.dlp.protect.broadcom.com;CAT:NONE;SFS:(13230040)(14060799003)(82310400026)(36860700013)(376014)(35042699022)(1800799024)(8096899003);DIR:OUT;SFP:1101
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: ZyJKd1PZLo1cDM6F7Q0R7J1e1fZKD2cqb7nxJyQndT6f9PP1l7Xpx79MxBl6q7fUGRbNtmEHpuGxXipc7QB9wL4SlUj3AjOVRpnRG20bXmsAW2EdcaaMjezcrD+xT8ZbMvQ+bWESZ0E7Jz/R7SoeERL2uL0v3rOVZ546im6M+edIQhXTdIWu4kGQo6RAvdfI7f0vUoRUT7M9XGTWH2zzJHlbFQyN8sjMuHB0uorbi9uRHCYu81imkDR2Ti19YHFfRQFkAOe/yTQANXvcD7XtxQkH4zZsc/TJ6iP+zjSCped8wagZRO6XbsmbapnEES7Tove7QfsWbClKc8ahgnYz159nJJX+nROrETGgvn6j2BWmh73dHEHtFotOM5Lnb6tuB/3wJ87SqwFWedSGmLOPDB7CWlRn/rcLpZ3/09KAdrqHEpkxbBSt5Kldp8yVtvZu6f79gwEWcNhGTfcqYE41SGtQrkNYDy3MZd3JKCbA8Nnm0YGIIX8sIG6iOVWUqps+Ojju32eW7CEGJM3+ljP5bjsCHiOtMqvgCAzou9L3g+anlhpSxgKmW86/9W51/L6t1otSt5Q3vHYRuJyzuzqrOIlcchmyuRlUdKVpewY1Vfc64q1qEK0pmh85fKTMNaQXOOtKNh/0jS4rhcXNNo3z+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: JH0PR02MB7009
+X-TM-AS-ERS: 40.93.128.30-0.0.0.0
+X-TMASE-Version: StarCloud-1.3-9.1.1032-29146.001
+X-TMASE-Result: 10--17.360400-4.000000
+X-TMASE-MatchedRID: Vm0/1sSgZy4DgCXXpq0FquEiVS/f0x5EL8UhAHdzMGnPxctgaqKz4Xh/
+	1lwTlReHuYRH7q7d9g/kDfCN1qJfubTpVW5QcDNDwXAJJH2UsYhdJGfF17z8ICugTwc6BQ0dtwe
+	j0H2jLXEQav9JUCP6SxW8rBVGItvZEoS7arKaDHeLaM1Ae6FQVxurwBe+xrCW88f/44rV4mc/s9
+	Etj1keyAZGMaJBYHEexWA6JSY5aGTmjK/5SagFuKFtbMwFGg09MrwI14SW1VHs7St7yWic9plGX
+	npzjlSItp2We9Nlpz6biR9RGUrpTHpBqqAGSOK0xjLQp3lwKHevlKqLO1I3BLwqE4IPLIofsj4b
+	9GA+QW7f6hsx3CtcUENIljMDbWnmz5ZT39uyf/07dj0ET35/kSH9N/zpVqyw8Pilqg0I7JnWbox
+	IM79vQOSazff4fhF1ryBnsTzBtwTPE8gn5ga5qlvIId8M26gT1HOGYHbRcAG6j0yT5Bok6WdtAR
+	g0IcL9IBvmcNCso9gGhuFLY/rERBF13aifoiBPBv3BwF3sroc=
+X-TMASE-XGENCLOUD: 68b16dc9-4c38-4bd9-b617-1e0f6ac6f53a-0-0-200-0
+X-TM-Deliver-Signature: F7047A9FD9BC69F90B22C18C8A9FA805
+X-TM-Addin-Auth: m+ezr2X9/6dJXCsBdV3cuZ9xmpCCak/VSl1GbS6K5AhTokmIzTZt7Fdj+QU
+	r42DB9NtdE3VQkeiLvdBWNYV4GmpWrL8jTErph4y3e2R8vSeNGJQMN5fD1ymx7M96JsWUPtTJKe
+	k6nXO0aHiIQZCvHSudVp9ixfEvaEm6ytiOzkk6/e6tRMqNwqLKofO8LC35P3kYFgWKFFM5eRmQU
+	reFlOKybyx5ISHxTW/qDUutvNKRE2uibOt/N5B0D9wxrwadKHYt/0mpu6YlvsJ4hUPbvJQh3/Uz
+	VzYsBU8a6Ou36/w+tfns6HhjE3lnYplq3FS119DwdXzvd95v3BFJdH9kHA==.2xX1IdMYd7Mybn
+	yJCDR5avdnYtlVnwD9i4wxKUTEGsBFZrO427p2xE2tr2GMD1hLBqAuUZARAmnFb4V8pd0kVuuO1
+	xEg1LapcALnlsFfocwI2635tWNX4RWbwy2ariW/j/Y4T5yhRH6RumAkTlA1H5iUIiKACyBKP9Lh
+	oBT1aJoaotv890urgz5l1debnrqXFfPCpdRn2h/VPfZ3UJbGjDh9wXeZEnfRcKOhKdcZDZ8bMS0
+	N7pygBL1l5HM29oiAXFd/TAo+pFcgHU5m3yV6HX6NNPOTuHkuE6JadI+VSQikO+ih47zFUO2eV1
+	NvA54RLGO+SvC6zi+5ovEfiO6ASg==
+X-TM-Addin-ProductCode: EMS
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=infosys.com;
+	s=TM-DKIM-20211201111149; t=1745862595;
+	bh=SfJT6lzAWsm8qJkKOHhdoHZBtE1yjl8+guUk78Oe9zI=; l=15512;
+	h=From:To:Date;
+	b=KailG/p4vwGAaqGlyboXNZQkt0gRbYCIub0AQMx/HxhFmtGiuiRW+1PLYkpvoDwRj
+	 k2y2cp/+BgObaHfNaKOjLCudkN0L7eOAHEgU6RlckgtOqRolPitAau1nyCGc0D0RMd
+	 7guQUmYeYKHwwCOyEnCHlkkyvaOEUVrFEZ2KqGpDd3HTXlMZteo9wfKPPuhuRuYy8j
+	 hvABGSurVyOqa10WcJOfqXdUygtCCYLcfo7d8cbd4aYBA1UNFzZg7Ca9CRImBNsWny
+	 hTWIUS+3zzV8+OIJia8qzq6O9oCuyNw7mB+MAiN5NTG7FR4aJeFG9PtEUtl4rhAgVH
+	 /oN6PzVJROKVg==
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: _vxQ28tZF6RM8VLD90HtyhBqFr1VJkBT3D_i-ZX00cY_1745862595
+X-Mimecast-Impersonation-Protect: Policy=Tag external email;Similar Internal Domain=false;Similar Monitored External Domain=false;Custom External Domain=false;Mimecast External Domain=false;Newly Observed Domain=false;Internal User Name=false;Custom Display Name List=false;Reply-to Address Mismatch=false;Targeted Threat Dictionary=false;Mimecast Threat Dictionary=false;Custom Threat Dictionary=false;External=true
+Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_PH0PR15MB57576BD386A497AD625ABC3DEE812PH0PR15MB5757namp_"
+Return-Path: hemambaradararao_e@infosys.com
+X-MS-Exchange-Organization-ExpirationStartTime: 28 Apr 2025 17:50:00.3264
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: be76d296-603a-4b7e-6387-08dd867d18e6
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: SJ1PEPF00001CDF.namprd05.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Exchange-Organization-AuthSource: SJ1PEPF00001CDF.namprd05.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 8d7f7dfd-7dba-4f9d-a7ad-08dd867d12cf
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|31092699021|35042699022|22103399003|12012899012|82310400026|8096899003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:SKN;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-inbound-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(31092699021)(35042699022)(22103399003)(12012899012)(82310400026)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 17:49:59.9981
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: be76d296-603a-4b7e-6387-08dd867d18e6
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00001CDF.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR08MB7679
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.9614553
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8678.027
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?Windows-1252?Q?8FxzWVuQMWEVEDVcBt1CfAykOprLW5j9a8itDP9cx7PKNDTuqvdHAN21?=
+ =?Windows-1252?Q?uRAFgL1KrtvZlmaY4aYnbDCwMbV7YUQppdChGMDWXh4JNqEbOImGqZCx?=
+ =?Windows-1252?Q?5kGZloz7qVTaccSdtHCfT5s92XYeahcUdNlcIrwHck80BW/CQaxKX1Fo?=
+ =?Windows-1252?Q?WMSy95U6Onys9/ZITMEbqWeh+Hw3bZRAMoNGeU1RYJo8UxbY/Ac1+02M?=
+ =?Windows-1252?Q?0cz0Xw/ZyJOirRK/k0pauQHAnRdES6lF5M/WoUQfcfqlkd5Cq8vgaBQS?=
+ =?Windows-1252?Q?rTFZE0AsEjpCqIyl6rd+pD2n3P1UmhNaUFTY5E1nYbOyQQqDYArt0DOv?=
+ =?Windows-1252?Q?d6JLj6r1bNZEafUU4AIjgNkOYU+OHUkZ7+/bZgMG8LATTGbPvbtY2B8y?=
+ =?Windows-1252?Q?2eMZqWjop6CIo+InWf8rte+EbExtMe0Ow1sKARwzWiFUzQfeW1bTAkPw?=
+ =?Windows-1252?Q?lX5H9kDnmS4jzo+ZicCwkNVeN0JCb0/CoAta2a+oKrpQVVKrRctNKfaw?=
+ =?Windows-1252?Q?xplDufE1JVicLq+6NjZQXRagTYiZS44FH/fMtxqcWb8hbdb0rN2t5AGP?=
+ =?Windows-1252?Q?MxDvgYxY/sbtsJ57xlMOvv5537tFJvSQ+xDQeUTajbBHzWxInT/RzD+a?=
+ =?Windows-1252?Q?b2C9El2gscXsANX/+o914NKn4IYZHqe57F/sel4zRD9cdLXge16RNUDy?=
+ =?Windows-1252?Q?zkA0TsK9cq3UC3bKPMFvJn+8FiobBNRlcZbJ3gG8xHQDM0pLlwa80w4e?=
+ =?Windows-1252?Q?2ry7gMrl4xB2p/XCidlMdfdswS1P8gKDHXhnhMajuJtlPED8lkssVE//?=
+ =?Windows-1252?Q?g2S1eBg/HwiE8AMdk4SOVeVfK3oPbS9imQCep5M/w5jdSn8LCyf0ECO0?=
+ =?Windows-1252?Q?M1Y3p31wxiMoB/4dWIA+mu0LDecr5NmYdYP4prEB7d48Lpg/qFPiyedp?=
+ =?Windows-1252?Q?82bnrYqt7bAqQPpbT8WO38BCwdB0M9BW7eC1DZW2Ca3X4sU4N+/HJyRO?=
+ =?Windows-1252?Q?foFahTkCVinWUv+2nrXk9H6YXfwhHVKTncEQdDLBd83QZKRnQGvAT4Kk?=
+ =?Windows-1252?Q?qjUHb0AADk8V/PspwL4kUyR8vOz/sGYt89ZvdzpG266uepWZKQe3EVDQ?=
+ =?Windows-1252?Q?d01JrjbeJ3mm1r6Xc0obpAFgHtwAAjuGox4QforTvwBGUyel1GpnOD+u?=
+ =?Windows-1252?Q?zDuSKGT+VHmF7P0aFMTldI3h2lWBpu3Gy//WhT/b/QeYNd8ejRV44mZT?=
+ =?Windows-1252?Q?2aezg4UMkdej1D8WxwXApMjxpWRZLAELSfpiuAzcXYCDUyPgGP5pTHwd?=
+ =?Windows-1252?Q?5+QFd3NO3souk+pLc+uJqWDmYSigztRLco17/A5wwvpOn8NRDlySIsI/?=
+ =?Windows-1252?Q?A9WQmp9ZaCtTchaUJV6fy0hX6fnM/R+AfKJdMw7YTpOi2jeo6eEHldql?=
+ =?Windows-1252?Q?0s0rZexKN1V1OirPfK2IY4sPFSH0NOUulcQiAtcqG/4inCf2DY7VAHYQ?=
+ =?Windows-1252?Q?U8aqPiDvog/eURz2N1YSkeerp5uhbcxisyWyjq78TN+e/U3d/iYn0Mki?=
+ =?Windows-1252?Q?IBKOHSokhbuzLEpT78JC7cjNrD1PGmkmC2G/q9iIDEI22qh1ypBCJgRq?=
+ =?Windows-1252?Q?Cd8fU9RZS5pvH5Tqm5/6xhXFMafUxlIOAYY+2yUaCus3tgr3wtiGG9Ph?=
+ =?Windows-1252?Q?RT6HG2DFJvtEY09YiYyvgA95L2ANc0aaKI4UY2PPpDHivmi9h8Nlhrxf?=
+ =?Windows-1252?Q?X9Jkda7a3Bvqj8lbtG+rhBLtKKXjMrem26Gn+iwrZ/VnhBUehiTSXr6G?=
+ =?Windows-1252?Q?H2j3CesKbkKubFhuy9R8lKYsaui/RGf0fWFMMX/DBMy+zbjjok9S+qj9?=
+ =?Windows-1252?Q?4KW4x6kirEYKPQqTg4T4Oj0Od1mewPpeLUil9Gi7mW/cIgBJvZFYcqkt?=
+ =?Windows-1252?Q?WvrziunY7kv3wBfvqAv/sQRiptArT7otU+e2Hn5RiLGCIklyt1tnI9tG?=
+ =?Windows-1252?Q?xFK8kO/NnqeUWumd5ffzvpXfCyVkv81nBB3KT3DdYTzOc1DmDVdRtkG8?=
+ =?Windows-1252?Q?PpbHZtGVM5ivgActZSR4a2oTr4RaK8MdzU2sAlk0zY4eErcbG5F9MKxt?=
+ =?Windows-1252?Q?C9Kfy1bOj94l6UjxV4cVls4NVFBZJZG6TBDGFdQliFBP1CHVw6EQFc5z?=
+ =?Windows-1252?Q?Cmxb3SALVntaSU4waNETVCemURxAb3WY1OsKju/abHCC01gTzhLNUzPk?=
+ =?Windows-1252?Q?dpaIxpN8RoL6BlTHkqugEedRA4d7Cv0JYg442Y/sP7uVgqIFEj8NNC1X?=
+ =?Windows-1252?Q?6QlbUg=3D=3D?=
+MIME-Version: 1.0
+
+--_000_PH0PR15MB57576BD386A497AD625ABC3DEE812PH0PR15MB5757namp_
+Content-Type: text/plain; charset="WINDOWS-1252"
+Content-Transfer-Encoding: quoted-printable
+
+[External Email]
+
+Hi Rob,
+
+Below is the counts which Citizens are entitled as per our contract in 2024=
+.
+
+
+License Type
+2024 License Count
+ITSM Professional
+26,000
+ITSM Professional Plus
+26,000
+Approvers
+200
+Cloud Management
+5
+Software Asset Management
+32,750
+Instances (1 Prod + 4 Non-Prod)
+1+4
+Database Encryption
+1+4
+CSM Standard (Complaint Management)
+150,000
+Performance Analytics for CSM
+1
+IntegrationHub -Enterprise
+1
+ITOM Operator Professional
+13,000
+Application Portfolio Management
+25
+HR Service Delivery Enterprise
+20,000
+Hardware Asset Management Professional
+15,384
+Field Service Management Professional
+100
+Integrated Risk Management Enterprise
+0
+ITBM Professional  (Now SPM)
+140
+App Engine
+100
+SecOps VR Enterprise
+120000
+
+Regards
+Hemanth
+
+--_000_PH0PR15MB57576BD386A497AD625ABC3DEE812PH0PR15MB5757namp_
+Content-Type: text/html; charset="WINDOWS-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:x=3D"urn:schemas-microsoft-com:office:excel" xmlns:m=3D"http://schema=
+s.microsoft.com/office/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html=
+40"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Aptos;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ligatures:standardcontextual;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Aptos",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-US" link=3D"#467886" vlink=3D"#96607D" style=3D"word-wrap:=
+break-word"><div class=3D"mc-ip-hide" style=3D"display:block !important; he=
+ight:auto !important; background:#FFFFFF !important; opacity: 1 !important;=
+ visibility:visible !important; color: #000000 !important; font-size: 12px =
+!important; font-family:Helvetica, Arial, sans-serif !important; text-align=
+: left !important"><strong style=3D"display:block !important; height:auto !=
+important; background:#FFFFFF !important; opacity: 1 !important; visibility=
+:visible !important; color: #000000 !important; font-size: 12px !important;=
+ font-family:Helvetica, Arial, sans-serif !important; text-align: left !imp=
+ortant"><h3><strong><span style=3D"background-color:yellow;">[External Emai=
+l]</span></strong></h3></strong><br><hr></div>
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Hi Rob,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Below is the counts which Citizens are entitled as p=
+er our contract in 2024.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <o:p>
+</o:p></p>
+<table class=3D"MsoNormalTable" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" width=3D"656" style=3D"width:492.0pt;border-collapse:collapse">
+<tbody>
+<tr style=3D"height:20.15pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-bo=
+ttom:solid white 3.0pt;background:#00A171;padding:.5pt .5pt 0in .5pt;height=
+:20.15pt">
+<p class=3D"MsoNormal"><b><span style=3D"color:black">License Type </span><=
+/b><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:solid white 1.0pt;border=
+-left:none;border-bottom:solid white 3.0pt;border-right:solid white 1.0pt;b=
+ackground:#00A171;padding:.5pt .5pt 0in .5pt;height:20.15pt">
+<p class=3D"MsoNormal"><b><span style=3D"color:black">2024 License Count</s=
+pan></b><o:p></o:p></p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">ITSM Professional</span>=
+<o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">26,000</span><o:p></o:p>=
+</p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#E7F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">ITSM Professional Plus</=
+span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#E7=
+F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">26,000</span><o:p></o:p>=
+</p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">Approvers</span><o:p></o=
+:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">200</span><o:p></o:p></p=
+>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#E7F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">Cloud Management </span>=
+<o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#E7=
+F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">5</span><o:p></o:p></p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">Software Asset Managemen=
+t </span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">32,750</span><o:p></o:p>=
+</p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#E7F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span lang=3D"FR" style=3D"color:black">Instances (1=
+ Prod + 4 Non-Prod)</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#E7=
+F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">1+4</span><o:p></o:p></p=
+>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">Database Encryption</spa=
+n><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">1+4</span><o:p></o:p></p=
+>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#E7F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">CSM Standard (Complaint =
+Management)</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#E7=
+F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">150,000</span><o:p></o:p=
+></p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">Performance Analytics fo=
+r CSM</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">1</span><o:p></o:p></p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#E7F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">IntegrationHub -Enterpri=
+se</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#E7=
+F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">1</span><o:p></o:p></p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">ITOM Operator Profession=
+al</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">13,000</span><o:p></o:p>=
+</p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#E7F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">Application Portfolio Ma=
+nagement</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#E7=
+F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">25</span><o:p></o:p></p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">HR Service Delivery Ente=
+rprise</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">20,000</span><o:p></o:p>=
+</p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#E7F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">Hardware Asset Managemen=
+t Professional</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#E7=
+F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">15,384</span><o:p></o:p>=
+</p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">Field Service Management=
+ Professional</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">100</span><o:p></o:p></p=
+>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#E7F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">Integrated Risk Manageme=
+nt Enterprise
+</span><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#E7=
+F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">0</span><o:p></o:p></p>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">ITBM Professional&nbsp; =
+(Now SPM) </span>
+<o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">140</span><o:p></o:p></p=
+>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#E7F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">App Engine </span><o:p><=
+/o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#E7=
+F0EB;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">100</span><o:p></o:p></p=
+>
+</td>
+</tr>
+<tr style=3D"height:22.95pt">
+<td width=3D"440" style=3D"width:330.0pt;border:solid white 1.0pt;border-to=
+p:none;background:#CBE0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">SecOps VR Enterprise </s=
+pan><o:p></o:p></p>
+</td>
+<td width=3D"216" style=3D"width:2.25in;border-top:none;border-left:none;bo=
+rder-bottom:solid white 1.0pt;border-right:solid white 1.0pt;background:#CB=
+E0D5;padding:.5pt .5pt 0in .5pt;height:22.95pt">
+<p class=3D"MsoNormal"><span style=3D"color:black">120000</span><o:p></o:p>=
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Regards<o:p></o:p></p>
+<p class=3D"MsoNormal">Hemanth<o:p></o:p></p>
+</div>
+</body>
+</html>
+
+--_000_PH0PR15MB57576BD386A497AD625ABC3DEE812PH0PR15MB5757namp_--

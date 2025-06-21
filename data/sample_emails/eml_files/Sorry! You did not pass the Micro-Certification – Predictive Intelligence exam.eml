@@ -1,0 +1,217 @@
+Received: from BY1PR08MB9851.namprd08.prod.outlook.com (2603:10b6:a03:5ba::22)
+ by DS7PR08MB10577.namprd08.prod.outlook.com with HTTPS; Mon, 30 Dec 2024
+ 15:36:51 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=tInvcQXZVcPYNSiPgXR1I1sqZFUpz2mm937mG1P8kf2nDtZzetysd4jOpCrH+NJG4sOvlbu7EGDilkVfeqfTYi1rVWHBWnLZAstyhn9q6ly52xrf1k275DTiNL+yQb+ixLviYvBVj96VL0sVbYGqxZuudqe2BDpt9jrtyIw+mFuEjBeliprzntD16ft9Mlve47KaCMWmZ4BQCdVwWzddVzC5sHzFQGwkzTgq0VYLPZZOCH4jJCS54k5Z7ssYs+MMXnVIqivV6kCu5dyEqMXIJd7d2w3IzhtU2rU2ql1fUOEoUiV+/lod1mpQ1eA1zgP70A3zpTNfM82jQrnyqYmGnQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c9VQD7bv9+L8QCf6QWhHCcMch7mT6wZVcNlhLyJHtMY=;
+ b=SATY24+yStGzuUa8Af7MmXcFoYXq8u/QMvUlIk4tXtNhsE3juBn1WjMgtEveWy3ZNV7t+e0bZtnHHMnKJ4Vir14GHgDt12czj0gzCUeMdlPoXKk1LZrJJng6sMPUZMI7yciP/sFejBy+Vtq26fx69OCKwVi1NGCfuy4pwiMAJEtGy9gjHx45YdTrPqrqXC1NrthzV3ZPRKMEYiyoIbBTsh8GfFWkiYwEx5zUHLOiabjPmbZPUaz3q9iM0kmTibqNnmusm8X/rP8V6ygOE4WrxGIxSdwMotf92sdu5pc/65vNAgT69SfdnN9d4HL0D38xBRGca20UrftxJnaSE2b47Q==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=softfail (sender ip
+ is 205.139.110.120) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=service-now.com; dmarc=fail (p=reject sp=reject pct=100)
+ action=oreject header.from=service-now.com; dkim=fail (body hash did not
+ verify) header.d=service-now.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from BN9PR03CA0232.namprd03.prod.outlook.com (2603:10b6:408:f8::27)
+ by BY1PR08MB9851.namprd08.prod.outlook.com (2603:10b6:a03:5ba::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8293.18; Mon, 30 Dec
+ 2024 15:36:49 +0000
+Received: from BN2PEPF000044A5.namprd04.prod.outlook.com
+ (2603:10b6:408:f8:cafe::1c) by BN9PR03CA0232.outlook.office365.com
+ (2603:10b6:408:f8::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8293.18 via Frontend Transport; Mon,
+ 30 Dec 2024 15:36:49 +0000
+Authentication-Results: spf=softfail (sender IP is 205.139.110.120)
+ smtp.mailfrom=service-now.com; dkim=fail (body hash did not verify)
+ header.d=service-now.com;dmarc=fail action=oreject
+ header.from=service-now.com;compauth=none reason=451
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ service-now.com discourages use of 205.139.110.120 as permitted sender)
+Received: from us-smtp-inbound-delivery-1.mimecast.com (205.139.110.120) by
+ BN2PEPF000044A5.mail.protection.outlook.com (10.167.243.104) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8314.11
+ via Frontend Transport; Mon, 30 Dec 2024 15:36:49 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1735573009;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:list-unsubscribe:
+	 dkim-signature; bh=c9VQD7bv9+L8QCf6QWhHCcMch7mT6wZVcNlhLyJHtMY=;
+	b=dq6IeKpuuVtILYhUmSR1Ru+WMuPO/0XWJCYNxXz3W7tgDM3PhvyqU+ygD1bYUh1tH6CuTm
+	Sv53Gfj470u4UCObtPCM9SX5iwMyQqVAgdag8ejUUjVRKqsrF2V4sBW/CVnaSl8lam+rMS
+	picdAexC6ELUORR7vmQZavUANWMUViw3qmN7s60VhIXrhhCNUW+vRcK4lWCGNlAWWOhied
+	z+y+TzvAezX5fP84qfV+QPMyd1jGWRB3Y8m3yFwvUoeH1+eMoQ0rHymDWvhep4Xsv1tHwX
+	sq2Jb0tFHsogaU0uxFDrctNnOhJO3N0aIQa1UX+SV69q3CL1h3ocFQXlZBdONA==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1735573009; a=rsa-sha256;
+	cv=none;
+	b=YQMEhLWTDKDwwCXtlslsFjgKBZpjU5v+eX9SWrFGhqym9s34x1vA1wKfQe6bdwhLC+Y+DY
+	WZgdWKHGP31+gJYfFTKb8A6iKduwspL27Rylh8khJytRTMkWyHcIPWRB/mjSVNl5cNrHjy
+	P1wog/uHAPZ0ytSf7N8oK6mCdHyof+2/iOxfudRBXSXF2WHAKurL3UDAm7bxuMfLt2Y1W/
+	NaQIMCxbayr4l1SjdqSQ04su8cK/Li3leu44UEjFCzd2YFutMqXKpDbNsRNKFs6c9w9YbT
+	DTtX6EH7k6iud1ENh7XOGbIKwnV1oI2pYW7uo/0T3N6lv+OyWfgxOl9oyzsmhg==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=service-now.com header.s=6e326c68-2ce5-11ef-b5c8-0050568cadb3 header.b=HvdYrtnC;
+	dmarc=pass (policy=reject) header.from=service-now.com;
+	spf=pass (relay.mimecast.com: domain of nowlearning@service-now.com designates 199.91.141.22 as permitted sender) smtp.mailfrom=nowlearning@service-now.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=service-now.com header.s=6e326c68-2ce5-11ef-b5c8-0050568cadb3
+ header.b=HvdYrtnC;	dmarc=pass (policy=reject) header.from=service-now.com;
+	spf=pass (relay.mimecast.com: domain of nowlearning@service-now.com
+ designates 199.91.141.22 as permitted sender)
+ smtp.mailfrom=nowlearning@service-now.com
+Received: from outbound37.service-now.com (outbound37.service-now.com
+ [199.91.141.22]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-606-bxrT0CRwPjuxvPWoEBPjdw-1; Mon, 30 Dec 2024 10:36:48 -0500
+X-MC-Unique: bxrT0CRwPjuxvPWoEBPjdw-1
+X-Mimecast-MFC-AGG-ID: bxrT0CRwPjuxvPWoEBPjdw
+Received: from app136040.phx201.service-now.com (app136040.phx201.service-now.com [10.180.136.40])
+	by outbound37.service-now.com (Postfix) with ESMTPSA id 2C93540000A7
+	for <rob.spence@servicenow.com>; Mon, 30 Dec 2024 07:36:47 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 outbound37.service-now.com 2C93540000A7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=service-now.com;
+	s=6e326c68-2ce5-11ef-b5c8-0050568cadb3; t=1735573007; x=1736782607;
+	bh=UkmyzPDRW4z4v5tys/8Sp9gRCsWWlQ+lPdxhMqwS5zI=;
+	h=Date:From:Reply-To:To:Message-ID:Subject:List-Unsubscribe:From:To:
+	 Cc:Date:Subject;
+	b=HvdYrtnCOv6DadK/HiXXeJt0vKqvnt8CAP4MpatUpGOHSNmaU8xlxucSd17BzZu/T
+	 CHKiJo3Mvm6dlTeKq1agRZQH5Xo484/JQp3v2b6aI675IyxPtBGohJpLplyCPiQJaS
+	 Pkmb1JvP8K3Mj96esoi20xGbjDpgiZuEI7NW8HL3ixqDGqUGFVEbhAZfX5bATQtmQo
+	 79xgEKKwAerFD/Wwc24JDQUTEwWGScGjQoeX+Oj4e1+6fsXPrKRTiEaI/FCY3HuVGs
+	 bnG7QSFbCLvPvg9waA6z0awfi9aXnDooJ0yvtmG7ej5M1ZQInuoKhVmtZzIVyfHcna
+	 3CgHjmF+yRtUA==
+Date: Mon, 30 Dec 2024 07:36:47 -0800 (PST)
+From: Now Learning Team <nowlearning@service-now.com>
+Reply-To: Now Learning Team <nowlearning@service-now.com>
+To: rob.spence@servicenow.com
+Message-ID: <1383193098.345342.1735573007175@app136040.phx201.service-now.com>
+Subject: =?UTF-8?Q?Sorry!_You_did_not_pass_the_Micro-Certi?=
+ =?UTF-8?Q?fication_=E2=80=93_Predictive_Intelligence_exam?=
+X-ServiceNow-Source: Notification-9ac9e7eb23a3101016f1dec656bf6525
+List-Unsubscribe: <mailto:nowlearning@service-now.com?subject=Unsubscribe+from+%22On+Fail%22&body=Sending+this+email+with+the+predefined+content+in+the+subject+and+body+will+unsubscribe+you+from+the+notification+%22On+Fail%22.+%0D%0A%0D%0AUnsubscribe%3A%7B%22id%22%3A%229ac9e7eb23a3101016f1dec656bf6525%22%2C%22token%22%3A%22c797e62132%22%7D>
+X-ServiceNow-SysEmail-Version: 2
+Precedence: bulk
+Auto-Submitted: auto-generated
+X-ServiceNow-Generated: true
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Sc-m9Od6KHIvY-7dTVkWFO_9fLzENSOn6-zmfkli3bg_1735573007
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Return-Path: nowlearning@service-now.com
+X-MS-Exchange-Organization-ExpirationStartTime: 30 Dec 2024 15:36:49.5560
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 7e76159a-c196-42c6-58ce-08dd28e7c6df
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A5:EE_|BY1PR08MB9851:EE_|DS7PR08MB10577:EE_
+X-MS-Exchange-Organization-AuthSource: BN2PEPF000044A5.namprd04.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 7e76159a-c196-42c6-58ce-08dd28e7c6df
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-BypassClutter: true
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:4;ARA:13230040|82310400026|4022899009|2092899012|12012899012|3092899012|3072899012|5062899012|8096899003;
+X-Forefront-Antispam-Report: CIP:205.139.110.120;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(82310400026)(4022899009)(2092899012)(12012899012)(3092899012)(3072899012)(5062899012)(8096899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Dec 2024 15:36:49.4779
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e76159a-c196-42c6-58ce-08dd28e7c6df
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A5.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR08MB9851
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:02.4031861
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8293.000
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YjNVYURaUVFpdk1hbG5teU1zNlpBUXp3N3BsM2M5M1pjNFJwRksyVXRUaWtD?=
+ =?utf-8?B?RVI1ZFlFMnIxd21vYWc1VDBtbzVYOU5MMlFHZzM2b3RySHJTUTE2R241OFQ2?=
+ =?utf-8?B?Vk52c0dCZ2NaNGVrSWxLTlB5RllYakRYdEFVb3lWTmpsVm1PdTFFRVZKY2xD?=
+ =?utf-8?B?UjdiVnJZS0s4eDRxRnpIaEdiL2gxWmpzYis3TmJCczMzMGUxRUJXSGJmTTI3?=
+ =?utf-8?B?amtaeEtUMEVIa0tBOTUvemQraVNpNU4xUHQ3WC9MOTV3RU1zVDQ4a2d5Wjk0?=
+ =?utf-8?B?UWttS2lXN2g5ODZvTzNlTjVUSnlSVkNvcXRjVTFNNkxRYjZoSlF6L1BjYm9M?=
+ =?utf-8?B?c0l5enJML0cvRVdUay85NFp0NmR0WGoxempyckYvRzdRZVhzMmVxdVhJNjc5?=
+ =?utf-8?B?Ri9vdlFCU3JUdTFQZmR5d00razFrMkVCdmZub2tPaXB3TFlZNzNLejV2ZlJ1?=
+ =?utf-8?B?enVSN0NEdzRpVXRoQzYxZXRDUk5GbjF3TndpUzVZckFJZ28wL01pZWcwT0Zq?=
+ =?utf-8?B?ZmtLYTNWVk5tSEp3ZFZmOWU3dEQ5QUJQMU5PaTUzSWFLdmlXTWZyZnlxNnVS?=
+ =?utf-8?B?NG91VHU3TFk3Y09RUlB0Lyt1VUxPcVBmSXV5bXpXMmgwM0Z4RU95S3dSdk5p?=
+ =?utf-8?B?MkpHb2hKR0NNY0J5bk1HU0FZMEpVbjJoYU0zYXhuS1JzMk9LdDRsbFNubDEy?=
+ =?utf-8?B?VVF3VUtqRERBcTBzeUJPdXRDL2lwVjJ3SEVNMVRkbWtndU40bnI5SWFxYldX?=
+ =?utf-8?B?RlFyWXBOdnVRSkRBY0VtSXI0V2djQlVuZHBxYVVZN3ZvdUZ3U0haOUR3akdi?=
+ =?utf-8?B?RGJoT0pMRzVLanlWNjNielBqVWMwVysyRnI5VkZVdkNVZmNKdGc4SFhLRmtU?=
+ =?utf-8?B?UDV0UkdIZHZLYXJBME9IZUxrVkNsYmk1bGE2dHBNRk4xVkJ4cDFBdTdXRXNl?=
+ =?utf-8?B?ek8zUkVyZXdhTWcxb3RqeDBiMytoM2ZxQTAvdWZvVHVhcnNUeTlhUUhQOG8x?=
+ =?utf-8?B?Q3U2YUhvSUNyR0xFbmNGaGp2QUVJK3ZFUzQ2R3ViK0w4bWw2VUJUcCtxOHdK?=
+ =?utf-8?B?Y0VSS3RCcmJML0VFTnovS3QyL21kQkRDU2VKTE1CSVlYcTU2Q0Zlb3BQQnQz?=
+ =?utf-8?B?SGtlclZVRml3ZEMzbk9zR0hBV0dJdWFxcFZhdWcvOWpZL0hiQ2RSRHo1c1h3?=
+ =?utf-8?B?aDhNMVlieG5YK29keUxnWnMwQzBrTzQyVmpic1JRamlzTnpTUm5PV1hKeDdo?=
+ =?utf-8?B?cTArN3BVa1k3UEhpNHlNdzl6YU5OU0FXSHFLblR0aTlzbnA4d2tpYnU5Ukp4?=
+ =?utf-8?B?dWR5VTFsYjVwR3JubE1yK1VzdlZiR3dFemFLempxcXNNb2UyNS9RMlR3NUZR?=
+ =?utf-8?B?bXlvRCtBU29Pd1BmMzY2ZFpaVXlxV1I3WW0xcWxNMVZndVZ6SzVBVk8zaHNr?=
+ =?utf-8?B?TmQxUmxRVFVKazFLM0ptdWF6czJFU0k1bXZmMW0xMEVyRE1FdGwweTIyd3hD?=
+ =?utf-8?B?ZFhmZ0ZvYmswWlBhK3BFMEVTUzJnc1hDQUlLYTZMRTNvak53bEEwV1czb05H?=
+ =?utf-8?B?L0U1Zjl3TW1NRCtKRE9TYzNXU0dYK1pjY3ZKL0p2WC9ZUWVzV2thU1E5aEho?=
+ =?utf-8?B?cW1GaFhoR3NzeEFDRmhPcmtoaFFXZDBRVWdNS2F0SmVRZHFpMmJVbVRHTVVC?=
+ =?utf-8?B?b1BEZzNWUk9QY2tJaUc4VHZ0cEgxM3kzL1RBQ0dlcWhrYlh1bXQ1dHFxYmlz?=
+ =?utf-8?B?Q2RIN2RpdHVMZzY5YTZHVEFpeDB2VVZTUjVoR3E3eFBWZFd4VnJBVEZhVnVh?=
+ =?utf-8?B?VnBmRVhNcGNTT2R1ZTUyc013d3JCcFNxM1J4OEM4bUd5d3FIUVZVSkEycDRG?=
+ =?utf-8?B?bmdVbUJhUzZjMmJsb25BWDVlM3lhcERGeC8wK2pnelBqTGYrMFg5T1EvdEov?=
+ =?utf-8?B?U1hTcGNoZEMzbzZoK3g4dTJ0UjdIczYxRW0zM1ppMCtlbFprNnEyaTZUMmEz?=
+ =?utf-8?B?ZVdpRnRiQ0dkR3VkaGc1WktycUhQWDljbVowanJpMUpScnZueUJzdXZ2ZzQv?=
+ =?utf-8?B?b09rdFFoMmtISnFZS0x3QTBxUjhPMnBmSHlHT29GZGZla3FSQUQzQnBrRUxT?=
+ =?utf-8?B?dy9yQS9Tb2k4WTdzZXRWUDA1ZjluU1VBbFhTV2tRRzhjNkNxZ3dvRmZtVDdP?=
+ =?utf-8?B?Rnd2VzhiSEZLSlZqaDZUUlBGbXozT3hieUFnaFRISVNiWEhQMi81RDh1THpB?=
+ =?utf-8?B?cnBNMVZ5UnFRQnZ5ZDZJNXA4WWtRSFo4cjQwZFdQUG1Hemd2ZFJjeTYvWnNR?=
+ =?utf-8?B?ZStQdUM4Q0trU1E2dW4yWGZySzNUS2FNb3Z6cThhZ3pGc3NrY0V4R1NwNkZz?=
+ =?utf-8?B?NWFkZHkyalh2OWFTMzFKZXMyK3JLOTc2Mmh3aXRleEhFZ2xMRTBYQTJOVmlK?=
+ =?utf-8?B?MWVod0swc3RJajZvNGs1K3JKT3JLZ1h4UWpSMXNuTHB2RSszK0I4ZEl1b3lM?=
+ =?utf-8?B?cFhOZURnQmFmQjFJanBqQzJOZDVIQ05pSFUwcVBwbGdULzN5KzNSY1krMEhl?=
+ =?utf-8?B?SGVkS0NBczIwV0RoV095THNSUThwSzc1Zmk5TWx2VTJnYVdSb25hYUNnc2Qx?=
+ =?utf-8?B?anAxc045eUlVWXkrbmxXR2dqRUdqQkI0MWZTUzVvdnhYWFVvUU9YK2pGOE9U?=
+ =?utf-8?B?UkJsMG5oY2toMzJxazZzWFphbUZvVlJUc0lHVmlEcThmYUJHdlNBbk5kNFIy?=
+ =?utf-8?B?ZVFHU2lhNXJ4bitCTHpxbGNwYndHWlh2T25WRnRtUHBQUExtRDlhS3Y0T1Mr?=
+ =?utf-8?B?dUIxbjZQa2FKMXZsdkNwNDJCMjE1cTNRNG1ZWUpKWlExSkZiaHBvNExtSVNq?=
+ =?utf-8?B?ZUk5ck40bEpEVUpaZG9oUUZGbTZPNCsxaUVKTTBLVDZKTWhmcG1yMTB4WUdt?=
+ =?utf-8?B?RnFKUHNLMlpTWmY4WFRvYVVCQ0l1QngrWklWbzZ2RlVQRktYTUVKT3UwS0tB?=
+ =?utf-8?Q?ZvRNgvhTAEv/G4=3D?=
+MIME-Version: 1.0
+
+<html><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><s=
+tyle>
+	#snc_notification_preference {
+		text-decoration: none;
+	}
+=09
+	#snc_notification_unsubscribe {
+		text-decoration: none;
+	}
+</style>
+
+</head><body><p></p><p>This attempt did not result in a passing score. You =
+have a total of four attempts to pass. Please return in 24 hours to retake =
+this micro-certification exam.</p><p></p>
+
+<br><br>
+
+<a id=3D"snc_notification_unsubscribe" href=3D"mailto:nowlearning@service-n=
+ow.com?subject=3DUnsubscribe from &quot;On Fail&quot;&amp;body=3DSending th=
+is email with the predefined content in the subject and body will unsubscri=
+be you from the notification &quot;On Fail&quot;%0D%0A%0D%0AUnsubscribe:{&q=
+uot;id&quot;:&quot;9ac9e7eb23a3101016f1dec656bf6525&quot;,&quot;token&quot;=
+:&quot;c797e62132&quot;}">Unsubscribe</a> | <a id=3D"snc_notification_prefe=
+rence" href=3D"https://nowlearning.servicenow.com/nav_to.do?uri=3Dnotificat=
+ion_preferences.do%3Fsysparm_notification=3D9ac9e7eb23a3101016f1dec656bf652=
+5">Notification Preferences</a><div>&nbsp;</div><div style=3D"display:inlin=
+e">Ref:MSG45966942_ytPPn7bB9oanlI5h5lW</div></body></html>
+

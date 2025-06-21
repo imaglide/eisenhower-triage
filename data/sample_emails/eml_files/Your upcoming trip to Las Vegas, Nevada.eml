@@ -1,0 +1,1228 @@
+Received: from DS0PR08MB9034.namprd08.prod.outlook.com (2603:10b6:8:1a9::15)
+ by DS7PR08MB10577.namprd08.prod.outlook.com with HTTPS; Mon, 20 Jan 2025
+ 11:24:17 +0000
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=NGI+tSt2mRN+uYNgNXQOcmzWAL0ph++9YxhuZP/A4ml/uAKSrkjGf+n9Tum1UfXJKLeaw1xoOW+WE3gOJNIMfLXXOEFxZzMg5q6Eb8avrOhYH+ocPw3RZ9lNF3UM72608HKSToVpSzlTldDczxmmbFZE0XeaKOUI3n0IkXQsDej+KYIAySCqhf5DgGpE0FAK7kLBLm9aXLsyGSgRdIMj4ESHDWoOyWEJRP1bZcKsdv6nKIgeSl/IVMrKTpUW/fWHE7XFunRNuigYjbiGnqAs+MImCkmhXFrgoXUfzw6JYKR9dyhtnu3D+2gJkf8DMH300Of9z2TVz1wjnbVoQRLhvg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o8GFjiVabHIX/W330HmRTZ0An9fZEiYsBrxMf7NBV9o=;
+ b=gn2quludF3A91lTL4rQgRo0Fwwir0CK/vKomTbtsAvg0MQWN6bAEc0xvQ2AeXZlJmR9v9Y28z6SA2MEegADi/tpmZztZBIMzaXouPVCYyvOKtdkzqjeUfet4kFWY9pknCU2wjU1+KI805mIO9+k1oY+5k1wMPfbTKYn9RrLmdQcS01QERBBFTdie990z0++6nplaD5xZM8bgvsSc29Z8mV2vet3sRbI3I9CRZtv+fAaWNwsUFHD7Eb6VpmBP8HLFje3mn3vHCoFhAk06S9ETe7XgbNoifo1ElyffkUP7pHcHNuiY1RfTDB/MopcVfVWw5qZ2UdkIMOPyzfRBRq8KRg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=fail (sender ip is
+ 170.10.128.131) smtp.rcpttodomain=servicenow.com
+ smtp.mailfrom=bounce.email1.mycwt.com; dmarc=fail (p=none sp=none pct=100)
+ action=none header.from=mycwt.com; dkim=fail (body hash did not verify)
+ header.d=s7.y.mc.salesforce.com; arc=pass (0 oda=0 ltdi=0 93)
+Received: from CH2PR07CA0016.namprd07.prod.outlook.com (2603:10b6:610:20::29)
+ by DS0PR08MB9034.namprd08.prod.outlook.com (2603:10b6:8:1a9::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.17; Mon, 20 Jan
+ 2025 11:24:14 +0000
+Received: from CH1PEPF0000AD7A.namprd04.prod.outlook.com
+ (2603:10b6:610:20:cafe::5d) by CH2PR07CA0016.outlook.office365.com
+ (2603:10b6:610:20::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.21 via Frontend Transport; Mon,
+ 20 Jan 2025 11:24:14 +0000
+Authentication-Results: spf=fail (sender IP is 170.10.128.131)
+ smtp.mailfrom=bounce.email1.mycwt.com; dkim=fail (body hash did not verify)
+ header.d=s7.y.mc.salesforce.com;dmarc=fail action=none
+ header.from=mycwt.com;compauth=none reason=405
+Received-SPF: Fail (protection.outlook.com: domain of bounce.email1.mycwt.com
+ does not designate 170.10.128.131 as permitted sender)
+ receiver=protection.outlook.com; client-ip=170.10.128.131;
+ helo=us-smtp-inbound-delivery-1.mimecast.com;
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ CH1PEPF0000AD7A.mail.protection.outlook.com (10.167.244.59) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8377.8
+ via Frontend Transport; Mon, 20 Jan 2025 11:24:14 +0000
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1737372253;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:list-unsubscribe:list-unsubscribe-post:
+	 dkim-signature; bh=o8GFjiVabHIX/W330HmRTZ0An9fZEiYsBrxMf7NBV9o=;
+	b=pFu9o9T9OLFUK/sHOWbrATV0Es1t7A9VhkRhWvznWkua+Jb6ywQTBma+48EN606nrm+5H2
+	Elfu9Fwo///4MnrwGbABCc7RksjIloANM8RyHJabuE2LoxWBg4ulQtujdxFZXegITQf27h
+	85yUDuVAFoQU6VJXv2P4/8Ls9M7q/bqX+qqN5fsrpOuz0TrZHaPPkxBQwEuOoIqPr71ksT
+	xcmlqhy0Hr6h2E0TuEQywexMn0zEZfGSnuQnggcDgNSOE++RJhNsGW7Ruu/KgkSAlTOvlZ
+	KUZZfFbqaR6D7Tc5nbifrRqfBLQfQg+x5Hli1PxMniKRBFZCu+H1WqeobQSnAg==
+ARC-Seal: i=1; s=201903; d=dkim.mimecast.com; t=1737372253; a=rsa-sha256;
+	cv=none;
+	b=As3jkzXBhepCQwdzsgVr2akw2SH2uw2FRUuurEbb3KzzlKIz/iOQ8Od0LMLvMWV5SdCU8W
+	XzrxS3dwdL+462C36BRvPF7xQXcmuJPorQzHAgGfrp9+KWn19cEeoVpitRc89AUVMJvrFH
+	b2kgEouof2T1ZPDGWg/i7GYjP8WiZ/WydiOuwyk9uKpsRCRb5j95BlBuyvYvtt2Z3E2PAQ
+	kmKkZM8wEYWDtxEkTqoLOewFhGcJDTG/pFyqtPHxBlsVyaxDuqNWSY8qnN93NJ4Pkbq3zN
+	1mOi4k+Dy5v5OuQphtseSPKIawZJPnBAIhEG0oyTQ2M4FD8VAx1KtnQ+c4lcDQ==
+ARC-Authentication-Results: i=1;
+	relay.mimecast.com;
+	dkim=pass header.d=s7.y.mc.salesforce.com header.s=fbldkim7 header.b=dC3hTQ7q;
+	dmarc=pass (policy=none) header.from=mycwt.com;
+	spf=pass (relay.mimecast.com: domain of bounce-70_html-250300948-2424512-7207754-6@bounce.email1.mycwt.com designates 136.147.177.81 as permitted sender) smtp.mailfrom=bounce-70_html-250300948-2424512-7207754-6@bounce.email1.mycwt.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=s7.y.mc.salesforce.com header.s=fbldkim7 header.b=dC3hTQ7q;
+	dmarc=pass (policy=none) header.from=mycwt.com;	spf=pass (relay.mimecast.com:
+ domain of bounce-70_html-250300948-2424512-7207754-6@bounce.email1.mycwt.com
+ designates 136.147.177.81 as permitted sender)
+ smtp.mailfrom=bounce-70_html-250300948-2424512-7207754-6@bounce.email1.mycwt.com
+Received: from mta.email1.mycwt.com (mta.email1.mycwt.com [136.147.177.81])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-443-QW9iXrqBNGiOSUwxYSWesA-1; Mon, 20 Jan 2025 06:24:10 -0500
+X-MC-Unique: QW9iXrqBNGiOSUwxYSWesA-1
+X-Mimecast-MFC-AGG-ID: QW9iXrqBNGiOSUwxYSWesA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim7; d=s7.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=U8yJImP72hriqB+uGDqpx6LcowFby92EOBa0GPP+1k0=;
+ b=dC3hTQ7qmV9IjejzmX4A7UmUcSssF9mRhwjRigKLWkz9dzTpJQ12dWAOvj4Ha7uowLvAZi5gQWwY
+   ax1PU8MwXxCOvyvIUUbwdetv/9g8e5bH+UOhnBPVFUg7R+RRyyZ62fEH0MiSXszvhUX9WjgTXJAQ
+   7gj3js6fR5Op6KHAPVPfhN93nm9jPkRy27XbajVOT6if9rDRBZ0awXHv4PXh6/FabcLNRYmEhwSA
+   YgDPG8s6bO+owyuglFoyzuHWAuUMOIYRqJdqlm/DBtbDOIufC+77UnJkK2LdFy3O8aU8AaRo8Lz9
+   cLM3Q1U69kiAIN0ZLcE8wa+E7Km+sODdD89L/A==
+Received: by mta.email1.mycwt.com id hhop5k2fmd42 for <rob.spence@servicenow.com>; Mon, 20 Jan 2025 11:24:10 +0000 (envelope-from <bounce-70_HTML-250300948-2424512-7207754-6@bounce.email1.mycwt.com>)
+From: "CWT Predeparture Email" <donotreply@mycwt.com>
+To: <rob.spence@servicenow.com>
+Subject: Your upcoming trip to Las Vegas, Nevada
+Date: Mon, 20 Jan 2025 05:24:08 -0600
+List-Unsubscribe: <http://click.email1.mycwt.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI3MjA3NzU0IiwicyI6IjI1MDMwMDk0OCIsImxpZCI6IjcwIiwiaiI6IjI0MjQ1MTIiLCJqYiI6IjYiLCJkIjoiNzAyNDEifQ.QifiTFvMvruKNu5AziLpZ55tTv_3VPheIFcHYLUt9qY>, <mailto:leave-fd8413701a3c402029-fe3016757567047d7c1078-fe9b16747760017c77-fe8f13727563037871-ffc912@leave.email1.mycwt.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Reply-To: "CWT PredeParture Email Support" <reply-fe9b16747760017c77-70_HTML-250300948-7207754-6@email1.mycwt.com>
+X-SFMC-Stack: 7
+x-job: 7207754_2424512
+Message-ID: <ec1d9479-c415-43bb-b058-8c454850d9f8@atl1s07mta2091.xt.local>
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: BWv33Y14rR9GNUmi5CCY1rdhk0NSOFgYwVZuxwsGXQk_1737372250
+X-Mimecast-Impersonation-Protect: Policy=Tag external email;Similar Internal Domain=false;Similar Monitored External Domain=false;Custom External Domain=false;Mimecast External Domain=false;Newly Observed Domain=false;Internal User Name=false;Custom Display Name List=false;Reply-to Address Mismatch=false;Targeted Threat Dictionary=false;Mimecast Threat Dictionary=false;Custom Threat Dictionary=false;External=true
+Content-Type: multipart/alternative;
+	boundary="KBxgq6lchmyd=_?:"
+Return-Path: bounce-70_html-250300948-2424512-7207754-6@bounce.email1.mycwt.com
+X-MS-Exchange-Organization-ExpirationStartTime: 20 Jan 2025 11:24:14.3477
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 1d08bb7e-7e40-49cd-d277-08dd3944f856
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7A:EE_|DS0PR08MB9034:EE_|DS7PR08MB10577:EE_
+X-MS-Exchange-Organization-AuthSource: CH1PEPF0000AD7A.namprd04.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id: 1d08bb7e-7e40-49cd-d277-08dd3944f856
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:4;ARA:13230040|1032899013|2092899012|3092899012|69100299015|5063199012|3072899012|5073199012|4123199012|4022899009|12012899012|31092699021|30052699003|82310400026|5062899012|13003099007|8096899003|2066899003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(1032899013)(2092899012)(3092899012)(69100299015)(5063199012)(3072899012)(5073199012)(4123199012)(4022899009)(12012899012)(31092699021)(30052699003)(82310400026)(5062899012)(13003099007)(8096899003)(2066899003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2025 11:24:14.2227
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d08bb7e-7e40-49cd-d277-08dd3944f856
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD7A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR08MB9034
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.0506894
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8356.017
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VXNHMnZsYVFZZWxQYUl1S2hsekxxTjVwdlN4T3Y3RjhuQk02L1YxNnhDUmtG?=
+ =?utf-8?B?UW9JdzdKVzlyUjVMbGQzU0V3a0l2R1VsOFphQXlnSnJwWUlZWnNiR0tsQzNw?=
+ =?utf-8?B?NXNPanFEOHB3ZU5HV09zRTE1VVlkUFNaWjBRY3pMN1hwbnBPQ3hpL3N6MXNQ?=
+ =?utf-8?B?bDhpY3dVWS9ESGhrZTlTQ0hlQ2FyYld1Z1YyWjgrbmFCYmpHZW8rVmtCdXor?=
+ =?utf-8?B?cDNyQk8zbnBBTTh0YU5qZ2ZYTExXMHVUWUdtY2c1N3lJblNjbmtSTFdMeFlh?=
+ =?utf-8?B?ekxmVzc2LzQzOVRNbU5wbnMzcnA1bkNIYXVENld4SkVYcStjcmFiTEhveXBH?=
+ =?utf-8?B?dGk2emx1WFpMY1dUUDI1SExJVXlnelBjYUFPWlVaQmhZNWdNOEVRSDVXOFE0?=
+ =?utf-8?B?dEszQTgxbUdZK3VuV0xrbC9DRkptaGpxdTA1QldzeE4zNjRUMElvay9aWENK?=
+ =?utf-8?B?ZmNSOTZERzhoQ0hjTVMvUG9UdzVrZ3RtL0lXVEJsSGc1Zkp3a040VVo5VCs1?=
+ =?utf-8?B?NC9kbTJpdElsS0xpWThZcVRBc2Y1c2JHM295eHpxd2hzVVlKT1pSS0hPbmFs?=
+ =?utf-8?B?N3dZOWNZQmRPRHFVY0pmdW96c2d4M2hPSG5JY0RQd2hwdi8rdXN5eXdzTWEy?=
+ =?utf-8?B?cFljOHluY3Vidm1ndEVIWDlFMkhEbU4vRTBZZjBLamNLaXkwTTMwaFREbUxl?=
+ =?utf-8?B?eitIdWpXQ2xKYjFNTWZzckRjUFcySlkyUVE1L1c3cFM5OVJHL1gvSjIxbHd3?=
+ =?utf-8?B?dHN1d0xXZmRuZVpPWVcvcmZQZFNxekw0cVRQdFdUZU8vYkNLZkJyRHlqeUxK?=
+ =?utf-8?B?akRTajV2bG9nMytjRWNML1VCZWdrWW44bmdyTk9Bcm5LenpONk9xZ1ZkbEJJ?=
+ =?utf-8?B?Tk1HQ2xRL0RQVGpaYTZLRHpxSXlEWW1xek5ZUXpOUjVtc0RBcmpqZGI4U0JS?=
+ =?utf-8?B?bC9WWVJBMXp1QXhqNlRiSU5CQ2hVNnlGYVUzb2d0aXlneUZuUG5qakRBeEs4?=
+ =?utf-8?B?WEIwTEE1elNyeHRmY1RrekV4eTkwWnhTNTc5U1V5bFFPdG5UWkVCS0tEU0lN?=
+ =?utf-8?B?RWRvT0g4UndhZERNS3JUanN1SkhWUnpnNWxtOVEzM0szTDJ0c09UbkMwQzEr?=
+ =?utf-8?B?RkVqaFp6eW9CcHI3TjRGUVoxTkFxNXhYcytleGI0S2g3WHlHSE9OSWJKbEtN?=
+ =?utf-8?B?S2VrTDhISHU5TjZGM3ZpZVBkbXl1TzU5cytHR2pHaERiNGVuK2J0MlNtcnI3?=
+ =?utf-8?B?ZWI0aTRkYWU3TEVuZzFrc3Fxdy8reDI2WitMYm82V080S3hFbjJiVnJYNmFr?=
+ =?utf-8?B?WkE3ZEcyazdsb2hGdXZXNndFYVNBbUlUZDJSYm9WQ2VjKzhldmRqQVNvWjNM?=
+ =?utf-8?B?OTF4S2NjV3RPL05sbHhmcHVSaHBIOU45WTFsN2ZpbWhRcU9GeHhHR01qSmF1?=
+ =?utf-8?B?OVAvN1p4OUl0ZHphNWZDODBmTHJWM0xSajRUY2JqTkJnR0Z5Y2ZhS0plaWJI?=
+ =?utf-8?B?QnN4aTBlWll6ODNrSzJyVkYrYWllMlR3MjBQQ3o2Q0Y5VDhkQk1CUUpjTnJu?=
+ =?utf-8?B?OEhkUW1Ya05hS3U2bDNxSTBaWWVRWlF1eHZKOTdTcWNJNHIvVGRnUlMyazhh?=
+ =?utf-8?B?aGZyYjErRVd6YUVPRlNlQW5ZckJtdUwySUduSTFUTFh0RmxYN29rSWhTU25V?=
+ =?utf-8?B?djZ6bDZxSWx3Y0M4RUZwa29GVmdlU0NPazlkTVYrWXlpVzRRaFA4UFMwVENV?=
+ =?utf-8?B?c3VlTnNEU0VlZHV3R1lPMSt1MCtHUDFDblN5ZDlBVHo2RHl2eXhYV1RGancz?=
+ =?utf-8?B?VW9zWXhuaExUR2xsd0daNkRFVXc0bUpFaU5iNklJYytndk9CUjBsWHNVblhJ?=
+ =?utf-8?B?NC9sa0hCT0RWTkdGWmhUQnV5WXFRdzZQL1BCL0R6QkFNc1RxRmkvQVBWeUFu?=
+ =?utf-8?B?QWM5MS91U2I5czlJZ2dwNEVVOEhNQmw0VE1PWGFwN1JIbnRVdkFUR3M5SDBG?=
+ =?utf-8?B?UFhvYU1RUUJQUHlYK3Zxc1JCbk1BQlp4bGFHeHdtNHF1MU5qRVY3MzZSL0dw?=
+ =?utf-8?B?a1V4NHBQcVRNbFlVVXhYV3BkRVByTSt1SVJ0dWR1VUFjZmpKcEJWMFhlZlVp?=
+ =?utf-8?B?U2FYeTd2cCthQ2FwK1dCZWFnYi8xRVJUNTNtbGVaSTZjL0RobEFnYldBYUYz?=
+ =?utf-8?B?TUpuMVFVakNTZU5MaFpON0RVOHllT254bmluSi8xNC9IOWZpcmxuS3VFNjdP?=
+ =?utf-8?B?QUo0UmtETVU0NFhzdk4wem5aL1RGYWtyMXBHUURETEJibHZkdFdreVJLc2VT?=
+ =?utf-8?B?dXZSTEVQNzVlcDc3Y3Q4c09UL2FUV1pnQnZ2TFFEZ3JLS3RVbkxaVnNRL1lJ?=
+ =?utf-8?B?QWw3R2h2R3g0N3pGcHU0SkxUZ2EzOVpRQVY2K1FGSWdxM2dsUWRvSStiRDBu?=
+ =?utf-8?B?SXJwSk5HU3FwcUI2aUpNdWFMSDY3SStoZUJ5L0xDSHByMHA4YzRXeW56RCtE?=
+ =?utf-8?B?cW9SUXR4MVI1QWhlOGN1WjdNMHZ1RjRFcmJ4MnF0S1VqR28rdWdjRnU0Nlc2?=
+ =?utf-8?B?NXAyaUV6eUpmRytpdUs0WE9lQ2Vjc0JCeGh3TXA5ZDAyRllEWnpvUjJSM0NK?=
+ =?utf-8?B?ZWFLSC84dkh2ZWp2cENncjgzRm5uTWROaWlHRFJTSlZINGRjTERWc2Nvb29D?=
+ =?utf-8?B?QjRkYWFMMjhrSzYzczdjUzNrU3FFOHNTVndmVkNCOEh2Q1dDV1pCck1ObUpz?=
+ =?utf-8?B?dmxDbDZnVHhhRWQ4RXRKYnQ2am9UVHFhWHNIcG1vaW9OMnFMMDZqSStmSFpJ?=
+ =?utf-8?B?TWJ5bGVzTHJCK3E4S3dzRmVSVzNIU1ptSGQ4M0J0Q1J1VHZ3d09MbXlSYy9L?=
+ =?utf-8?B?UFpDQ1YyODMyaTNXckQ2Mm1weDZ0MytDbDZYQXhFWnNvNVMrbFd0WWl4VnNX?=
+ =?utf-8?B?Zm56NHJlS0NrSHlhaTNPVDdVbjEzbHV4b3pWVUU5blRsY1gxT3owWXNtWlZH?=
+ =?utf-8?B?MkVjb2ZtSGtrUEtZU1h0eldScGZJZTlRd0FMK05JR2dRMlE3bDVrRDgxekt1?=
+ =?utf-8?B?U1kyZkw0NGZiTkxFbVZPM1hPdTc1NXMrNkZDRjNSMWtOUkJXT3AwWFpyVzBN?=
+ =?utf-8?B?STN4cXRpVS83UDBUZWZIZTBVL05GNDhCejgrRkRFK2dyRGw5bGdHUUFuK1Yv?=
+ =?utf-8?Q?U3Qolko=3D?=
+MIME-Version: 1.0
+
+--KBxgq6lchmyd=_?:
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+[External Email]
+
+CWT Predeparture=20
+
+
+You're departing soon : Check-in for your flight now
+
+
+ This is an automated email, please do not reply to this email. Contact you=
+r CWT Service Center for assistance.=20
+
+
+
+
+=20
+=20
+
+
+
+
+
+As a CWT traveler, you have been enrolled into our complimentary predepartu=
+re email program. This program brings you important information and service=
+s that will help make your trip hassle-free and more enjoyable.
+
+
+
+
+It's time to check in for your flight
+Dear Rob Joyce Spence,
+Your flight to Las Vegas, Nevada departs in 24 hours. You may now=20
+https://url.us.m.mimecastprotect.com/s/J6yUCqxkQ8i1m1vlGCZfDSEyMWk?domain=
+=3Ddelta.com=20
+check-invia your airline's online service.
+When you have finished check-in, remember to download your electronic board=
+ing pass to your mobile device and print a paper copy.=20
+
+https://url.us.m.mimecastprotect.com/s/J6yUCqxkQ8i1m1vlGCZfDSEyMWk?domain=
+=3Ddelta.com=20
+Check-in for your flight
+
+https://url.us.m.mimecastprotect.com/s/3eXCCrkl27irLrOoXFzhWS4alD8?domain=
+=3Dm.delta.com=20
+Mobile check-in
+
+ Information to facilitate your online check-in
+Booking reference:
+GU4GP4
+CWT Trip locator:
+CYWIAZ
+E-Ticket Number:
+0067156922681
+
+
+Your flight details
+Delta &ndash; DL 1023
+1023
+
+Departure
+Theodore Francis Airport (PVD)
+
+ =20
+06:00 AM - 21 January 2025
+
+https://url.us.m.mimecastprotect.com/s/SyB1Cv2pQJtEMEZKofzikSQykA0?domain=
+=3Dflightstats.com=20
+Airport map
+
+https://url.us.m.mimecastprotect.com/s/IGilCwpq0givYvn9XFKsPSJLLdj?domain=
+=3Dseatguru.com=20
+Seat information
+ Arrival
+McCarran International Airport (LAS)
+
+
+
+11:45 AM - 21 January 2025
+
+https://url.us.m.mimecastprotect.com/s/cfORCxkr6jiLrLjwKfRtgSynzxU?domain=
+=3Dflightstats.com=20
+Airport map
+
+
+
+
+
+
+https://url.us.m.mimecastprotect.com/s/d0sRCyPvwkf7973kEfAuySxGweO?domain=
+=3Dmobile.mycwt.com=20
+Download myCWT - the smart app for travel with flight alerts and much more=
+=E2=80=A6
+
+
+
+
+
+
+
+=20
+https://url.us.m.mimecastprotect.com/s/tuucCzpw6liGJGz9vfBCoS9MKne?domain=
+=3Dcontent.mycwt.com=20
+
+
+=20
+
+IMPORTANT INFORMATION
+
+Travel Insurance
+
+
+ Did you know that Accenture provides insurance coverage during your intern=
+ational business trip?
+ Before you start your trip, please take a moment to review Accenture=E2=80=
+=99s International Business Travel & Medical Insurance program:
+=20
+
+=09- International Travelers on business or training are covered for medica=
+l and travel emergencies by the=20
+https://url.us.m.mimecastprotect.com/s/PmnwCADY6OiZ7Z52MFOF5SGpoDl?domain=
+=3Din.accenture.com=20
+International Business Travel & Medical Insurance program.
+=09- International Assignees and Country Transfers are covered for medical =
+and travel emergencies by the=20
+https://url.us.m.mimecastprotect.com/s/PmnwCADY6OiZ7Z52MFOF5SGpoDl?domain=
+=3Din.accenture.com/=20
+International Business Travel & Medical Insurance program during the reloca=
+tion, repatriation, and policy approved flybacks, subject to limits. Once i=
+n the host country location, different benefits programs apply. Check the=
+=20
+https://url.us.m.mimecastprotect.com/s/SuCQCBBYrEfDEDNB3U7HmS2fgNe?domain=
+=3Din.accenture.com=20
+Global Medical Plan and this=20
+https://url.us.m.mimecastprotect.com/s/xDMJCDkVqEiogoZ0QfnIzSjyM66?domain=
+=3Dts.accenture.com=20
+International Medical and Travel Assistance Insurance Map.
+
+=09- For any personal international travel, it is recommended you purchase =
+coverage at your own expense.
+=09- For any domestic travel, defer to your home country benefits programs.
+
+ For any urgent medical, security, or safety matters, contact Accenture Sec=
+urity Operations Center at &#43;1 202 728 0645
+=20
+
+Cross-Cultural and Business Practice Tips
+
+=09Need a quick summary of cross-cultural and business practice tips for yo=
+ur travel destination? Take 2 minutes to visit the=20
+https://url.us.m.mimecastprotect.com/s/LIGhCERVqQUlRljMKcKSmS7iy-l?domain=
+=3Din.accenture.com=20
+Cross-Cultural pages  within Inclusion and Diversity on the Accenture Porta=
+l.
+
+=09Interested in finding out more about how social and business interaction=
+s work in your travel destination? Follow this=20
+https://url.us.m.mimecastprotect.com/s/MRcYCG6VRKfBjB9GouBTqSB-grY?domain=
+=3Dinternationalrelocationcenter.com=20
+link  and navigate to the 'social customs' and 'business practices' section=
+s for your destination!
+
+
+ Theodore Francis Airport
+=20
+ =20
+ Theodore Francis Airport:  =20
+
+=20
+
+
+
+=20
+
+
+ Theodore Francis Airport
+=20
+ =20
+ =20
+
+=20
+
+
+
+=20
+
+
+ Las Vegas, Nevada
+=20
+ =20
+McCarran International Airport  Las Vegas, Nevada :  =20
+
+=20
+
+
+
+=20
+
+
+ Las Vegas, Nevada
+=20
+
+ =20
+
+=20
+
+
+ ...
+=20
+
+
+=20
+https://url.us.m.mimecastprotect.com/s/wDKVCJ698XfB0Bo5Pu8UPSyXZmp?domain=
+=3Dcwtperu.travelsite360.com=20
+=20
+=20
+
+
+
+
+Weather in Las Vegas, Nevada =20
+
+ 9C | 47F
+
+
+Sunny. Cool.
+
+Humidity : 11%
+
+Precipitation probability : 0%
+
+
+
+=20
+
+=20
+
+Final tip before leaving home
+
+Double check before leaving home you have all necessary travel documents, i=
+ncluding your passport, driver's licence or other photo ID as well as visa,=
+ vaccination or other entry requirements in your carry-on bag.
+
+
+
+
+
+
+=20
+
+
+(c) 2025 CWT|=20
+https://url.us.m.mimecastprotect.com/s/Ah2ECKrV8EfD3Dkm0UXcDS5-OFV?domain=
+=3Dmycwt.com=20
+https://url.us.m.mimecastprotect.com/s/8QQTCL9VZBckEk245Cxf3Sy-nbp?domain=
+=3Dmycwt.com |=20
+https://url.us.m.mimecastprotect.com/s/tskeCM8VZBi2E2YWGC7hzS8XXio?domain=
+=3Dmycwt.com=20
+Information for safe travel
+
+=20
+
+
+You are receiving this email because your company uses CWT as its travel ma=
+nagement company. IMPORTANT NOTE:=C2=A0The above products and services are =
+provided by independent third parties. CWT disclaims responsibility for any=
+ information, content or services and products which are provided by such t=
+hird parties.
+
+
+
+
+=20
+
+
+--KBxgq6lchmyd=_?:
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!--
+--><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://w=
+ww.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns=3D"http://www.=
+w3.org/1999/xhtml"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<meta name=3D"format-detection" content=3D"telephone=3Dno">
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.=
+0">
+<meta name=3D"apple-mobile-web-app-capable" content=3D"yes">
+<title>CWT Predeparture</title>
+<style type=3D"text/css">
+/* Forces Hotmail to display emails at full width */
+.ReadMsgBody { width: 100%; }
+/*Hotmail table centering fix*/
+.ExternalClass { width: 100%; }
+/* Forces Hotmail/Outlook to display normal line spacing*/
+.ExternalClass * { line-height: 100%; }
+/*Yahoo paragraph fix*/
+p { margin: 1em 0; }
+/*This resolves the Outlook 07, 10, and Gmail td padding issue fix*/
+table td { border-collapse: collapse; }
+/*viewport width scaling for all devices*/
+ @-ms-viewport {
+ width: device-width;
+}
+/*This resolves the issue when iphone puts links on dates, etc.*/
+.appleLinks { color: inherit; text-decoration: none; }
+.appleLinks a { color: inherit; text-decoration: none; }
+
+/*Mobile - Media Queries Starts - 320X480 Screen*/
+@media screen and (max-width: 480px) {
+/*Do not show in mobiles*/
+*.nomobile { display: none !important; }
+/*Shows in mobiles*/
+*.show { display: block !important; margin: 0 !important; padding: 0 !impor=
+tant; overflow: visible !important; width: auto !important; max-height: inh=
+erit !important; }
+*[yahoo] .drop { width: 100% !important; height: auto; float: left; }
+/*Table,Td resize*/
+*[yahoo] .container { width: 320px !important; height: auto; margin: 0 auto=
+; }
+*[yahoo] .logo { padding-left: 18px !important; padding-right: 24px !import=
+ant; }
+*[yahoo] .logo img{ width: 73px; height:15px; }
+*[yahoo] .logo1 { padding-right: 13px !important; }
+*[yahoo] .img1 { width: 199px !important; height: auto !important; }
+*[yahoo] .txt1 { text-align: center !important; }
+*[yahoo] .pad_L_R { padding-left: 19px !important; padding-right: 24px !imp=
+ortant; padding-top: 20px !important; padding-bottom: 30px !important; }
+*[yahoo] .pad_B6 { padding-bottom: 6px !important; }
+*[yahoo] .P_B28 { padding-bottom: 25px !important; }
+*[yahoo] .Pad_0 { padding-right: 0px !important; }
+*[yahoo] .pad_L_RSpace { padding-left: 19px !important; padding-right: 24px=
+ !important; }
+*[yahoo] .P_tb { padding-top: 11px !important; padding-bottom: 25px !import=
+ant; }
+*[yahoo] .Pad_B0 { padding-bottom: 0px !important; }
+*[yahoo] .padding_All { padding-left: 19px !important; padding-right: 24px =
+!important; padding-top: 25px !important; padding-bottom: 28px !important; =
+}
+*[yahoo] .pad_30 { padding-top: 30px !important; }
+*[yahoo] .padding_lrbt { padding-left: 19px !important; padding-right: 46px=
+ !important; padding-top: 2px !important; padding-bottom: 28px !important; =
+}
+*[yahoo] .resize { width: 100% !important; height: inherit !important; }
+*[yahoo] .P_18 { padding-left: 18px !important; padding-right: 18px !import=
+ant; }
+*[yahoo] .btn1 { padding-left: 78px !important; padding-right: 81px !import=
+ant; }
+*[yahoo] .PB_12 { padding-bottom: 12px !important; padding-left: 10px !impo=
+rtant; padding-right: 10px !important; }
+*[yahoo] .btn2 { padding-left: 72px !important; padding-right: 74px !import=
+ant; }
+*[yahoo] .PB_122 { padding-bottom: 12px !important; padding-left: 4px !impo=
+rtant; padding-right: 6px !important; }
+*[yahoo] .txt_Pad { padding-left: 15px !important; padding-right: 15px !imp=
+ortant; }
+*[yahoo] .p_30 { padding-bottom: 30px !important; }
+*[yahoo] .p_t_20 { padding-top: 20px !important; }
+}
+/*Mobile - Media Queries Ends*/
+</style>
+</head>
+<body bgcolor=3D"#FFFFFF" style=3D"margin: 0px; padding:0px; -webkit-text-s=
+ize-adjust:none; -ms-text-size-adjust: none;" yahoo=3D"fix"><div class=3D"m=
+c-ip-hide" style=3D"display:block !important; height:auto !important; backg=
+round:#FFFFFF !important; opacity: 1 !important; visibility:visible !import=
+ant; color: #000000 !important; font-size: 12px !important; font-family:Hel=
+vetica, Arial, sans-serif !important; text-align: left !important"><strong =
+style=3D"display:block !important; height:auto !important; background:#FFFF=
+FF !important; opacity: 1 !important; visibility:visible !important; color:=
+ #000000 !important; font-size: 12px !important; font-family:Helvetica, Ari=
+al, sans-serif !important; text-align: left !important"><h3><strong><span s=
+tyle=3D"background-color:yellow;">[External Email]</span></strong></h3></st=
+rong><br><hr></div>
+<!-- ET Tracking Code-->
+<img src=3D"https://image-tracking-service.us-1.mimecastcybergraph.com/v1/i=
+mage?imageData=3DolnqTsxKsCzfSpIyx2pU18X8dibIRdOs2gDxfnNfF3MlgjCO2rMAMpERG%=
+2BM%2F6TKx8mMAHAcbnxNkizuY94A1znZrpPkMTViK5NN4Sk8MENwOalZ%2BKUCrXuLUBJmBn6i=
+m9DadEaArvzg0Q0A01ij7UskBo2mk8uazNBtWEzTMq0yQiUoZQCtDii30Rn8%2BQXDPpjBPnGn6=
+Ao83SVySfzp6SCvtiF1XDm09coRZfU%2B3V%2BDpiqfjIPT0JsLjmq%2FBjDFUM%2FikO%2FGNF=
+ZmCug3Ja2QIOjK0Bp30fsds8OovCbQEhh0sipI1f0FWv2IZfZKCVKXET20EvjLU5YTh%2BpDfc8=
+0iSMe9T%2FuGz9G8WCllKizmMfaeaDBoGyOpDw42FwdRkz5lnw0zRnJtNIKUFpXfkgg3WOLr5Q%=
+3D%3D" width=3D"1" height=3D"1" alt=3D"">
+<!-- `date "+ET%m.%y"` -->=20
+<!-- Table used to center email Starts-->
+<table class=3D"container" width=3D"100%" border=3D"0" cellspacing=3D"0" ce=
+llpadding=3D"0">
+<tr>
+<td align=3D"center" valign=3D"top" bgcolor=3D"#cccccc"><table class=3D"con=
+tainer" width=3D"700" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+<tr>=20
+ =20
+    <td align=3D"center" valign=3D"top" bgcolor=3D"#cccccc" style=3D"color:=
+#5a5a5a; font-size:10px; font-family: Verdana, Geneva, sans-serif; padding:=
+20px 0px 20px 0px; line-height:15px;">
+	You're departing soon : Check-in for your flight now
+	<br>
+     This is an automated email, please do not reply to this email. Contact=
+ your CWT Service Center for assistance. </tr>
+<tr>
+<td align=3D"left" valign=3D"top"><table width=3D"100%" border=3D"0" cellsp=
+acing=3D"0" cellpadding=3D"0" bgcolor=3D"#ffffff">
+
+<tr>
+<td align=3D"left" valign=3D"top">
+
+
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" bgco=
+lor=3D"#ffffff">
+ <tr>
+    <td align=3D"left" valign=3D"top"><table width=3D"100%" border=3D"0" ce=
+llspacing=3D"0" cellpadding=3D"0" bgcolor=3D"#ffffff">
+      =20
+       <tr>
+          <td align=3D"left" valign=3D"top" style=3D"padding-bottom:18px; p=
+adding-top:20px;"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cell=
+padding=3D"0">
+              <tr>
+                <td class=3D"logo" width=3D"66" align=3D"left" valign=3D"mi=
+ddle" style=3D"padding-left:29px; padding-right:166px; padding-top:7px;"><i=
+mg src=3D"https://image-tracking-service.us-1.mimecastcybergraph.com/v1/ima=
+ge?imageData=3DH1Qt%2FvzfDoeGLFk7J6DDQOLG%2Fse3Cje0VipIrg1xouqvqTQQOYPlDlG%=
+2FXSf8bcAffCbBX7z0JhluoeYnftss4Vxx%2BpTW5SlllfCg3DCd9oJU%2FYzukF01k0VmNAl4r=
+7qslKbu0owXm2LW0csqHca6escLlxGPoyNq75Y%2Fs%2F6vkho4X9pA4YVNRCjy4gedAYE%2BAD=
+mE2EpHJzETvDWyjO6ngMYNI2Z211zynLmAx2MNv7h1LE8Ewq8beo%2F0OHpiuXKVYdm83KTdxCq=
+nundtF3i4PNxthVod3o2u4BCKlbmIOKIazsa4N3ystroAXqQdrGp0dA%3D%3D" width=3D"113=
+" height=3D"23" alt=3D"CWT" title=3D"CWT" style=3D"display:block; font-size=
+:12px; color:#00aaad; font-family: Verdana, Geneva, sans-serif;"></td>
+                <td class=3D"logo1" width=3D"350" align=3D"left" valign=3D"=
+middle" style=3D"padding-right:40px;"><img class=3D"img1" src=3D"https://im=
+age-tracking-service.us-1.mimecastcybergraph.com/v1/image?imageData=3DgHkGl=
+tE3zJEfLReRKo5vND80mK3O%2FAJkannYy50kQvW%2Fv%2FvxhTPGdkLIfcq7362QB6eZr6HeFt=
+8yhE%2FYqEF5cAz5EfibX%2FWaCT%2FhazGbmY7mLePpq6USz%2B9CEmuT0tMIbMSKOP5%2FrZE=
+HC25jASFE3%2FvvGPtV6%2FwWQOnaTeMqWmDriDD009VntutoJPYZFzeibS%2FnMpL52jPqKxpi=
+H6n0lqnS316%2FrvfgaP%2B46NDGC1o9icj7lyTZP0tNt85HYfFeIuBVupqd6%2FEz%2BC0laTS=
+dyVkvnsGlFnAap8TDZh7SRnLTyMZsX4zDk2%2FOELQMr2uZ" alt=3D"Your predeparture g=
+uide" height=3D"34" style=3D"display:block; font-size:20px; color:#00aaad; =
+font-family: Verdana, Geneva, sans-serif;" title=3D"Your predeparture guide=
+"></td>
+              </tr>
+            </table></td>
+        </tr>
+       =20
+        <tr>
+          <td class=3D"nomobile" align=3D"left" valign=3D"top"><img src=3D"=
+https://image-tracking-service.us-1.mimecastcybergraph.com/v1/image?imageDa=
+ta=3DSZyHPxKOVsQ45dX2XPS7dYflE27%2Bh78lYoYXB9MmPi9XAKC1NKhveXpsAfxvrEx52Z3m=
+GXb%2BOYjzaz84yG4init%2F5oIY3vhkipevgdvKAGTPsaWgbicF8Z80t89hR0Ywb6aLFs4350U=
+2FuqTHZamfY9OJn0XXzRDDPjSNwo8RrWjYixDLyV1skmlgpO%2FjxeKK6wzrJKOlnE1njF3vGhI=
+BYtBjCHQ8oVsdL5qX6ZNnH8geNrzdsxHw2SQezWLhKJY2XwJTmQoCOX7qXSd2An1z%2BJB2pZ0p=
+Hg6q8auctTGE5KROHGc5q3X" alt=3D"" width=3D"700" height=3D"170" style=3D"dis=
+play:block;" title=3D""></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td align=3D"center" valign=3D"top"><!-- Div used to Hide the Content--=
+>=20
+      <!--[if !mso]><!-->
+     =20
+      <div class=3D"show" style=3D"font-size: 0%; max-height: 0; overflow: =
+hidden; display: none;">
+        <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D=
+"0" bgcolor=3D"#ffffff">
+          <tr>
+            <td align=3D"center" valign=3D"top"><img src=3D"https://image-t=
+racking-service.us-1.mimecastcybergraph.com/v1/image?imageData=3DSZyHPxKOVs=
+Q45dX2XPS7dYflE27%2Bh78lYoYXB9MmPi9XAKC1NKhveXpsAfxvrEx52Z3mGXb%2BOYjzaz84y=
+G4init%2F5oIY3vhkipevgdvKAGTPsaWgbicF8Z80t89hR0Ywb6aLFs4350U2FuqTHZamfY9OJn=
+0XXzRDDPjSNwo8RrWjYixDLyV1skmlgpO%2FjxeKK6wzrJKOlnE1njF3vGhIBYtBjCHQ8oVsdL5=
+qX6ZNnH8geNrzdsxHw2SQezWLhKJY2XwJTmQoCOX7qXSd2An1z%2BJB2pZ0pHg6q8auctTGE5KR=
+OHGc5q3X" alt=3D"" width=3D"320" height=3D"auto" style=3D"display:block;" t=
+itle=3D""></td>
+          </tr>
+        </table>
+      </div>
+     =20
+      <!--<![endif]-->=20
+      <!-- Div used to Hide the Content - Ends--></td>
+  </tr>
+</table></td>
+</tr>
+
+<tr>
+<td align=3D"left" valign=3D"top">
+
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td align=3D"left" valign=3D"top" style=3D"padding:12px 12px 0px 12px;"=
+><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+        <tr>
+          <td class=3D"nomobile" align=3D"left" valign=3D"top" style=3D"bor=
+der:1px solid #f28e00; padding:10px 20px 8px 14px; font-family: Verdana, Ge=
+neva, sans-serif; color:#58595b; font-size:10px;">As a CWT traveler, you ha=
+ve been enrolled into our complimentary predeparture email program. This pr=
+ogram brings you important information and services that will help make you=
+r trip hassle-free and more enjoyable.</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+
+</td>
+</tr>
+
+<tr>
+<td class=3D"pad_L_R" align=3D"left" valign=3D"top" style=3D"padding:24px 3=
+5px 20px 27px;"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpa=
+dding=3D"0">
+<tr>
+<td class=3D"txt1" align=3D"left" valign=3D"top" style=3D"font-family: Verd=
+ana, Geneva, sans-serif; color:#b240bb; font-weight:bold; font-size:18px; p=
+adding-bottom:20px;">It's time to check in for your flight</td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top"><table width=3D"100%" border=3D"0" cellsp=
+acing=3D"0" cellpadding=3D"0">
+<tr>
+<td class=3D"drop" width=3D"395" align=3D"left" valign=3D"top"><!--
+
+-->
+<table width=3D"360" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"resize">
+  <tr>
+    <td class=3D"pad_B6" align=3D"left" valign=3D"top" style=3D"font-family=
+: Verdana, Geneva, sans-serif; color:#333f48; font-size:12px; font-weight:b=
+old; padding-bottom:10px;">Dear Rob Joyce Spence,</td>
+  </tr>
+  <tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#333f48; font-size:12px; line-height:25px; padding-bott=
+om:10px;">Your flight to Las Vegas, Nevada departs in 24 hours. <br>You may=
+ now <a href=3D"https://url.us.m.mimecastprotect.com/s/J6yUCqxkQ8i1m1vlGCZf=
+DSEyMWk?domain=3Ddelta.com" alias=3D"OnlineCheckIn" target=3D"_blank" style=
+=3D"text-decoration:underline; color:#1061cc; font-weight:bold;"><span styl=
+e=3D"color:#1061cc;">check-in</span></a>  via your airline's online service=
+.</td>
+  </tr>
+  <tr>
+    <td class=3D"P_B28" align=3D"left" valign=3D"top" style=3D"font-family:=
+ Verdana, Geneva, sans-serif; color:#333f48; font-size:12px; line-height:25=
+px; padding-bottom:35px;">When you have finished check-in, <b>remember to d=
+ownload your electronic boarding pass to your mobile device and print a pap=
+er copy. <br class=3D"nomobile"></b></td>
+  </tr>
+  <tr>
+    <td class=3D"Pad_0" align=3D"left" valign=3D"top"><table width=3D"360" =
+border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=3D"resize">
+        <tr>
+          <td align=3D"center" valign=3D"middle" height=3D"42" bgcolor=3D"#=
+fc6640" style=3D"color:#ffffff; font-weight:bold; font-family: Verdana, Gen=
+eva, sans-serif; font-size:19px;"><a href=3D"https://url.us.m.mimecastprote=
+ct.com/s/J6yUCqxkQ8i1m1vlGCZfDSEyMWk?domain=3Ddelta.com" target=3D"_blank" =
+style=3D"text-decoration:none; color:#ffffff;" alias=3D"OnlineCheckIn"><spa=
+n style=3D"text-decoration:none; color:#ffffff;">Check-in for your flight</=
+span></a></td>
+        </tr>
+      </table></td>
+  </tr>
+  <!---->
+  <tr>
+    <td class=3D"Pad_0" align=3D"left" valign=3D"top"><table width=3D"100%"=
+ border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+        <tr>
+          <td class=3D"P_tb" align=3D"center" valign=3D"top" style=3D"paddi=
+ng-top:22px; color:#0098a1; font-weight:bold; font-family: Verdana, Geneva,=
+ sans-serif; font-size:12px;"><a href=3D"https://url.us.m.mimecastprotect.c=
+om/s/3eXCCrkl27irLrOoXFzhWS4alD8?domain=3Dm.delta.com" alias=3D"MobileOnlin=
+eCheckIn" target=3D"_blank" style=3D"text-decoration:underline; color:#1061=
+cc; font-weight:bold;"><span style=3D"color:#1061cc;">Mobile check-in</span=
+></a></td>
+        </tr>
+      </table></td>
+  </tr>
+  <!---->
+</table></td>
+<td class=3D"nomobile" width=3D"15" align=3D"left" valign=3D"top" style=3D"=
+font-size:0%; line-height:100%;">&nbsp;</td>
+<td class=3D"drop" width=3D"174" align=3D"left" valign=3D"top"><!--
+
+-->=09
+	<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td align=3D"left" valign=3D"top" class=3D"p_t_20" style=3D"font-family=
+: Verdana, Geneva, sans-serif; color:#333f48; font-size:12px; font-style:it=
+alic; padding-bottom:6px;">Information to facilitate your online check-in</=
+td>
+  </tr>
+  <!--<tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#58595b; font-size:12px; font-style:italic;  padding-bo=
+ttom:10px;">online check-in</td>
+  </tr>-->
+   <!---->
+  <tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#333f48; font-size:12px; font-weight:bold; line-height:=
+25px;">Booking reference:</td>
+  </tr>
+  <tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#333f48; font-size:12px; line-height:22px; padding-bott=
+om:3px;">GU4GP4</td>
+  </tr>
+   <!---->
+    <!---->
+  <tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#333f48; font-size:12px; font-weight:bold; line-height:=
+25px;">CWT Trip locator:</td>
+  </tr>
+  <tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#333f48; font-size:12px; line-height:22px; padding-bott=
+om:3px;">CYWIAZ</td>
+  </tr>
+   <!---->
+    <!---->
+  <tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#333f48; font-size:12px; font-weight:bold; line-height:=
+25px;">E-Ticket Number:</td>
+  </tr>
+  <tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#333f48; font-size:12px; line-height:22px; padding-bott=
+om:3px;">0067156922681</td>
+  </tr>
+  <!---->
+
+  <!--<tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#333f48; font-size:12px; font-weight:bold; line-height:=
+25px;">Frequent flyer number:</td>
+  </tr>
+  <tr>
+    <td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, Geneva=
+, sans-serif; color:#333f48; font-size:12px; line-height:22px;"></td>
+  </tr>-->
+ =20
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td class=3D"pad_L_RSpace" align=3D"left" valign=3D"top" style=3D"padding:0=
+px 27px 0px 27px;"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cel=
+lpadding=3D"0">
+<tr>
+<td align=3D"left" valign=3D"top" bgcolor=3D"#a1a1a1" style=3D"font-size:0%=
+;"><img src=3D"https://image-tracking-service.us-1.mimecastcybergraph.com/v=
+1/image?imageData=3DT8PC%2BKQimW0KnTzlDq0ScmYH2Lpf2QhVSBjMU9iqLYtxYIND%2B2j=
+H%2Fpf9ZFBpxiiibJi3WHkOnGW2XKIv6i5TLbLxe7laP%2F%2B2T0MRb2oEMW9aqFjinBUwKiBd=
+dTmoUBS1ETXUlCpvROnwgGYKGsRqKxl%2Fe568KZYVFz8Q0IirIYd58TjGFkaF2fV5GP4S38aiC=
+zGS%2FKa8hYFaC9Gx0nhn34STJeW14pgtNvFHl9FWQtS6SD%2B2oHyKiDt43843tPtWAcwWZfg7=
+25AxUP%2Ba7SgzBoTEThySjoUoOFdG5zA1qfOwhNNwjjhC8VVTN7tCPw6r1RmhU6LepETlow%3D=
+%3D" alt=3D"" width=3D"1" height=3D"1" style=3D"display:block;" title=3D"">=
+</td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top"><!--
+=09
+-->
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+	<tbody>
+		<tr>
+			<td class=3D"padding_All" align=3D"left" valign=3D"top" style=3D"padding=
+: 22px 33px 18px 26px;">
+			<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+				<tbody>
+					<tr>
+						<td class=3D"txt1" align=3D"left" valign=3D"top" style=3D"font-family=
+: Verdana, Geneva, sans-serif; color: #b240bb; font-size: 18px; font-weight=
+: bold; padding-bottom: 15px;">Your flight details</td>
+					</tr>
+					<tr>
+						<td class=3D"Pad_B0" align=3D"left" valign=3D"top" style=3D"font-fami=
+ly: Verdana, Geneva, sans-serif; color: #333f48; font-size: 12px; padding-b=
+ottom: 6px;">Delta =E2=80=93 DL <span class=3D"nomobile"><b>1023</b></span>=
+</td>
+					</tr>
+					<!--[if !mso]><!-->
+					<tr>
+						<td align=3D"center" valign=3D"top"><!-- Div used to Hide the Content=
+-->=20
+						<div class=3D"show" style=3D"font-size: 0%; max-height: 0px; overflow=
+: hidden; display: none;">
+						<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0=
+">
+							<tbody>
+								<tr>
+									<td align=3D"left" valign=3D"top" style=3D"font-family: Verdana, G=
+eneva, sans-serif; color: #333f48; font-size: 12px; padding-bottom: 23px; f=
+ont-weight: bold;">1023</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+						<!-- Div used to Hide the Content - Ends--></td>
+					</tr>
+					<!--<![endif]-->=20
+					<tr>
+						<td align=3D"left" valign=3D"top">
+						<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0=
+">
+							<tbody>
+								<tr>
+									<td class=3D"drop" width=3D"289" align=3D"left" valign=3D"top">
+									<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0">
+										<tbody>
+											<tr>
+												<td align=3D"left" valign=3D"top" style=3D"font-family: Verdana=
+, Geneva, sans-serif; color: #fc6640; font-size: 14px; font-weight: bold; p=
+adding-bottom: 8px;">Departure</td>
+											</tr>
+											<tr>
+												<td align=3D"left" valign=3D"top" style=3D"color: #333f48; font=
+-family: Verdana, Geneva, sans-serif; font-size: 12px; padding-bottom: 6px;=
+"><b>Theodore Francis Airport (PVD)</b><br>
+												  </td>
+											</tr>
+											<tr>
+												<td class=3D"appleLinks" align=3D"left" valign=3D"top" style=3D=
+"color: #333f48; font-family: Verdana, Geneva, sans-serif; font-size: 12px;=
+ padding-bottom: 9px;">06:00 AM - 21 January 2025</td>
+											</tr>
+											<tr>
+												<td align=3D"left" valign=3D"top" style=3D"color: #2a9797; font=
+-family: Verdana, Geneva, sans-serif; font-size: 12px; padding-bottom: 4px;=
+ font-weight: bold;"><a href=3D"https://url.us.m.mimecastprotect.com/s/SyB1=
+Cv2pQJtEMEZKofzikSQykA0?domain=3Dflightstats.com" alias=3D"AirportMapDepart=
+ure" target=3D"_blank" style=3D"text-decoration: underline; color: #1061cc;=
+"><span style=3D"color: #1061cc;">Airport map</span></a></td>
+											</tr>
+											<tr>
+												<td align=3D"left" valign=3D"top" style=3D"color: #2a9797; font=
+-family: Verdana, Geneva, sans-serif; font-size: 12px; padding-bottom: 4px;=
+ font-weight: bold;"><a href=3D"https://url.us.m.mimecastprotect.com/s/IGil=
+Cwpq0givYvn9XFKsPSJLLdj?domain=3Dseatguru.com" alias=3D"SeatMap" target=3D"=
+_blank" style=3D"text-decoration: underline; color: #1061cc;"><span style=
+=3D"color: #1061cc;">Seat information</span></a></td>
+											</tr>
+										</tbody>
+									</table>
+									</td>
+									<td class=3D"nomobile" width=3D"20" style=3D"font-size: 0%; line-h=
+eight: 100%;" align=3D"left" valign=3D"top">&nbsp;</td>
+									<td class=3D"drop" width=3D"281" align=3D"left" valign=3D"top">
+									<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0">
+										<tbody>
+											<tr>
+												<td class=3D"pad_30" align=3D"left" valign=3D"top" style=3D"fon=
+t-family: Verdana, Geneva, sans-serif; color: #fc6640; font-size: 14px; fon=
+t-weight: bold; padding-bottom: 8px;">Arrival</td>
+											</tr>
+											<tr>
+												<td class=3D"Pad_B0" align=3D"left" valign=3D"top" style=3D"col=
+or: #333f48; font-family: Verdana, Geneva, sans-serif; font-size: 12px; pad=
+ding-bottom: 6px;"><b>McCarran International Airport (LAS)</b><br>
+												 <span class=3D"nomobile">  </span></td>
+											</tr>
+											<tr>
+												<td align=3D"center" valign=3D"top"><!-- Div used to Hide the C=
+ontent-->=20
+												<!--[if !mso]><!-->
+												<div class=3D"show" style=3D"font-size: 0%; max-height: 0px; ov=
+erflow: hidden; display: none;">
+												<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpaddin=
+g=3D"0">
+													<tbody>
+														<tr>
+															<td align=3D"left" valign=3D"top" style=3D"color: #333f48; f=
+ont-family: Verdana, Geneva, sans-serif; font-size: 12px; padding-bottom: 6=
+px;">  </td>
+														</tr>
+													</tbody>
+												</table>
+												</div>
+												<!--<![endif]-->=20
+												<!-- Div used to Hide the Content - Ends--></td>
+											</tr>
+											<tr>
+												<td class=3D"appleLinks" align=3D"left" valign=3D"top" style=3D=
+"color: #333f48; font-family: Verdana, Geneva, sans-serif; font-size: 12px;=
+ padding-bottom: 9px;">11:45 AM - 21 January 2025</td>
+											</tr>
+											<tr>
+												<td align=3D"left" valign=3D"top" style=3D"color: #2a9797; font=
+-family: Verdana, Geneva, sans-serif; font-size: 12px; padding-bottom: 4px;=
+ font-weight: bold;"><a href=3D"https://url.us.m.mimecastprotect.com/s/cfOR=
+Cxkr6jiLrLjwKfRtgSynzxU?domain=3Dflightstats.com" alias=3D"AirportMapArriva=
+l" target=3D"_blank" style=3D"text-decoration: underline; color: #1061cc;">=
+<span style=3D"color: #1061cc;">Airport map</span></a></td>
+											</tr>
+										</tbody>
+									</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+	</tbody>
+</table></td>
+</tr>
+</table></td>
+</tr>
+
+</table></td>
+</tr>
+</table>
+<table class=3D"container" width=3D"100%" border=3D"0" cellspacing=3D"0" ce=
+llpadding=3D"0">
+<tr>
+<td align=3D"center" valign=3D"top" bgcolor=3D"#cccccc"><table class=3D"con=
+tainer" width=3D"700" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+<tr>
+<td align=3D"left" valign=3D"top"><table width=3D"100%" border=3D"0" cellsp=
+acing=3D"0" cellpadding=3D"0" bgcolor=3D"#ffffff">
+
+<tr>
+<td align=3D"left" class=3D"top">
+
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td class=3D"padding_lrbt" align=3D"left" valign=3D"top" style=3D"paddi=
+ng:0px 33px 20px 26px;"><table width=3D"100%" border=3D"0" cellspacing=3D"0=
+" cellpadding=3D"0">
+			<tr>
+			  <td width=3D"54" align=3D"left" valign=3D"top"><img src=3D"https://ima=
+ge-tracking-service.us-1.mimecastcybergraph.com/v1/image?imageData=3DtbwbUz=
+Gi%2BMmBYYCEbAfLxVjS3ghAMDhw4GT2qPfy4mtblHTt2Z6Fcxq1r3rn6VLiEx9n9yVbJwJ21Bq=
+%2B8I5coaPxAy%2BVXe9GAYNWgZsKVt5Fb6xxAANP3UW9WQIO65xV1lfya3Jq1AmCrI53tOmo4k=
+yduQW2V9mqWAsfRTXvjUkDGNriiAtsY%2Bqvy2EOKkZr%2BpiBHvFmb3wt7rFv1LFboOczww8vQ=
+YJi%2FTBLsrRyl6qSYCWcCCV5PUnioHW8k7XudWel1K1ZEtEcFfcljKQHNd3dye%2BtsjWoglVw=
+R6mHOI6xkwGeXLLZ5a0mz7QIuHI%3D" alt=3D"CWT TO GO" width=3D"70" height=3D"70=
+" style=3D"display:block; font-family: Verdana, Geneva, sans-serif; color:#=
+00aaad; font-size:10px;" title=3D"CWT TO GO"></td>
+			  <td align=3D"left" valign=3D"middle" style=3D"padding-left:13px; color=
+:#333f48; font-family: Verdana, Geneva, sans-serif; font-size:12px;"><a hre=
+f=3D"https://url.us.m.mimecastprotect.com/s/d0sRCyPvwkf7973kEfAuySxGweO?dom=
+ain=3Dmobile.mycwt.com/" alias=3D"CWTToGoDownload;" target=3D"_blank" style=
+=3D"text-decoration:underline; color:#1061cc; font-weight:bold;"><span styl=
+e=3D"color:#1061cc;">Download myCWT -</span></a> the smart app for travel w=
+ith flight alerts and much more=E2=80=A6</td>
+			</tr>
+		  </table></td>
+  </tr>
+</table>
+
+	=09
+=09
+=09
+</td>
+</tr>
+<tr> <!--
+=09
+-->
+
+<td class=3D"P_18" width=3D"600" align=3D"left" valign=3D"top" style=3D"pad=
+ding:0px 27px 19px 24px;">
+
+<a href=3D"https://url.us.m.mimecastprotect.com/s/tuucCzpw6liGJGz9vfBCoS9MK=
+ne?domain=3Dcontent.mycwt.com" alias=3D"AdvertisingSAS;" target=3D"_blank">
+<img class=3D"resize" border=3D"0" src=3D"https://image-tracking-service.us=
+-1.mimecastcybergraph.com/v1/image?imageData=3DRFCeKT4hwB0Xw3c6ZeqAPbDRUog4=
+Pfm1ZExi%2BYIS%2BvKwXK%2BH%2BHm5Ikce4ZoEhP37pPyhELtMucQedhO7mBpWitZiM%2BDuB=
+InsgU4I4Snw9FfUO50aILRYKYOy0cyM3b0FdTAWwWzk5C6%2BhQsBsqSalMLwF78erKxahgxflV=
+adYpONizADP%2BiHVIv3MS1T5bVpR6aqWQBpN6oGMu6p9HfKm7Tm1Ghg8RVMimY0sMSHdaF36D%=
+2F1o0mPRat78YXYaugKVA0BSw12RYlLNeg4edJ7U4rtaaSOg%2BOPTEcfMkzLUQLBhHDPoTzO8i=
+mVvd2GfTM57Jdxa4uXRqjC5a7a8EQ7KKTRicpnjns1m3lLMbxNoYIJJCQwYqZXmyMoETb0bZhiO=
+fmPt%2F%2F4iJAL1Nk%2Fdyg66%2FU8ywMtsrYIMmAw0tOXwwk%2Ficcs%2Bv7ijVgOjupprb5U=
+IGPPoZf6OWNuoDDQqXngweom2uOOM9t3po5AMyOpZ6NlQ7U7iL5qdLxC8G1QknqzWEKaBD9sNPA=
+6gDWQMkhGhK8%3D" style=3D"display:block; font-family: Verdana, Geneva, sans=
+-serif; color:#184052; font-size:20px;" border=3D"0"></a>
+
+</td>
+
+ </tr>
+<tr>
+  <!-- Accenture start-->
+<tr>  <td class=3D"P_18" align=3D"left" valign=3D"top" style=3D"padding-lef=
+t:25px; padding-right:27px; padding-bottom:10px;"><table width=3D"100%" bor=
+der=3D"0" cellspacing=3D"0" cellpadding=3D"0"><table cellpadding=3D"0" cell=
+spacing=3D"0" width=3D"100%" role=3D"presentation" style=3D"min-width: 100%=
+; " class=3D"stylingblock-content-wrapper"><tr><td class=3D"stylingblock-co=
+ntent-wrapper camarker-inner"><!-- --></td></tr></table></td> </tr>
+  <!-- Accenture end-->
+<tr>
+<td align=3D"left" valign=3D"top"><!--
+--></td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top"><!--
+--></td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top"><!--
+--></td>
+</tr>
+<tr>
+<!-- <td align=3D"left" valign=3D"top" >("97795")</td> -->
+<td align=3D"left" valign=3D"top"><!--
+--></td>
+</tr>
+<tr> <!--
+--> </tr>
+<tr>
+<td class=3D"P_18" align=3D"center" valign=3D"top" style=3D"padding-left:25=
+px; padding-right:26px; padding-bottom:10px;"><table align=3D"center" borde=
+r=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+<tr>=20
+
+
+<td class=3D"drop" width=3D"190" align=3D"center" valign=3D"top">
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td width=3D"190" align=3D"center" valign=3D"middle" style=3D"padding-l=
+eft:81px; padding-right:82px;"><img src=3D"https://image-tracking-service.u=
+s-1.mimecastcybergraph.com/v1/image?imageData=3DWIOrwY1LlktAyAwxKLkUM9SVvhr=
+Dzz9WUNW4vxJmOP3gKdmyZYMxJvK1i9JAQk63uvudqwk1LmvxHB80RcpmGaLgHxcV1jpAiEx5gv=
+iwkvxcMbO4g7RO%2BiwMI7P%2FhT%2BELHX%2B8OM%2F2Bg4jvUcH1fO4vhkBt7QvnMK0l6JlW0=
+jOl5LvjGibh478f8BPD1Vq%2Bxw5mGmE3X7g0iLpe%2BwZ1IUlsDVmwkgodZncRt8477Y0Ji9F6=
+lS0jAJo3pny1wsbSsvw2EtkmBTcdH0d5yU4c7aO%2FXtsZk9NP4H859r7uTy6icFjVFyf64OYQ%=
+3D%3D" alt=3D"" width=3D"37" height=3D"29" style=3D"display:block; font-fam=
+ily: Verdana, Geneva, sans-serif; color:#333f48; font-size:10px;" title=3D"=
+"></td>
+  </tr>
+  <tr>
+    <td align=3D"center" width=3D"190" valign=3D"top" style=3D"font-family:=
+ Verdana, Geneva, sans-serif; color:#fc6640; font-weight:bold; font-size:11=
+px; padding-top:11px; padding-bottom:7px;">
+	Weather in Las Vegas, Nevada  </td>
+  </tr>
+  <tr>
+    <td align=3D"center" width=3D"190" valign=3D"middle" style=3D"color:#33=
+3f48; font-size:15px; font-weight:bold; font-family: Verdana, Geneva, sans-=
+serif; padding-bottom:2px;">
+       	9=C2=B0C | 47=C2=B0F
+    </td>
+  </tr>
+  <tr>
+    <td class=3D"p_30" width=3D"190" align=3D"center" valign=3D"middle" sty=
+le=3D"color:#333f48; font-family: Verdana, Geneva, sans-serif; font-size:10=
+px; padding-bottom:50px; line-height:16px;">
+	Sunny. Cool.<br>
+    Humidity : 11%<br>
+    Precipitation probability : 0%</td>
+  </tr>
+</table>
+</td>
+
+
+<td class=3D"nomobile" width=3D"10" align=3D"center" valign=3D"top" style=
+=3D"font-size:0%; line-height:100%">&nbsp;</td>
+<td class=3D"drop" width=3D"190" align=3D"center" valign=3D"top">
+
+</td>
+<td class=3D"nomobile" width=3D"20" align=3D"center" valign=3D"top" style=
+=3D"font-size:0%; line-height:100%">&nbsp;</td>
+<td class=3D"drop" width=3D"190" align=3D"center" valign=3D"top">
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+    <tr>
+        <td align=3D"center" valign=3D"top">
+            <img src=3D"https://image-tracking-service.us-1.mimecastcybergr=
+aph.com/v1/image?imageData=3DD5V%2B45wySaaoh6zjOM8dfp1AagIkmITFo4cPvXCCMxbP=
+G3OdeUaooc7fV8MOw%2Fl3xW6svNbdU%2FWrJ9bB5HIQHuXlkSRZNLYeLCXUzA%2BGuKIUKCIdt=
+tQHMIlB5EXeX72rg3YeHsp39SMAcGNm%2BHSXmxgKlft01BfBp0rJ3AYklQRBdsWte4QnDU4l%2=
+FL7N%2FtxdYjUa9dBS%2F8ciLe%2B3rxY%2F%2B16AI5DLG4JWDVH7goT%2BumZnFMdKuvPn45f=
+kNwI30fRP82cYz5bkTriS4GDPBK74LVg9e9PRRpZmU1LgsXr67fV02dIYSaS%2BYzMMhUcPRn98=
+IFCtGctHfw%3D%3D" alt=3D"" width=3D"30" height=3D"30" style=3D"display:bloc=
+k; font-family: Verdana, Geneva, sans-serif; color:#333f48; font-size:10px;=
+" title=3D"">
+        </td>
+    </tr>
+    <tr>
+        <td class=3D"txt1" align=3D"center" valign=3D"top" style=3D"font-fa=
+mily: Verdana, Geneva, sans-serif; color:#fc6640; font-weight:bold; font-si=
+ze:10px; padding-top:11px; padding-bottom:7px;">Final tip before leaving ho=
+me</td>
+    </tr>
+    <tr>
+        <td align=3D"left" valign=3D"top" style=3D"color:#333f48; font-fami=
+ly: Verdana, Geneva, sans-serif; font-size:10px;">
+                        Double check before leaving home you have all neces=
+sary travel documents, including your passport, driver's licence or other p=
+hoto ID as well as visa, vaccination or other entry requirements in your ca=
+rry-on bag.
+            <br class=3D"nomobile">
+            <br class=3D"nomobile">
+        </td>
+    </tr>
+</table>
+
+</td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td align=3D"left" valign=3D"top" bgcolor=3D"#cccccc" style=3D"padding:22px=
+ 40px 30px 24px; font-family: Verdana, Geneva, sans-serif; color:#5a5a5a; f=
+ont-size:10px;">=20
+
+
+	=C2=A9 2025 CWT| <a href=3D"https://url.us.m.mimecastprotect.com/s/Ah2ECKr=
+V8EfD3Dkm0UXcDS5-OFV?domain=3Dmycwt.com" target=3D"_blank" style=3D"text-de=
+coration:underline; color:#5a5a5a;" alias=3D"CarlsonWebSite">
+<span style=3D"color:#5a5a5a;">www.mycwt.com</span></a> | <a href=3D"https:=
+//url.us.m.mimecastprotect.com/s/tskeCM8VZBi2E2YWGC7hzS8XXio?domain=3Dmycwt=
+.com/" target=3D"_blank" style=3D"text-decoration:underline; color:#5a5a5a;=
+" alias=3D"InformationForSafeTravel"><span style=3D"color:#5a5a5a;">Informa=
+tion for safe travel</span></a> <br>
+      <br> <br>
+
+	You are receiving this email because your company uses CWT as its travel m=
+anagement company. IMPORTANT NOTE:&nbsp;The above products and services are=
+ provided by independent third parties. CWT disclaims responsibility for an=
+y information, content or services and products which are provided by such =
+third parties.
+		<br></td>
+</tr>
+</table></td>
+</tr>
+</table>
+=20
+<!-- Table used to center email Ends-->
+</body>
+</html>
+
+--KBxgq6lchmyd=_?:--

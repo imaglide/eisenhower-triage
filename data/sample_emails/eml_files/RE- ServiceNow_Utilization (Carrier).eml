@@ -1,0 +1,2709 @@
+Received: from CH3PR08MB10021.namprd08.prod.outlook.com
+ (2603:10b6:610:217::10) by IA1PR08MB10590.namprd08.prod.outlook.com with
+ HTTPS; Mon, 16 Jun 2025 21:10:32 +0000
+ARC-Seal: i=4; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=fail;
+ b=xizs5vU+AUOJ+790GXbc3kBzSj5gBijhBZOXeVBZqPggg4J0R8HpDoheYX/4MWYKSE89wQ3RXU+SEjAGyhjnHj6sIkWNDRgQdb1n5F4CgeOJp9CZ+vx0LsBxpXceIIdSXixIbmYpbEGnQDT2L7Tju202u2BF8z7ZvdnV5TWVwl16dgz2OVPzMv8MITN7JaCmxAZE7WNJLlDp7nWy2CM9dDmag/7gkd6ZKeZZrDDLShWud2aiI0NDkCQs9VqYYt7xYTL0qB3ZOUpq7xBZctxSSsMm1BlHj53Qep+sWaCZaYATgTrkZ+W+DZXkjaL7YMGIhsn39SXpShxXfOPHP0oUZg==
+ARC-Message-Signature: i=4; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OYXdOfZvdr91KIg8NAUuqPNdfdLMbEORoGRAnssrSRU=;
+ b=PKYwzqaTj2/4Z7e8d6/VKwu4FVtwUR/iJgYhTkTI+2HnAyMz5Y9hzrSrOTwyHc/31JJ/AHO596PzkMqF+Gc9L06rorXx3xxgHDf9Si8LOkgFzJeXtoObbz1XhQywvkaQVekZcafDUBOFIuXNOpbGu/CfMFXQbg88E/CGypEwInBcyMmrHcs4ksI9IfjJT4N33ubU+VzdchBw5HgTUN8w3WiboX80trPqcJLMgBDQK950QYMgmZdEBsyuqQNDBl+Sd7lJosWTUPKM5utzX2dogXF9r67PDyuygPXO0eUJvi4qAVKIVBVw7ADYNt94ln90KMue8BBUbwjsxmTVrvCviA==
+ARC-Authentication-Results: i=4; mx.microsoft.com 1; spf=fail (sender ip is
+ 170.10.128.131) smtp.rcpttodomain=servicenow.com smtp.mailfrom=infosys.com;
+ dmarc=fail (p=reject sp=reject pct=100) action=oreject
+ header.from=infosys.com; dkim=fail (body hash did not verify)
+ header.d=infosys.com; arc=fail (49)
+Received: from MN2PR14CA0016.namprd14.prod.outlook.com (2603:10b6:208:23e::21)
+ by CH3PR08MB10021.namprd08.prod.outlook.com (2603:10b6:610:217::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Mon, 16 Jun
+ 2025 21:10:28 +0000
+Received: from BL6PEPF00020E62.namprd04.prod.outlook.com
+ (2603:10b6:208:23e:cafe::6a) by MN2PR14CA0016.outlook.office365.com
+ (2603:10b6:208:23e::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.19 via Frontend Transport; Mon,
+ 16 Jun 2025 21:10:28 +0000
+Authentication-Results: spf=fail (sender IP is 170.10.128.131)
+ smtp.mailfrom=infosys.com; dkim=fail (body hash did not verify)
+ header.d=infosys.com;dmarc=fail action=oreject
+ header.from=infosys.com;compauth=none reason=451
+Received-SPF: Fail (protection.outlook.com: domain of infosys.com does not
+ designate 170.10.128.131 as permitted sender)
+ receiver=protection.outlook.com; client-ip=170.10.128.131;
+ helo=us-smtp-inbound-delivery-1.mimecast.com;
+Received: from us-smtp-inbound-delivery-1.mimecast.com (170.10.128.131) by
+ BL6PEPF00020E62.mail.protection.outlook.com (10.167.249.23) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.15
+ via Frontend Transport; Mon, 16 Jun 2025 21:10:28 +0000
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed;
+	d=dkim.mimecast.com; s=201903; t=1750108227;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OYXdOfZvdr91KIg8NAUuqPNdfdLMbEORoGRAnssrSRU=;
+	b=EjZMdy58RToixMGp17PTDUQ4QVj3RQ2aZuEV1Tdqz8ALnXaojO3CguhUWt5jLUpztRWREY
+	nT95BJFfbkqyTOQLln3WJsDpJRQpefsliunlV/MMSVhfFH+hOKq/7kkZIFTYkBpmRP/Ab1
+	7c9wpyVkvh36H/4aAvW+5gljB/UTI/COqtIR+Ba2Dz/j34YU6rlLEEfqkF0O5UWj1l2set
+	KhYpNmTtRjhFi4I9k69zhngf3DIEK1pSxTkIMS3l/2BFZg7uOUKKWFzioaX1ae4tP6BUHd
+	ZcOjJbOffGK592FOg/8i8uz/cltghWRq5+RbXgvAr6QlENUgfEZOrg+4+qm9tg==
+ARC-Seal: i=3; s=201903; d=dkim.mimecast.com; t=1750108227; a=rsa-sha256;
+	cv=pass;
+	b=f2TENy7UDFTDWFBLkeQq9TK4PrbQYm55jt0ztKf5fNUTleTs3fphV8LQxvE54u61iIdaRH
+	ycu8QazcmWqTCr2SKIVd/Gq1Zz8VXJkmnvZIwO7YtczkKf/OsXIBkZ0CIOcY7GeFYwpYQy
+	ss7aEBlA8+wwCvCbUfEGucT5eyASWdmnUFbuoapWQAb6pyRcB9QhS1Eqg6GwM58Ndh2PUY
+	XxXaZhzq8AFbQ0rHXh8NUCEzZDofikVO6f2oLsNDMd1bmEf9ulI5tEZq5GvZhPSVIZxmlR
+	vcWDqCYZG5lEnBYTXexBNSbH0CCz9+QoyXNo8AK9soDbwxu17WIniorjblfHNA==
+ARC-Authentication-Results: i=3;
+	relay.mimecast.com;
+	dkim=pass header.d=infosys.com header.s=TM-DKIM-20211201111149 header.b=gnu7KodW;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	dmarc=pass (policy=reject) header.from=infosys.com;
+	spf=pass (relay.mimecast.com: domain of sridhar.m@infosys.com designates 18.185.115.118 as permitted sender) smtp.mailfrom=sridhar.m@infosys.com
+Authentication-Results-Original: relay.mimecast.com;	dkim=pass
+ header.d=infosys.com header.s=TM-DKIM-20211201111149 header.b=gnu7KodW;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");	dmarc=pass (policy=reject)
+ header.from=infosys.com;	spf=pass (relay.mimecast.com: domain of
+ sridhar.m@infosys.com designates 18.185.115.118 as permitted sender)
+ smtp.mailfrom=sridhar.m@infosys.com
+Received: from repost01.tmes.trendmicro.eu (repost01.tmes.trendmicro.eu
+ [18.185.115.118]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-511-WZRVXgqdNJWQM1mU8V4W9g-1; Mon, 16 Jun 2025 17:10:21 -0400
+X-MC-Unique: WZRVXgqdNJWQM1mU8V4W9g-1
+X-Mimecast-MFC-AGG-ID: WZRVXgqdNJWQM1mU8V4W9g_1750108220
+Received: from 52.101.126.67_.trendmicro.com (unknown [172.21.188.151])
+	by repost01.tmes.trendmicro.eu (Postfix) with SMTP id CC97C10000E16;
+	Mon, 16 Jun 2025 21:10:19 +0000 (UTC)
+X-TM-MAIL-RECEIVED-TIME: 1750108216.933000
+X-TM-MAIL-UUID: 906fd5c0-2fac-47d2-8007-a30b7692c9d2
+Received: from TYPPR03CU001.outbound.protection.outlook.com (unknown [52.101.126.67])
+	by repre01.tmes.trendmicro.eu (Trend Micro Email Security) with ESMTPS id E3FC710000315;
+	Mon, 16 Jun 2025 21:10:16 +0000 (UTC)
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=XdJ1y+VVLBQLC037bxJfgLUcuiI+IAwOVmMSozX17I/65bah4DMC6RvbBsskjEt1gCmRS0UbwmVXr2C7NhryQoXEvKyn3CCEY+eNYQXVhyvDCN9s2UprA6taZDvgpfI3f5Co0QuHP6546vrfbF/doACB0OqNKOP3nE4Ys1MjEElOJhGyKiNLK4BII3ry2Jhg3PfxI8GYrYKnlWdSD+HoEv5FRmXFisSyqB8d9q+CFq6CaSIyextQjeAaj0vojo4ogpI7vstfQ5zI9hfOIiS4XbfgCvoFcEyvRJc52btdiY4oBeVwFZbaqGxDzz8dz0GayD8p8LfifJ/D5Lxcv6S2UA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7etNACdUZjxyzvnHo32UiL/HChuBqWzPUHoCW++s7+E=;
+ b=vEKJqJtCmOxq7A0hWu2n9V/1Y2SEY9yKEJP4BGmf+ntGP/0QcFctlaRY3nE3gwrK/fGqwv2fvNTI49mbMGFkMGq6enOC+doz7tI8QcMUPtFBETixTLPMiaoXkXM8/q+U39/bhfRQw/8AJOF3hqCfCHDUusGqNhVuZMFfJmQhRPWzB8x1qcInLvQdb6wBgYFLsmOCMTL7wIQqAv64HML7c8etNq/zXLG5wgrv9IJUYta5d93SFmr2i8eHWvCuVZyjrBOJzcMYAALDTMUl5hcX1ga1AU8IPQnALwc33Nmw75YCucv+qBGYT7slX+v4fwD7TDDUbsBpe479CTHcaxjEBQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 144.49.245.128) smtp.rcpttodomain=servicenow.com smtp.mailfrom=infosys.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=infosys.com;
+ dkim=pass (signature was verified)
+ header.d=infosystechnologies.onmicrosoft.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=infosys.com] dkim=[1,1,header.d=infosys.com]
+ dmarc=[1,1,header.from=infosys.com])
+Received: from SG2PR06CA0189.apcprd06.prod.outlook.com (2603:1096:4:1::21) by
+ JH0PR02MB7213.apcprd02.prod.outlook.com (2603:1096:990:67::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8769.37; Mon, 16 Jun 2025 21:10:10 +0000
+Received: from SG1PEPF000082E8.apcprd02.prod.outlook.com
+ (2603:1096:4:1:cafe::e4) by SG2PR06CA0189.outlook.office365.com
+ (2603:1096:4:1::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.23 via Frontend Transport; Mon,
+ 16 Jun 2025 21:10:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 144.49.245.128)
+ smtp.mailfrom=infosys.com; dkim=pass (signature was verified)
+ header.d=infosystechnologies.onmicrosoft.com;dmarc=pass action=none
+ header.from=infosys.com
+Received: from smtp-europe-west1-p11-i01-si01.dlp.protect.broadcom.com
+ (144.49.245.128) by SG1PEPF000082E8.mail.protection.outlook.com
+ (10.167.240.11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.15 via Frontend
+ Transport; Mon, 16 Jun 2025 21:10:09 +0000
+X-CFilter-Loop: Reflected
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ebKrJdYSEPMY9hfyKp0neOqeay0VkPm7MNlNQiMxAADCLBIUXgj2LSFMWvf+iScS0vGoXUAjPE362ZVfQ2lx9o4lKTlU/PZZ3h6J8tOdp8hefSnjTtbjRMPrwWbFVji0S62bpHa8UeM7acnHhZ/t7VlTTFTHM2HJ/upv1R/kWhB2CsixcuNpt9BSOGMxvo03pMi1F7hQy3HmWwKFfk29SXICfMKU8sdytz6++Wk7aKwfRcqyy75yKefBavxbdBi0CZfDYamAlf3vE0nebowovh9GeNK6G2YzGjYbMMhGIMni4BJzAX0zfz7kzu2/tvTjHesvQPNrxRAJVqHn+d6OMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7etNACdUZjxyzvnHo32UiL/HChuBqWzPUHoCW++s7+E=;
+ b=GWPp8CE0+aqwcjozWjpbnqwSnMJ9PW8Zm9qbYcSDNqNgg+TWIFohWQPreNU9Oi4/tKw6gHNHz9gUzizLwo4oKdVxyF/9PWRHIIdyOwQfb/aa2Ym5HazdjBEm+IgzmzoZzjjwNFYX0ocy36gFtBeQWWXlnI0ZgzanWOwdzVroN3bpAN1cThfL/DDRPE2L9G6UtvUS6y1MWLDyDfUzcL1ABCY26ni3HgO6Vpyugb1P2nx7cGKlO5bFGmGdUlqtRJ2wmjG+/6RXVrQIQ3kH+rhXkD2dSY/txsNUjx5zKtYrmFAGxjHRNTGLWQo955/7WORYoVoKvHgulHEwqcqKbohThg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=infosys.com; dmarc=pass action=none header.from=infosys.com;
+ dkim=pass header.d=infosys.com; arc=none
+Received: from YT4PR01MB10498.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:ea::11)
+ by YT3PR01MB10734.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:fa::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.30; Mon, 16 Jun
+ 2025 21:09:59 +0000
+Received: from YT4PR01MB10498.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::a576:c04f:e755:e023]) by YT4PR01MB10498.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::a576:c04f:e755:e023%4]) with mapi id 15.20.8835.027; Mon, 16 Jun 2025
+ 21:09:58 +0000
+From: Sridhar Muthukrishnan <sridhar.m@infosys.com>
+To: Pallavi Prabhakar Patil10 <Pallavi_Patil10@infosys.com>, Derek Rinchiuso
+	<derek.rinchiuso@servicenow.com>, "Shweta  Nyol" <Shweta_Nyol@infosys.com>
+CC: Scott McNinch <scott.mcninch@servicenow.com>, Sandeep Bhandaru
+	<sandeep.bhandaru@servicenow.com>, Paul Martin
+	<walterpaul.martin@servicenow.com>, Rob Spence <rob.spence@servicenow.com>,
+	Paul Dixon <paul.dixon@servicenow.com>, Hemambaradara Rao Erra
+	<HemambaradaraRao_E@infosys.com>, Chuck Huntley
+	<chuck.huntley@servicenow.com>, Ajit Ravisankar
+	<ajitkumar.ravisankar@servicenow.com>
+Subject: RE: ServiceNow_Utilization (Carrier)
+Thread-Topic: ServiceNow_Utilization (Carrier)
+Thread-Index: AdvVVKv1ODWLCgB9SgiDkytF/BXDNAACcu0QAPia2mAAcWMNYAAANtUgAFohlOAAAwdgIACf/9ZQ
+Date: Mon, 16 Jun 2025 21:09:58 +0000
+Message-ID: <YT4PR01MB1049856026DA28DEC00DB0DF7F670A@YT4PR01MB10498.CANPRD01.PROD.OUTLOOK.COM>
+References: <DS0PR08MB10444A37B5463B7D6FD2A4193936CA@DS0PR08MB10444.namprd08.prod.outlook.com>
+ <YT2PR01MB585320734EF1520B22D323CF936CA@YT2PR01MB5853.CANPRD01.PROD.OUTLOOK.COM>
+ <DS0PR08MB10444B381A7961156CAE4FD3F936BA@DS0PR08MB10444.namprd08.prod.outlook.com>
+ <TY0PR02MB57189C7B13B02F41F8703D849575A@TY0PR02MB5718.apcprd02.prod.outlook.com>
+ <YT2PR01MB585362788F39979F5F48D5359375A@YT2PR01MB5853.CANPRD01.PROD.OUTLOOK.COM>
+ <DS0PR08MB10444CD31B008EAD333E36C6E9377A@DS0PR08MB10444.namprd08.prod.outlook.com>
+ <YT2PR01MB585352A9EE5CE328E06EB9DB9377A@YT2PR01MB5853.CANPRD01.PROD.OUTLOOK.COM>
+In-Reply-To: <YT2PR01MB585352A9EE5CE328E06EB9DB9377A@YT2PR01MB5853.CANPRD01.PROD.OUTLOOK.COM>
+Accept-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_ActionId=00aad538-be98-4f9d-a3bc-7fce40490fc7;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_ContentBits=0;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Enabled=true;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Method=Standard;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Name=a0819fa7-4367-4500-ba88-dd630d977609;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_SetDate=2025-06-04T14:39:24Z;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_SiteId=63ce7d59-2f3e-42cd-a8cc-be764cff5eb6;MSIP_Label_a0819fa7-4367-4500-ba88-dd630d977609_Tag=10,
+ 3, 0, 1
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=infosys.com
+x-ms-traffictypediagnostic: YT4PR01MB10498:EE_|YT3PR01MB10734:EE_|SG1PEPF000082E8:EE_|JH0PR02MB7213:EE_|BL6PEPF00020E62:EE_|CH3PR08MB10021:EE_|IA1PR08MB10590:EE_
+X-MS-Office365-Filtering-Correlation-Id: e524c891-22b9-4560-2d22-08ddad1a386e
+X-DetectorID-Processed: bd92f66d-d33a-456d-b98b-d2b354244dce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018|13003099007|4053099003|8096899003
+X-Microsoft-Antispam-Message-Info-Original: =?us-ascii?Q?jeDRhN7C29PPlzC4l/xQW1YK/qyqneXK6X/p0ytymIPUwiGnqpBUVIZRrIRD?=
+ =?us-ascii?Q?pW6SJ/Msejwv2hCrvnPmbCuCWTi9DHnqa1i09UIHbLS+rNrr+HiEE/6w6TOH?=
+ =?us-ascii?Q?D+tS+WSpxCEZecTIQcrPYJSU0hsvj2Gm6ro/bTUW2Dmd00T0jf8WqpsnvxP6?=
+ =?us-ascii?Q?4wbII9K3Eb7JUuFkibKIhvJG6NIVUONLdg+tB6QbIbedc5khRXYmz9AISisJ?=
+ =?us-ascii?Q?+DbBCjEPKe/Th2uD20X5V15mEUS9xNjzKYqaA2jfoHQVJe3x/RfaXFYje9tS?=
+ =?us-ascii?Q?saXZjMXY8sSr1VVDjfj18XYZ7IypUfxNpNc0lJoej+GpnU2LzS4It1mBLCiw?=
+ =?us-ascii?Q?c2VfXAJyc9dddyhH5Gs9RMqsCiZRq0gVH/2q/xHFWXjJ71DQGDcRiN1X4K4F?=
+ =?us-ascii?Q?KPcBgOu908PaqtuTzrKK6u6lTMSTZf4N4aqIV6CCDTR/6jyRFkmjcIWC7O9D?=
+ =?us-ascii?Q?E45T4ByKe5G9N2kj+XY2i2UfqeENg+fHCMZYHb8jm5F/hxzv9b/UY+m/4Yhl?=
+ =?us-ascii?Q?h8lkDDaonKe9WSI0T4QzU13MJw7f7zXXlkKEUI7KHoH0dTPQlCXp1OVKUlH6?=
+ =?us-ascii?Q?a8L9dJXKT9qkX175bfXCGMWE7m7Tibw0M+qPv17veP7dd/7z9VN1gbLPvWcZ?=
+ =?us-ascii?Q?6RH72s9sgX1wJPPm3x2J8umPEmiro+V31ZFaHUwkWNyE/KMr00lSHYuR+Q8l?=
+ =?us-ascii?Q?A07NaeoGNH4AR8vP342pm7dVsdYv81xDUISulmsP2FXG9tdpb5o55nv1bg6s?=
+ =?us-ascii?Q?SuEqFAJ1uYKNU+XXyzHRco1RL+vjWGSYwUVV40UhRBG8EQAMQqRYdh7yJbLf?=
+ =?us-ascii?Q?j2fUqL1df2Gb4EWM4uwA2eVV+CfoD8SFa8g9m01Z8i5i4d8U4OSNzYbfAXxU?=
+ =?us-ascii?Q?H4JIt6CnLkh99uv4OBkJOytBnZl1dZVBTuu+nChHx3MkoD5wfubcJxMgZvOx?=
+ =?us-ascii?Q?FUcDEyPZWzHbIvkRt2B8uvcXVoXjeywqfmHDr+BI7GWAKhmsnAbRqOejNljw?=
+ =?us-ascii?Q?wYEm3HgVomyjKtUiIqphC9aHYQdqFJrojUY7O4WMNHbCd1dy5rqqoZd5KwxR?=
+ =?us-ascii?Q?DoV2FkcnKQiX/rD5w1/ykcx5rsyE/0cwGbi8wHmcmnO2DN4sUwjHz2p7ge/3?=
+ =?us-ascii?Q?nX8ZmaWREVSI0Q1F6gnaK2qjMUsGDz8fwnrWvVAGUEsXrwPwcxttiJQ6gFeM?=
+ =?us-ascii?Q?MhhwjHBj4vni2TiVzwXx80r+Btzl8nu1mSq4SBRMyDUQQO/b+RoYWBLYDYRW?=
+ =?us-ascii?Q?g8kiq5sYeWfv00KCVWQkaSPd2wCZrOUfSyJT4c2HO8UpqrJbUQNPt59KZgHG?=
+ =?us-ascii?Q?n2/4t4M1ymMWeSRDnmFOV9wQ62CLBkIZiLdLM5BJmcSy52Os/zCUN+GL7Oyo?=
+ =?us-ascii?Q?damnFblvWkDBGTS48R9HSo8mDDv7PcjSHzdtmvqdpRm8JttpGfnHsMUc44Rv?=
+ =?us-ascii?Q?XKyswdPc31I8tnGmmt38HRUQMNc6qFqn?=
+X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT4PR01MB10498.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018)(13003099007)(4053099003)(8096899003);DIR:OUT;SFP:1101
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB10734
+X-EOPAttributedMessage: 1
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: SG1PEPF000082E8.apcprd02.prod.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 3962638a-6f98-4980-e4bc-08ddad1a26aa
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014|14060799003|35042699022|4076899003|4053099003|13003099007|8096899003
+X-Microsoft-Antispam-Message-Info-Original: =?us-ascii?Q?IT3yF+MFFTJhyTR8hggzXBTDZ2ZlmASL2S2pg8s15bhm+IqMFBs4/suggyKp?=
+ =?us-ascii?Q?PEgeK3bN78V5C0PyYkJqYkvhoW+B4aqv5usG5/zoC9qR3JpsFCAbWkVXgoqE?=
+ =?us-ascii?Q?RSCIFx81/uecTD8KhwqPhW7vecem1H4ZLFChs0ronS8MZXo9gxp3dvp4Rdkq?=
+ =?us-ascii?Q?FyweHERb3wktLyhyG/JVIejTf/kG6YNrF6m/9EEVRcr6mzuB1pyCdoiKUqe2?=
+ =?us-ascii?Q?voiGrEvOhU61xy8K9BBVg1af8ZOsA5e8/+SMb4mJbRks9qdaqdhYcUE65TA7?=
+ =?us-ascii?Q?WscgsDyZAZWo8cM6HtATQLpfUysAMSG3RlRiXSHL1K9Tdf/9LsLSuH/5qLeV?=
+ =?us-ascii?Q?esZSlaoD7kAkUyEvYH4Roh8+Be954czONTEfkLCBJFC/9chrZhpqeu2C8HvB?=
+ =?us-ascii?Q?y3UOA5ziLuTsgjpBAwon5AOKcHeuoWmO9J6UfElbTt1j9y6dKR5S8z/z4Psg?=
+ =?us-ascii?Q?ajfY1WUcnk23PxeEWQ24/mQIk4kv6hmM8jlPzIRizy6hPPRa+nCbkIg3IMXJ?=
+ =?us-ascii?Q?0Tb4o5MQ0Xba3/VcB2fpCJ7TdpGUihlp+XFr0DUl4PX/RfZKJYhhK4SlPXF/?=
+ =?us-ascii?Q?8W5578XSd7eHNmVzKTZE4uUJCV1MDba1ogYNGa3iUW7eSnBVLS3AeHVtcc/o?=
+ =?us-ascii?Q?PQcQJNjODQc6jQRa75G3u3O74y7R01W5m9mftMP/i+IiaW3kUJKvtWTs3sXl?=
+ =?us-ascii?Q?SfyX6qde7+otW9Fdcth5x7wwfLTo5nFzUe6ckgocqNnOu78P1o3OHr+1/ncu?=
+ =?us-ascii?Q?lQGc/q1kdCkp3rCRiehXKy5r7Sy5rcR30gCRN+zv9ek6gbhmcfIl0Xrij9Ak?=
+ =?us-ascii?Q?mo4WADzVlUcA7hi+P1zULza0xBSQzNWVgfXbywrstFKNHsrNYKfXlDzyy43L?=
+ =?us-ascii?Q?bGhkYTEnWgWztMcdmg0U3gI9sepLdoSRJ7kzCp7tgluTO8E5v32aMiasEfu/?=
+ =?us-ascii?Q?6L7Shv1Mq7zG44cK1v/tDvjPMVJa9l6vfCNtmAm6hK1FA/necFPygIdxzK8T?=
+ =?us-ascii?Q?y16ssisW62f1WUgTXQhT9V+zsVjrSt41MAJqHbaZYRNGzDPXHr/m0olRauf6?=
+ =?us-ascii?Q?kZQ7vcowDibF36+sKnIcgurXgva5efTn7YjBLZBdHRAkxSkRQP3Inb4ZJniM?=
+ =?us-ascii?Q?1wH2rvgwcH1h3fW78+j0wRduWpGAYeb6xqleWNp/lAQYH3dVLhHC1VceF3SP?=
+ =?us-ascii?Q?nU9OYXdE60CEiKk6Muu2j/5gUArZKwBnvPXWR9CkpX3iJr0UJ8DWMR9zn1K9?=
+ =?us-ascii?Q?OA4POmfsxBcaX6AesueRTewSLi0eX4VzECyLqZJfwTldR1coooDiHgvkgZU8?=
+ =?us-ascii?Q?R1Axc0ayKpiUHX+PGgmK91G7B048R5ACSwGT+LWINDIXIj2j+A8goC6x/nrm?=
+ =?us-ascii?Q?dhrXfHKVAmpxEg/mFH5FyrXIJub224A3OhTHWFwaY4UbApYjBzTEbbtCmjuc?=
+ =?us-ascii?Q?1/ZKtKFM+mgFn2D7EZ4s4LvbxU+/lEwC7aV63glWyXXWQcxb8z3xDyLiH2FI?=
+ =?us-ascii?Q?omWLcZw4dzgdkkM=3D?=
+X-Forefront-Antispam-Report-Untrusted: CIP:144.49.245.128;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtp-europe-west1-p11-i01-si01.dlp.protect.broadcom.com;PTR:address-144-49-245-128.dlp.protect.broadcom.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(14060799003)(35042699022)(4076899003)(4053099003)(13003099007)(8096899003);DIR:OUT;SFP:1101
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: KlsHcLbXi3P4s10O+KkmX9hrC6wWDGnGhoiDGG7TWBXfLAeofpmjMZNTl6yExQENh8DAZjfcZBn6RxYeCumHgF6yX1mbq1rNN5SdraWy19R8F464UneMwqTGxRb8Yv6p2lGYGqtOBZxLe02iywqsS1KJhRUbusyq8/6pboo7HwfVgAdzsgGrimDROB4jiRA4KCSPnsNpp7iskhfEDxdf2VmrSjAWQ6mKtkOMfpx4fHf6si7Bu3QJA0WI9h1dSy+4ttM0KMPk8tPe6PYdsSFbdwCcHr0dNDNmyDGq1BYhOeDOw+UG1o71sfJQypzKITzHZ9xu3mFCsBsbxSo5G+hPek9X3ZfZ6Cyq2ZIyboENWZj3MMISe4KEWmcALNheiHhH7wleRUknEOiQotMeoGbUm0vv5kmsea+A0zTNgUsYmOdWD33hB2mmoZnKSBTZXmyZS1SeTwD/9msoI9CzwZtYDFMutEHaR7g3HRUKivTnG9lqIGNiC7D4K7Z+B9p3U8x0cZ1ofAAYKexw3oX2THhgcqXX7McnZvyafVYbtRn/SaOpqiF4Yv3lZm76UIDkkD8ZsBX1Mx8MLeHqQy3S546OXPCqAaVM783H9oXY90YH0DLtPY7tTVps1C7zA8PRI8njJk5vCcaZwbRSTSJJueGPog==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: JH0PR02MB7213
+X-TM-AS-ERS: 52.101.126.67-0.0.0.0
+X-TMASE-Version: StarCloud-1.3-9.1.1032-29262.002
+X-TMASE-Result: 10--35.427700-4.000000
+X-TMASE-MatchedRID: H14hh7zg+63faNhf8xOvcNIxDufWJC8obSejuH+Mi13cHWFKCmADc+BF
+	2W14PN4ulQNSoZyj+M1ONA1Re+Okgonu0K6TYDpmdWd990CSobV6h5diOHqYcH6u8VnsVatcI19
+	CJGmayrrrVXn2syq1nhCQqH5I0NNbwQpNB/B8dZYKegKM4VhZjS/R9ZJXe6dnjh4sOI1Ut5vC6k
+	Klgx32tTl7a9nrqd9xGAFYgQsixZ1s9h0iQY47ghJECKjup/RBJybHZJNdL7wVJPUqXnrQdZkRP
+	HajPHqakOTy7IoeTxGezDkYhQlq0UgDNwn/ZvYGxfGRkXByxRlzoxCmHXb7+olrr1+rqm9afN5l
+	7ipRk4gC7iMDQWdGf6xHx8OcAGxGTqP52guig99bAVXtuu9JIJGPSO6O5JCaGU6fClehCoIhJ1d
+	5trchzQtIGM+TLXAfwvLGaQ96kNOUwF2PdMu9c970s+pWPvASO9AbTF0WkMKoFOWeQTmWZhOotH
+	nGmtkQDQx13VnqkRp3xMS11GFg2KeVnQbZ/e1Hdceo6oyag7WNLpDOLI6j561Zw0Izj1EhRkzG8
+	QM05cdiNa9eO62OxiBaQFBZo5zHRNKMdb2IB1zoSXDJSsWgeY00PILgpqtbBgMjvFD8H/14PMDk
+	yRelrJVxT+r3oxK8DjQvXxUtekfK+Qq1m5faJf5zMUpK5mzBE7GRMzU5kURjAz8U77QCjuSbjlC
+	8gSKK1bFWfFSCOYMr5M9COK3Y0dE44JbP4MvvGprS8+5oRonmcBv7yj/G19gHuHRCZu5NSKMXcH
+	ZJynOdskiHY3+weysfAuB3s4D1PcufqILd65sCngKphxwWrzmoMBkrmuf/mCYM4MaoFU/qB8q0D
+	tiGWp/7YDDOSj91laHsLvoribvq6f2b5x/+kQz8Yc7K8cx6YppqMItbEgNEmTx5DaUD8SVNJxt7
+	aXvgSRqmQojQ7DtT0PyBnvNi7X4uVrCkHLnlBv3BwF3sroc=
+X-TMASE-XGENCLOUD: 7b52ff7f-c024-44a3-a80d-12053e1a31b5-0-0-200-0
+X-TM-Deliver-Signature: 6601A9A7BFD38AA99685F6116196EE47
+X-TM-Addin-Auth: 90gexGxw5MvADlVEryqH+F3+QJRkmfr3OVCoJHFyVOWbyzE+dFSdouE2Vex
+	PK40NEbIFDKVVUknOEBLBLBsrBTBIGdgwU05u4LaEU0oG4iKfVxu7XxOBgsETD15engpeUicXAS
+	cTsxz4DrzFoqbRTvfGbEv3PPmDy607+V4BNrtTlaZqbiwMvPDVePUJH6IAEgZk0SiPZ1B5Wutcc
+	//ydN/z0KxE/0p/9G9qPOWnIq5GxrP6rBvbvOHeV4C4e8/hsM484nJEnqb+DpA++p9qzNF59Wie
+	lv2mYusKIPHuYLOp5yZV9LUt6+jCa/r6blWWs6DoFU4T6z4zVf8cHGSQkg==.GB4layjGlN2kqv
+	8hx545j40ktMywfNBxyJ0JSqXtv5bHYKBCpJme2uRrNtXscEpCiamGcBTfp1opA2UQZp061lnv1
+	gyFPbgUjS3mQuS5G2WWoU6RN/svw7j2TldaYEIB9QB08t8czAOE5tYeHfmvxacOvzFUnp2cBy7X
+	k0QKyilKebwSDRv+9yT2cQU/HKpXsCq+MhEKrCEnWjsg+bTfd+PEYD6wZodbVm/ylVs4H5XwbcW
+	liOdPZU7yM4LpoXgAJOmlc9Bew0E3BDkABMgWqjKV/PP1A74msVK+C0vAaVhOpV0PK0ES/bOFv2
+	smxxBlyafjqHZWnvf8oGD3Czzgiw==
+X-TM-Addin-ProductCode: EMS
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=infosys.com;
+	s=TM-DKIM-20211201111149; t=1750108219;
+	bh=uqn3SkXh/P/TZ4lmeBNEwyJb+CP0m3X6AVDFgKs02kw=; l=136957;
+	h=From:To:Date;
+	b=gnu7KodWIgA2lKAjsRpzhPZoJoxl1CMPybmc83tI+2c7dorTCw6i1PHWon0SRhvZD
+	 9z9smDQD52XfyZN0JBj53reLQf0wN1p3L4fjc+Yr5K2kZd0ZWdBhsJ6ClpuqTm4txP
+	 /rG1ae5RSbXIyS2LBEj96gvQU28nUpbZpoRUXWBGccbGjJPaPn5bPeKmTlz/sg8ftb
+	 gZXpG2W1JCRXSMf7DdciPkILb0sHTv88ti6oI0zhXpSn45z0XPNcEfSKFQ9YztAWXe
+	 SXgBroS0RsI8tCHb4w7vs7y/cGMRKLKxU8G2x8qHlt0/Co5UKyDydcI/sRgibtbTBg
+	 Bufye6HYoSEnA==
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: WdIoQ9dzEeXm9-UP60YPpnZsswA1thjzYYDqBPgXOLs_1750108220
+X-Mimecast-Impersonation-Protect: Policy=Tag external email;Similar Internal Domain=false;Similar Monitored External Domain=false;Custom External Domain=false;Mimecast External Domain=false;Newly Observed Domain=false;Internal User Name=false;Custom Display Name List=false;Reply-to Address Mismatch=false;Targeted Threat Dictionary=false;Mimecast Threat Dictionary=false;Custom Threat Dictionary=false;External=true
+Content-Language: en-US
+Content-Type: multipart/related;
+	boundary="_006_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_";
+	type="multipart/alternative"
+Return-Path: sridhar.m@infosys.com
+X-MS-Exchange-Organization-ExpirationStartTime: 16 Jun 2025 21:10:28.3977
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: e524c891-22b9-4560-2d22-08ddad1a386e
+X-EOPTenantAttributedMessage: 8bcff170-9979-491e-8683-d8ced0850bad:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: BL6PEPF00020E62.namprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Exchange-Organization-AuthSource: BL6PEPF00020E62.namprd04.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-Office365-Filtering-Correlation-Id-Prvs: f3b9da72-33c9-4be8-b277-08ddad1a2dfb
+X-MS-Exchange-AtpMessageProperties: SA|SL
+X-MS-Exchange-Organization-SCL: -1
+X-Microsoft-Antispam: BCL:0;ARA:13230040|35042699022|4073199012|31092699021|5073199012|22103399003|82310400026|8096899003|4076899003|13003099007|4053099003;
+X-Forefront-Antispam-Report: CIP:170.10.128.131;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:SKN;H:us-smtp-inbound-delivery-1.mimecast.com;PTR:us-smtp-inbound-delivery-1.mimecast.com;CAT:NONE;SFS:(13230040)(35042699022)(4073199012)(31092699021)(5073199012)(22103399003)(82310400026)(8096899003)(4076899003)(13003099007)(4053099003);DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2025 21:10:28.1740
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e524c891-22b9-4560-2d22-08ddad1a386e
+X-MS-Exchange-CrossTenant-Id: 8bcff170-9979-491e-8683-d8ced0850bad
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00020E62.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR08MB10021
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.9323039
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.8835.025
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910005)(944506478)(944626604)(4710137)(4717057)(4999163)(920097)(930097)(140003);
+X-Microsoft-Antispam-Message-Info:
+	=?Windows-1252?Q?KeA/BYTbqztgw/mm3Fe1QQxd3pocysWGsIyVeu+G6RsRTwipWEE9DsY2?=
+ =?Windows-1252?Q?F/CoXlDJQzGiwMmt0Mpk8yhouC168DqD1uGMI5HZimKlWG0THKj/eKye?=
+ =?Windows-1252?Q?Rqu3KgD/b34u4y+NrsP3SjpLxhuLIlzuO7f/sGgRUJtAOMbwStI5IB10?=
+ =?Windows-1252?Q?qOPkwttzIxRX53e0sorbX5+HG0BX/jZv4Lzd1rx+bjFiP2S5HNsLoi4d?=
+ =?Windows-1252?Q?owngp1utRcKa3m/LzwaETN9jf1z/UaCf3TUu6RC10VLu8eGQ1w/5425t?=
+ =?Windows-1252?Q?ltS3Jp6fm17pbe7XZo3C8cHfUtNNR9tq4tc2Vqo2zmrLXSnCRlrJ1/jG?=
+ =?Windows-1252?Q?YQw+vM+x0TpLkVwusOLN+YL1JE0NsCAMgx5QPEorAEruuHxEfskdy7Uo?=
+ =?Windows-1252?Q?e2V+vxZ/0RIe5MMcBQjkJ3hXr3AuTrZnkai/RyYxlbWhn9M8fZAvs457?=
+ =?Windows-1252?Q?S7oIMOw32cutSb85SadbGquhtjBc4vP/Pj+1TuhqVCRYjw+cakPjg5j/?=
+ =?Windows-1252?Q?3hwkjEhDdI/TQY5dxiNerc2QD753p3K10vdrVowjCZIMBQcTHvxARmIZ?=
+ =?Windows-1252?Q?M8Ifkuo0EX79S0sHy/u6IZWJ2peV5q1uH6O/6JMco9UXoZcE3jbm62NH?=
+ =?Windows-1252?Q?+sNwNgvHANqsRx+CienpobnzZOwi7jkP+erBvmdnSDE3U/ATX/c9YFBR?=
+ =?Windows-1252?Q?cV0nrXLY6Cz1FcnEAfXyx2R0mTn0ucGTi+5Ex21dEa+Rukk0w6BoTK7O?=
+ =?Windows-1252?Q?uu3MCnCkUFQ+/NK4AFTv7NavfO495DzSJvU+Huv+PrHR9V7Kno/6o0Gc?=
+ =?Windows-1252?Q?0SVBxrMxrzhMr1CuBzVHCwjI7fjcvp4VFQnLjW+VPvGwcIcpE6LRzn5d?=
+ =?Windows-1252?Q?poByw7MUIhHsOaMeyPqGgelyr5BTFgUs9mJD2IMEGWBeSyipJ8rVim+5?=
+ =?Windows-1252?Q?m0gBwhb1vQVozJHX6eSdG2q/e3fZGMIdLzFXbmYY0etSJL9QMcPuGv3O?=
+ =?Windows-1252?Q?xeOSyGnq21iTohnxxnVaQcyT9zcmeZtAPeNoNQiVT+A6vEU8ahkbTwWx?=
+ =?Windows-1252?Q?xynXebznL6cI9+T9S5naOHLyZfYyvtcQKmH3rreS6WZ1tMlPgtDVa6kJ?=
+ =?Windows-1252?Q?8nbgmB4wDjx9+PsPM+kvG9iYxRd29zcE+R8CTbGS7eGfWFZP5G/Mjw3h?=
+ =?Windows-1252?Q?2wgl48XiC3ru1DTq1LWlvpetuQ5ntP9FgLFZNTBqKmMu9GrSCFrDVVj7?=
+ =?Windows-1252?Q?Lha/bWaZwuj04xHgKCAzimW122cbyYgAA8a1CVaKHI5GHTMciqqpsrwp?=
+ =?Windows-1252?Q?qd9wWP3K88/OFvh7xPsnO2A6n4RpZyeglnhNbag0+VG5wPlIY+yRtbRX?=
+ =?Windows-1252?Q?imnw0hY5xUfo+ssrOIpgMUOXwFYPnzZCb17NcYUPzrZ1sCu4+J5f6wjm?=
+ =?Windows-1252?Q?8PEC8FLxnGED8ehhU2Q2kUOg6uQ4olGmNcQH0kQqc1BFX+r748lCi5ir?=
+ =?Windows-1252?Q?I5yEd872ZWYoMX2iLiVaq6F74ER2dEqxZwzRWONkT8Evkwr20fbSG5fU?=
+ =?Windows-1252?Q?pLeW9pN/nVlVdBW9qp/acv5wMC4VlkmjichyMnJvL1cQffpZUFJTG0yq?=
+ =?Windows-1252?Q?QYDtmiPtwTeHDkQX1GeOik/39VzSFJOFOFC0W/GejlEnuJqHow1eMEtw?=
+ =?Windows-1252?Q?9KEqkk9Ar70JxOX0smMXlF4eqm4xqu3BmltAW4u/E1MiNTYZljh2IjWP?=
+ =?Windows-1252?Q?njuQK5hSXOnQ3sPZRoXjRXkOKUY2BWwLFoXlzxrBJLME/gEf7pDRv5Jh?=
+ =?Windows-1252?Q?D0tFSRmg5dLkFPCa2gBHFiEZ+mk/RGHVkbVPF66loNtKZgsbLWTfwKB0?=
+ =?Windows-1252?Q?l8vCYqHJrZCRffGS2eyi1OP7JfT/0+wF03fMTC65X26CNRQbIxwlo9U4?=
+ =?Windows-1252?Q?qHbRPZ5h6dYzZ2Nj+ZebjUEIKGDgsd6M8vS8m84mfBgMwVe6qMoMBWBc?=
+ =?Windows-1252?Q?bLeHW10cMXV2SuNzoeVj4FIf1NH3sWJfog7d1tcNyQMPVHuzYAm3K5dr?=
+ =?Windows-1252?Q?e8a69d2WHe9br1q9JETLfkeciV568S8XC9ilIwHSoo/NVv31j5AV1CnR?=
+ =?Windows-1252?Q?5UipBYtyesFBkb3ix78a0x48deFPwD1j7rTHalEb5LDNs6TjPzYblDN/?=
+ =?Windows-1252?Q?zf2OhBSfzhcKl2sJm+Wjez1RlQ5L8F0OQO9fzzJ2GuKrGw28NwlDDi/h?=
+ =?Windows-1252?Q?x0Arg3q05BNyyAT6QGVgYqFIaRiWL00na34qs48b64n0HKuhnGbHIB5M?=
+ =?Windows-1252?Q?T56wC5OsgX/lBdZHS2NEAbcwBVFhtmI7HtWw+N3o/ZVGANEKqEqcIb7y?=
+ =?Windows-1252?Q?da+IViASTHStvjRQU/bI1lKXGKNRg2BSHqua9Perg7cfjTun9CIgNobF?=
+ =?Windows-1252?Q?aVNiP+DECw4WHHZV/5kZTg=3D=3D?=
+MIME-Version: 1.0
+
+--_006_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_
+Content-Type: multipart/alternative;
+	boundary="_000_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_"
+
+--_000_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_
+Content-Type: text/plain; charset="WINDOWS-1252"
+Content-Transfer-Encoding: quoted-printable
+
+[External Email]
+
+Hi Pallavi, Derek, Shweta,
+
+Please find below my comments/status on our action items.
+
+1>Instance storage :
+
+  *   Received approval from Carrier to begin data purging on the Archival =
+instance by deleting all excessive data, aiming to bring storage usage back=
+ within the 4 TB limit.
+Developer Comments:  Table cleaner job has been initiated on Archival insta=
+nce for top 10 tables which are in with more table size and it is in progre=
+ss in deleting the records
+And also enabled DB compaction job to trigger to rebuild and reclaim the st=
+orage size.
+We will update you once done as need to work with hi team to rebuild done m=
+anually as first time once Jobs are completed.
+
+[cid:image002.png@01DBDEDB.A5C18990]
+
+[cid:image003.png@01DBDEDB.A5C18990]
+
+
+However, We anticipated that overall size will be within the 4 TB limit.
+
+
+Total Size in GB
+Total Size in TB
+Pa_snapshorts
+2991
+2.991
+Wf_history
+2954
+2.954
+Wf_transaction_history
+2356
+2.356
+Wf_context
+1315
+1.315
+Sys_attachment
+32
+0.032
+
+9648
+9.648
+
+
+  *   Clone profile updates are planned for non-production environments to =
+reduce storage consumption on non-prod instances.
+Developer Comments:
+We have added exclusion rule on specific tables which are high table size o=
+n clone profile for non-prod environment
+Post production upgrade(28th of June), we will clone on 29th on DEV and UAT=
+ environment and anticipated that non prod instance(DEV and UAT) will be wi=
+th limit of 4 TB storage size.
+
+  *   For the production instance, we are currently in the process of ident=
+ifying potential overage that can be reduced, we should have and update ear=
+ly next week
+        Comments:
+                The current size of product storage size is nearly 14 TB an=
+d we are working with client to obtain approval for deleting six month befo=
+re data on attachment table for the attachment associated with incident, ch=
+ange_request, sc_req_item and also sc_task. Once deletion done on those tab=
+le, compaction job will take care of rebuilding the tables and reclaim the =
+storage space and we anticipate that nearly 4 to 6 TB storage can be reclai=
+med. We will keep you posted the progress.
+
+
+Regards,
+Sridhar Muthukrishnan
+
+
+From: Pallavi Prabhakar Patil10 <Pallavi_Patil10@infosys.com>
+Sent: Friday, June 13, 2025 11:59 AM
+To: Derek Rinchiuso <derek.rinchiuso@servicenow.com>; Shweta Nyol <Shweta_N=
+yol@infosys.com>; Sridhar Muthukrishnan <sridhar.m@infosys.com>
+Cc: Scott McNinch <scott.mcninch@servicenow.com>; Sandeep Bhandaru <sandeep=
+.bhandaru@servicenow.com>; Paul Martin <walterpaul.martin@servicenow.com>; =
+Rob Spence <rob.spence@servicenow.com>; Paul Dixon <paul.dixon@servicenow.c=
+om>; Hemambaradara Rao Erra <HemambaradaraRao_E@infosys.com>; Chuck Huntley=
+ <chuck.huntley@servicenow.com>; Ajit Ravisankar <ajitkumar.ravisankar@serv=
+icenow.com>
+Subject: RE: ServiceNow_Utilization (Carrier)
+
+Sure Derek.
+
+Will you let you know for our availability for Tuesday.
+We should able to close by Monday internally.
+
+Thanks and Regards
+Pallavi Patil
+Associate Delivery Partner
+#905-302-7339
+
+
+From: Derek Rinchiuso <derek.rinchiuso@servicenow.com<mailto:derek.rinchius=
+o@servicenow.com>>
+Sent: Friday, June 13, 2025 8:38 AM
+To: Pallavi Prabhakar Patil10 <Pallavi_Patil10@infosys.com<mailto:Pallavi_P=
+atil10@infosys.com>>; Shweta Nyol <Shweta_Nyol@infosys.com<mailto:Shweta_Ny=
+ol@infosys.com>>; Sridhar Muthukrishnan <sridhar.m@infosys.com<mailto:sridh=
+ar.m@infosys.com>>
+Cc: Scott McNinch <scott.mcninch@servicenow.com<mailto:scott.mcninch@servic=
+enow.com>>; Sandeep Bhandaru <sandeep.bhandaru@servicenow.com<mailto:sandee=
+p.bhandaru@servicenow.com>>; Paul Martin <walterpaul.martin@servicenow.com<=
+mailto:walterpaul.martin@servicenow.com>>; Rob Spence <rob.spence@serviceno=
+w.com<mailto:rob.spence@servicenow.com>>; Paul Dixon <paul.dixon@servicenow=
+.com<mailto:paul.dixon@servicenow.com>>; Hemambaradara Rao Erra <Hemambarad=
+araRao_E@infosys.com<mailto:HemambaradaraRao_E@infosys.com>>; Chuck Huntley=
+ <chuck.huntley@servicenow.com<mailto:chuck.huntley@servicenow.com>>; Ajit =
+Ravisankar <ajitkumar.ravisankar@servicenow.com<mailto:ajitkumar.ravisankar=
+@servicenow.com>>
+Subject: RE: ServiceNow_Utilization (Carrier)
+
+
+[**EXTERNAL EMAIL**] Please verify sender address and exercise caution befo=
+re clicking on any link.
+Hi Infosys team,
+
+We're getting close to the renewal date for this - I suggest we schedule ti=
+me for early next week to confirm the #'s we're going to move forward with =
+for the renewal order form.  There is definitely still enough overage that =
+we need to include in the renewal.
+
+Will you share availability for Monday/Tuesday?
+
+Derek
+
+
+____________________________________________
+Derek Rinchiuso
+he/him
+Renewal Account Manager, Global Partnerships and Channels
+M: 415-596-5112
+servicenow.com
+
+
+
+
+From: Pallavi Prabhakar Patil10 <Pallavi_Patil10@infosys.com<mailto:Pallavi=
+_Patil10@infosys.com>>
+Sent: Wednesday, June 11, 2025 3:46 PM
+To: Shweta Nyol <Shweta_Nyol@infosys.com<mailto:Shweta_Nyol@infosys.com>>; =
+Derek Rinchiuso <derek.rinchiuso@servicenow.com<mailto:derek.rinchiuso@serv=
+icenow.com>>; Sridhar Muthukrishnan <sridhar.m@infosys.com<mailto:sridhar.m=
+@infosys.com>>
+Cc: Scott McNinch <scott.mcninch@servicenow.com<mailto:scott.mcninch@servic=
+enow.com>>; Sandeep Bhandaru <sandeep.bhandaru@servicenow.com<mailto:sandee=
+p.bhandaru@servicenow.com>>; Paul Martin <walterpaul.martin@servicenow.com<=
+mailto:walterpaul.martin@servicenow.com>>; Rob Spence <rob.spence@serviceno=
+w.com<mailto:rob.spence@servicenow.com>>; Paul Dixon <paul.dixon@servicenow=
+.com<mailto:paul.dixon@servicenow.com>>; Hemambaradara Rao Erra <Hemambarad=
+araRao_E@infosys.com<mailto:HemambaradaraRao_E@infosys.com>>; Chuck Huntley=
+ <chuck.huntley@servicenow.com<mailto:chuck.huntley@servicenow.com>>
+Subject: RE: ServiceNow_Utilization (Carrier)
+
+[External Email]
+
+________________________________
+Hi Shweta,
+
+Please find below update for overages, we should be able to conclude early =
+next week:
+
+1>Instance storage :
+
+  *   Received approval from Carrier to begin data purging on the Archival =
+instance by deleting all excessive data, aiming to bring storage usage back=
+ within the 4 TB limit.
+  *   Clone profile updates are planned for non-production environments to =
+reduce storage consumption on non-prod instances.
+  *   For the production instance, we are currently in the process of ident=
+ifying potential overage that can be reduced, we should have and update ear=
+ly next week
+2> ITOM licensing : Resolved the issue of Server and instance relationship,=
+ the stats should resume in next 1 month as system count Aggregate value
+3>S2P Licenses: we have received revised quotes for Phase-2 S2P CR
+4> Integration hub transaction : We are currently reviewing the remaining 4=
+ million transactions (from the total of 5.6 million, after excluding the 1=
+.6 million transactions for SharePoint spoke )to verify their accuracy
+
+Thanks and Regards
+Pallavi Patil
+Associate Delivery Partner
+#905-302-7339
+
+
+From: Shweta Nyol <Shweta_Nyol@infosys.com<mailto:Shweta_Nyol@infosys.com>>
+Sent: Wednesday, June 11, 2025 1:29 PM
+To: Derek Rinchiuso <derek.rinchiuso@servicenow.com<mailto:derek.rinchiuso@=
+servicenow.com>>; Pallavi Prabhakar Patil10 <Pallavi_Patil10@infosys.com<ma=
+ilto:Pallavi_Patil10@infosys.com>>; Sridhar Muthukrishnan <sridhar.m@infosy=
+s.com<mailto:sridhar.m@infosys.com>>
+Cc: Scott McNinch <scott.mcninch@servicenow.com<mailto:scott.mcninch@servic=
+enow.com>>; Sandeep Bhandaru <sandeep.bhandaru@servicenow.com<mailto:sandee=
+p.bhandaru@servicenow.com>>; Paul Martin <walterpaul.martin@servicenow.com<=
+mailto:walterpaul.martin@servicenow.com>>; Rob Spence <rob.spence@serviceno=
+w.com<mailto:rob.spence@servicenow.com>>; Paul Dixon <paul.dixon@servicenow=
+.com<mailto:paul.dixon@servicenow.com>>; Hemambaradara Rao Erra <Hemambarad=
+araRao_E@infosys.com<mailto:HemambaradaraRao_E@infosys.com>>; Chuck Huntley=
+ <chuck.huntley@servicenow.com<mailto:chuck.huntley@servicenow.com>>
+Subject: RE: ServiceNow_Utilization (Carrier)
+
+Hi Hemant, Pallavi, Sridhar,
+
+Can you please share any update that you have on the internal progress on t=
+his?
+
+
+Best Regards,
+Shweta Nyol
+Client Partner-Americas
+Mobile +1 331 214 2978
+[cid:image001.png@01DBDEDA.D3F0EBE0]
+
+From: Derek Rinchiuso <derek.rinchiuso@servicenow.com<mailto:derek.rinchius=
+o@servicenow.com>>
+Sent: Monday, June 9, 2025 8:25 AM
+To: Pallavi Prabhakar Patil10 <Pallavi_Patil10@infosys.com<mailto:Pallavi_P=
+atil10@infosys.com>>; Sridhar Muthukrishnan <sridhar.m@infosys.com<mailto:s=
+ridhar.m@infosys.com>>
+Cc: Scott McNinch <scott.mcninch@servicenow.com<mailto:scott.mcninch@servic=
+enow.com>>; Sandeep Bhandaru <sandeep.bhandaru@servicenow.com<mailto:sandee=
+p.bhandaru@servicenow.com>>; Paul Martin <walterpaul.martin@servicenow.com<=
+mailto:walterpaul.martin@servicenow.com>>; Rob Spence <rob.spence@serviceno=
+w.com<mailto:rob.spence@servicenow.com>>; Paul Dixon <paul.dixon@servicenow=
+.com<mailto:paul.dixon@servicenow.com>>; Shweta Nyol <Shweta_Nyol@infosys.c=
+om<mailto:Shweta_Nyol@infosys.com>>; Hemambaradara Rao Erra <HemambaradaraR=
+ao_E@infosys.com<mailto:HemambaradaraRao_E@infosys.com>>; Chuck Huntley <ch=
+uck.huntley@servicenow.com<mailto:chuck.huntley@servicenow.com>>
+Subject: RE: ServiceNow_Utilization (Carrier)
+
+
+[**EXTERNAL EMAIL**] Please verify sender address and exercise caution befo=
+re clicking on any link.
+Hello Infosys team,
+
+As you are working through the utilization, I'm sharing a quote that outlin=
+es the investment with current overages.
+
+Please note that we have 3 weeks to finalize an order form for this renewal=
+.
+
+Please let us know if you have any questions.
+
+Thank you.
+
+Derek
+
+
+
+____________________________________________
+Derek Rinchiuso
+he/him
+Renewal Account Manager, Global Partnerships and Channels
+M: 415-596-5112
+servicenow.com
+
+
+
+
+From: Pallavi Prabhakar Patil10 <Pallavi_Patil10@infosys.com<mailto:Pallavi=
+_Patil10@infosys.com>>
+Sent: Wednesday, June 4, 2025 10:45 AM
+To: Derek Rinchiuso <derek.rinchiuso@servicenow.com<mailto:derek.rinchiuso@=
+servicenow.com>>; Sridhar Muthukrishnan <sridhar.m@infosys.com<mailto:sridh=
+ar.m@infosys.com>>
+Cc: Scott McNinch <scott.mcninch@servicenow.com<mailto:scott.mcninch@servic=
+enow.com>>; Sandeep Bhandaru <sandeep.bhandaru@servicenow.com<mailto:sandee=
+p.bhandaru@servicenow.com>>; Paul Martin <walterpaul.martin@servicenow.com<=
+mailto:walterpaul.martin@servicenow.com>>; Rob Spence <rob.spence@serviceno=
+w.com<mailto:rob.spence@servicenow.com>>; Paul Dixon <paul.dixon@servicenow=
+.com<mailto:paul.dixon@servicenow.com>>; Shweta Nyol <Shweta_Nyol@infosys.c=
+om<mailto:Shweta_Nyol@infosys.com>>; Hemambaradara Rao Erra <HemambaradaraR=
+ao_E@infosys.com<mailto:HemambaradaraRao_E@infosys.com>>; Chuck Huntley <ch=
+uck.huntley@servicenow.com<mailto:chuck.huntley@servicenow.com>>
+Subject: RE: ServiceNow_Utilization (Carrier)
+
+[External Email]
+
+________________________________
+++ Sridhar< Ops Lead>
+Thanks Derek.
+
+Hi Sridhar,
+
+Please investigate the table growth on the archive instance. Try accessing =
+it using our SSO credentials or reset the admin password if needed. Kindly =
+share your findings with this group. Note that there should not have been a=
+ny table size growth on the archive instance over the past four years.
+
+
+Thanks and Regards
+Pallavi Patil
+Associate Delivery Partner
+#905-302-7339
+
+From: Derek Rinchiuso <derek.rinchiuso@servicenow.com<mailto:derek.rinchius=
+o@servicenow.com>>
+Sent: Wednesday, June 4, 2025 7:29 AM
+To: Pallavi Prabhakar Patil10 <Pallavi_Patil10@infosys.com<mailto:Pallavi_P=
+atil10@infosys.com>>; Shweta Nyol <Shweta_Nyol@infosys.com<mailto:Shweta_Ny=
+ol@infosys.com>>; Hemambaradara Rao Erra <HemambaradaraRao_E@infosys.com<ma=
+ilto:HemambaradaraRao_E@infosys.com>>
+Cc: Scott McNinch <scott.mcninch@servicenow.com<mailto:scott.mcninch@servic=
+enow.com>>; Sandeep Bhandaru <sandeep.bhandaru@servicenow.com<mailto:sandee=
+p.bhandaru@servicenow.com>>; Paul Martin <walterpaul.martin@servicenow.com<=
+mailto:walterpaul.martin@servicenow.com>>; Rob Spence <rob.spence@serviceno=
+w.com<mailto:rob.spence@servicenow.com>>; Paul Dixon <paul.dixon@servicenow=
+.com<mailto:paul.dixon@servicenow.com>>
+Subject: ServiceNow_Utilization (Carrier)
+
+
+[**EXTERNAL EMAIL**] Please verify sender address and exercise caution befo=
+re clicking on any link.
+Hello Infosys team,
+
+Apologies if I'm missing anyone on this email.
+
+I'm attaching the utilization we discussed on our call (Monday).
+
+Our utilization team also asked me to share the links below - to assist wit=
+h checking cloud storage
+
+-- Understanding Cloud Storage Compliance and Reporting:
+https://support.servicenow.com/kb?id=3Dkb_article_view&sysparm_article=3DKB=
+1177521
+
+-- How to view production and sub-production instances and their storage us=
+e in an account:
+https://support.servicenow.com/kb?id=3Dkb_article_view&sysparm_article=3DKB=
+1532026
+
+-- How to view database footprint of an instance on Now Support:
+https://support.servicenow.com/kb?id=3Dkb_article_view&sysparm_article=3DKB=
+0819668
+
+-- Monitoring cloud capacity in Subscription Management:
+https://url.us.m.mimecastprotect.com/s/2cvNCwpq0gi0y3GxNiVfRhJVGhT?domain=
+=3Dservicenow.com
+
+-- Analyze data usage on your instance:
+https://url.us.m.mimecastprotect.com/s/HC3WCxkr6jimxo1vXHvhPhyFfJg?domain=
+=3Dservicenow.com
+
+-- Mastering Data Management in ServiceNow: from tracking growth to efficie=
+nt cleanup:
+https://support.servicenow.com/kb?id=3Dkb_article_view&sysparm_article=3DKB=
+1518213#mcetoc_1h9tkjeb92
+
+
+____________________________________________
+Derek Rinchiuso
+he/him
+Renewal Account Manager, Global Partnerships and Channels
+M: 415-596-5112
+servicenow.com
+
+
+
+
+
+--_000_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_
+Content-Type: text/html; charset="WINDOWS-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40"><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style><![endif]--><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Helvetica;
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Aptos;}
+@font-face
+	{font-family:"Aptos Narrow";}
+@font-face
+	{font-family:"Calibri sans-serif";}
+@font-face
+	{font-family:Gilroy;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ligatures:standardcontextual;}
+h3
+	{mso-style-priority:9;
+	mso-style-link:"Heading 3 Char";
+	mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	font-size:13.5pt;
+	font-family:"Times New Roman",serif;
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#467886;
+	text-decoration:underline;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{mso-style-priority:34;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ligatures:standardcontextual;}
+span.Heading3Char
+	{mso-style-name:"Heading 3 Char";
+	mso-style-priority:9;
+	mso-style-link:"Heading 3";
+	font-family:"Aptos",sans-serif;
+	color:#0F4761;
+	mso-ligatures:standardcontextual;}
+span.EmailStyle24
+	{mso-style-type:personal-reply;
+	font-family:"Aptos",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;
+	mso-ligatures:none;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+/* List Definitions */
+@list l0
+	{mso-list-id:1917668012;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-331584096 67698689 67698691 67698693 67698689 67698=
+691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l0:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l0:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l0:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l0:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l0:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l1
+	{mso-list-id:1976175461;
+	mso-list-template-ids:-1456071182;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-US" link=3D"#467886" vlink=3D"#96607D" style=3D"word-wrap:=
+break-word"><div class=3D"mc-ip-hide" style=3D"display:block !important; he=
+ight:auto !important; background:#FFFFFF !important; opacity: 1 !important;=
+ visibility:visible !important; color: #000000 !important; font-size: 12px =
+!important; font-family:Helvetica, Arial, sans-serif !important; text-align=
+: left !important"><strong style=3D"display:block !important; height:auto !=
+important; background:#FFFFFF !important; opacity: 1 !important; visibility=
+:visible !important; color: #000000 !important; font-size: 12px !important;=
+ font-family:Helvetica, Arial, sans-serif !important; text-align: left !imp=
+ortant"><h3><strong><span style=3D"background-color:yellow;">[External Emai=
+l]</span></strong></h3></strong><br><hr></div>
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Hi Pallavi, Derek, =
+Shweta,<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Please find below m=
+y comments/status on our action items.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><b>1&gt;Instance storage :<o:p></o:p></b></p>
+<ul style=3D"margin-top:0in" type=3D"disc">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level1 =
+lfo3">Received approval from Carrier to begin data purging on the Archival =
+instance by deleting all excessive data, aiming to bring storage usage back=
+ within the 4 TB limit.<o:p></o:p></li></ul>
+<p class=3D"MsoNormal"><b>Developer Comments</b>: &nbsp;<span style=3D"colo=
+r:red">Table cleaner job has been initiated on Archival instance for top 10=
+ tables which are in with more table size and it is in progress in deleting=
+ the records<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"color:red">And also enabled DB compac=
+tion job to trigger to rebuild and reclaim the storage size.
+<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"color:red">We will update you once do=
+ne as need to work with hi team to rebuild done manually as first time once=
+ Jobs are completed.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span style=3D"mso-ligatures:none"><img width=3D"117=
+4" height=3D"261" style=3D"width:12.2291in;height:2.7187in" id=3D"_x0000_i1=
+030" src=3D"cid:image002.png@01DBDEDB.A5C18990"></span><o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span style=3D"mso-ligatures:none"><img width=3D"120=
+9" height=3D"150" style=3D"width:12.5937in;height:1.5625in" id=3D"_x0000_i1=
+029" src=3D"cid:image003.png@01DBDEDB.A5C18990"></span><o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span style=3D"color:red">However, We anticipated th=
+at overall size will be within the 4 TB limit.
+<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<table class=3D"MsoTableGrid" border=3D"1" cellspacing=3D"0" cellpadding=3D=
+"0" style=3D"border-collapse:collapse;border:none">
+<tbody>
+<tr>
+<td width=3D"208" valign=3D"top" style=3D"width:155.8pt;border:solid window=
+text 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border:solid windo=
+wtext 1.0pt;border-left:none;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">Total Size in GB<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border:solid windo=
+wtext 1.0pt;border-left:none;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">Total Size in TB<o:p></o:p></p>
+</td>
+</tr>
+<tr>
+<td width=3D"208" valign=3D"top" style=3D"width:155.8pt;border:solid window=
+text 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">Pa_snapshorts<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">2991<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">2.991<o:p></o:p></p>
+</td>
+</tr>
+<tr>
+<td width=3D"208" valign=3D"top" style=3D"width:155.8pt;border:solid window=
+text 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">Wf_history<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">2954<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">2.954<o:p></o:p></p>
+</td>
+</tr>
+<tr>
+<td width=3D"208" valign=3D"top" style=3D"width:155.8pt;border:solid window=
+text 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">Wf_transaction_history<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">2356<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">2.356<o:p></o:p></p>
+</td>
+</tr>
+<tr>
+<td width=3D"208" valign=3D"top" style=3D"width:155.8pt;border:solid window=
+text 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">Wf_context<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">1315<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">1.315<o:p></o:p></p>
+</td>
+</tr>
+<tr>
+<td width=3D"208" valign=3D"top" style=3D"width:155.8pt;border:solid window=
+text 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">Sys_attachment<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">32<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">0.032<o:p></o:p></p>
+</td>
+</tr>
+<tr>
+<td width=3D"208" valign=3D"top" style=3D"width:155.8pt;border:solid window=
+text 1.0pt;border-top:none;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">9648<o:p></o:p></p>
+</td>
+<td width=3D"208" valign=3D"top" style=3D"width:155.85pt;border-top:none;bo=
+rder-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid wind=
+owtext 1.0pt;padding:0in 5.4pt 0in 5.4pt">
+<p class=3D"MsoNormal">9.648<o:p></o:p></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<ul style=3D"margin-top:0in" type=3D"disc">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level1 =
+lfo3">Clone profile updates are planned for non-production environments to =
+reduce storage consumption on non-prod instances.<o:p></o:p></li></ul>
+<p class=3D"MsoNormal" style=3D"margin-left:.25in"><b>Developer Comments:<o=
+:p></o:p></b></p>
+<p class=3D"MsoNormal" style=3D"margin-left:.25in"><span style=3D"color:red=
+">We have added exclusion rule on specific tables which are high table size=
+ on clone profile for non-prod environment<o:p></o:p></span></p>
+<p class=3D"MsoNormal" style=3D"margin-left:.25in"><span style=3D"color:red=
+">Post production upgrade(28<sup>th</sup> of June), we will clone on 29<sup=
+>th</sup> on DEV and UAT environment and anticipated that non prod instance=
+(DEV and UAT) will be with limit of 4
+ TB storage size.<o:p></o:p></span></p>
+<ul style=3D"margin-top:0in" type=3D"disc">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level1 =
+lfo3">For the production instance, we are currently in the process of ident=
+ifying potential overage that can be reduced, we should have and update ear=
+ly next week<o:p></o:p></li></ul>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; <b>&nbsp;Comments:<o:p></o:p></b></span></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt">&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</span></b><span style=3D"font-size:11.0pt;color:red">The current size of p=
+roduct storage size is nearly 14 TB and we are working with client to obtai=
+n approval for deleting six month before
+ data on attachment table for the attachment associated with incident, chan=
+ge_request, sc_req_item and also sc_task. Once deletion done on those table=
+, compaction job will take care of rebuilding the tables and reclaim the st=
+orage space and we anticipate that
+ nearly 4 to 6 TB storage can be reclaimed. We will keep you posted the pro=
+gress.</span><span style=3D"font-size:11.0pt"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p=
+></span></b></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p=
+></span></b></p>
+<p class=3D"MsoNormal">Regards,<o:p></o:p></p>
+<p class=3D"MsoNormal">Sridhar Muthukrishnan<o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;mso-ligatures:none">From:</span></b><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none"> Pallavi Prabhakar Patil10 &lt;Pallavi_Patil10@infosys.com&gt;
+<br>
+<b>Sent:</b> Friday, June 13, 2025 11:59 AM<br>
+<b>To:</b> Derek Rinchiuso &lt;derek.rinchiuso@servicenow.com&gt;; Shweta N=
+yol &lt;Shweta_Nyol@infosys.com&gt;; Sridhar Muthukrishnan &lt;sridhar.m@in=
+fosys.com&gt;<br>
+<b>Cc:</b> Scott McNinch &lt;scott.mcninch@servicenow.com&gt;; Sandeep Bhan=
+daru &lt;sandeep.bhandaru@servicenow.com&gt;; Paul Martin &lt;walterpaul.ma=
+rtin@servicenow.com&gt;; Rob Spence &lt;rob.spence@servicenow.com&gt;; Paul=
+ Dixon &lt;paul.dixon@servicenow.com&gt;; Hemambaradara Rao Erra
+ &lt;HemambaradaraRao_E@infosys.com&gt;; Chuck Huntley &lt;chuck.huntley@se=
+rvicenow.com&gt;; Ajit Ravisankar &lt;ajitkumar.ravisankar@servicenow.com&g=
+t;<br>
+<b>Subject:</b> RE: ServiceNow_Utilization (Carrier)<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Sure Derek.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Will you let you know for our availability for Tuesd=
+ay. <o:p>
+</o:p></p>
+<p class=3D"MsoNormal">We should able to close by Monday internally.<o:p></=
+o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.0pt;font-family:&quot;Ap=
+tos Narrow&quot;,sans-serif;color:#153D63">Thanks and Regards</span><o:p></=
+o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.0pt;font-family:&quot;Ap=
+tos Narrow&quot;,sans-serif;color:#153D63">Pallavi Patil</span><o:p></o:p><=
+/p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:10.0pt;font-family:&quot=
+;Aptos Narrow&quot;,sans-serif;color:#153D63">Associate Delivery Partner</s=
+pan></i><o:p></o:p></p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:10.0pt;font-family:&quot=
+;Aptos Narrow&quot;,sans-serif;color:#153D63">#</span></i><i><u><span style=
+=3D"font-size:10.0pt;font-family:&quot;Aptos Narrow&quot;,sans-serif">905-3=
+02-7339</span></u></i><o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ap=
+tos Narrow&quot;,sans-serif;color:#153D63">&nbsp;</span><span style=3D"font=
+-size:10.5pt"><o:p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;mso-ligatures:none">From:</span></b><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none"> Derek Rinchiuso &lt;<a href=3D"mailto:derek.rinchiuso@servicenow.=
+com">derek.rinchiuso@servicenow.com</a>&gt;
+<br>
+<b>Sent:</b> Friday, June 13, 2025 8:38 AM<br>
+<b>To:</b> Pallavi Prabhakar Patil10 &lt;<a href=3D"mailto:Pallavi_Patil10@=
+infosys.com">Pallavi_Patil10@infosys.com</a>&gt;; Shweta Nyol &lt;<a href=
+=3D"mailto:Shweta_Nyol@infosys.com">Shweta_Nyol@infosys.com</a>&gt;; Sridha=
+r Muthukrishnan &lt;<a href=3D"mailto:sridhar.m@infosys.com">sridhar.m@info=
+sys.com</a>&gt;<br>
+<b>Cc:</b> Scott McNinch &lt;<a href=3D"mailto:scott.mcninch@servicenow.com=
+">scott.mcninch@servicenow.com</a>&gt;; Sandeep Bhandaru &lt;<a href=3D"mai=
+lto:sandeep.bhandaru@servicenow.com">sandeep.bhandaru@servicenow.com</a>&gt=
+;; Paul Martin &lt;<a href=3D"mailto:walterpaul.martin@servicenow.com">walt=
+erpaul.martin@servicenow.com</a>&gt;;
+ Rob Spence &lt;<a href=3D"mailto:rob.spence@servicenow.com">rob.spence@ser=
+vicenow.com</a>&gt;; Paul Dixon &lt;<a href=3D"mailto:paul.dixon@servicenow=
+.com">paul.dixon@servicenow.com</a>&gt;; Hemambaradara Rao Erra &lt;<a href=
+=3D"mailto:HemambaradaraRao_E@infosys.com">HemambaradaraRao_E@infosys.com</=
+a>&gt;;
+ Chuck Huntley &lt;<a href=3D"mailto:chuck.huntley@servicenow.com">chuck.hu=
+ntley@servicenow.com</a>&gt;; Ajit Ravisankar &lt;<a href=3D"mailto:ajitkum=
+ar.ravisankar@servicenow.com">ajitkumar.ravisankar@servicenow.com</a>&gt;<b=
+r>
+<b>Subject:</b> RE: ServiceNow_Utilization (Carrier)<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p><b><span style=3D"font-size:13.0pt;font-family:&quot;Calibri sans-serif&=
+quot;;color:yellow;background:red">[**EXTERNAL EMAIL**] Please verify sende=
+r address and exercise caution before clicking on any link.</span></b><o:p>=
+</o:p></p>
+<div>
+<p class=3D"MsoNormal">Hi Infosys team,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">We=92re getting close to the renewal date for this =
+=96 I suggest we schedule time for early next week to confirm the #=92s we=
+=92re going to move forward with for the renewal order form.&nbsp; There is=
+ definitely still enough overage that we need to
+ include in the renewal.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Will you share availability for Monday/Tuesday?<o:p>=
+</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Derek<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<p class=3D"MsoNormal" style=3D"margin-bottom:9.0pt"><span style=3D"font-si=
+ze:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:#7F7F7F;mso-ligatur=
+es:none">____________________________________________<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:10.5pt;font-family:&quot=
+;Arial&quot;,sans-serif;color:#474747;mso-ligatures:none">Derek Rinchiuso<o=
+:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none">he/him<o:p></o:p></sp=
+an></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none">Renewal Account Manag=
+er, Global Partnerships and Channels<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none">M: 415-596-5112<o:p><=
+/o:p></span></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:6.75pt;margin-right:0in;=
+margin-bottom:4.5pt;margin-left:0in">
+<b><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;=
+color:#7F7F7F;mso-ligatures:none">servicenow.com<o:p></o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:6.75pt;margin-right:0in;=
+margin-bottom:4.5pt;margin-left:0in">
+<b><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;=
+color:#E97132;mso-ligatures:none"><o:p>&nbsp;</o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:6.75pt;margin-right:0in;=
+margin-bottom:4.5pt;margin-left:0in">
+<b><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;=
+color:#7F7F7F;mso-ligatures:none"><o:p>&nbsp;</o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"text-autospace:none"><o:p>&nbsp;</o:p></p>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;mso-ligatures:none">From:</span></b><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none"> Pallavi Prabhakar Patil10 &lt;<a href=3D"mailto:Pallavi_Patil10@i=
+nfosys.com">Pallavi_Patil10@infosys.com</a>&gt;
+<br>
+<b>Sent:</b> Wednesday, June 11, 2025 3:46 PM<br>
+<b>To:</b> Shweta Nyol &lt;<a href=3D"mailto:Shweta_Nyol@infosys.com">Shwet=
+a_Nyol@infosys.com</a>&gt;; Derek Rinchiuso &lt;<a href=3D"mailto:derek.rin=
+chiuso@servicenow.com">derek.rinchiuso@servicenow.com</a>&gt;; Sridhar Muth=
+ukrishnan &lt;<a href=3D"mailto:sridhar.m@infosys.com">sridhar.m@infosys.co=
+m</a>&gt;<br>
+<b>Cc:</b> Scott McNinch &lt;<a href=3D"mailto:scott.mcninch@servicenow.com=
+">scott.mcninch@servicenow.com</a>&gt;; Sandeep Bhandaru &lt;<a href=3D"mai=
+lto:sandeep.bhandaru@servicenow.com">sandeep.bhandaru@servicenow.com</a>&gt=
+;; Paul Martin &lt;<a href=3D"mailto:walterpaul.martin@servicenow.com">walt=
+erpaul.martin@servicenow.com</a>&gt;;
+ Rob Spence &lt;<a href=3D"mailto:rob.spence@servicenow.com">rob.spence@ser=
+vicenow.com</a>&gt;; Paul Dixon &lt;<a href=3D"mailto:paul.dixon@servicenow=
+.com">paul.dixon@servicenow.com</a>&gt;; Hemambaradara Rao Erra &lt;<a href=
+=3D"mailto:HemambaradaraRao_E@infosys.com">HemambaradaraRao_E@infosys.com</=
+a>&gt;;
+ Chuck Huntley &lt;<a href=3D"mailto:chuck.huntley@servicenow.com">chuck.hu=
+ntley@servicenow.com</a>&gt;<br>
+<b>Subject:</b> RE: ServiceNow_Utilization (Carrier)<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<h3 style=3D"background:white"><strong><span style=3D"color:black;backgroun=
+d:yellow">[External Email]</span></strong><span style=3D"color:black;backgr=
+ound:white"><o:p></o:p></span></h3>
+<p class=3D"MsoNormal" style=3D"background:white"><span style=3D"font-size:=
+9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;color:black;mso-ligature=
+s:none"><o:p>&nbsp;</o:p></span></p>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center;backgr=
+ound:white">
+<span style=3D"font-size:9.0pt;font-family:&quot;Helvetica&quot;,sans-serif=
+;color:black;mso-ligatures:none">
+<hr size=3D"1" width=3D"100%" align=3D"center">
+</span></div>
+<p class=3D"MsoNormal">Hi Shweta,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Please find below update for overages, we should be =
+able to conclude early next week:<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><b>1&gt;Instance storage :<o:p></o:p></b></p>
+<ul style=3D"margin-top:0in" type=3D"disc">
+<li class=3D"MsoListParagraph" style=3D"margin-left:0in;mso-list:l0 level1 =
+lfo3">Received approval from Carrier to begin data purging on the Archival =
+instance by deleting all excessive data, aiming to bring storage usage back=
+ within the 4 TB limit.<o:p></o:p></li><li class=3D"MsoListParagraph" style=
+=3D"margin-left:0in;mso-list:l0 level1 lfo3">Clone profile updates are plan=
+ned for non-production environments to reduce storage consumption on non-pr=
+od instances.<o:p></o:p></li><li class=3D"MsoListParagraph" style=3D"margin=
+-left:0in;mso-list:l0 level1 lfo3">For the production instance, we are curr=
+ently in the process of identifying potential overage that can be reduced, =
+we should have and update early next week<o:p></o:p></li></ul>
+<p class=3D"MsoNormal"><b>2&gt; ITOM licensing</b> : Resolved the issue of =
+Server and instance relationship, the stats should resume in next 1 month a=
+s system count Aggregate value<o:p></o:p></p>
+<p class=3D"MsoNormal"><b>3&gt;S2P Licenses:</b> we have received revised q=
+uotes for Phase-2 S2P CR<o:p></o:p></p>
+<p class=3D"MsoNormal"><b>4&gt; Integration hub transaction</b> : We are cu=
+rrently reviewing the remaining 4 million transactions (from the total of 5=
+.6 million, after excluding the 1.6 million transactions for SharePoint spo=
+ke )to verify their accuracy<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.0pt;font-family:&quot;Ap=
+tos Narrow&quot;,sans-serif;color:#153D63">Thanks and Regards</span><o:p></=
+o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.0pt;font-family:&quot;Ap=
+tos Narrow&quot;,sans-serif;color:#153D63">Pallavi Patil</span><o:p></o:p><=
+/p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:10.0pt;font-family:&quot=
+;Aptos Narrow&quot;,sans-serif;color:#153D63">Associate Delivery Partner</s=
+pan></i><o:p></o:p></p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:10.0pt;font-family:&quot=
+;Aptos Narrow&quot;,sans-serif;color:#153D63">#</span></i><i><u><span style=
+=3D"font-size:10.0pt;font-family:&quot;Aptos Narrow&quot;,sans-serif">905-3=
+02-7339</span></u></i><o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ap=
+tos Narrow&quot;,sans-serif;color:#153D63">&nbsp;</span><span style=3D"font=
+-size:10.5pt"><o:p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;mso-ligatures:none">From:</span></b><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none"> Shweta Nyol &lt;</span><a href=3D"mailto:Shweta_Nyol@infosys.com"=
+><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif=
+;mso-ligatures:none">Shweta_Nyol@infosys.com</span></a><span style=3D"font-=
+size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">=
+&gt;
+<br>
+<b>Sent:</b> Wednesday, June 11, 2025 1:29 PM<br>
+<b>To:</b> Derek Rinchiuso &lt;</span><a href=3D"mailto:derek.rinchiuso@ser=
+vicenow.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot=
+;,sans-serif;mso-ligatures:none">derek.rinchiuso@servicenow.com</span></a><=
+span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;m=
+so-ligatures:none">&gt;;
+ Pallavi Prabhakar Patil10 &lt;</span><a href=3D"mailto:Pallavi_Patil10@inf=
+osys.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,s=
+ans-serif;mso-ligatures:none">Pallavi_Patil10@infosys.com</span></a><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">&gt;;
+ Sridhar Muthukrishnan &lt;</span><a href=3D"mailto:sridhar.m@infosys.com">=
+<span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;=
+mso-ligatures:none">sridhar.m@infosys.com</span></a><span style=3D"font-siz=
+e:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt=
+;<br>
+<b>Cc:</b> Scott McNinch &lt;</span><a href=3D"mailto:scott.mcninch@service=
+now.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif;mso-ligatures:none">scott.mcninch@servicenow.com</span></a><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">&gt;;
+ Sandeep Bhandaru &lt;</span><a href=3D"mailto:sandeep.bhandaru@servicenow.=
+com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-s=
+erif;mso-ligatures:none">sandeep.bhandaru@servicenow.com</span></a><span st=
+yle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-liga=
+tures:none">&gt;;
+ Paul Martin &lt;</span><a href=3D"mailto:walterpaul.martin@servicenow.com"=
+><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif=
+;mso-ligatures:none">walterpaul.martin@servicenow.com</span></a><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none">&gt;;
+ Rob Spence &lt;</span><a href=3D"mailto:rob.spence@servicenow.com"><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">rob.spence@servicenow.com</span></a><span style=3D"font-size:1=
+1.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Paul Dixon &lt;</span><a href=3D"mailto:paul.dixon@servicenow.com"><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">paul.dixon@servicenow.com</span></a><span style=3D"font-size:1=
+1.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Hemambaradara Rao Erra &lt;</span><a href=3D"mailto:HemambaradaraRao_E@inf=
+osys.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,s=
+ans-serif;mso-ligatures:none">HemambaradaraRao_E@infosys.com</span></a><spa=
+n style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-=
+ligatures:none">&gt;;
+ Chuck Huntley &lt;</span><a href=3D"mailto:chuck.huntley@servicenow.com"><=
+span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;m=
+so-ligatures:none">chuck.huntley@servicenow.com</span></a><span style=3D"fo=
+nt-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:non=
+e">&gt;<br>
+<b>Subject:</b> RE: ServiceNow_Utilization (Carrier)<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496">Hi Hemant, Pallavi, Sridhar,<o:p></o:=
+p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496">Can you please share any update that =
+you have on the internal progress on this?
+<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496"><o:p>&nbsp;</o:p></span></p>
+<div>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496;mso-ligatures:none">Best Regards,</spa=
+n><span style=3D"font-family:&quot;Calibri&quot;,sans-serif;color:#2F5496;m=
+so-ligatures:none"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><u><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;color:#2F5496;mso-ligatures:none">Shweta</span></=
+u><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-seri=
+f;color:#2F5496;mso-ligatures:none">&nbsp;Nyol</span><span style=3D"font-fa=
+mily:&quot;Calibri&quot;,sans-serif;color:#2F5496;mso-ligatures:none"><o:p>=
+</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496;mso-ligatures:none">Client Partner-Ame=
+ricas</span><span style=3D"font-family:&quot;Calibri&quot;,sans-serif;color=
+:#2F5496;mso-ligatures:none"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496;mso-ligatures:none">Mobile +1 331 214 =
+2978</span><span style=3D"font-family:&quot;Calibri&quot;,sans-serif;color:=
+#2F5496;mso-ligatures:none"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496;mso-ligatures:none"><img border=3D"0" =
+width=3D"102" height=3D"52" style=3D"width:1.0625in;height:.5416in" id=3D"P=
+icture_x0020_1" src=3D"cid:image001.png@01DBDEDA.D3F0EBE0"></span><span sty=
+le=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:#2F=
+5496;mso-ligatures:none"><o:p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;font-family:&quot;Ca=
+libri&quot;,sans-serif;color:#2F5496;mso-ligatures:none">&nbsp;</span><span=
+ style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color=
+:#2F5496"><o:p></o:p></span></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;mso-ligatures:none">From:</span></b><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none"> Derek Rinchiuso &lt;</span><a href=3D"mailto:derek.rinchiuso@serv=
+icenow.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;=
+,sans-serif;mso-ligatures:none">derek.rinchiuso@servicenow.com</span></a><s=
+pan style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;ms=
+o-ligatures:none">&gt;
+<br>
+<b>Sent:</b> Monday, June 9, 2025 8:25 AM<br>
+<b>To:</b> Pallavi Prabhakar Patil10 &lt;</span><a href=3D"mailto:Pallavi_P=
+atil10@infosys.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calib=
+ri&quot;,sans-serif;mso-ligatures:none">Pallavi_Patil10@infosys.com</span><=
+/a><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-ser=
+if;mso-ligatures:none">&gt;;
+ Sridhar Muthukrishnan &lt;</span><a href=3D"mailto:sridhar.m@infosys.com">=
+<span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;=
+mso-ligatures:none">sridhar.m@infosys.com</span></a><span style=3D"font-siz=
+e:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt=
+;<br>
+<b>Cc:</b> Scott McNinch &lt;</span><a href=3D"mailto:scott.mcninch@service=
+now.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif;mso-ligatures:none">scott.mcninch@servicenow.com</span></a><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">&gt;;
+ Sandeep Bhandaru &lt;</span><a href=3D"mailto:sandeep.bhandaru@servicenow.=
+com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-s=
+erif;mso-ligatures:none">sandeep.bhandaru@servicenow.com</span></a><span st=
+yle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-liga=
+tures:none">&gt;;
+ Paul Martin &lt;</span><a href=3D"mailto:walterpaul.martin@servicenow.com"=
+><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif=
+;mso-ligatures:none">walterpaul.martin@servicenow.com</span></a><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none">&gt;;
+ Rob Spence &lt;</span><a href=3D"mailto:rob.spence@servicenow.com"><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">rob.spence@servicenow.com</span></a><span style=3D"font-size:1=
+1.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Paul Dixon &lt;</span><a href=3D"mailto:paul.dixon@servicenow.com"><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">paul.dixon@servicenow.com</span></a><span style=3D"font-size:1=
+1.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Shweta Nyol &lt;</span><a href=3D"mailto:Shweta_Nyol@infosys.com"><span st=
+yle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-liga=
+tures:none">Shweta_Nyol@infosys.com</span></a><span style=3D"font-size:11.0=
+pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Hemambaradara Rao Erra &lt;</span><a href=3D"mailto:HemambaradaraRao_E@inf=
+osys.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,s=
+ans-serif;mso-ligatures:none">HemambaradaraRao_E@infosys.com</span></a><spa=
+n style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-=
+ligatures:none">&gt;;
+ Chuck Huntley &lt;</span><a href=3D"mailto:chuck.huntley@servicenow.com"><=
+span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;m=
+so-ligatures:none">chuck.huntley@servicenow.com</span></a><span style=3D"fo=
+nt-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:non=
+e">&gt;<br>
+<b>Subject:</b> RE: ServiceNow_Utilization (Carrier)<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p><b><span style=3D"font-size:13.0pt;font-family:&quot;Calibri sans-serif&=
+quot;;color:yellow;background:red">[**EXTERNAL EMAIL**] Please verify sende=
+r address and exercise caution before clicking on any link.</span></b><o:p>=
+</o:p></p>
+<div>
+<p class=3D"MsoNormal">Hello Infosys team,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">As you are working through the utilization, I=92m sh=
+aring a quote that outlines the investment with current overages.<o:p></o:p=
+></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Please note that we have 3 weeks to finalize an orde=
+r form for this renewal.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Please let us know if you have any questions.<o:p></=
+o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Thank you.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Derek<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<p class=3D"MsoNormal" style=3D"margin-bottom:9.0pt"><span style=3D"font-si=
+ze:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:#7F7F7F;mso-ligatur=
+es:none">____________________________________________<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:10.5pt;font-family:&quot=
+;Arial&quot;,sans-serif;color:#474747;mso-ligatures:none">Derek Rinchiuso<o=
+:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none">he/him<o:p></o:p></sp=
+an></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none">Renewal Account Manag=
+er, Global Partnerships and Channels<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none">M: 415-596-5112<o:p><=
+/o:p></span></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:6.75pt;margin-right:0in;=
+margin-bottom:4.5pt;margin-left:0in">
+<b><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;=
+color:#7F7F7F;mso-ligatures:none">servicenow.com<o:p></o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:6.75pt;margin-right:0in;=
+margin-bottom:4.5pt;margin-left:0in">
+<b><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;=
+color:#E97132;mso-ligatures:none"><o:p>&nbsp;</o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:6.75pt;margin-right:0in;=
+margin-bottom:4.5pt;margin-left:0in">
+<b><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;=
+color:#7F7F7F;mso-ligatures:none"><o:p>&nbsp;</o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"text-autospace:none"><o:p>&nbsp;</o:p></p>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;mso-ligatures:none">From:</span></b><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none"> Pallavi Prabhakar Patil10 &lt;</span><a href=3D"mailto:Pallavi_Pa=
+til10@infosys.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibr=
+i&quot;,sans-serif;mso-ligatures:none">Pallavi_Patil10@infosys.com</span></=
+a><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-seri=
+f;mso-ligatures:none">&gt;
+<br>
+<b>Sent:</b> Wednesday, June 4, 2025 10:45 AM<br>
+<b>To:</b> Derek Rinchiuso &lt;</span><a href=3D"mailto:derek.rinchiuso@ser=
+vicenow.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot=
+;,sans-serif;mso-ligatures:none">derek.rinchiuso@servicenow.com</span></a><=
+span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;m=
+so-ligatures:none">&gt;;
+ Sridhar Muthukrishnan &lt;</span><a href=3D"mailto:sridhar.m@infosys.com">=
+<span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;=
+mso-ligatures:none">sridhar.m@infosys.com</span></a><span style=3D"font-siz=
+e:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt=
+;<br>
+<b>Cc:</b> Scott McNinch &lt;</span><a href=3D"mailto:scott.mcninch@service=
+now.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif;mso-ligatures:none">scott.mcninch@servicenow.com</span></a><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">&gt;;
+ Sandeep Bhandaru &lt;</span><a href=3D"mailto:sandeep.bhandaru@servicenow.=
+com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-s=
+erif;mso-ligatures:none">sandeep.bhandaru@servicenow.com</span></a><span st=
+yle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-liga=
+tures:none">&gt;;
+ Paul Martin &lt;</span><a href=3D"mailto:walterpaul.martin@servicenow.com"=
+><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif=
+;mso-ligatures:none">walterpaul.martin@servicenow.com</span></a><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none">&gt;;
+ Rob Spence &lt;</span><a href=3D"mailto:rob.spence@servicenow.com"><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">rob.spence@servicenow.com</span></a><span style=3D"font-size:1=
+1.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Paul Dixon &lt;</span><a href=3D"mailto:paul.dixon@servicenow.com"><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">paul.dixon@servicenow.com</span></a><span style=3D"font-size:1=
+1.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Shweta Nyol &lt;</span><a href=3D"mailto:Shweta_Nyol@infosys.com"><span st=
+yle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-liga=
+tures:none">Shweta_Nyol@infosys.com</span></a><span style=3D"font-size:11.0=
+pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Hemambaradara Rao Erra &lt;</span><a href=3D"mailto:HemambaradaraRao_E@inf=
+osys.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,s=
+ans-serif;mso-ligatures:none">HemambaradaraRao_E@infosys.com</span></a><spa=
+n style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-=
+ligatures:none">&gt;;
+ Chuck Huntley &lt;</span><a href=3D"mailto:chuck.huntley@servicenow.com"><=
+span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;m=
+so-ligatures:none">chuck.huntley@servicenow.com</span></a><span style=3D"fo=
+nt-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:non=
+e">&gt;<br>
+<b>Subject:</b> RE: ServiceNow_Utilization (Carrier)<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<h3 style=3D"background:white"><strong><span style=3D"font-family:&quot;Hel=
+vetica&quot;,sans-serif;color:black;background:yellow">[External Email]</sp=
+an></strong><span style=3D"font-family:&quot;Helvetica&quot;,sans-serif;col=
+or:black;background:white"><o:p></o:p></span></h3>
+<p class=3D"MsoNormal" style=3D"background:white"><span style=3D"font-size:=
+9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;color:black;mso-ligature=
+s:none"><o:p>&nbsp;</o:p></span></p>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center;backgr=
+ound:white">
+<span style=3D"font-size:9.0pt;font-family:&quot;Helvetica&quot;,sans-serif=
+;color:black;mso-ligatures:none">
+<hr size=3D"1" width=3D"100%" align=3D"center">
+</span></div>
+<p class=3D"MsoNormal">++ Sridhar&lt; Ops Lead&gt;<o:p></o:p></p>
+<p class=3D"MsoNormal">Thanks Derek.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Hi Sridhar,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Please investigate the table growth on the archive i=
+nstance. Try accessing it using our SSO credentials or reset the admin pass=
+word if needed. Kindly share your findings with this group. Note that there=
+ should not have been any table size
+ growth on the archive instance over the past four years.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.0pt;font-family:&quot;Ap=
+tos Narrow&quot;,sans-serif;color:#153D63">Thanks and Regards</span><o:p></=
+o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.0pt;font-family:&quot;Ap=
+tos Narrow&quot;,sans-serif;color:#153D63">Pallavi Patil</span><o:p></o:p><=
+/p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:10.0pt;font-family:&quot=
+;Aptos Narrow&quot;,sans-serif;color:#153D63">Associate Delivery Partner</s=
+pan></i><o:p></o:p></p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:10.0pt;font-family:&quot=
+;Aptos Narrow&quot;,sans-serif;color:#153D63">#</span></i><i><u><span style=
+=3D"font-size:10.0pt;font-family:&quot;Aptos Narrow&quot;,sans-serif">905-3=
+02-7339</span></u></i><o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.5pt"><o:p>&nbsp;</o:p></=
+span></p>
+</div>
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;mso-ligatures:none">From:</span></b><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none"> Derek Rinchiuso &lt;</span><a href=3D"mailto:derek.rinchiuso@serv=
+icenow.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;=
+,sans-serif;mso-ligatures:none">derek.rinchiuso@servicenow.com</span></a><s=
+pan style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;ms=
+o-ligatures:none">&gt;
+<br>
+<b>Sent:</b> Wednesday, June 4, 2025 7:29 AM<br>
+<b>To:</b> Pallavi Prabhakar Patil10 &lt;</span><a href=3D"mailto:Pallavi_P=
+atil10@infosys.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calib=
+ri&quot;,sans-serif;mso-ligatures:none">Pallavi_Patil10@infosys.com</span><=
+/a><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-ser=
+if;mso-ligatures:none">&gt;;
+ Shweta Nyol &lt;</span><a href=3D"mailto:Shweta_Nyol@infosys.com"><span st=
+yle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-liga=
+tures:none">Shweta_Nyol@infosys.com</span></a><span style=3D"font-size:11.0=
+pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Hemambaradara Rao Erra &lt;</span><a href=3D"mailto:HemambaradaraRao_E@inf=
+osys.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,s=
+ans-serif;mso-ligatures:none">HemambaradaraRao_E@infosys.com</span></a><spa=
+n style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-=
+ligatures:none">&gt;<br>
+<b>Cc:</b> Scott McNinch &lt;</span><a href=3D"mailto:scott.mcninch@service=
+now.com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sa=
+ns-serif;mso-ligatures:none">scott.mcninch@servicenow.com</span></a><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">&gt;;
+ Sandeep Bhandaru &lt;</span><a href=3D"mailto:sandeep.bhandaru@servicenow.=
+com"><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-s=
+erif;mso-ligatures:none">sandeep.bhandaru@servicenow.com</span></a><span st=
+yle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-liga=
+tures:none">&gt;;
+ Paul Martin &lt;</span><a href=3D"mailto:walterpaul.martin@servicenow.com"=
+><span style=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif=
+;mso-ligatures:none">walterpaul.martin@servicenow.com</span></a><span style=
+=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatur=
+es:none">&gt;;
+ Rob Spence &lt;</span><a href=3D"mailto:rob.spence@servicenow.com"><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">rob.spence@servicenow.com</span></a><span style=3D"font-size:1=
+1.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;;
+ Paul Dixon &lt;</span><a href=3D"mailto:paul.dixon@servicenow.com"><span s=
+tyle=3D"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-lig=
+atures:none">paul.dixon@servicenow.com</span></a><span style=3D"font-size:1=
+1.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ligatures:none">&gt;<b=
+r>
+<b>Subject:</b> ServiceNow_Utilization (Carrier)<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p><b><span style=3D"font-size:13.0pt;font-family:&quot;Calibri sans-serif&=
+quot;;color:yellow;background:red">[**EXTERNAL EMAIL**] Please verify sende=
+r address and exercise caution before clicking on any link.</span></b><o:p>=
+</o:p></p>
+<div>
+<p class=3D"MsoNormal">Hello Infosys team,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Apologies if I=92m missing anyone on this email.<o:p=
+></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">I=92m attaching the utilization we discussed on our =
+call (Monday).<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Our utilization team also asked me to share the link=
+s below =96 to assist with checking cloud storage<o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-family:Gilroy"><br>
+-- Understanding Cloud Storage Compliance and Reporting:<br>
+</span><a href=3D"https://support.servicenow.com/kb?id=3Dkb_article_view&am=
+p;sysparm_article=3DKB1177521"><span style=3D"font-family:Gilroy">https://s=
+upport.servicenow.com/kb?id=3Dkb_article_view&amp;sysparm_article=3DKB11775=
+21</span></a><span style=3D"font-family:Gilroy"><br>
+<br>
+-- How to view production and sub-production instances and their storage us=
+e in an account:<br>
+</span><a href=3D"https://support.servicenow.com/kb?id=3Dkb_article_view&am=
+p;sysparm_article=3DKB1532026"><span style=3D"font-family:Gilroy">https://s=
+upport.servicenow.com/kb?id=3Dkb_article_view&amp;sysparm_article=3DKB15320=
+26</span></a><span style=3D"font-family:Gilroy"><br>
+<br>
+-- How to view database footprint of an instance on Now Support:<br>
+</span><a href=3D"https://support.servicenow.com/kb?id=3Dkb_article_view&am=
+p;sysparm_article=3DKB0819668"><span style=3D"font-family:Gilroy">https://s=
+upport.servicenow.com/kb?id=3Dkb_article_view&amp;sysparm_article=3DKB08196=
+68</span></a><span style=3D"font-family:Gilroy"><br>
+<br>
+-- Monitoring cloud capacity in Subscription Management:<br>
+</span><a href=3D"https://url.us.m.mimecastprotect.com/s/2cvNCwpq0gi0y3GxNi=
+VfRhJVGhT?domain=3Dservicenow.com"><span style=3D"font-family:Gilroy">https=
+://www.servicenow.com/docs/bundle/yokohama-platform-administration/page/adm=
+inister/subscription-management/concept/monitoring-cloud-entitlements.html?=
+state=3Dseamless</span></a><span style=3D"font-family:Gilroy"><br>
+<br>
+-- Analyze data usage on your instance:<br>
+</span><a href=3D"https://url.us.m.mimecastprotect.com/s/HC3WCxkr6jimxo1vXH=
+vhPhyFfJg?domain=3Dservicenow.com"><span style=3D"font-family:Gilroy">https=
+://www.servicenow.com/docs/bundle/yokohama-platform-administration/page/adm=
+inister/managing-data/task/analyze-data-usage.html?state=3Dseamless</span><=
+/a><span style=3D"font-family:Gilroy"><br>
+<br>
+-- Mastering Data Management in ServiceNow: from tracking growth to efficie=
+nt cleanup:<br>
+</span><a href=3D"https://support.servicenow.com/kb?id=3Dkb_article_view&am=
+p;sysparm_article=3DKB1518213#mcetoc_1h9tkjeb92"><span style=3D"font-family=
+:Gilroy">https://support.servicenow.com/kb?id=3Dkb_article_view&amp;sysparm=
+_article=3DKB1518213#mcetoc_1h9tkjeb92</span></a><span style=3D"font-family=
+:Gilroy"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-family:Gilroy"><o:p>&nbsp;</o:p>=
+</span></p>
+<p class=3D"MsoNormal"><span style=3D"font-family:Gilroy"><br>
+</span><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-se=
+rif;color:#7F7F7F;mso-ligatures:none">_____________________________________=
+_______<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:10.5pt;font-family:&quot=
+;Arial&quot;,sans-serif;color:#474747;mso-ligatures:none">Derek Rinchiuso<o=
+:p></o:p></span></b></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none">he/him<o:p></o:p></sp=
+an></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none">Renewal Account Manag=
+er, Global Partnerships and Channels<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;font-family:&quot;Ari=
+al&quot;,sans-serif;color:#7F7F7F;mso-ligatures:none">M: 415-596-5112<o:p><=
+/o:p></span></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:6.75pt;margin-right:0in;=
+margin-bottom:4.5pt;margin-left:0in">
+<b><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;=
+color:#7F7F7F;mso-ligatures:none">servicenow.com<o:p></o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:6.75pt;margin-right:0in;=
+margin-bottom:4.5pt;margin-left:0in">
+<b><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;=
+color:#E97132;mso-ligatures:none"><o:p>&nbsp;</o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"mso-margin-top-alt:6.75pt;margin-right:0in;=
+margin-bottom:4.5pt;margin-left:0in">
+<b><span style=3D"font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;=
+color:#7F7F7F;mso-ligatures:none"><o:p>&nbsp;</o:p></span></b></p>
+<p class=3D"MsoNormal" style=3D"text-autospace:none"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+--_000_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_--
+
+--_006_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_
+Content-Type: image/png; name="image001.png"
+Content-Description: image001.png
+Content-Disposition: inline; filename="image001.png"; size=2261;
+	creation-date="Mon, 16 Jun 2025 21:09:57 GMT";
+	modification-date="Mon, 16 Jun 2025 21:09:57 GMT"
+Content-ID: <image001.png@01DBDEDA.D3F0EBE0>
+Content-Transfer-Encoding: base64
+
+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
+
+--_006_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_
+Content-Type: image/png; name="image002.png"
+Content-Description: image002.png
+Content-Disposition: inline; filename="image002.png"; size=28907;
+	creation-date="Mon, 16 Jun 2025 21:09:57 GMT";
+	modification-date="Mon, 16 Jun 2025 21:09:58 GMT"
+Content-ID: <image002.png@01DBDEDB.A5C18990>
+Content-Transfer-Encoding: base64
+
+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
+TPXmy9wHrXNc2aj7y9zUzKqHtCz6XjOTXwcB6F0y2h/JPt3v4raL0us/uuaz+mzdr3xgaeTnEplB
+L7x0VOqu/pzsPZgKEkUBJDN/GFRSO/8mLdeea9ehy7T83A3tyhkWlr/eD+TJhz6RPXJUflxmeTHb
+vzcrEyrnOEK52/UCY5Yejw00me2scgG0Sy8KAkBu6NpP5KIosHZo3Qey+ZqL5OZLg9fWyC/Jc1GQ
+K2d/+50tQzuORYEkDXz5gSZ0ns1wsBdmurOx3nRIl9kMoR2zss/wpbM22qELwxqe9e7Ut5lOa7Dc
+u7+qkcYHgw7cVbvmBGVmatw102vMZGgxneAp9WZ9201jY47MchHMqKGhlcPgG2XErqdt5+aq1fX2
+Lryue9XQdlO2WFrnu+ymcB8s/5j0Drzp6O2qD+Z72M/eMJXOteY9t85357fJVHdudje1yWRbHh6v
+Nsami/zKzftOvdl/LQsCYrZMM7CuDSuveB9WyXSZ6n5O7idQ3LgJ9bJ7tbk2zM8262fKjTLLlIWZ
+P2HZwPTn/FciU8Mv3tVmnhVavjG6/oLP+nXBtbVtofz6+Xtk2PAgAyYR+E1d7/o5H/X7G73glmZR
+iQx7zWVRaaBrSnydW7YO0LLRMr9B4kBZyfX+gYzf9qw0Dg+GhCWu47o50miutzB7yx53w5w4o6hu
+iTlmc71O0YzNjfKTnywrP79ygZmgQaKTBozcexENitXEQwT/pa/MSu9j1jkqqWP+U9aZ/YsztjTT
+rF4aM7KHgno8PJ8aTKyV1vD3vaddJs9P/r6yM5Ay6m7PlgfvkxFhPbfixpLzN2twmc+TV++99H8/
+Xvk8A+hapmMVZizqdTh/1I2yyq9b3U2I+UNT8w3124VOVrvLFCfaR6k6Lmz3bXkwriNWXXmf3N+i
+WZErZLLLWte6SQNSjcO1XanzPSsj7tf2k6lfqhp6Xc33WrhtuwCA3qak/aGF5rqP+nTX2NlKpftn
+pl0W3ZTrXlU/vFuHbP1YLoyzkSoJM4xc4OSr/+aGk+mkQ8r0uUE6jw0UmSnvmUtq54fyqOgQOG95
+nb/a5T2dO47Pyb26rXAbPz8qdVNyMqZswOgS+al8EAyj2/lH+dbB82XFxPJZWpku/aL89Jqj8i23
+3W/9TuT7kzICUOiEYKjDu+aLfUQi86hWpv5LtcMlfN5yQ2tN57FdXtSsKBe80mnqatOB2RPMEgvu
+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
+svtKvjL9pm5WVWBJg0rf0iFmLhtocL+zZe8BL4tGM2wGeEO3NOCjgSSXmWOzfeSo/NgFgb71u+PS
+8vPDMv2l8+MASplMo9zt+QGYCplKKsg6Or/TzyuqfrmL5PprUvtatbxlT2adCI17OMhSsRfY/bXy
+iumE6pd6cbXS+LyuM7g7VUnw/Ja3ZfIGvciLpSRqMCdogGg6dde41OyXZkQEFY+phKp6OHGHbFxd
+I43asd37tGnchA2vGjn/f7LP6Untuzag3F2+KIiQu58dpvJ0P0ayynBG2xsPIZi62pVVLXiW0bsr
+xBvSMFomT1kva1q2y/1NNTJZg832GWuacTTTbCdriFrwuZwcZjLaqfpnsnVHfQAAvVuV9XPmfEnV
+tBF1nuxn/cXDUK5qylpPTv3/YZXPU+llz10B0IM61W/qWhUDS+mgkko/4yjxDKRUUEn1nfhll30T
+TPoQ7LofXiIryg6Li5XdXtW6IVupxAfyzIsiN1xd3XEl5S17MutExD0zyL+4EhlKxpYN6zMzVvLK
+bebDCnPhTq9+GIoGuBqHd/4vxb0TZQjpMWg6dRfxh9RUfHCxZkZoxFsrrOBOmd79a7XvbTed23qZ
+q+d09dOJ8xFnNxXc98E3ytTh2ih0r8sKspHWbPBTPpMZSkFgzM9gwhnlQLOMml7NUIMKBs+QHb+K
+6xCtT9bcMl1aG+YkriMNKq+aEtzFTsr6rFbnpK8pAPg0q7J+Ts/ns23EVHsmLXseDSqFQ7Dz/ipn
+Tv3vZx4ZNiMqS2o+aTFtpJLsXACffl77Mgw4d6rf1LXKBpZsUOl3x0We/zAYbqbT3X+SQ5opNOV4
+9AwgDTzZIJENKn0ie7zspM7+qXzdpi734+dNPfnzCtvLEPyZ/vfl0Y7j8uhc87MbIqd/ra5c1lHm
+dk159nLxw7vD5YLpfdk9Jf4Lbpnr9B7enbdsuXWiGP3Sb70luHtkJ01/rlsirwxfHJXpc3mih1Jr
+inRWeZpplKzSZ/OUzUIKHhYZbEeHzy3r9F+Ku/Rf6kWilOkKGQo2GyMrQyJbq/+cmug43N02TZ90
+52Jmi2kImYpKnxUw3x6znps5LhPMNKJ0KJKeU/deuL7dndn3TANk1rYVIunfn3s3EOyvDjW0Hfkw
+C8vNK6ascVe4DxlDGNErJZ6xZKa8B7Am9DdfuOJd353NWPIerPplfRZGOASvbo40moZ9OITNfyir
+1iFZn7eSz2qV1+3Ak76mAOBTqMr6OXc+X0Z7pqSdVzKPfg8FGVKaCaWv44ylGhlh2lC2fPb2nPrf
+tK8a2qNlp+6qyQkWjZZl+tyUcFk9hh7KSADQg/QxJ264bWkbVxMc7on7txvE3Wispt/UPc46Ybif
+gU+p4CFmw7aFGTn6eqbIipxhJxqY0YyGM+BLWv+6wO4fxedBO8NrJpT7s+167oIHlhOYwRlD64QH
+a2RHVucjdBrXG5rhdP/QjVyzAM5MZ1C7DgBOlaof3g30XppyHN8B0oyV1vnVP8vk02zchJr44W5m
+0r9QUr7zqVHw8FlRySnrGQXAp4beMcq949MhS6ffFzwU1pWUsJmE/jVTfVbhydBgcfYzPgDgTHD6
+1s/V8jNg7dRDf+EJADqDjCUAAAAAAAAUQsYSAAAAAAAACiGwBAAAAAAAgEIILAEAAAAAAKAQAksA
+AAAAAAAohMASAAAAAAAACiGwBAAAAAAAgEIILAEAAAAAAKAQAksAAAAAAAAohMASAAAAAAAACiGw
+BAAAAAAAgEIILAEAAAAAAKAQAksAAAAAAAAohMASAAAAAAAACiGwBAAAAAAAgEIILAEAAAAAAKAQ
+AksAAAAAAAAohMASAAAAAAAACiGwBAAAAAAAgEIILAEAAAAAAKAQAksAAAAAAAAohMASAAAAAAAA
+CiGwBAAAAAAAgEIILAEAAAAAAKAQAksAAAAAAAAohMASAAAAAAAACiGwBAAAAAAAgEIILAEAAAAA
+AKAQAksAAAAAAAAohMASAAAAAAAACiGwBAAAAAAAgEIILAEAAAAAAKAAkf8fUaRkzhENNGsAAAAA
+SUVORK5CYII=
+
+--_006_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_
+Content-Type: image/png; name="image003.png"
+Content-Description: image003.png
+Content-Disposition: inline; filename="image003.png"; size=14288;
+	creation-date="Mon, 16 Jun 2025 21:09:58 GMT";
+	modification-date="Mon, 16 Jun 2025 21:09:58 GMT"
+Content-ID: <image003.png@01DBDEDB.A5C18990>
+Content-Transfer-Encoding: base64
+
+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
+
+--_006_YT4PR01MB1049856026DA28DEC00DB0DF7F670AYT4PR01MB10498CA_--
