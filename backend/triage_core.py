@@ -25,6 +25,9 @@ except ImportError:
 # Load environment variables
 load_dotenv()
 
+# Import configuration
+from backend.config import Config
+
 # Configure OpenAI
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -269,6 +272,22 @@ def triage_email_only(subject: str, body: str) -> Dict:
     if not client.api_key:
         raise ValueError("OPENAI_API_KEY not found in environment variables")
     
+    # Validate email content before processing
+    if not validate_email_content(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.9,
+            "reasoning": "Email has insufficient content for meaningful triage - likely spam or empty message"
+        }
+    
+    # Check for meeting notifications
+    if is_meeting_notification(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.95,
+            "reasoning": "Meeting acceptance/rejection notification - no action required"
+        }
+    
     try:
         # Truncate body to prevent GPT-4 context overflow
         original_body_length = len(body)
@@ -354,6 +373,22 @@ def triage_with_context(subject: str, body: str, sender_profile: Dict) -> Dict:
     if not client.api_key:
         raise ValueError("OPENAI_API_KEY not found in environment variables")
     
+    # Validate email content before processing
+    if not validate_email_content(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.9,
+            "reasoning": "Email has insufficient content for meaningful triage - likely spam or empty message"
+        }
+    
+    # Check for meeting notifications
+    if is_meeting_notification(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.95,
+            "reasoning": "Meeting acceptance/rejection notification - no action required"
+        }
+    
     try:
         # Truncate body to prevent GPT-4 context overflow
         original_body_length = len(body)
@@ -435,6 +470,97 @@ def get_quadrant_description(quadrant: str) -> str:
     return QUADRANTS.get(quadrant, "Unknown quadrant")
 
 
+def validate_email_content(subject: str, body: str) -> bool:
+    """
+    Validate that email has sufficient content for meaningful triage.
+    
+    Args:
+        subject: Email subject line
+        body: Email body content
+        
+    Returns:
+        True if email has sufficient content, False otherwise
+    """
+    # Check if body is empty or too short
+    if not body or not body.strip():
+        logger.warning("Email body is empty or contains only whitespace")
+        return False
+    
+    # Check if body is too short (less than 10 characters)
+    if len(body.strip()) < 10:
+        logger.warning(f"Email body too short ({len(body.strip())} characters) for meaningful triage")
+        return False
+    
+    # Check if subject is empty
+    if not subject or not subject.strip():
+        logger.warning("Email subject is empty")
+        return False
+    
+    return True
+
+
+def is_meeting_notification(subject: str, body: str) -> bool:
+    """
+    Detect if email is a meeting acceptance/rejection notification.
+    
+    Args:
+        subject: Email subject line
+        body: Email body content
+        
+    Returns:
+        True if email is a meeting notification, False otherwise
+    """
+    # Convert to lowercase for case-insensitive matching
+    subject_lower = subject.lower()
+    body_lower = body.lower()
+    
+    # Common meeting notification patterns in subjects
+    meeting_subject_patterns = [
+        'accepted:', 'declined:', 'tentative:', 'proposed:',
+        'accepted -', 'declined -', 'tentative -', 'proposed -',
+        'meeting accepted', 'meeting declined', 'meeting tentative',
+        'calendar invitation', 'calendar update',
+        'outlook meeting', 'teams meeting',
+        'zoom meeting', 'webex meeting',
+        'meeting response', 'meeting reply',
+        'accepted meeting', 'declined meeting',
+        'tentative meeting', 'proposed meeting'
+    ]
+    
+    # Common meeting notification patterns in body
+    meeting_body_patterns = [
+        'accepted this meeting',
+        'declined this meeting', 
+        'tentatively accepted this meeting',
+        'proposed a new time',
+        'meeting has been accepted',
+        'meeting has been declined',
+        'meeting has been tentatively accepted',
+        'calendar invitation',
+        'outlook meeting',
+        'teams meeting',
+        'zoom meeting',
+        'webex meeting',
+        'meeting response',
+        'meeting reply'
+    ]
+    
+    # Check subject patterns
+    for pattern in meeting_subject_patterns:
+        if pattern in subject_lower:
+            logger.info(f"Detected meeting notification in subject: '{pattern}'")
+            return True
+    
+    # Check body patterns (only if body is not too long to avoid false positives)
+    if len(body_lower) < 500:  # Only check short bodies to avoid false positives
+        for pattern in meeting_body_patterns:
+            if pattern in body_lower:
+                logger.info(f"Detected meeting notification in body: '{pattern}'")
+                return True
+    
+    return False
+
+
 def triage_with_embeddings(subject: str, body: str, email_id: str) -> Dict:
     """
     Classifies the email using embedding similarity to previously classified emails.
@@ -449,9 +575,25 @@ def triage_with_embeddings(subject: str, body: str, email_id: str) -> Dict:
         {"quadrant": ..., "confidence": ..., "reasoning": ...}
     """
     
+    # Validate email content before processing
+    if not validate_email_content(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.9,
+            "reasoning": "Email has insufficient content for meaningful triage - likely spam or empty message"
+        }
+    
+    # Check for meeting notifications
+    if is_meeting_notification(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.95,
+            "reasoning": "Meeting acceptance/rejection notification - no action required"
+        }
+    
     try:
         # Import here to avoid circular imports
-        from supabase_client import find_similar_emails, get_triage_result
+        from supabase_client import find_similar_emails, get_triage_result, embedding_exists, store_embedding
         
         # Generate embedding for the current email
         combined_text = f"Subject: {subject}\n\nBody: {body}"
@@ -477,13 +619,12 @@ def triage_with_embeddings(subject: str, body: str, email_id: str) -> Dict:
         # Generate embedding
         response = client.embeddings.create(
             input=combined_text,
-            model="text-embedding-ada-002"
+            model=Config.EMBEDDING_MODEL
         )
         
         current_embedding = response.data[0].embedding
         
         # Store the embedding if it doesn't exist
-        from supabase_client import embedding_exists, store_embedding
         if not embedding_exists(email_id):
             store_embedding(email_id, current_embedding)
         
@@ -501,7 +642,7 @@ def triage_with_embeddings(subject: str, body: str, email_id: str) -> Dict:
         # Build similar contexts string
         similar_contexts = []
         for similar_email in similar_emails:
-            similar_email_id = similar_email['email_id']
+            similar_email_id = similar_email.get('email_id', 'unknown_id')
             similarity_score = similar_email.get('score', 0.5)
             
             # Get triage result for similar email
@@ -552,6 +693,22 @@ def triage_with_embedding(subject: str, body: str, similar_contexts: str) -> Dic
     
     if not client.api_key:
         raise ValueError("OPENAI_API_KEY not found in environment variables")
+    
+    # Validate email content before processing
+    if not validate_email_content(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.9,
+            "reasoning": "Email has insufficient content for meaningful triage - likely spam or empty message"
+        }
+    
+    # Check for meeting notifications
+    if is_meeting_notification(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.95,
+            "reasoning": "Meeting acceptance/rejection notification - no action required"
+        }
     
     try:
         # Truncate body to prevent GPT-4 context overflow
@@ -649,6 +806,152 @@ Respond with only the JSON object, no additional text."""
             "quadrant": "schedule",
             "confidence": 0.3,
             "reasoning": f"Fallback due to error in embedding triage: {str(e)}"
+        }
+
+
+def triage_with_outcomes(subject: str, body: str, similar_contexts: str, past_triage_results: List[Dict]) -> Dict:
+    """
+    Classify the email using GPT-4, incorporating known outcomes of similar past emails.
+    
+    Args:
+        subject: Email subject line
+        body: Email body content
+        similar_contexts: String containing summaries of similar past emails
+        past_triage_results: List of dictionaries with past triage results
+        
+    Returns:
+        Dictionary with classification results:
+        {"quadrant": ..., "confidence": ..., "reasoning": ...}
+    """
+    
+    if not client.api_key:
+        raise ValueError("OPENAI_API_KEY not found in environment variables")
+    
+    # Validate email content before processing
+    if not validate_email_content(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.9,
+            "reasoning": "Email has insufficient content for meaningful triage - likely spam or empty message"
+        }
+    
+    # Check for meeting notifications
+    if is_meeting_notification(subject, body):
+        return {
+            "quadrant": "delete",
+            "confidence": 0.95,
+            "reasoning": "Meeting acceptance/rejection notification - no action required"
+        }
+    
+    try:
+        # Truncate body to prevent GPT-4 context overflow
+        original_body_length = len(body)
+        body = truncate_for_prompt(body, max_tokens=2000)  # Smaller limit to leave room for outcomes
+        if len(body) != original_body_length:
+            logger.info(f"Body truncated from {original_body_length} to {len(body)} characters for outcomes triage")
+        
+        # Build outcome summary from past triage results
+        outcome_summary = "\n".join([
+            f"- {res.get('message_id', 'unknown_id')}: labeled as {res.get('triage_email_only', {}).get('quadrant', 'unknown')} (conf: {res.get('triage_email_only', {}).get('confidence', 0.0)})"
+            for res in past_triage_results
+        ])
+        
+        # Handle empty outcome summary
+        if not outcome_summary:
+            outcome_summary = "No past triage results available for reference."
+        
+        # Create the prompt for outcome-aware classification
+        prompt = f"""You are an expert email triage assistant. Classify this email based on its content, similar examples, and the outcomes of past similar emails:
+
+{QUADRANTS['do']}
+{QUADRANTS['schedule']}
+{QUADRANTS['delegate']}
+{QUADRANTS['delete']}
+
+Similar examples from database:
+{similar_contexts}
+
+Past triage outcomes:
+{outcome_summary}
+
+Email to classify:
+Subject: {subject}
+Body: {body}
+
+Please provide your classification in the following JSON format:
+{{
+    "quadrant": "do|schedule|delegate|delete",
+    "confidence": 0.85,
+    "reasoning": "Brief explanation of why this classification was chosen, considering the similar examples and past outcomes"
+}}
+
+Guidelines:
+- Consider how similar emails were classified and their outcomes
+- "do": Requires immediate attention, high priority, time-sensitive
+- "schedule": Important but can wait, plan for dedicated time
+- "delegate": Can be handled by someone else, not your core responsibility
+- "delete": Low value, can be ignored or archived
+
+Confidence should be between 0.0 and 1.0, where 1.0 is completely certain.
+Reasoning should explain how the similar examples and past outcomes influenced your decision.
+
+Respond with only the JSON object, no additional text."""
+
+        # Use safe OpenAI call with retry logic
+        response = safe_openai_chat_completion([
+            {"role": "system", "content": "You are an expert email triage assistant specializing in the Eisenhower Matrix. Use similar examples and past outcomes to inform your classification."},
+            {"role": "user", "content": prompt}
+        ])
+        
+        # Handle API failure
+        if response is None:
+            print("❌ OpenAI API call failed for outcomes triage, returning fallback response")
+            return {
+                "quadrant": "schedule",
+                "confidence": 0.3,
+                "reasoning": "Fallback due to OpenAI failure in outcomes triage"
+            }
+        
+        # Extract and parse the response
+        content = response.choices[0].message.content.strip()
+        
+        # Try to parse JSON response
+        try:
+            result = json.loads(content)
+            
+            # Validate the response structure
+            required_keys = ["quadrant", "confidence", "reasoning"]
+            if not all(key in result for key in required_keys):
+                raise ValueError("Missing required keys in response")
+            
+            # Validate quadrant
+            if result["quadrant"] not in QUADRANTS:
+                raise ValueError(f"Invalid quadrant: {result['quadrant']}")
+            
+            # Validate confidence score
+            confidence = float(result["confidence"])
+            if not 0.0 <= confidence <= 1.0:
+                raise ValueError(f"Confidence must be between 0.0 and 1.0, got: {confidence}")
+            
+            return result
+            
+        except json.JSONDecodeError:
+            # Fallback: try to extract information from text response
+            print("⚠️  Failed to parse OpenAI JSON response for outcomes triage, using fallback")
+            return {
+                "quadrant": "schedule",  # Default to schedule if parsing fails
+                "confidence": 0.5,
+                "reasoning": f"Failed to parse OpenAI response for outcomes triage: {content[:100]}..."
+            }
+            
+    except Exception as e:
+        # Return a safe fallback in case of unexpected errors
+        print(f"❌ Unexpected error in triage_with_outcomes: {str(e)}")
+        logger.error(f"Unexpected error in triage_with_outcomes: {str(e)}")
+        return {
+            "quadrant": "schedule",
+            "confidence": 0.3,
+            "reasoning": f"Fallback due to error in outcomes triage: {str(e)}"
         }
 
 

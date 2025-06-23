@@ -13,7 +13,7 @@ project_root = Path(__file__).parent.parent
 backend_path = project_root / "backend"
 sys.path.insert(0, str(backend_path))
 
-from triage_core import triage_email_only, triage_with_context, get_quadrant_description
+from triage_core import triage_email_only, triage_with_context, triage_with_outcomes, get_quadrant_description
 from config import Config
 
 
@@ -121,6 +121,61 @@ def test_contextual_classification():
             print(f"  ❌ Error: {str(e)}")
 
 
+def test_outcomes_classification():
+    """Test classification with outcomes from similar emails."""
+    print("\nTesting outcomes-based classification...")
+    
+    test_subject = "Bug report in production"
+    test_body = "We found a critical bug in the production system that's affecting user experience."
+    
+    # Mock similar contexts and past triage results
+    similar_contexts = """- Similar email (score: 0.85): Bug report from QA team about login issues - classified as DO with high confidence
+- Similar email (score: 0.78): Production deployment issue - classified as DO with medium confidence
+- Similar email (score: 0.72): Feature request from marketing - classified as SCHEDULE with low confidence"""
+    
+    past_triage_results = [
+        {
+            "email_id": "email_001",
+            "triage": {
+                "quadrant": "do",
+                "confidence": 0.9,
+                "reasoning": "Critical production issue affecting users"
+            }
+        },
+        {
+            "email_id": "email_002", 
+            "triage": {
+                "quadrant": "do",
+                "confidence": 0.7,
+                "reasoning": "Production deployment problem"
+            }
+        },
+        {
+            "email_id": "email_003",
+            "triage": {
+                "quadrant": "schedule",
+                "confidence": 0.6,
+                "reasoning": "Feature request, not urgent"
+            }
+        }
+    ]
+    
+    try:
+        result = triage_with_outcomes(test_subject, test_body, similar_contexts, past_triage_results)
+        
+        print(f"  Result: {result['quadrant']} (confidence: {result['confidence']:.2f})")
+        print(f"  Reasoning: {result['reasoning']}")
+        
+        # Check if the result considers the past outcomes (should likely be "do" given the similar examples)
+        if result['quadrant'] == 'do':
+            print(f"  ✅ Expected outcome: DO (based on similar critical issues)")
+        else:
+            print(f"  ⚠️  Got: {result['quadrant']}, but expected DO based on similar critical issues")
+            
+    except Exception as e:
+        print(f"  ❌ Error: {str(e)}")
+
+
 def test_quadrant_descriptions():
     """Test quadrant description function."""
     print("\nTesting quadrant descriptions...")
@@ -146,6 +201,7 @@ def main():
     test_quadrant_descriptions()
     test_email_only_classification()
     test_contextual_classification()
+    test_outcomes_classification()
     
     print("\n✅ All tests completed!")
 

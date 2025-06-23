@@ -127,16 +127,17 @@ def store_embedding(email_id: str, embedding: List[float]) -> bool:
         return False
 
 
-def upsert_triage_result(message_id: str, email_only: Dict[str, Any], with_context: Dict[str, Any], with_embedding: Dict[str, Any]) -> bool:
+def upsert_triage_result(message_id: str, email_only: Dict[str, Any], with_context: Dict[str, Any], with_embedding: Dict[str, Any], with_outcomes: Dict[str, Any]) -> bool:
     """
     Insert or update the triage results into the 'triage_results' table.
-    Uses JSONB fields: triage_email_only, triage_with_context, and triage_with_embedding.
+    Uses JSONB fields: triage_email_only, triage_with_context, triage_with_embedding, and triage_with_outcomes.
     
     Args:
         message_id: Unique identifier for the email message
         email_only: Dictionary with email-only classification results
         with_context: Dictionary with contextual classification results
         with_embedding: Dictionary with embedding-based classification results
+        with_outcomes: Dictionary with outcome-aware classification results
         
     Returns:
         True if successful, False otherwise
@@ -147,7 +148,8 @@ def upsert_triage_result(message_id: str, email_only: Dict[str, Any], with_conte
             "message_id": message_id,
             "triage_email_only": email_only,
             "triage_with_context": with_context,
-            "triage_with_embedding": with_embedding
+            "triage_with_embedding": with_embedding,
+            "triage_with_outcomes": with_outcomes
         }
         
         # Upsert the triage result
@@ -426,7 +428,7 @@ if __name__ == "__main__":
     }
     
     print(f"\nStoring triage results for {test_email_id}...")
-    upsert_triage_result(test_email_id, test_email_result, test_context_result, {})
+    upsert_triage_result(test_email_id, test_email_result, test_context_result, {}, {})
     
     # Retrieve triage result
     result = get_triage_result(test_email_id)

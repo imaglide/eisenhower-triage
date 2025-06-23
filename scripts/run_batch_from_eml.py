@@ -38,13 +38,15 @@ project_root = Path(__file__).parent.parent
 backend_path = project_root / "backend"
 sys.path.insert(0, str(backend_path))
 
-from triage_core import triage_email_only, triage_with_context, triage_with_embeddings
+from triage_core import triage_email_only, triage_with_context, triage_with_embeddings, triage_with_outcomes
 from supabase_client import (
     embedding_exists, 
     store_embedding, 
     upsert_triage_result,
     get_sender_profile,
-    get_email_summary
+    get_email_summary,
+    get_triage_result,
+    find_similar_emails
 )
 from config import Config
 
@@ -290,26 +292,8 @@ def process_single_email(email_data: Dict[str, str]) -> bool:
               f"(confidence: {contextual_result['confidence']:.2f})")
         print(f"   🧠 Reasoning: {contextual_result['reasoning'][:200]}...")
         
-        # Find similar emails using vector similarity search
-        similar_emails = find_similar_emails(embedding, top_k=5)
-
-        # Build similar_contexts using real summaries
-        summaries = []
-        for e in similar_emails:
-            summary = get_email_summary(e["email_id"])
-            summaries.append(f"- Similar email (score: {e['score']:.2f}):\n{summary.strip()}")
-        similar_contexts = "\n\n".join(summaries)
-
-        # Run embedding-based triage with real similar_contexts
-        result_embedding = triage_with_embedding(subject, body, similar_contexts)
-        logger.info(f"Embedding-based result: {result_embedding['quadrant']} (confidence: {result_embedding['confidence']:.2f})")
-        
-        # Display embedding-based triage results in console
-        print(f"🔍 Embedding-based triage: {result_embedding['quadrant']} "
-              f"(confidence: {result_embedding['confidence']:.2f})")
-        print(f"   🧠 Reasoning: {result_embedding['reasoning'][:200]}...")
-        
-        # Only generate and store embedding if it doesn't exist
+        # Generate or retrieve embedding for similarity search
+        embedding = None
         if not embedding_exists_flag:
             # Generate embedding
             print(f"🧠 Generating embedding for email_id: {email_id}")
@@ -327,10 +311,91 @@ def process_single_email(email_data: Dict[str, str]) -> bool:
                 return False
         else:
             print(f"💾 Using existing embedding for email_id: {email_id}")
+            # For now, we'll use the triage_with_embeddings function which handles embedding retrieval
+            # This is a temporary workaround - in a full implementation, we'd retrieve the existing embedding
+        
+        # Use triage_with_embeddings to get embedding-based classification and similar emails
+        result_embedding = triage_with_embeddings(subject, body, email_id)
+        logger.info(f"Embedding-based result: {result_embedding['quadrant']} (confidence: {result_embedding['confidence']:.2f})")
+        
+        # Display embedding-based triage results in console
+        print(f"🔍 Embedding-based triage: {result_embedding['quadrant']} "
+              f"(confidence: {result_embedding['confidence']:.2f})")
+        print(f"   🧠 Reasoning: {result_embedding['reasoning'][:200]}...")
+        
+        # For outcomes triage, we need to get similar emails and their triage results
+        # Since triage_with_embeddings already does this internally, we'll need to do it again
+        # or modify the function to return both the result and the similar emails
+        # For now, let's use a simplified approach and get similar emails directly
+        
+        # Generate embedding for similarity search if not already done
+        if embedding is None:
+            combined_text = f"Subject: {subject}\n\nBody: {body}"
+            embedding = generate_embedding(combined_text)
+            if not embedding:
+                logger.warning("Could not generate embedding for outcomes triage, skipping")
+                result_outcomes = {
+                    "quadrant": "schedule",
+                    "confidence": 0.3,
+                    "reasoning": "Skipped due to embedding generation failure"
+                }
+            else:
+                # Find similar emails using vector similarity search
+                similar_emails = find_similar_emails(embedding, top_k=5)
+                
+                # Build similar_contexts using real summaries
+                summaries = []
+                for e in similar_emails:
+                    summary = get_email_summary(e["email_id"])
+                    summaries.append(f"- Similar email (score: {e['score']:.2f}):\n{summary.strip()}")
+                similar_contexts = "\n\n".join(summaries)
+                
+                # Collect past triage results from similar emails for outcomes triage
+                past_triage_results = []
+                for match in similar_emails:
+                    result = get_triage_result(match["email_id"])
+                    if result and result.get("triage_email_only"):
+                        past_triage_results.append({
+                            "email_id": match["email_id"],
+                            "triage": result["triage_email_only"]
+                        })
+                
+                # Run outcomes triage with past triage results
+                result_outcomes = triage_with_outcomes(subject, body, similar_contexts, past_triage_results)
+        else:
+            # Find similar emails using vector similarity search
+            similar_emails = find_similar_emails(embedding, top_k=5)
+            
+            # Build similar_contexts using real summaries
+            summaries = []
+            for e in similar_emails:
+                summary = get_email_summary(e["email_id"])
+                summaries.append(f"- Similar email (score: {e['score']:.2f}):\n{summary.strip()}")
+            similar_contexts = "\n\n".join(summaries)
+            
+            # Collect past triage results from similar emails for outcomes triage
+            past_triage_results = []
+            for match in similar_emails:
+                result = get_triage_result(match["email_id"])
+                if result and result.get("triage_email_only"):
+                    past_triage_results.append({
+                        "email_id": match["email_id"],
+                        "triage": result["triage_email_only"]
+                    })
+            
+            # Run outcomes triage with past triage results
+            result_outcomes = triage_with_outcomes(subject, body, similar_contexts, past_triage_results)
+        
+        logger.info(f"Outcomes-based result: {result_outcomes['quadrant']} (confidence: {result_outcomes['confidence']:.2f})")
+        
+        # Display outcomes triage results in console
+        print(f"📊 Outcome-aware triage: {result_outcomes['quadrant']} "
+              f"(confidence: {result_outcomes['confidence']:.2f})")
+        print(f"   🧠 Reasoning: {result_outcomes['reasoning'][:200]}...")
         
         # Store triage results (always update with latest results)
         logger.info("Storing triage results...")
-        if not upsert_triage_result(email_id, email_only_result, contextual_result, result_embedding):
+        if not upsert_triage_result(email_id, email_only_result, contextual_result, result_embedding, result_outcomes):
             logger.error(f"Failed to store triage results for {email_id}")
             return False
         
